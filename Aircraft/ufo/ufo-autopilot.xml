@@ -279,7 +279,7 @@
 	</filter>
 	
 	<filter> <!-- Select target vertical speed -->
-		<name>IT-CONTROLLER: Pitch Deg</name>
+		<name>Target FPM</name>
 		<type>gain</type>
 		<gain>1.0</gain>
 		<input>
@@ -348,20 +348,7 @@
 		</input>
 		<output>/autopilot/internal/target-pitch-deg</output>
 	</filter>
-	
-	<filter> <!-- Copy target pitch angle -->
-		<name>IT-CONTROLLER: Pitch Deg</name>
-		<type>gain</type>
-		<gain>1.0</gain>
-		<enable>
-			<condition>
-				<property>/autopilot/internal/pitch-hold-active</property>
-			</condition>
-		</enable>
-		<input>/autopilot/settings/target-pitch-deg</input>
-		<output>/autopilot/internal/target-pitch-deg</output>
-	</filter>
-	
+
 	<filter> <!-- Smooth engagement by syncing when disabled -->
 		<name>System Command: Pitch Target Inactive Sync</name>
 		<type>gain</type>

@@ -56,6 +56,12 @@
 	</locale>
 
 	<locale>
+		<lang type="string">ka</lang>
+		<lang type="string">ka_GE</lang>
+		<xliff type="string">Translations/ka/FlightGear-nonQt.xlf</xliff>
+	</locale>
+
+	<locale>
 		<lang type="string">nl</lang>
 		<lang type="string">nl_BE</lang>
 		<lang type="string">nl_NL</lang>

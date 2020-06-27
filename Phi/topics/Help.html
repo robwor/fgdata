@@ -1,118 +1,424 @@
 <div id="vtabs-content">
-    <h1>Phi - The FlightGear User Interface</h1>
+    <div>
+        <h1>Graphical interface</h1>
 
-    <p>Looking from the top, you will see a number of tabs such as "Aircraft", "Environment", "Map", "Tools", "Simulator", providing various functions and possibilities described below.</p>
-    <p>In addition, each subpage contains the same widgets displayed on the right, such as:</p>
-    <ol>
-        <li>METAR of a nearby airport;</li>
-        <li>PFD (Primary Flight Display), i.e. a display with the main flight parameters, such as position relative to the horizon, speed and altitude;</li>
-        <li>radio stack with frequency settings for COM1, COM2, NAV1, NAV2, ADF;</li>
-        <li>minimap from OpenStreetMap;</li>
-        <li>stopwatch.</li>
-    </ol>
+        <section>
+            <p>Looking from the top, you will see a number of tabs such as "Aircraft", "Environment", "Map", "Tools", "Simulator", providing various functions and possibilities described below.</p>
+            <p>In addition, each subpage contains the same widgets displayed on the right, such as:</p>
+            <ol>
+                <li>METAR of a nearby airport;</li>
+                <li>PFD (Primary Flight Display), i.e. a display with the main flight parameters, such as position relative to the horizon, speed and altitude;</li>
+                <li>radio stack with frequency settings for COM1, COM2, NAV1, NAV2, ADF;</li>
+                <li>minimap from OpenStreetMap;</li>
+                <li>stopwatch.</li>
+            </ol>
 
-    <p>At the top on the right, you always have the following buttons available:</p>
-    <ol>
-        <li>Refresh Page - clicking this button will refresh the Phi webpage.</li>
-        <li>Pause - clicking this button will pause the simulation.</li>
-        <li>Play - clicking this button will unpause the simulation.</li>
-    </ol>
+            <p>At the top on the right, you always have the following buttons available:</p>
+            <ol>
+                <li>Refresh Page - clicking this button will refresh the Phi webpage.</li>
+                <li>Pause - clicking this button will pause the simulation.</li>
+                <li>Play - clicking this button will unpause the simulation.</li>
+            </ol>
+        </section>
 
-    <h2>Aircraft</h2>
-    <p>This tab contains information about the selected aircraft. It also allows you to view and install other aircrafts available in the official hangar (FGAddon).</p>
+        <section>
+            <h2>Aircraft</h2>
+            <p>This tab contains information about the selected aircraft. It also allows you to view and install other aircraft available in the official hangar (FGAddon).</p>
 
-    <h3>Help</h3>
-    <p>This tab displays information about the aircraft, hotkeys, speed limits and other additional information and tips. The information contained here depends on the particular aircraft. In the simulator, this information can be obtained from the "Help" &gt; "Aircraft Help" menu.</p>
-    
-    <h3>Mass &amp; Balance</h3>
-    <p>This tab displays information about fuel and payload of aircraft. You also have an envelope with selected center of gravity. In the simulator, this information can be obtained from the "Equipment" &gt; "Fuel and Payload" menu.</p>
+            <h3>Help</h3>
+            <p>This tab displays information about the aircraft, hotkeys, speed limits and other additional information and tips. The information contained here depends on the particular aircraft. In the simulator, this information can be obtained from the "Help" &gt; "Aircraft Help" menu.</p>
+            
+            <h3>Mass &amp; Balance</h3>
+            <p>This tab displays information about fuel and payload of aircraft. You also have an envelope with selected center of gravity. In the simulator, this information can be obtained from the "Equipment" &gt; "Fuel and Payload" menu.</p>
 
-    <h3>Checklists</h3>
-    <p>This tab displays all checklists provided by the selected aircraft. The information depends on the aircraft you chose. In the simulator, this information can be obtained from the "Help" &gt; "Aircraft Checklists" menu.</p>
+            <h3>Checklists</h3>
+            <p>This tab displays all checklists provided by the selected aircraft. The information depends on the aircraft you chose. In the simulator, this information can be obtained from the "Help" &gt; "Aircraft Checklists" menu.</p>
 
-    <h3>Failures</h3>
-    <p>Not implemented yet.</p>
+            <h3>Failures</h3>
+            <p>Not implemented yet.</p>
 
-    <h3>Panel</h3>
-    <p>Not implemented yet.</p>
+            <h3>Panel</h3>
+            <p>Not implemented yet.</p>
 
-    <h3>Select</h3>
-    <p>Here you have a list of all available aircraft in the official FGAddon hangar. The list includes such information as:</p>
-    <ul>
-        <li>aircraft name;</li>
-        <li>thumbnail of the aircraft;</li>
-        <li>description (if available);</li>
-        <li>ratings on a scale of 1 to 5 for FDM, Systems, Cockpit and Model;</li>
-        <li>aircraft package size in KB;</li>
-        <li>ability to download and install the aircraft. If the aircraft is installed then "installed" label is displaying.</li>
-    </ul>
+            <h3>Select</h3>
+            <p>Here you have a list of all available aircraft in the official FGAddon hangar. The list includes such information as:</p>
+            <ul>
+                <li>aircraft name;</li>
+                <li>thumbnail of the aircraft;</li>
+                <li>description (if available);</li>
+                <li>ratings on a scale of 1 to 5 for FDM, Systems, Cockpit and Model;</li>
+                <li>aircraft package size in KB;</li>
+                <li>ability to download and install the aircraft. If the aircraft is installed then "installed" label is displaying.</li>
+            </ul>
+        </section>
 
-    <hr/>
+        <hr/>
 
-    <h2>Environment</h2>
-    <p>This tab allows you to change the date, time of day, check the weather and check airport data.</p>
+        <section>
+            <h2>Environment</h2>
+            <p>This tab allows you to change the date, time of day, check the weather and check airport data.</p>
 
-    <h3>Date &amp; Time</h3>
-    <p>Here you can change the time of day by indicating presets, where "Clock Time" means setting the real time as it is in the location where the aircraft is. Here you can also change the date in the simulator as well as set the UTC time to the minute.</p>
+            <h3>Date &amp; Time</h3>
+            <p>Here you can change the time of day by indicating presets, where "Clock Time" means setting the real time as it is in the location where the aircraft is. Here you can also change the date in the simulator as well as set the UTC time to the minute.</p>
 
-    <h3>Weather</h3>
-    <p>You have a weather diagram here:</p>
-    <ul>
-        <li>the left vertical axis shows the atmospheric pressure in hPa;</li>
-        <li>the lower horizontal axis shows the temperature from -50°C to +50°C;</li>
-        <li>the right vertical axis represents the altitude from 0&nbsp;km (sea level) to 16&nbsp;km;</li>
-        <li>the red graph shows the air temperature in °C;</li>
-        <li>the green graph shows the dew point temperature in °C;</li>
-        <li>the gray rectangles represent the cloud layers;</li>
-        <li>in the right part of the graph, you also have wind arrows showing the direction and speed of the wind at particular heights.</li>
-    </ul>
+            <h3>Weather</h3>
+            <p>You have a weather diagram here:</p>
+            <ul>
+                <li>the left vertical axis shows the atmospheric pressure in hPa;</li>
+                <li>the lower horizontal axis shows the temperature from -50°C to +50°C;</li>
+                <li>the right vertical axis represents the altitude from 0&nbsp;km (sea level) to 16&nbsp;km;</li>
+                <li>the red graph shows the air temperature in °C;</li>
+                <li>the green graph shows the dew point temperature in °C;</li>
+                <li>the gray rectangles represent the cloud layers;</li>
+                <li>in the right part of the graph, you also have wind arrows showing the direction and speed of the wind at particular heights.</li>
+            </ul>
 
-    <h3>Position</h3>
-    <p>Here you can search for any airport (by ICAO code or name) and move the aircraft to the specified runway. In addition, you have here various information about the airport, such as elevation, geographical coordinates, communication frequencies, a map with the layout of runways, information about runways, the actual METAR.</p>
+            <h3>Position</h3>
+            <p>Here you can search for any airport (by ICAO code or name) and move the aircraft to the specified runway. In addition, you have here various information about the airport, such as elevation, geographical coordinates, communication frequencies, a map with the layout of runways, information about runways, the actual METAR.</p>
+        </section>
 
-    <hr/>
+        <hr/>
 
-    <h2>Map</h2>
-    <p>The main part of this view is filled with a map downloaded from OpenStreetMap as default, which shows the current position of the aircraft. The map can be freely moved, zoomed out or zoomed in. You can also add additional layers to the map, such as flight history, planned route, airports, navigation aids, other traffic and much more.</p>
-    <p>An interesting feature is also the fact that you can grab the aircraft with the mouse cursor and move it anywhere on the map. However, you can often do it accidentally, while moving the map, so using the icon in the upper right corner of the map ("Allow dragging own aircraft"), you can also disable the possibility of moving our aircraft.</p>
-    <p></p>
+        <section>
+            <h2>Map</h2>
+            <p>The main part of this view is filled with a map downloaded from OpenStreetMap as default, which shows the current position of the aircraft. The map can be freely moved, zoomed out or zoomed in. You can also add additional layers to the map, such as flight history, planned route, airports, navigation aids, other traffic and much more.</p>
+            <p>An interesting feature is also the fact that you can grab the aircraft with the mouse cursor and move it anywhere on the map. However, you can often do it accidentally, while moving the map, so using the icon in the upper right corner of the map ("Allow dragging own aircraft"), you can also disable the possibility of moving our aircraft.</p>
+        </section>
+        
+        <hr/>
 
-    <hr/>
+        <section>
+            <h2>Tools</h2>
+            <p>This tab contains various helpful tools for the pilot.</p>
 
-    <h2>Tools</h2>
-    <p>This tab contains various helpful tools for the pilot.</p>
+            <h3>Holding Pattern</h3>
+            <p>Here you can determine how to properly fly into the holding pattern depending on the direction from which you are coming. You have to set "Inbound Track" of holding pattern, "Heading" of your aircraft and select whether holding is "left" or "right". After that, the image will show you how to properly fly into the holding pattern.</p>
 
-    <h3>Holding Pattern</h3>
-    <p>Here you can determine how to properly fly into the holding pattern depending on the direction from which you are coming. You have to set "Inbound Track" of holding pattern, "Heading" of your aircraft and select whether holding is "left" or "right". After that, the image will show you how to properly fly into the holding pattern.</p>
+            <h3>Wind Calculator</h3>
+            <p>Not implemented yet.</p>
 
-    <h3>Wind Calculator</h3>
-    <p>Not implemented yet.</p>
+            <h3>Vertical Navigation</h3>
+            <p>Not implemented yet.</p>
 
-    <h3>Vertical Navigation</h3>
-    <p>Not implemented yet.</p>
+            <h3>Stopwatch</h3>
+            <p>Here you have a stopwatch at our disposal, and you can add many independently operating stopwatches.</p>
+        </section>
 
-    <h3>Stopwatch</h3>
-    <p>Here you have a stopwatch at our disposal, and you can add many independently operating stopwatches.</p>
+        <hr/>
 
-    <hr/>
+        <section>
+            <h2>Simulator</h2>
+            <p>In this tab you will find options related to the simulator.</p>
 
-    <h2>Simulator</h2>
-    <p>In this tab you will find options related to the simulator.</p>
+            <h3>Screenshots</h3>
+            <p>Here, as an instructor, you can preview what is happening in the simulator, or otherwise you have a preview of what the pilot sees. At the top, you have the option to set how often you want to receive a new screenshot from the FlightGear. If you need a smoother preview of what the pilot is doing in the simulator, you should use the "/screenshot" URL.</p>
 
-    <h3>Screenshots</h3>
-    <p>Here, as an instructor, you can preview what is happening in the simulator, or otherwise you have a preview of what the pilot sees. At the top, you have the option to set how often you want to receive a new screenshot from the FlightGear. If you need a smoother preview of what the pilot is doing in the simulator, you should use the "/screenshot" URL.</p>
+            <h3>Properties</h3>
+            <p>Here you can view and change the value of each property available in FlightGear. For a person very familiar with FlightGear, it will be a powerful tool with the ability to change any parameter or simulation state. It may be more convenient to use than the "Debug" &gt; "Browse Internal Properties" menu option available in the simulator.</p>
+            <p>Alternatively, you can use the "/props/" URL for access another Property Browser, where the URL path can be set as full path to the property, e.g. "/props/position/altitude-ft".</p>
+            <p>Another very useful option is the function of drawing graphs of any property, which will be useful for flight analysis. It is enough to go to the given property, e.g. "/position/altitude-ft", where you have a small image icon ("toggle plot"). When you click this icon, a real-time graph will be drawn at the top of the page, showing changes in the value of the indicated property over time - in our example, the altitude relative to the sea level. In this way, you can turn on several properties and plot their values on one graph.</p>
 
-    <h3>Properties</h3>
-    <p>Here you can view and change the value of each property available in FlightGear. For a person very familiar with FlightGear, it will be a powerful tool with the ability to change any parameter or simulation state. It may be more convenient to use than the "Debug" &gt; "Browse Internal Properties" menu option available in the simulator.</p>
-    <p>Another very useful option is the function of drawing graphs of any property, which will be useful for flight analysis. It is enough to go to the given property, e.g. "/position/altitude-ft", where you have a small image icon ("toggle plot"). When you click this icon, a real-time graph will be drawn at the top of the page, showing changes in the value of the indicated property over time - in our example, the altitude relative to the sea level. In this way, you can turn on several properties and plot their values on one graph.</p>
+            <h3>Config</h3>
+            <p>Here you have the option of enabling artificial air traffic, as well as the possibility of connecting to the multiplayer mode.</p>
 
-    <h3>Config</h3>
-    <p>Here you have the option of enabling artificial air traffic, as well as the possibility of connecting to the multiplayer mode.</p>
+            <h3>Reset</h3>
+            <p>Here you have the option to reset the simulator, the same as the option from the "File" &gt; "Reset" menu in the simulator.</p>
 
-    <h3>Reset</h3>
-    <p>Here you have the option to reset the simulator, the same as the option from the "File" &gt; "Reset" menu in the simulator.</p>
+            <h3>Exit</h3>
+            <p>Here you have the option to exit the simulator, the same as the option from the "File" &gt; "Quit" menu in the simulator. After closing the simulator, you will not be able to restart it with Phi.</p>
+        </section>
+    </div>
 
-    <h3>Exit</h3>
-    <p>Here you have the option to exit the simulator, the same as the option from the "File" &gt; "Quit" menu in the simulator. After closing the simulator, you will not be able to restart it with Phi.</p>
+    <div>
+        <h1>API</h1>
 
+        <section>
+            <h2>GET /screenshot</h2>
+
+            <p>Get the screen shot from the simulator window or canvas.</p>
+
+            <h3>Parameters</h3>
+            <ul>
+                <li><code>type</code> &ndash; image format, can be <code>png</code> or <code>jpg</code> (default). Compression level for PNG is hard coded to 9 (highest) and JPEG quality hardcoded to 80%.</li>
+                <li><code>window</code> &ndash; as value you must provide a name of the window to capture (for those with multi screen setups).</li>
+                <li><code>canvasindex</code> &ndash; as value you must provide the texture index of the canvas (as an integer), e.g. PFD in an aircraft with a glass cockpit.</li>
+                <li><code>stream</code> &ndash; enable Motion JPEG stream; any character can be passed as value, e.g. <code>1</code> or <code>y</code>.</li>
+            </ul>
+
+            <h3>Examples</h3>
+
+            <p>Single screenshot of default window in JPG format:</p>
+            <pre>
+    GET http://localhost:8080/screenshot
+            </pre>
+
+            <p>Single screenshot in PNG format:</p>
+            <pre>
+    GET http://localhost:8080/screenshot?type=png
+            </pre>
+
+            <p>Single PNG screenshot from the window named <code>WindowA</code> as defined under <code>/rendering/camera-group/window/name</code> in your screen configuration:</p>
+            <pre>
+    GET http://localhost:8080/screenshot?type=png&window=WindowA
+            </pre>
+
+            <p>Single screenshot of specific Canvas in JPG format:</p>
+            <pre>
+    GET http://localhost:8080/screenshot?canvasindex=6
+            </pre>
+
+            <p>Motion JPEG encoded video stream for specific window:</p>
+            <pre>
+    GET http://localhost:8080/screenshot?window=WindowA&stream=1
+            </pre>
+
+            <p>Motion JPEG encoded video stream for specific canvas:</p>
+            <pre>
+    GET http://localhost:8080/screenshot?canvasindex=6&stream=1
+            </pre>
+
+            <p>The Motion JPEG can be used by FFMPEG to directly encode various video formats:</p>
+            <pre>
+    ffplay -f mjpeg http://localhost:8080/screenshot?stream=1
+            </pre>
+        </section>
+
+        <section>
+            <h2>GET /json</h2>
+
+            <p>Get properties tree in JSON format.</p>
+
+            <h3>Examples</h3>
+
+            <p>Get root <code>/</code> property tree:</p>
+            <pre>
+    GET http://localhost:8080/json/
+            </pre>
+
+            <p>Get <code>/position</code> node with his children values:</p>
+            <pre>
+    GET http://localhost:8080/json/position
+            </pre>
+
+            <p>Get <code>/position/altitude-ft</code> property value:</p>
+            <pre>
+    GET http://localhost:8080/json/position/altitude-ft
+            </pre>
+        </section>
+
+        <section>
+            <h2>POST /run.cgi</h2>
+
+            <p>Send a command to the FlightGear to execute.</p>
+
+            <h3>Parameters</h3>
+            <ul>
+                <li><code>value</code> &ndash; fgcommand name.</li>
+            </ul>
+            <h3>Body</h3>
+            <p>Node structure in JSON format, depends of <code>value</code> parameter.</p>
+
+            <h3>Examples</h3>
+
+            <p>Send pause command for pause/unpause the simulator (body not required):</p>
+            <pre>
+    POST/GET http://localhost:8080/run.cgi?value=pause
+            </pre>
+
+            <p>Send a request to open a specific dialog by its name:</p>
+            <pre>
+    POST http://localhost:8080/run.cgi?value=dialog-show
+    BODY {
+        "name": "",
+        "children": [
+            {
+                "name": "dialog-name",
+                "index": 0,
+                "value": "location-in-air"
+            }
+        ]
+    }
+            </pre>
+
+            <p>Send a request to change property value (switching on the battery in the Cessna 172P):</p>
+            <pre>
+    POST http://localhost:8080/run.cgi?value=property-assign
+    BODY {
+        "name": "",
+        "children": [
+            {
+                "name": "property",
+                "index": 0,
+                "value": "/controls/switches/master-bat"
+            },
+            {
+                "name": "value",
+                "index": 0,
+                "value": "true"
+            }
+        ]
+    }
+            </pre>
+
+            <p>Send a request with a Nasal script to be executed:</p>
+            <pre>
+    POST http://localhost:8080/run.cgi?value=nasal
+    BODY {
+        "name": "",
+        "children": [
+            {
+                "name": "script",
+                "index": 0,
+                "value": "gui.popupTip('Hello, this is Phi');"
+            }
+        ]
+    }
+            </pre>
+        </section>
+
+        <section>
+            <h2>GET /flighthistory/track.json</h2>
+
+            <p>Get flight path history in JSON format. The path consists of coordinates, each coordinate has the format "lon,lat,altitude".</p>
+
+            <h3>Parameters</h3>
+            <ul>
+                <li><code>count</code> &ndash; number of coordinates of the recorded path. Default is -1, i.e. all coordinates.</li>
+                <li><code>last</code> &ndash; a timestamp in milliseconds. If you provide it, older recorded path coordinates will be skipped. The default is 0, which means all coordinates will be sent.</li>
+            </ul>
+
+            <h3>Examples</h3>
+
+            <p>Get all flight history coordinates:</p>
+            <pre>
+    GET http://localhost:8080/flighthistory/track.json
+            </pre>
+            <p>As a result, you will get a response in JSON format with last timestamp to use in next request:</p>
+            <pre>
+    {
+        "type": "Feature",
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [16.882262, 51.103904, 192.726014],
+                [16.882864, 51.103721, 196.063745],
+                [16.883477, 51.103531, 199.307147]
+            ]
+        },
+        "properties":{
+            "type": "FlightHistory",
+            "last": 92141
+        }
+    }
+            </pre>
+
+            <p>Get the next flight history coordinates from a specific timestamp:</p>
+            <pre>
+    GET http://localhost:8080/flighthistory/track.json?last=92141
+            </pre>
+        </section>
+
+        <section>
+            <h2>GET /flighthistory/track.kml</h2>
+
+            <p>Get flight path history in KML format. The path consists of coordinates, each coordinate has the format "lon,lat,altitude".</p>
+
+            <h3>Parameters</h3>
+            <ul>
+                <li><code>interval</code> &ndash; number of seconds, how often the KML file will be automatically refreshed. If you don't specify this parameter, automatic refreshing will not be started.</li>
+                <li><code>LineColor</code> &ndash; line color, default <code>427ebfff</code>.</li>
+                <li><code>LineWidth</code> &ndash; line width, default <code>4</code>.</li>
+                <li><code>PolyColor</code> &ndash; polygon color, default <code>fbfc4600</code>.</li>
+            </ul>
+
+            <h3>Examples</h3>
+
+            <p>Get flight history coordinates with line with 8:</p>
+            <pre>
+    GET http://localhost:8080/flighthistory/track.kml?LineWidth=8
+            </pre>
+        </section>
+
+        <section>
+            <h2>GET /navdb</h2>
+
+            <p>Get information about navigation aids, airports, towns, etc.</p>
+
+            <h3>Parameters</h3>
+            <ul>
+                <li><code>i</code> &ndash; indent; if you want to specify it, you must use the value <code>y</code>, then a space character will be used between the returned items.</li>
+                <li><code>q</code> &ndash; required query parameter. The following values can be used:</li>
+                    <ul>
+                        <li><code>airports</code> &ndash; get list of all airports with name and ICAO code.</li>
+                        <li><code>airport</code> &ndash; get information for the specific airport. The airport ICAO code must be given with <code>id</code> parameter.</li>
+                        <li><code>findWithinRange</code> &ndash; here you need to use the <code>lat</code> and lon parameters to specify the point around which you are searching, <code>range</code> where you specify the radius in NM from the geographic point, and <code>type</code> which specifies what you are looking for.</li>
+                    </ul>
+                <li><code>lat</code> &ndash; latitude required for <code>q=findWithinRange</code>.</li>
+                <li><code>lon</code> &ndash; longitude required for <code>q=findWithinRange</code>.</li>
+                <li><code>range</code> &ndash; range required for <code>q=findWithinRange</code>. The range cannot be less than 1.0&nbsp;NM.</li>
+                <li><code>type</code> &ndash; here you can specify what navigation aids you are looking for, which is required for the <code>q=findWithinRange</code> parameter. You can list here, after a comma, the following values: <code>airport</code>, <code>country</code>, <code>city</code>, <code>dme</code>, <code>fix</code>, <code>gs</code> (glide slope), <code>heliport</code>, <code>ils</code>, <code>im</code> (inner marker), <code>loc</code> (localizer), <code>mm</code> (middle marker), <code>ndb</code>, <code>obstacle</code>, <code>om</code> (outer marker), <code>runway</code>, <code>seaport</code>, <code>tacan</code>, <code>tower</code>, <code>town</code>, <code>village</code>, <code>vor</code>.</li>
+                <li><code>id</code> &ndash; airport ICAO code, required for <code>q=airport</code>.</li>
+            </ul>
+
+            <h3>Examples</h3>
+
+            <p>Get a list of all airports:</p>
+            <pre>
+    GET http://localhost:8080/navdb?q=airports
+            </pre>
+
+            <p>Get information about a specific airport:</p>
+            <pre>
+    GET http://localhost:8080/navdb?q=airport&id=KSFO
+            </pre>
+
+            <p>Get VOR and NDB radio beacons at a specific location within 12&nbsp;NM:</p>
+            <pre>
+    GET http://localhost:8080/navdb?q=findWithinRange&lat=37.61&lon=-122.38&range=12&type=vor,ndb
+            </pre>
+        </section>
+
+        <section>
+            <h2>GET /pkg</h2>
+
+            <p>Aircraft installation package management. These queries don't contain parameters, only paths are used.</p>
+
+            <h3>Examples</h3>
+
+            <p>Get the aircraft directory installation path:</p>
+            <pre>
+    GET http://localhost:8080/pkg/path
+            </pre>
+
+            <p>Get FlightGear version:</p>
+            <pre>
+    GET http://localhost:8080/pkg/version
+            </pre>
+
+            <p>Refreshing the packages on the FlightGear side:</p>
+            <pre>
+    GET http://localhost:8080/pkg/refresh
+            </pre>
+
+            <p>Get aircraft catalogs with all their packages:</p>
+            <pre>
+    GET http://localhost:8080/pkg/catalogs
+            </pre>
+
+            <p>Get a specific aircraft catalog with all packages, where <code>org.flightgear.fgaddon.stable_2024</code> is the catalog ID:</p>
+            <pre>
+    GET http://localhost:8080/pkg/catalogById/org.flightgear.fgaddon.stable_2024
+            </pre>
+
+            <p>Get a specific aircraft package, where <code>c182</code> is the aircraft identifier, in this case a Cessna 182:</p>
+            <pre>
+    GET http://localhost:8080/pkg/packageById/c182
+            </pre>
+
+            <p>Sending a request to install an aircraft, in this case a Cessna 182:</p>
+            <pre>
+    GET http://localhost:8080/pkg/install/c182
+            </pre>
+        </section>
+    </div>
 </div>

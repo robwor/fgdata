@@ -33,6 +33,8 @@
     </exposure-compensation>
   </parameters>
 
+  <!-- Since we inherit from model-pbr, we must create a lower index technique
+       to stop rendering to the Gbuffer and the shadow mapping pass. -->
   <technique n="108">
     <scheme>hdr-geometry</scheme>
   </technique>
@@ -84,16 +86,6 @@
         <mag-filter><use>texture[3]/mag-filter</use></mag-filter>
         <wrap-s><use>texture[3]/wrap-s</use></wrap-s>
         <wrap-t><use>texture[3]/wrap-t</use></wrap-t>
-      </texture-unit>
-      <texture-unit>
-        <unit>8</unit>
-        <image><use>texture[8]/image</use></image>
-        <type><use>texture[8]/type</use></type>
-        <filter><use>texture[8]/filter</use></filter>
-        <mag-filter><use>texture[8]/mag-filter</use></mag-filter>
-        <wrap-s><use>texture[8]/wrap-s</use></wrap-s>
-        <wrap-t><use>texture[8]/wrap-t</use></wrap-t>
-        <internal-format><use>texture[8]/internal-format</use></internal-format>
       </texture-unit>
       <blend><use>blend</use></blend>
       <rendering-hint>transparent</rendering-hint>

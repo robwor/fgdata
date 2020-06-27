@@ -96,7 +96,7 @@
           <target />
         </trans-unit>
         <trans-unit id="menu/earthview:0" translate="yes" approved="no">
-          <source>Earthview orbital rendering</source>
+          <source>Earthview Orbital Rendering</source>
           <target />
         </trans-unit>
         <trans-unit id="menu/environment:0" translate="yes" approved="no">
@@ -175,8 +175,8 @@
           <source>Immatriculation</source>
           <target />
         </trans-unit>
-        <trans-unit id="menu/mouse-config:0" translate="yes" approved="no">
-          <source>Mouse Configuration</source>
+        <trans-unit id="menu/input-systems:0" translate="yes" approved="no">
+          <source>Input Devices</source>
           <target />
         </trans-unit>
         <trans-unit id="menu/instrument-failures:0" translate="yes" approved="no">
@@ -204,7 +204,7 @@
           <target />
         </trans-unit>
         <trans-unit id="menu/light-switches:0" translate="yes" approved="no">
-          <source>Light switches</source>
+          <source>Light Switches</source>
           <target />
         </trans-unit>
         <trans-unit id="menu/load-tape:0" translate="yes" approved="no">
@@ -237,6 +237,10 @@
         </trans-unit>
         <trans-unit id="menu/menu-about:0" translate="yes" approved="no">
           <source>About</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="menu/mouse-config:0" translate="yes" approved="no">
+          <source>Mouse Configuration</source>
           <target />
         </trans-unit>
         <trans-unit id="menu/mp-carrier:0" translate="yes" approved="no">
@@ -387,6 +391,10 @@
           <source>Traffic and Scenario Settings</source>
           <target />
         </trans-unit>
+        <trans-unit id="menu/scenery-sources:0" translate="yes" approved="no">
+          <source>Scenery Sources</source>
+          <target />
+        </trans-unit>
         <trans-unit id="menu/select-livery:0" translate="yes" approved="no">
           <source>Select Livery</source>
           <target />
@@ -420,7 +428,7 @@
           <target />
         </trans-unit>
         <trans-unit id="menu/swift_connection:0" translate="yes" approved="no">
-          <source>swift Connection</source>
+          <source>Swift Connection</source>
           <target />
         </trans-unit>
         <trans-unit id="menu/system-failures:0" translate="yes" approved="no">
@@ -467,11 +475,11 @@
           <source>Video Control</source>
           <target />
         </trans-unit>
-        <trans-unit id="menu/video-start:0" translate="yes" approved="no">
+        <trans-unit id="menu/video-start:0" translate="no" approved="no">
           <source>Video Start</source>
           <target />
         </trans-unit>
-        <trans-unit id="menu/video-stop:0" translate="yes" approved="no">
+        <trans-unit id="menu/video-stop:0" translate="no" approved="no">
           <source>Video Stop</source>
           <target />
         </trans-unit>
@@ -524,7 +532,7 @@
           <target />
         </trans-unit>
         <trans-unit id="menu/walker-toggle-outside:0" translate="yes" approved="no">
-          <source>Toggle Walker outside</source>
+          <source>Toggle Walker out/in</source>
           <target />
         </trans-unit>
         <trans-unit id="menu/wildfire-settings:0" translate="yes" approved="no">
@@ -573,8 +581,16 @@
           <source>Select aircraft aerodynamics model to load</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/ai-models-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable AI subsystem (required for multi-player, AI traffic and many other animations.) Disabling it is deprecated.</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/ai-scenario:0" translate="yes" approved="no">
           <source>Add and enable a new scenario. Multiple options are allowed.</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/ai-traffic-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable artificial traffic.</source>
           <target />
         </trans-unit>
         <trans-unit id="options/aircraft-desc:0" translate="yes" approved="no">
@@ -594,7 +610,7 @@
           <target />
         </trans-unit>
         <trans-unit id="options/allow-nasal-from-sockets-desc:0" translate="yes" approved="no">
-          <source>Remove security flag, which means that network connections will be allowed full access to the simulator including running arbitrary scripts. Ensure you have adequate security (such as a firewall which blocks external connections).</source>
+          <source>Enable/Disable security flag. Enable means that network connections will be allowed full access to the simulator including running arbitrary scripts. Ensure you have adequate security (such as a firewall which blocks external connections).</source>
           <target />
         </trans-unit>
         <trans-unit id="options/allow-nasal-read-desc:0" translate="yes" approved="no">
@@ -603,6 +619,10 @@
         </trans-unit>
         <trans-unit id="options/altitude-desc:0" translate="yes" approved="no">
           <source>Starting altitude</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/anti-alias-hud-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable anti-aliased HUD</source>
           <target />
         </trans-unit>
         <trans-unit id="options/arm-desc:0" translate="yes" approved="no">
@@ -619,6 +639,10 @@
         </trans-unit>
         <trans-unit id="options/audio-options:0" translate="yes" approved="no">
           <source>Audio Options</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/auto-coordination-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable auto coordination</source>
           <target />
         </trans-unit>
         <trans-unit id="options/avionics-options:0" translate="yes" approved="no">
@@ -649,6 +673,18 @@
           <source>Create an overcast ceiling, optionally with a specific thickness (defaults to 2000 ft).</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/clock-freeze-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable clock freeze</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/clouds-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable 2D (flat) cloud layers</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/clouds3d-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable 3D (volumetric) cloud layers</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/com1-desc:0" translate="yes" approved="no">
           <source>Set the COM1 radio frequency</source>
           <target />
@@ -658,7 +694,7 @@
           <target />
         </trans-unit>
         <trans-unit id="options/composite-viewer-desc:0" translate="yes" approved="no">
-          <source>Enable CompositeViewer (extra view windows)</source>
+          <source>Enable/Disable CompositeViewer (extra view windows)</source>
           <target />
         </trans-unit>
         <trans-unit id="options/compositor-desc:0" translate="yes" approved="no">
@@ -670,7 +706,7 @@
           <target />
         </trans-unit>
         <trans-unit id="options/console-desc:0" translate="yes" approved="no">
-          <source>Display console (Windows specific)</source>
+          <source>Enable/Disable displaying console (Windows specific)</source>
           <target />
         </trans-unit>
         <trans-unit id="options/data-desc:0" translate="yes" approved="no">
@@ -682,143 +718,147 @@
           <target />
         </trans-unit>
         <trans-unit id="options/developer-desc:0" translate="yes" approved="no">
-          <source>Enable developer mode</source>
+          <source>Enable/Disable developer mode</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-ai-models-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-ai-models-desc:0" translate="no" approved="no">
           <source>Deprecated option (disable internal AI subsystem)</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-ai-traffic-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-ai-traffic-desc:0" translate="no" approved="no">
           <source>Disable artificial traffic.</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-anti-alias-hud-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-anti-alias-hud-desc:0" translate="no" approved="no">
           <source>Disable anti-aliased HUD</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-auto-coordination-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-auto-coordination-desc:0" translate="no" approved="no">
           <source>Disable auto coordination</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-clock-freeze-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-clock-freeze-desc:0" translate="no" approved="no">
           <source>Clock advances normally</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-clouds-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-clouds-desc:0" translate="no" approved="no">
           <source>Disable 2D (flat) cloud layers</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-clouds3d-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-clouds3d-desc:0" translate="no" approved="no">
           <source>Disable 3D (volumetric) cloud layers</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-distance-attenuation:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-distance-attenuation:0" translate="no" approved="no">
           <source>Disable runway light distance attenuation</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-enhanced-lighting:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-enhanced-lighting:0" translate="no" approved="no">
           <source>Disable enhanced runway lighting</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-fgcom-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-fgcom-desc:0" translate="no" approved="no">
           <source>Disable FGCom built-in</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-freeze-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-freeze-desc:0" translate="no" approved="no">
           <source>Start in a running state</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-fuel-freeze-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-fuel-freeze-desc:0" translate="no" approved="no">
           <source>Fuel is consumed normally</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-fullscreen-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-fullscreen-desc:0" translate="no" approved="no">
           <source>Disable fullscreen mode</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-gui-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-gui-desc:0" translate="no" approved="no">
           <source>Enable headless mode</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-hold-short-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-hold-short-desc:0" translate="no" approved="no">
           <source>Disable the move to hold short position for multiplayer</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-horizon-effect:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-horizon-effect:0" translate="no" approved="no">
           <source>Disable celestial body growth illusion near the horizon</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-hud-3d-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-hud-3d-desc:0" translate="no" approved="no">
           <source>Disable 3D HUD</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-hud-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-hud-desc:0" translate="no" approved="no">
           <source>Disable Heads Up Display (HUD)</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-mouse-pointer-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-mouse-pointer-desc:0" translate="no" approved="no">
           <source>Disable extra mouse pointer</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-panel-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-panel-desc:0" translate="no" approved="no">
           <source>Disable instrument panel</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-random-buildings-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-random-buildings-desc:0" translate="no" approved="no">
           <source>Exclude random buildings objects</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-random-objects-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-random-objects-desc:0" translate="no" approved="no">
           <source>Exclude random scenery objects</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-random-vegetation-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-random-vegetation-desc:0" translate="no" approved="no">
           <source>Exclude random vegetation objects</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-real-weather-fetch-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-real-weather-fetch-desc:0" translate="no" approved="no">
           <source>Disable METAR based real weather fetching</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-save-on-exit:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-save-on-exit:0" translate="no" approved="no">
           <source>Don't save preferences upon program exit</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-sentry-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-sentry-desc:0" translate="no" approved="no">
           <source>Disable crash and error reports from being sent to the development team for analysis</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-sound-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-sound-desc:0" translate="no" approved="no">
           <source>Disable sound effects</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-specular-highlight:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-specular-highlight:0" translate="no" approved="no">
           <source>Disable specular reflections on textured objects</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-splash-screen-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-splash-screen-desc:0" translate="no" approved="no">
           <source>Disable splash screen</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-terrasync-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-terrasync-desc:0" translate="no" approved="no">
           <source>Disable automatic scenery downloads/updates</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-texture-cache-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-texture-cache-desc:0" translate="no" approved="no">
           <source>Disable texture cache (DDS)</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-textures-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-textures-desc:0" translate="no" approved="no">
           <source>Disable textures</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-vr-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-vr-desc:0" translate="no" approved="no">
           <source>Disable VR</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-wireframe-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/disable-wireframe-desc:0" translate="no" approved="no">
           <source>Disable wireframe drawing mode</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/distance-attenuation-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable runway light distance attenuation</source>
           <target />
         </trans-unit>
         <trans-unit id="options/dme-desc:0" translate="yes" approved="no">
@@ -829,135 +869,135 @@
           <source>Base directory to use for aircraft and scenery downloads (the TerraSync scenery directory may be specifically set with --terrasync-dir)</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-ai-models-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-ai-models-desc:0" translate="no" approved="no">
           <source>Enable AI subsystem (required for multi-player, AI traffic and many other animations)</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-ai-traffic-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-ai-traffic-desc:0" translate="no" approved="no">
           <source>Enable artificial traffic.</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-anti-alias-hud-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-anti-alias-hud-desc:0" translate="no" approved="no">
           <source>Enable anti-aliased HUD</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-auto-coordination-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-auto-coordination-desc:0" translate="no" approved="no">
           <source>Enable auto coordination</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-clock-freeze-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-clock-freeze-desc:0" translate="no" approved="no">
           <source>Do not advance clock</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-clouds-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-clouds-desc:0" translate="no" approved="no">
           <source>Enable 2D (flat) cloud layers</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-clouds3d-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-clouds3d-desc:0" translate="no" approved="no">
           <source>Enable 3D (volumetric) cloud layers</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-distance-attenuation:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-distance-attenuation:0" translate="no" approved="no">
           <source>Enable runway light distance attenuation</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-enhanced-lighting:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-enhanced-lighting:0" translate="no" approved="no">
           <source>Enable enhanced runway lighting</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-fgcom-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-fgcom-desc:0" translate="no" approved="no">
           <source>Enable FGCom built-in</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-freeze-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-freeze-desc:0" translate="no" approved="no">
           <source>Start in a frozen state</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-fuel-freeze-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-fuel-freeze-desc:0" translate="no" approved="no">
           <source>Fuel tank quantity forced to remain constant</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-fullscreen-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-fullscreen-desc:0" translate="no" approved="no">
           <source>Enable fullscreen mode</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-horizon-effect:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-horizon-effect:0" translate="no" approved="no">
           <source>Enable celestial body growth illusion near the horizon</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-hud-3d-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-hud-3d-desc:0" translate="no" approved="no">
           <source>Enable 3D HUD</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-hud-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-hud-desc:0" translate="no" approved="no">
           <source>Enable Heads Up Display (HUD)</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-mouse-pointer-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-mouse-pointer-desc:0" translate="no" approved="no">
           <source>Enable extra mouse pointer</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-mouse-pointer-desc:1" translate="yes" approved="no">
+        <trans-unit id="options/enable-mouse-pointer-desc:1" translate="no" approved="no">
           <source>(i.e. for full screen Voodoo based cards)</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-panel-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-panel-desc:0" translate="no" approved="no">
           <source>Enable instrument panel</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-random-buildings-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-random-buildings-desc:0" translate="no" approved="no">
           <source>Include random buildings objects</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-random-objects-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-random-objects-desc:0" translate="no" approved="no">
           <source>Include random scenery objects</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-random-vegetation-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-random-vegetation-desc:0" translate="no" approved="no">
           <source>Include random vegetation objects</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-real-weather-fetch-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-real-weather-fetch-desc:0" translate="no" approved="no">
           <source>Enable METAR based real weather fetching (this requires an open internet connection)</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-save-on-exit:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-save-on-exit:0" translate="no" approved="no">
           <source>Allow saving preferences at program exit</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-sentry-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-sentry-desc:0" translate="no" approved="no">
           <source>Enable crash and error reports to be sent to the development team for analysis</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-sound-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-sound-desc:0" translate="no" approved="no">
           <source>Enable sound effects</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-specular-highlight:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-specular-highlight:0" translate="no" approved="no">
           <source>Enable specular reflections on textured objects</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-splash-screen-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-splash-screen-desc:0" translate="no" approved="no">
           <source>Enable splash screen</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-terrasync-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-terrasync-desc:0" translate="no" approved="no">
           <source>Enable automatic scenery downloads/updates</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-texture-cache-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-texture-cache-desc:0" translate="no" approved="no">
           <source>Enable texture cache (DDS)</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-textures-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-textures-desc:0" translate="no" approved="no">
           <source>Enable textures</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-vr-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-vr-desc:0" translate="no" approved="no">
           <source>Enable VR</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/enable-wireframe-desc:0" translate="yes" approved="no">
+        <trans-unit id="options/enable-wireframe-desc:0" translate="no" approved="no">
           <source>Enable wireframe drawing mode</source>
           <target />
         </trans-unit>
@@ -1001,8 +1041,12 @@
           <source>Defaults to $FG_ROOT/Scenery</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/fgcom-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable FGCom built-in</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/fgviewer-desc:0" translate="yes" approved="no">
-          <source>Use a model viewer rather than load the entire simulator;</source>
+          <source>Use a model viewer rather than load the entire simulator</source>
           <target />
         </trans-unit>
         <trans-unit id="options/fix-desc:0" translate="yes" approved="no">
@@ -1034,7 +1078,19 @@
           <target />
         </trans-unit>
         <trans-unit id="options/fpe-desc:0" translate="yes" approved="no">
-          <source>Abort on encountering a floating point exception;</source>
+          <source>Enable/Disable aborting on encountering a floating point exception</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/freeze-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable start in a frozen state</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/fuel-freeze-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable fuel consumption freeze</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/fullscreen-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable fullscreen mode</source>
           <target />
         </trans-unit>
         <trans-unit id="options/garmin-desc:0" translate="yes" approved="no">
@@ -1065,6 +1121,10 @@
           <source>Set graphic options from one of the presets</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/gui-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable GUI (disabling GUI enables headless mode)</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/heading-desc:0" translate="yes" approved="no">
           <source>Specify heading (yaw) angle (Psi)</source>
           <target />
@@ -1073,12 +1133,28 @@
           <source>Show the most relevant command line options</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/hold-short-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable the move to hold short position for multiplayer</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/horizon-effect-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable celestial body growth illusion near the horizon</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/httpd-desc:0" translate="yes" approved="no">
           <source>Enable http server on the specified address. Specify the port or address:port to bind to.</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/hud-3d-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable 3D HUD</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/hud-culled-desc:0" translate="yes" approved="no">
           <source>Hud displays percentage of triangles culled</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/hud-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable Heads Up Display (HUD)</source>
           <target />
         </trans-unit>
         <trans-unit id="options/hud-options:0" translate="yes" approved="no">
@@ -1094,11 +1170,11 @@
           <target />
         </trans-unit>
         <trans-unit id="options/ignore-autosave-desc:0" translate="yes" approved="no">
-          <source>Ignore the autosave file, i.e. the settings saved  in this file will not be loaded during startup, nor will the settings be saved to this file when closing the simulator</source>
+          <source>Enable/Disable ignoring the autosave file, i.e. the settings saved in this file will not be loaded during startup, nor will the settings be saved to this file when closing the simulator</source>
           <target />
         </trans-unit>
         <trans-unit id="options/in-air-desc:0" translate="yes" approved="no">
-          <source>Start in air (implied when using --altitude)</source>
+          <source>Enable/Disable starting in air (implied when using --altitude)</source>
           <target />
         </trans-unit>
         <trans-unit id="options/io-options:0" translate="yes" approved="no">
@@ -1122,7 +1198,7 @@
           <target />
         </trans-unit>
         <trans-unit id="options/json-report-desc:0" translate="yes" approved="no">
-          <source>Print a report in JSON format on the standard output, giving information such as the FlightGear version, $FG_ROOT, $FG_HOME, aircraft and scenery paths, etc.</source>
+          <source>Enable/Disable printing a report in JSON format on the standard output, giving information such as the FlightGear version, $FG_ROOT, $FG_HOME, aircraft and scenery paths, etc.</source>
           <target />
         </trans-unit>
         <trans-unit id="options/language-desc:0" translate="yes" approved="no">
@@ -1134,7 +1210,7 @@
           <target />
         </trans-unit>
         <trans-unit id="options/launcher-desc:0" translate="yes" approved="no">
-          <source>Use GUI launcher</source>
+          <source>Enable/Disable GUI launcher</source>
           <target />
         </trans-unit>
         <trans-unit id="options/livery-desc:0" translate="yes" approved="no">
@@ -1142,7 +1218,7 @@
           <target />
         </trans-unit>
         <trans-unit id="options/load-tape-create-video:0" translate="yes" approved="no">
-          <source>Encode video while replaying tape specified by --load-tape</source>
+          <source>Enable/Disable encode video while replaying tape specified by --load-tape</source>
           <target />
         </trans-unit>
         <trans-unit id="options/load-tape-desc:0" translate="yes" approved="no">
@@ -1213,6 +1289,14 @@
           <source>Run the FDM this rate (iterations per second)</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/mouse-pointer-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable extra mouse pointer</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/mouse-pointer-desc:1" translate="yes" approved="no">
+          <source>(i.e. for full screen Voodoo based cards)</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/multiplay-desc:0" translate="yes" approved="no">
           <source>Specify multipilot communication settings;</source>
           <target />
@@ -1266,15 +1350,15 @@
           <target />
         </trans-unit>
         <trans-unit id="options/no-default-config-desc:0" translate="yes" approved="no">
-          <source>Do not load any default configuration files (like .fgfsrc) unless explicitly specified with --config.</source>
+          <source>Enable/Disable not loading any default configuration files (like .fgfsrc) unless explicitly specified with --config</source>
           <target />
         </trans-unit>
         <trans-unit id="options/notrim-desc:0" translate="yes" approved="no">
-          <source>Do NOT attempt to trim the model</source>
+          <source>Enable/Disable not attempting to trim the model</source>
           <target />
         </trans-unit>
         <trans-unit id="options/notrim-desc:1" translate="yes" approved="no">
-          <source>(only with fdm=jsbsim)</source>
+          <source>(only with --fdm=jsbsim)</source>
           <target />
         </trans-unit>
         <trans-unit id="options/offset-azimuth-desc:0" translate="yes" approved="no">
@@ -1286,11 +1370,15 @@
           <target />
         </trans-unit>
         <trans-unit id="options/on-ground-desc:0" translate="yes" approved="no">
-          <source>Start at ground level (default)</source>
+          <source>Enable/Disable starting at ground level (default enabled)</source>
           <target />
         </trans-unit>
         <trans-unit id="options/opengc-desc:0" translate="yes" approved="no">
           <source>Open connection using the OpenGC protocol</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/panel-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable instrument panel</source>
           <target />
         </trans-unit>
         <trans-unit id="options/parking-id-desc:0" translate="yes" approved="no">
@@ -1309,8 +1397,12 @@
           <source>Initial Position and Orientation</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/prop-browser-desc:0" translate="yes" approved="no">
+          <source>After starting the simulator, immediately open the properties dialog with the given property</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/prop-desc:0" translate="yes" approved="no">
-          <source>Set property &lt;name&gt; to &lt;value&gt;. &lt;type&gt; can be one of string, double, float, long, int, or bool.</source>
+          <source>Set property &lt;name&gt; to &lt;value&gt;. &lt;type&gt; can be one of string, double, float, long, int, or bool</source>
           <target />
         </trans-unit>
         <trans-unit id="options/props-desc:0" translate="yes" approved="no">
@@ -1325,8 +1417,16 @@
           <source>Open connection using the PVE protocol</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/random-buildings-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable random buildings objects</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/random-objects-desc:0" translate="yes" approved="no">
-          <source>(buildings, etc.)</source>
+          <source>Enable/Disable random scenery objects (buildings, etc.)</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/random-vegetation-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable random vegetation objects</source>
           <target />
         </trans-unit>
         <trans-unit id="options/random-wind-desc:0" translate="yes" approved="no">
@@ -1338,7 +1438,11 @@
           <target />
         </trans-unit>
         <trans-unit id="options/read-only-desc:0" translate="yes" approved="no">
-          <source>Make $FG_HOME read-only</source>
+          <source>Enable/Disable $FG_HOME read-only</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/real-weather-fetch-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable METAR based real weather fetching</source>
           <target />
         </trans-unit>
         <trans-unit id="options/rendering-options:0" translate="yes" approved="no">
@@ -1346,11 +1450,11 @@
           <target />
         </trans-unit>
         <trans-unit id="options/restart-launcher-desc:0" translate="yes" approved="no">
-          <source>Open Launcher automatically when exiting FlightGear</source>
+          <source>Enable/Disable automatic opening of the Launcher when exiting FlightGear</source>
           <target />
         </trans-unit>
         <trans-unit id="options/restore-defaults-desc:0" translate="yes" approved="no">
-          <source>Reset all user settings to their defaults (rendering options etc)</source>
+          <source>Enable/Disable resetting all user settings to their defaults (rendering options etc.)</source>
           <target />
         </trans-unit>
         <trans-unit id="options/roc-desc:0" translate="yes" approved="no">
@@ -1373,6 +1477,14 @@
           <source>Specify starting runway (must also specify an airport)</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/save-on-exit:0" translate="yes" approved="no">
+          <source>Enable/Disable saving preferences at program exit</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/sentry-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable crash and error reports from being sent to the development team for analysis</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/shading-flat-desc:0" translate="yes" approved="no">
           <source>Enable flat shading</source>
           <target />
@@ -1393,12 +1505,24 @@
           <source>Situation Options</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/sound-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable sound effects</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/sound-device-desc:0" translate="yes" approved="no">
           <source>Explicitly specify the audio device to use</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/specular-highlight-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable specular reflections on textured objects</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/speed-desc:0" translate="yes" approved="no">
           <source>Run the FDM 'n' times faster than real time</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/splash-screen-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable splash screen</source>
           <target />
         </trans-unit>
         <trans-unit id="options/start-date-desc:0" translate="yes" approved="no">
@@ -1421,8 +1545,16 @@
           <source>Specify the terrain engine you want to use: tilecache or pagedLOD</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/terrasync-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable automatic scenery downloads/updates</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/terrasync-dir-desc:0" translate="yes" approved="no">
           <source>Set target directory for scenery downloads</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/texture-cache-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable texture cache (DDS)</source>
           <target />
         </trans-unit>
         <trans-unit id="options/texture-cache-dir-desc:0" translate="yes" approved="no">
@@ -1462,11 +1594,11 @@
           <target />
         </trans-unit>
         <trans-unit id="options/trim-desc:0" translate="yes" approved="no">
-          <source>Trim the model</source>
+          <source>Enable/Disable trim the model</source>
           <target />
         </trans-unit>
         <trans-unit id="options/trim-desc:1" translate="yes" approved="no">
-          <source>(only with fdm=jsbsim)</source>
+          <source>(only with --fdm=jsbsim)</source>
           <target />
         </trans-unit>
         <trans-unit id="options/turbulence-desc:0" translate="yes" approved="no">
@@ -1530,7 +1662,7 @@
           <target />
         </trans-unit>
         <trans-unit id="options/version-desc:0" translate="yes" approved="no">
-          <source>Display the current FlightGear version</source>
+          <source>Enable/Disable display the current FlightGear version</source>
           <target />
         </trans-unit>
         <trans-unit id="options/view-offset-desc:0" translate="yes" approved="no">
@@ -1553,12 +1685,20 @@
           <source>Specify the frequency of the VOR. Use with --vor=ID</source>
           <target />
         </trans-unit>
+        <trans-unit id="options/vr-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable virtual reality</source>
+          <target />
+        </trans-unit>
         <trans-unit id="options/wBody-desc:0" translate="yes" approved="no">
           <source>Specify velocity along the body Z axis</source>
           <target />
         </trans-unit>
         <trans-unit id="options/wind-desc:0" translate="yes" approved="no">
           <source>Specify wind coming from DIR (degrees) at SPEED (knots)</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="options/wireframe-desc:0" translate="yes" approved="no">
+          <source>Enable/Disable wireframe drawing mode</source>
           <target />
         </trans-unit>
         <trans-unit id="options/wp-desc:0" translate="yes" approved="no">
@@ -1845,8 +1985,8 @@
           <source>Press F3 to take a screenshot</source>
           <target>按下 F3 来截图</target>
         </trans-unit>
-        <trans-unit id="tips/tip:7" translate="yes" approved="yes">
-          <source>Join the FlightGear community at http://forum.flightgear.org</source>
+        <trans-unit id="tips/tip:7" translate="yes" approved="no">
+          <source>Join the FlightGear community at https://forum.flightgear.org</source>
           <target>欢迎加入FlightGear社区，网址为 http://forum.flightgear.org</target>
         </trans-unit>
         <trans-unit id="tips/tip:8" translate="yes" approved="yes">
@@ -1973,6 +2113,14 @@
         </trans-unit>
         <trans-unit id="weather-scenarios/high-pressure-region-name:0" translate="yes" approved="no">
           <source>High pressure region</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="weather-scenarios/isa-desc:0" translate="yes" approved="no">
+          <source>A standard atmosphere model for testing and calibrating aircraft performance and design.</source>
+          <target />
+        </trans-unit>
+        <trans-unit id="weather-scenarios/isa-name:0" translate="yes" approved="no">
+          <source>International Standard Atmosphere</source>
           <target />
         </trans-unit>
         <trans-unit id="weather-scenarios/live-data-desc:0" translate="yes" approved="no">

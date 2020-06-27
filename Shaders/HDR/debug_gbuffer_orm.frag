@@ -12,6 +12,6 @@ void main()
 {
     fragColor = vec4(texture(gbuffer2_tex, texcoord).a,
                      texture(gbuffer0_tex, texcoord).b,
-                     texture(gbuffer1_tex, texcoord).a,
+                     texture(gbuffer2_tex, texcoord).b,
                      1.0);
 }

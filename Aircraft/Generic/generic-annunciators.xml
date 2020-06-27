@@ -108,6 +108,40 @@ Author:  jsb
 		</input>
 		<output>/instrumentation/annunciators/gear/right/in-transition</output>
 	</logic>
+	<!-- gear summary -->
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-down</name>
+		<input>
+			<property>/instrumentation/annunciators/gear/left/down</property>
+			<property>/instrumentation/annunciators/gear/right/down</property>
+			<property>/instrumentation/annunciators/gear/nose/down</property>
+		</input>
+		<output>/instrumentation/annunciators/gear/down</output>
+	</logic>
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-up</name>
+		<input>
+			<property>/instrumentation/annunciators/gear/left/up</property>
+			<property>/instrumentation/annunciators/gear/right/up</property>
+			<property>/instrumentation/annunciators/gear/nose/up</property>
+		</input>
+		<output>/instrumentation/annunciators/gear/up</output>
+	</logic>
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-in-transition</name>
+		<input>
+			<not>
+				<or>
+					<property>/instrumentation/annunciators/gear/down</property>
+					<property>/instrumentation/annunciators/gear/up</property>
+				</or>
+			</not>
+		</input>
+		<output>/instrumentation/annunciators/gear/in-transition</output>
+	</logic>
 	<!-- engines summarization rules - assume max 3+3+1APU -->
 	<logic>
 		<debug type="bool">false</debug>

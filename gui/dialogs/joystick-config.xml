@@ -5,7 +5,7 @@
 		<open>
     <![CDATA[
 
-		
+
 var dlgRoot = cmdarg();
 
 var DIALOG_ROOT  = "/sim/gui/dialogs/joystick-config";
@@ -18,7 +18,7 @@ var joysticks = props.globals.getNode("/input/joysticks").getChildren("js");
 
 if (size(joysticks) == 0) {
   # No joysticks found - no point filling in rest of dialog
-  setprop(DIALOG_ROOT ~ "joystick-count", 0);  
+  setprop(DIALOG_ROOT ~ "joystick-count", 0);
 } else {
 
   var jsselect = gui.findElementByName(dlgRoot, "jsselect" );
@@ -27,10 +27,10 @@ if (size(joysticks) == 0) {
     var js = joysticks[joystick_index];
     var js_id = "unknown";
     if ((js.getNode("id") != nil) and (js.getNode("id").getValue() != nil))
-    {  
+    {
       js_id = js.getNode("id").getValue();
     }
-    
+
     jsselect.getNode("value[" ~ joystick_index ~ "]", 1).setValue(js_id);
   }
 
@@ -43,14 +43,14 @@ if (size(joysticks) == 0) {
   # Fill in the valid axis bindings
   for (var i = 0; i < joystick.MAX_AXES; i = i + 1) {
 
-    # Label      
+    # Label
     var t = table.getChild("text", 2*i + 4, 1);
-    
+
     t.getNode("row", 1).setValue(i + 1);
-    
+
     t.getNode("col", 1).setValue(0);
     t.getNode("label", 1).setValue("Axis " ~ i);
-    
+
     # Raw data
     t = table.getChild("text", 2*i + 5, 1);
     t.getNode("property", 1).setValue("/devices/status/joysticks/joystick[" ~ joystick_index ~ "]/axis[" ~ i ~ "]");
@@ -62,7 +62,7 @@ if (size(joysticks) == 0) {
     t.getNode("live", 1).setValue(1);
 
     # Axis Binding. Changed for 2018.1 to have a button rather than a dropdown as this
-    # allows us to have a nicer UI and to keep compatible with the old engine bindings 
+    # allows us to have a nicer UI and to keep compatible with the old engine bindings
     t = table.getChild("button", i, 1);
     t.getNode("name", 1).setValue("axis" ~ i ~ "binding");
     t.getNode("row", 1).setValue(i + 1);
@@ -72,16 +72,16 @@ if (size(joysticks) == 0) {
     t.getNode("live", 1).setValue(1);
     t.getNode("property", 1).setValue(DIALOG_ROOT ~ "/axis[" ~ i ~ "]/binding");
     t.getNode("legend", 1).setValue(getprop(DIALOG_ROOT ~ "/axis[" ~ i ~ "]/binding"));
-    
+
     var b = t.getChild("binding", 0, 1);
     b.getNode("command", 1).setValue("property-assign");
     b.getNode("property", 1).setValue("/sim/gui/dialogs/joystick-config/current-axis");
-    b.getNode("value", 1).setValue(i);  
-   
+    b.getNode("value", 1).setValue(i);
+
     b = t.getChild("binding", 1, 1);
     b.getNode("command", 1).setValue("dialog-show");
     b.getNode("dialog-name", 1).setValue("button-axis-config");
-    
+
     # Inverted
     t = table.getChild("checkbox", i, 1);
     t.getNode("name", 1).setValue("axis" ~ i ~ "inverted");
@@ -94,7 +94,7 @@ if (size(joysticks) == 0) {
     var b = t.getChild("binding", 0, 1);
     b.getNode("command", 1).setValue("dialog-apply");
     b.getNode("object-name", 1).setValue("axis" ~ i ~ "inverted");
-    
+
     b = t.getChild("binding", 1, 1);
     b.getNode("command", 1).setValue("nasal");
     b.getNode("script", 1).setValue("updateConfig();");
@@ -108,14 +108,15 @@ if (size(joysticks) == 0) {
   var col = 0;
 
   for (var button = 0; button < joystick.MAX_BUTTONS; button = button + 1) {
-    
-    t = table.getChild("checkbox", button, 1);  
+
+    t = table.getChild("checkbox", button, 1);
     t.getNode("property", 1).setValue("/devices/status/joysticks/joystick[" ~ joystick_index ~ "]/button[" ~ button ~ "]");
     t.getNode("row", 1).setValue(row );
     t.getNode("col", 1).setValue(col);
     t.getNode("live", 1).setValue(1);
+    t.getNode("label", 1).setValue(button);
 
-    t = table.getChild("button", button, 1);  
+    t = table.getChild("button", button, 1);
     t.getNode("name", 1).setValue("button" ~ button);
     t.getNode("pref-width", 1).setValue(140);
     t.getNode("halign", 1).setValue("fill");
@@ -123,22 +124,22 @@ if (size(joysticks) == 0) {
     t.getNode("row", 1).setValue(row );
     t.getNode("col", 1).setValue(col +1);
     t.getNode("legend", 1).setValue(getprop(DIALOG_ROOT ~ "/button[" ~ button ~ "]/binding"));
-    
+
     var b = t.getChild("binding", 0, 1);
     b.getNode("command", 1).setValue("property-assign");
     b.getNode("property", 1).setValue("/sim/gui/dialogs/joystick-config/current-button");
-    b.getNode("value", 1).setValue(button);  
-   
+    b.getNode("value", 1).setValue(button);
+
     b = t.getChild("binding", 1, 1);
     b.getNode("command", 1).setValue("dialog-show");
     b.getNode("dialog-name", 1).setValue("button-config");
-    
+
     col = col + 2;
-    
+
     if (col > 5) {
       row = row +1;
-      col = 0;  
-    }  
+      col = 0;
+    }
   }
 }
 
@@ -150,7 +151,7 @@ var updateConfig = func() {
 }
 		]]></open>
 
-		<close><![CDATA[		
+		<close><![CDATA[
 		]]></close>
 	</nasal>
 
@@ -180,9 +181,9 @@ var updateConfig = func() {
 			</binding>
 		</button>
 	</group>
-	
+
 	<hrule/>
-	
+
 	<text>
 	  <halign>left</halign>
 	  <label>  To configure your joystick/yoke/pedals:</label>
@@ -207,7 +208,7 @@ var updateConfig = func() {
 	  <halign>left</halign>
 	  <label>    Your selection will take effect immediately.</label>
   </text>
-  
+
 	<text>
 	  <halign>left</halign>
 	  <label>    4) Test your control.  Some joystick controls can be "inverted" if you wish the control to take effect in the opposite direction.</label>
@@ -217,21 +218,21 @@ var updateConfig = func() {
 	  <halign>left</halign>
 	  <label>  Your modified joystick configuration is saved automatically.  You can reset the configuration to the default by pressing Reset Configuration.  </label>
   </text>
-  
+
   <hrule/>
-	
+
 	<!-- Joystick selector -->
 	<group>
 	  <layout>table</layout>
 	  <halign>left</halign>
-	  
+
 	  <text>
 	    <row>0</row>
 	    <col>0</col>
 	    <halign>right</halign>
 	    <label>Joystick:</label>
     </text>
-    
+
     <combo>
       <name>jsselect</name>
 	    <row>0</row>
@@ -245,13 +246,13 @@ var updateConfig = func() {
       </binding>
       <binding>
         <command>nasal</command>
-        <script>        
+        <script>
           fgcommand("dialog-close", props.Node.new({"dialog-name": "joystick-config"}));
           fgcommand("dialog-show", props.Node.new({"dialog-name": "joystick-config"}));
         </script>
       </binding>
     </combo>
-    
+
     <button>
       <row>0</row>
       <col>2</col>
@@ -282,15 +283,15 @@ var updateConfig = func() {
         </script>
       </binding>
     </button>
-        
-    
+
+
 	  <text>
 	    <row>1</row>
 	    <col>0</col>
 	    <halign>right</halign>
 	    <label>  Configuration File:</label>
     </text>
-    
+
 	  <text>
 	    <row>1</row>
 	    <col>1</col>
@@ -299,79 +300,79 @@ var updateConfig = func() {
 	    <label>Joystick Confgig</label>
 	    <property>/sim/gui/dialogs/joystick-config/selected-joystick-config</property>
     </text>
-    
+
   </group>
-  
-  
+
+
   <hrule/>
-  
+
   <group>
     <layout>hbox</layout>
     <valign>top</valign>
     <halign>fill</halign>
-    
+
     <!-- Axis list -->
     <group>
       <layout>table</layout>
       <valign>top</valign>
       <name>axistable</name>
-      
-      
+
+
       <!-- Header Row -->
       <text>
         <row>0</row>
         <col>0</col>
         <label>Axis</label>
       </text>
-      
+
       <text>
         <row>0</row>
         <col>1</col>
         <label>Input</label>
       </text>
-      
+
       <text>
         <row>0</row>
         <col>2</col>
         <label>Control</label>
       </text>
-    
+
       <text>
         <row>0</row>
         <col>3</col>
         <label>Inverted?</label>
       </text>
-      
-      
+
+
       <!-- Axes get added here -->
 
     </group>
-    
+
     <vrule/>
-    
+
     <!-- Buttons -->
-    
+
     <group>
       <layout>table</layout>
       <valign>top</valign>
       <name>buttontable</name>
-      
+
       <!-- Header row-->
       <text>
         <row>0</row><col>0</col>
         <label>Input</label>
       </text>
-        
+
       <text>
         <row>0</row><col>1</col>
         <label>Control</label>
       </text>
-        
+
       <text>
         <row>0</row><col>2</col>
         <label>Input</label>
       </text>
-        
+
       <text>
         <row>0</row><col>3</col>
         <label>Control</label>
@@ -381,17 +382,17 @@ var updateConfig = func() {
         <row>0</row><col>4</col>
         <label>Input</label>
       </text>
-        
+
       <text>
         <row>0</row><col>5</col>
         <label>Control</label>
       </text>
-      
+
       <!-- Buttons get added here -->
-          
+
     </group>
   </group>
-  
+
   <hrule/>
 
 	<group>
@@ -478,27 +479,27 @@ var updateConfig = func() {
 			<row>0</row>
 		</empty>
 	</group>
-	  
+
   <hrule/>
-  
+
   <!-- Button bar -->
   <group>
     <layout>hbox</layout>
-    
+
     <empty>
       <stretch>true</stretch>
     </empty>
-    
+
     <button>
       <legend>Close</legend>
       <binding>
         <command>dialog-close</command>
       </binding>
     </button>
-    
+
     <empty>
       <stretch>true</stretch>
     </empty>
-  </group>  
-  
+  </group>
+
 </PropertyList>

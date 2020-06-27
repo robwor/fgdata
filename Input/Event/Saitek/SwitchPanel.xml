@@ -10,7 +10,8 @@
 -->
 
 <PropertyList>
-
+  <vendor-id>saitek</vendor-id>
+  <model-id>switch-panel</model-id>
   <name>Saitek Pro Flight Switch Panel</name>
   <name>HOLTEK Saitek Pro Flight Switch Panel</name>
   <debug-events type="bool">true</debug-events>

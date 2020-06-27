@@ -21,7 +21,7 @@ $Id$
  <name>CH PRO PEDALS USB </name>
  <name>CH Pro Pedals USB</name>
  <name>CH Pro Pedals USB Rudder Pedals</name>
- 
+ <device-dialog>generic-pedals</device-dialog>
  <axis n="0">
   <desc>Brake left</desc>
   <binding>

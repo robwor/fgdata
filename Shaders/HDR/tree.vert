@@ -9,8 +9,11 @@ layout(location = 12) in float fogcoord;
 out VS_OUT {
     float flogz;
     vec2 texcoord;
-    vec3 view_vector;
+    vec3 vs_up;
+    vec3 vs_pos;
+    vec3 vs_tree_pos;
     float autumn_flag;
+    float scale;
 } vs_out;
 
 uniform int num_deciduous_trees;
@@ -56,12 +59,13 @@ void main()
     // Rotation of the generic quad to specific one for the tree.
     position.xy = vec2(dot(position.xy, vec2(cr, sr)), dot(position.xy, vec2(-sr, cr)));
 
+    // XXX: Wind makes things shimmer too much, disable it for now
     // Shear by wind. Note that this only applies to the top vertices
-    float vertex_color_sum = vertex_color.x + vertex_color.y + vertex_color.z;
-    float wind_offset = position.z * (
-        sin(osg_SimulationTime * 1.8 + vertex_color_sum * 0.01) + 1.0) * 0.0025;
-    position.x = position.x + wind_offset * WindN;
-    position.y = position.y + wind_offset * WindE;
+    // float vertex_color_sum = vertex_color.x + vertex_color.y + vertex_color.z;
+    // float wind_offset = position.z * (
+    //     sin(osg_SimulationTime * 1.8 + vertex_color_sum * 0.01) + 1.0) * 0.0025;
+    // position.x = position.x + wind_offset * WindN;
+    // position.y = position.y + wind_offset * WindE;
 
     // Scale by random domains
     float voronoi = 0.5 + 1.0 * voronoi_noise_2d(
@@ -72,5 +76,12 @@ void main()
     gl_Position = osg_ModelViewProjectionMatrix * vec4(position, 1.0);
     vs_out.flogz = logdepth_prepare_vs_depth(gl_Position.w);
 
-    vs_out.view_vector = (osg_ModelViewMatrix * vec4(position, 1.0)).xyz;
+    // Up direction in view space
+    vs_out.vs_up = vec3(osg_ModelViewMatrix * vec4(0.0, 0.0, 1.0, 0.0));
+    // Vertex position in view space
+    vs_out.vs_pos = vec3(osg_ModelViewMatrix * vec4(position, 1.0));
+    // Tree position center in view space
+    vs_out.vs_tree_pos = vec3(osg_ModelViewMatrix * vec4(vertex_color.xyz, 1.0));
+    // Tree radius
+    vs_out.scale = normal.x;
 }

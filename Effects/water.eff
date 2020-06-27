@@ -1501,11 +1501,6 @@
                 <function>less</function>
                 <write-mask>true</write-mask>
             </depth>
-            <stencil>
-                <function>always</function>
-                <value>3</value>
-                <pass>replace</pass>
-            </stencil>
             <blend>0</blend>
             <cull-face>back</cull-face>
             <render-bin>

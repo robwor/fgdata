@@ -9,6 +9,7 @@ in VS_OUT {
 } fs_in;
 
 uniform sampler2D color_tex;
+uniform sampler2D normal_tex;
 uniform sampler2D transmittance_tex;
 
 uniform vec3 fg_SunDirection;
@@ -23,7 +24,7 @@ float M_1_PI();
 // color.glsl
 vec3 eotf_inverse_sRGB(vec3 srgb);
 // normalmap.glsl
-vec3 perturb_normal(vec3 N, vec3 V, vec2 texcoord);
+vec3 perturb_normal(vec3 N, vec3 V, vec2 texcoord, sampler2D tex);
 // atmos_spectral.glsl
 vec4 get_sun_spectral_irradiance();
 vec3 linear_srgb_from_spectral_samples(vec4 L);
@@ -35,7 +36,7 @@ void main()
     vec3 albedo = eotf_inverse_sRGB(texture(color_tex, fs_in.texcoord).rgb);
 
     vec3 N = normalize(fs_in.vertex_normal);
-    N = perturb_normal(N, fs_in.view_vector, fs_in.texcoord);
+    N = perturb_normal(N, fs_in.view_vector, fs_in.texcoord, normal_tex);
 
     float NdotL = max(dot(N, fg_SunDirection), 0.0);
 

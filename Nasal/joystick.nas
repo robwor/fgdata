@@ -2,7 +2,8 @@
 var DIALOGROOT  = "/sim/gui/dialogs/joystick-config";
 var MAX_AXES = 8;
 var MAX_NASALS = 8;
-var MAX_BUTTONS = 24;
+# Buttons 0..31 seem to work, higher numbers wrap around, i.e. 32 -> 0, 33 -> 1
+var MAX_BUTTONS = 32;
 
 # Hash of the custom axis/buttons
 var custom_bindings = {};

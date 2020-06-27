@@ -219,6 +219,12 @@
 				var new_ = base.addChild(name, 1);
 				var path = new_.getPath();
 				var i = new_.getIndex();
+				if (! self.getNode("x", 1).getIntValue()) {
+					self.getNode("x").setValue(self.getNode("__bx", 1).getValue() or 40);
+				}
+				if (! self.getNode("y", 1).getIntValue()) {
+					self.getNode("y").setValue(self.getNode("__by", 1).getValue() or -40);
+				}
 
 				# update the property paths for dialog elements...
 				self.setValues({
@@ -228,8 +234,8 @@
 					"property-list/property": path ~ "/list",
 					"group[1]/text/property": path ~ "/label",
 					"group[1]/input/property": path ~ "/input",
-					"x": self.getNode("__bx").getValue() + 20,
-					"y": self.getNode("__by").getValue() - 20,
+					"x": self.getNode("x").getIntValue() + 20,
+					"y": self.getNode("y").getIntValue() - 20,
 				});
 				
 				# ... and create new dialog

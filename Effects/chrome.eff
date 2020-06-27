@@ -73,11 +73,6 @@
         <function>less</function>
         <write-mask>true</write-mask>
       </depth>
-      <stencil>
-        <function>always</function>
-        <value>8</value>
-        <pass>replace</pass>
-      </stencil>
       <blend>0</blend>
       <rendering-hint>opaque</rendering-hint>
       <cull-face><use>cull-face</use></cull-face>

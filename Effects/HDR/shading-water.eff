@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PropertyList>
-  <name>Effects/HDR/water-shading</name>
+  <name>Effects/HDR/shading-water</name>
   <parameters>
     <!-- exposure.glsl -->
     <exposure-compensation>
@@ -9,13 +9,9 @@
   </parameters>
   <technique n="1">
     <pass>
-      <stencil>
-        <function>equal</function>
-        <value>3</value>
-      </stencil>
       <program>
         <vertex-shader>Shaders/HDR/quad.vert</vertex-shader>
-        <fragment-shader>Shaders/HDR/water_shading.frag</fragment-shader>
+        <fragment-shader>Shaders/HDR/shading_water.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/normal_encoding.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/logarithmic_depth.glsl</fragment-shader>

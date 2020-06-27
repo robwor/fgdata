@@ -1720,11 +1720,6 @@
         <function>less</function>
         <write-mask>true</write-mask>
       </depth>
-      <stencil>
-        <function>always</function>
-        <value>9</value>
-        <pass>replace</pass>
-      </stencil>
       <texture-unit>
         <unit>0</unit>
         <type><use>texture[0]/type</use></type>

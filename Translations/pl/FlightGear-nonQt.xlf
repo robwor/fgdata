@@ -175,9 +175,9 @@
           <source>Immatriculation</source>
           <target>Rejestracja</target>
         </trans-unit>
-        <trans-unit id="menu/mouse-config:0" translate="yes" approved="yes">
-          <source>Mouse Configuration</source>
-          <target>Konfiguracja myszki</target>
+        <trans-unit id="menu/input-systems:0" translate="yes" approved="yes">
+          <source>Input Devices</source>
+          <target>Urzadzenia wejsciowe</target>
         </trans-unit>
         <trans-unit id="menu/instrument-failures:0" translate="yes" approved="yes">
           <source>Instrument Failures</source>
@@ -240,6 +240,10 @@
         <trans-unit id="menu/menu-about:0" translate="yes" approved="yes">
           <source>About</source>
           <target>O programie</target>
+        </trans-unit>
+        <trans-unit id="menu/mouse-config:0" translate="yes" approved="yes">
+          <source>Mouse Configuration</source>
+          <target>Konfiguracja myszki</target>
         </trans-unit>
         <trans-unit id="menu/mp-carrier:0" translate="yes" approved="yes">
           <source>MPCarrier Selection</source>

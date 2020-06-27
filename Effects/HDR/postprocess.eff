@@ -34,6 +34,11 @@
         <value type="int">1</value>
       </uniform>
       <uniform>
+        <name>highlight_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">2</value>
+      </uniform>
+      <uniform>
         <name>bloom_strength</name>
         <type>float</type>
         <value><use>bloom-strength</use></value>

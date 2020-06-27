@@ -114,6 +114,38 @@ float noise_3d(vec3 coord, float wavelength)
     return interpolated_noise_3d(coord / wavelength);
 }
 
+float dot_noise_2d(vec2 coord, float fractional_max_dot_size, float d_density)
+{
+    float x = coord.x;
+    float y = coord.y;
+
+    float integer_x    = x - fract(x);
+    float fractional_x = x - integer_x;
+
+    float integer_y    = y - fract(y);
+    float fractional_y = y - integer_y;
+
+    if (rand_2d(vec2(integer_x+1.0, integer_y+1.0)) > d_density) {
+        return 0.0;
+    }
+
+    float xoffset = rand_2d(vec2(integer_x,     integer_y)) - 0.5;
+    float yoffset = rand_2d(vec2(integer_x+1.0, integer_y)) - 0.5;
+    float dot_size = 0.5 * fractional_max_dot_size * max(0.25, rand_2d(vec2(integer_x, integer_y + 1.0)));
+
+    vec2 truePos = vec2(0.5 + xoffset * (1.0 - 2.0 * dot_size),
+                        0.5 + yoffset * (1.0 - 2.0 * dot_size));
+
+    float dist = length(truePos - vec2(fractional_x, fractional_y));
+
+    return 1.0 - smoothstep(0.3 * dot_size, 1.0 * dot_size, dist);
+}
+
+float dot_noise_2d(vec2 coord, float wavelength, float fractional_max_dot_size, float d_density)
+{
+    return dot_noise_2d(coord / wavelength, fractional_max_dot_size, d_density);
+}
+
 float voronoi_noise_2d(vec2 coord, float xrand, float yrand)
 {
     float x = coord.x;
@@ -163,6 +195,39 @@ float voronoi_noise_2d(vec2 coord, float xrand, float yrand)
 float voronoi_noise_2d(vec2 coord, float wavelength, float xrand, float yrand)
 {
     return voronoi_noise_2d(coord / wavelength, xrand, yrand);
+}
+
+float slope_lines_2d(vec2 coord, vec2 s, float steepness)
+{
+    float x = coord.x;
+    float y = coord.y;
+    float sx = s.x;
+    float sy = s.y;
+
+    float integer_x    = x - fract(x);
+    float fractional_x = x - integer_x;
+
+    float integer_y    = y - fract(y);
+    float fractional_y = y - integer_y;
+
+    vec2 O = vec2 (0.2 + 0.6 * rand_2d(vec2(integer_x,       integer_y + 1.0)),
+                   0.3 + 0.4 * rand_2d(vec2(integer_x + 1.0, integer_y      )));
+    vec2 S = vec2( sx, sy);
+    vec2 P = vec2(-sy, sx);
+    vec2 X = vec2(fractional_x, fractional_y);
+
+    float radius = 0.0 + 0.3 * rand_2d(vec2(integer_x, integer_y));
+
+    float b = (X.y - O.y + O.x * S.y/S.x - X.x * S.y/S.x) / (P.y - P.x * S.y/S.x);
+    float a = (X.x - O.x - b * P.x) / S.x;
+
+    return (1.0 - smoothstep(0.7 * (1.0-steepness), 1.2 * (1.0 - steepness),
+                             0.6 * abs(a))) * (1.0 - smoothstep(0.0, 1.0 * radius, abs(b)));
+}
+
+float slope_lines_2d(vec2 coord, vec2 grad_dir, float wavelength, float steepness)
+{
+    return slope_lines_2d(coord / wavelength, grad_dir, steepness);
 }
 
 /*

@@ -193,6 +193,12 @@
     <shadows_enabled><use>/sim/rendering/als/shadows/enabled</use></shadows_enabled>
     <sun_atlas_size><use>/sim/rendering/als/shadows/sun-atlas-size</use></sun_atlas_size>
     <!-- END shadows include -->
+
+    <sea-color type="vec3d">
+      <use>/environment/sea/color_r</use>
+      <use>/environment/sea/color_g</use>
+      <use>/environment/sea/color_b</use>
+    </sea-color>
   </parameters>
   <!-- put techniques at a "high" index to allow derived effects to
        insert their own techniques first. -->
@@ -1856,6 +1862,7 @@
     </pass>
   </technique>
 
+  <!-- HDR technique -->
   <technique n="109">
     <scheme>hdr-geometry</scheme>
     <pass>
@@ -1864,20 +1871,10 @@
         <function>less</function>
         <write-mask>true</write-mask>
       </depth>
-      <stencil>
-        <function>always</function>
-        <value>9</value>
-        <pass>replace</pass>
-      </stencil>
 
-      <blend><use>transparent</use></blend>
-      <alpha-test><use>transparent</use></alpha-test>
-      <shade-model>smooth</shade-model>
+      <blend>0</blend>
+      <rendering-hint>opaque</rendering-hint>
       <cull-face>back</cull-face>
-      <render-bin>
-        <bin-number><use>render-bin/bin-number</use></bin-number>
-        <bin-name><use>render-bin/bin-name</use></bin-name>
-      </render-bin>
 
       <!-- texture unit 0 direct from VPBBuilder.cxx -->
 
@@ -1927,25 +1924,29 @@
         <internal-format><use>texture[6]/internal-format</use></internal-format>
       </texture-unit>
 
-      <cull-face>back</cull-face>
       <program>
         <vertex-shader>Shaders/HDR/ws30.vert</vertex-shader>
         <vertex-shader>Shaders/HDR/logarithmic_depth.glsl</vertex-shader>
         <fragment-shader>Shaders/HDR/ws30.frag</fragment-shader>
-        <fragment-shader>Shaders/HDR/water.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/ws30_util.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/ws30_water.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/logarithmic_depth.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/color.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/normalmap.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/noise.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/gbuffer_pack.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/normal_encoding.glsl</fragment-shader>
-        <fragment-shader>Shaders/HDR/color.glsl</fragment-shader>
       </program>
 
+      <!-- Samplers -->
       <uniform>
         <name>landclass</name>
         <type>sampler-2d</type>
         <value type="int">0</value>
       </uniform>
       <uniform>
-        <name>atlas</name>
+        <name>textureArray</name>
         <type>sampler-2d</type>
         <value type="int">1</value>
       </uniform>
@@ -1959,61 +1960,76 @@
         <type>sampler-2d</type>
         <value type="int">7</value>
       </uniform>
+
+      <!-- Procedural texturing uniforms -->
+      <uniform>
+        <name>eye_alt</name>
+        <type>float</type>
+        <value><use>eye_alt</use></value>
+      </uniform>
+      <uniform>
+        <name>snowlevel</name>
+        <type>float</type>
+        <value><use>snow_level</use></value>
+      </uniform>
+      <uniform>
+        <name>snow_thickness_factor</name>
+        <type>float</type>
+        <value><use>snow_thickness_factor</use></value>
+      </uniform>
+      <uniform>
+        <name>dust_cover_factor</name>
+        <type>float</type>
+        <value><use>dust_cover_factor</use></value>
+      </uniform>
+      <uniform>
+        <name>lichen_cover_factor</name>
+        <type>float</type>
+        <value><use>lichen_cover_factor</use></value>
+      </uniform>
+      <uniform>
+        <name>wetness</name>
+        <type>float</type>
+        <value><use>wetness</use></value>
+      </uniform>
+      <uniform>
+        <name>season</name>
+        <type>float</type>
+        <value><use>season</use></value>
+      </uniform>
+
+      <!-- Wind related uniforms -->
       <uniform>
         <name>WindE</name>
         <type>float</type>
-        <value>
-          <use>windE</use>
-        </value>
+        <value><use>windE</use></value>
       </uniform>
       <uniform>
         <name>WindN</name>
         <type>float</type>
-        <value>
-          <use>windN</use>
-        </value>
+        <value><use>windN</use></value>
       </uniform>
       <uniform>
-        <name>WaveFreq</name>
-        <type>float</type>
-        <value>
-          <use>WaveFreq</use>
-        </value>
+        <name>wind_effects</name>
+        <type>int</type>
+        <value><use>wind_effects</use></value>
       </uniform>
+
+      <!-- Water related uniforms -->
       <uniform>
-        <name>WaveAmp</name>
-        <type>float</type>
-        <value>
-          <use>WaveAmp</use>
-        </value>
+        <name>sea_color</name>
+        <type>float-vec3</type>
+        <value><use>sea-color</use></value>
       </uniform>
+
       <uniform>
-        <name>WaveSharp</name>
-        <type>float</type>
-        <value>
-          <use>WaveSharp</use>
-        </value>
-      </uniform>
-      <uniform>
-        <name>WaveAngle</name>
-        <type>float</type>
-        <value>
-          <use>WaveAngle</use>
-        </value>
-      </uniform>
-      <uniform>
-        <name>WaveFactor</name>
-        <type>float</type>
-        <value>
-          <use>WaveFactor</use>
-        </value>
-      </uniform>
-      <uniform>
-        <name>WaveDAngle</name>
-        <type>float</type>
-        <value>
-          <use>WaveDAngle</use>
-        </value>
+        <name>swatch_size</name>
+        <type>int</type>
+        <!--
+             Testing: hardcoded placeholder to allow noise to be calculated while looking up textures
+             <value><use>xsize</use></value>
+        -->
+        <value>2000</value>
       </uniform>
     </pass>
   </technique>

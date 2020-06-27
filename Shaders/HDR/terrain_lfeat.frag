@@ -9,8 +9,12 @@ in VS_OUT {
 uniform sampler2D color_tex;
 
 // gbuffer_pack.glsl
-void gbuffer_pack(vec3 normal, vec3 base_color, float metallic, float roughness,
-                  float occlusion, vec3 emissive, uint mat_id);
+void gbuffer_pack_pbr_opaque(vec3 normal,
+                             vec3 base_color,
+                             float metallic,
+                             float roughness,
+                             float occlusion,
+                             vec3 emissive);
 // color.glsl
 vec3 eotf_inverse_sRGB(vec3 srgb);
 // logarithmic_depth.glsl
@@ -26,6 +30,6 @@ void main()
 
     vec3 N = normalize(fs_in.vertex_normal);
 
-    gbuffer_pack(N, color, 0.0, 0.9, 1.0, vec3(0.0), 3u);
+    gbuffer_pack_pbr_opaque(N, color, 0.0, 0.9, 1.0, vec3(0.0));
     gl_FragDepth = logdepth_encode(fs_in.flogz);
 }

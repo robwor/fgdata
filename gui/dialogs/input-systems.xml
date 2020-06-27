@@ -8,8 +8,9 @@
 
     <nasal>
         <open>
-            var dlgRoot = cmdarg();
-            var dlg_prefix = "/sim/gui/dialogs/input-systems/";
+            var DLGROOT = cmdarg();
+            var dlg_prefix = "/sim/gui/dialogs/"
+                ~DLGROOT.getNode("name", 1).getValue()~"/";
             var systems = {
                 "js": "Joystick",
                 "hid": "USB HID",
@@ -17,93 +18,123 @@
             };
             var path_selected = props.getNode("/input/event", 1);
 
-            var setup_list = func(list, system, class, child="device") {
+            # setup a device list
+            # list: dialog list element to setup
+            # input_system: 'event' or 'joystick'
+            # class: for input_system 'event', filter devices by _class-id
+            var setupList = func(list, input_system, class, child="device") {
                 var list_items = props.globals.getNode(dlg_prefix~list, 1);
                 list_items.removeChildren();
-                foreach (var dev; props.globals.getNode("/input/"~system).getChildren(child)) {
+                foreach (var device; props.globals.getNode("/input/"~input_system).getChildren(child)) {
                     if (class) {
-                        var cid = dev.getChild("_class-id");
+                        var cid = device.getChild("_class-id");
                         if (cid and cid.getValue() == class) {
-                            list_items.addChild("value").setValue(dev.getValue("name")~" ("~dev.getIndex()~")");
-                            list_items.addChild("path").setValue(dev.getPath());
+                            list_items.addChild("value").setValue(device.getValue("name")~" ("~device.getIndex()~")");
+                            list_items.addChild("path").setValue(device.getPath());
                         }
                     }
                     else {
-                        list_items.addChild("value").setValue(dev.getValue("name"));
-                        list_items.addChild("path").setValue(dev.getPath());
+                        # name is displayed in the list
+                        list_items.addChild("value").setValue(device.getValue("name"));
+                        # path to device config
+                        list_items.addChild("path").setValue(device.getPath());
                     }
                 }
             }
 
-            setup_list("js-devs", "joysticks", "", "js");
-            setup_list("hid-devs", "event", "FGHIDDevice");
-            setup_list("linux-devs", "event", "FGLinuxInputDevice");
+            # populate list boxes for all three input systems
+            setupList("js-devs", "joysticks", "", "js");
+            setupList("hid-devs", "hid", "FGHIDDevice");
+            setupList("linux-devs", "event", "FGLinuxInputDevice");
 
+            # get nodes to display last input event of selected device
             var last_name = props.getNode(dlg_prefix~"last-name", 1);
             var last_value = props.getNode(dlg_prefix~"last-value", 1);
+            var selected_variant = props.getNode(dlg_prefix~"variant", 1);
 
-            var update_info = func(sys) {
+            # update the info section of the dialog when an list item is clicked
+            # see bindings below
+            var updateInfo = func(sys) {
                 setprop(dlg_prefix~"system", systems[sys]);
                 var list = props.globals.getNode(dlg_prefix~sys~"-devs");
                 var selected = getprop(dlg_prefix~"devname");
                 foreach (var v; list.getChildren("value")) {
                     if (v.getValue() == selected) {
                         path_selected = list.getChild("path", v.getIndex());
-                        var dev = props.getNode(path_selected.getValue());
+                        var device_config = props.getNode(path_selected.getValue());
+
+                        # link dialog elements to currently selected device
                         last_name.unalias();
                         last_name.alias(path_selected.getValue()~"/last-event/name");
                         last_value.unalias();
                         last_value.alias(path_selected.getValue()~"/last-event/value");
-                        setprop(dlg_prefix~"cfgfile", 
-                            string.squeeze(dev.getChild("source").getValue(), 75));
-                        update_variant_listbox();
-                    }                    
+
+                        setprop(dlg_prefix~"cfgfile",
+                            string.squeeze(device_config.getChild("source").getValue(), 75));
+
+                        # update variants and open device specific dialog if available
+                        updateVariantListbox(device_config);
+                        deviceDialog(device_config);
+                    }
                 }
             }
 
-            var update_variant_listbox = func() {
-                var cfg = props.getNode(path_selected.getValue(), 1);
+            # update config variant listbox
+            var updateVariantListbox = func(cfg) {
                 var variants = cfg.getNode("config-variants", 1).getChildren("variant");
+                var selected = cfg.getNode("_selected-variant", 1).getValue() or '';
                 var list_items = props.globals.getNode(dlg_prefix~"variants", 1);
                 list_items.removeChildren();
+                selected_variant.setValue('');
 
                 if (size(variants)) {
                     foreach (var v; variants) {
-                        list_items.addChild("value").setValue(v.getNode("description").getValue());
-                        list_items.addChild("id").setValue(v.getNode("id").getValue());                        
+                        var id = v.getNode("id").getValue();
+                        var description = v.getNode("description").getValue();
+                        list_items.addChild("id").setValue(id);
+                        list_items.addChild("value").setValue(description);
+                        if (id == selected) {
+                            selected_variant.setValue(description);
+                        }
                     }
                 }
-                dlgRoot.setValues({ "dialog-name": dlgRoot.getNode("name", 1).getValue(), "object-name": "listvariant"});
-				fgcommand("dialog-update", dlgRoot);
+
+                DLGROOT.setValues({
+                    "dialog-name": DLGROOT.getNode("name", 1).getValue(),
+                    "object-name": "listvariant"
+                    });
+				fgcommand("dialog-update", DLGROOT);
             }
 
-            var apply_variant = func() {
+            # a device specific dialog can be opened provided that
+            # such dialog exists in FGDATA/gui/dialogs/
+            # and the config contains a device-dialog tag with the name of the dialog
+            var deviceDialog = func(cfg) {
+                var d = cfg.getNode("device-dialog");
+                if (d) fgcommand("dialog-show", props.Node.new({"dialog-name": d.getValue()}));
+            }
+
+            # apply config variant
+            var applyVariant = func() {
                 var cfg = props.getNode(path_selected.getValue(), 1);
-                var selected = getprop(dlg_prefix~"variant");
                 var list = props.globals.getNode(dlg_prefix~"variants", 1);
                 foreach (var v; list.getChildren("value")) {
-                    if (v.getValue() == selected) {
-                        props.getNode(cfg.getNode("config-variants/variant-selected-prop", 1).getValue(), 1)
+                    if (v.getValue() == selected_variant.getValue()) {
+                        cfg.getNode("_selected-variant", 1)
                             .setValue(list.getChild("id", v.getIndex()).getValue());
-                    }                    
-                }                
-            }
-
-            var show_props = func() {
-                gui.property_browser(path_selected.getValue());
+                    }
+                }
             }
         </open>
     </nasal>
 
     <group>
         <layout>hbox</layout>
-
         <text>
-            <label>Input Devices Overview</label>
+            <label>Input Devices</label>
         </text>
-        
         <empty><stretch>true</stretch></empty>
-    
+
         <button>
             <legend>X</legend>
             <key>Esc</key>
@@ -116,12 +147,58 @@
     </group>
 
     <hrule/>
-        
+    <group>
+        <name>button-bar-top</name>
+        <layout>hbox</layout>
+        <button>
+            <name>mouse-config</name>
+            <legend>Mouse Config</legend>
+            <key>m</key>
+            <binding>
+                <command>dialog-show</command>
+                <dialog-name>mouse-config</dialog-name>
+            </binding>
+        </button>
+        <button>
+            <name>joystick-config</name>
+            <legend>Joystick Config</legend>
+            <key>j</key>
+            <enable>
+                <not><property>/sim/input/no-joystick-input</property></not>
+            </enable>
+            <binding>
+                <command>dialog-show</command>
+                <dialog-name>joystick-config</dialog-name>
+            </binding>
+        </button>
+        <button>
+            <name>hid-config</name>
+            <legend>HID config</legend>
+            <enable>
+                <not><property>/sim/input/no-hid-input</property></not>
+            </enable>
+            <binding>
+                <command>dialog-show</command>
+                <dialog-name>hid-config</dialog-name>
+            </binding>
+        </button>
+        <button>
+            <legend>Config Variant Selector</legend>
+            <key>v</key>
+            <binding>
+                <command>dialog-show</command>
+                <dialog-name>input-config-select</dialog-name>
+            </binding>
+        </button>
+    </group>
+    <hrule />
     <group>
         <layout>hbox</layout>
-        <group>
+        <group> <!-- left col -->
             <layout>vbox</layout>
-
+            <text>
+                <label>Input Systems Overview</label>
+            </text>
             <group>
                 <layout>hbox</layout>
                 <text>
@@ -156,11 +233,10 @@
                 <binding>
                     <command>nasal</command>
                     <script>
-                    update_info("js");
+                    updateInfo("js");
                     </script>
                 </binding>
             </list>
-
             <group>
                 <layout>hbox</layout>
                 <text>
@@ -177,7 +253,7 @@
                     </visible>
                 </text>
                 <empty><stretch>true</stretch></empty>
-            </group>            
+            </group>
             <list>
                 <visible>
                     <not><property>/sim/input/no-hid-input</property></not>
@@ -195,11 +271,10 @@
                 <binding>
                     <command>nasal</command>
                     <script>
-                    update_info("hid");
+                    updateInfo("hid");
                     </script>
                 </binding>
             </list>
-
             <group>
                 <layout>hbox</layout>
                 <text>
@@ -216,7 +291,7 @@
                     </visible>
                 </text>
                 <empty><stretch>true</stretch></empty>
-            </group>  
+            </group>
             <list>
                 <visible>
                     <not><property>/sim/input/no-event-input</property></not>
@@ -234,11 +309,11 @@
                 <binding>
                     <command>nasal</command>
                     <script>
-                    update_info("linux");
+                    updateInfo("linux");
                     </script>
                 </binding>
-            </list>    
-        </group>
+            </list>
+        </group> <!-- left col -->
 
         <vrule/>
         <group>
@@ -248,16 +323,6 @@
                 <label>Config variant</label>
                 <halign>left</halign>
             </text>
-            <!--combo>
-                <name>combovariant</name>
-                <halign>left</halign>
-                <property>/sim/gui/dialogs/input-systems/config-variant</property>
-                <value>default</value>
-                <binding>
-                    <command>dialog-apply</command>
-                    <object-name>combovariant</object-name>
-                </binding>
-            </combo-->
             <list>
                 <name>listvariant</name>
                 <halign>left</halign>
@@ -271,12 +336,19 @@
                 </binding>
                 <binding>
                     <command>nasal</command>
-                    <script>
-                    apply_variant();
-                    </script>
+                    <script>applyVariant();</script>
                 </binding>
             </list>
-        </group>
+            <text>
+                <!-- live does not seem to work on list so when updating the
+                variant list, nothing appears to be selected :/
+                for now, show selected value as text -->
+                <name>selected-variant</name>
+                <halign>left</halign>
+                <live>true</live>
+                <property>/sim/gui/dialogs/input-systems/variant</property>
+            </text>
+        </group> <!-- right col -->
     </group>
     <hrule />
     <group>
@@ -344,50 +416,18 @@
             <live>true</live>
             <property>/sim/gui/dialogs/input-systems/last-value</property>
         </text>
-    </group>
-    <hrule/>
-    <group>
-        <name>button-bar</name>
-        <layout>hbox</layout>
         <button>
-            <name>mouse-config</name>
-            <legend>Mouse config</legend>
-            <key>m</key>
-            <binding>
-                <command>dialog-show</command>
-                <dialog-name>mouse-config</dialog-name>
-            </binding>
-        </button>
-        <button>
-            <name>joystick-config</name>
-            <legend>Joystick config</legend>
-            <key>j</key>
-            <enable>
-                <not><property>/sim/input/no-joystick-input</property></not>
-            </enable>
-            <binding>
-                <command>dialog-show</command>
-                <dialog-name>joystick-config</dialog-name>
-            </binding>
-        </button>
-        <button>
-            <name>hid-config</name>
-            <legend>HID config</legend>
-            <key>u</key>
-            <enable>
-                <not><property>/sim/input/no-hid-input</property></not>
-            </enable>
-            <binding>
-                <command>dialog-show</command>
-                <dialog-name>hid-config</dialog-name>
-            </binding>
-        </button>
-        <button>
-            <legend>Show props</legend>
+            <legend>Debug</legend>
+            <row>2</row><col>3</col>
+            <pref-height>20</pref-height>
             <binding>
                 <command>nasal</command>
-                <script>show_props();</script>
+                <script>gui.property_browser(path_selected.getValue());</script>
             </binding>
         </button>
+    </group>
+    <group>
+        <name>button-bar-bottom</name>
+        <layout>hbox</layout>
     </group>
 </PropertyList>

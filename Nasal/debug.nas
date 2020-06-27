@@ -21,9 +21,9 @@
 #
 # debug.backtrace([<comment:string>], [<dump:bool=1>], [<skip_level:int=0>]}
 #                                      ... writes backtrace (similar to gdb's "bt full)
-#                                          dump=0: only call stack 
-#                                          dump=1 (default): with local variables 
-#                                          skip_level: remove this many levels from 
+#                                          dump=0: only call stack
+#                                          dump=1 (default): with local variables
+#                                          skip_level: remove this many levels from
 #                                           call stack
 #
 # debug.proptrace([<property [, <frames>]]) ... trace property write/add/remove
@@ -78,10 +78,10 @@
 # debug.Probe       class              ... base class to collect stats; details below
 # debug.Breakpoint  class              ... conditional backtrace; details below
 #
-# debug.addProbeToFunc(label, func)    ... wraps a function with a probe 
+# debug.addProbeToFunc(label, func)    ... wraps a function with a probe
 # debug.findFunctions(ns, recursive=0) ... find all functions in a hash (namespace)
 #
-# debug.addProbesToNamespace(ns, label="", recursive=0) 
+# debug.addProbesToNamespace(ns, label="", recursive=0)
 #                                      ... combines findFunctions and addProbeToFunc
 #
 # CAVE: this file makes extensive use of ANSI color codes. These are
@@ -97,16 +97,17 @@ var _section     = func(s, color=nil) globals.string.color("37;41;1", s, color);
 var _error       = func(s, color=nil) globals.string.color("31;1",    s, color); # internal errors
 var _bench       = func(s, color=nil) globals.string.color("37;45;1", s); # benchmark info
 
-var _nil         = func(s, color=nil) globals.string.color("32", s, color);      # nil
-var _string      = func(s, color=nil) globals.string.color("31", s, color);      # "foo"
-var _num         = func(s, color=nil) globals.string.color("31", s, color);      # 0.0
+var _nil         = func(s, color=nil) globals.string.color("32", s, color);      # nil   (green)
+var _string      = func(s, color=nil) globals.string.color("31", s, color);      # "foo" (red)
+var _num         = func(s, color=nil) globals.string.color("31", s, color);      # 0.0   (red)
 var _bracket     = func(s, color=nil) globals.string.color("", s, color);        # [ ]
 var _brace       = func(s, color=nil) globals.string.color("", s, color);        # { }
-var _angle       = func(s, color=nil) globals.string.color("", s, color);        # < >
+var _angle       = func(s, color=nil) globals.string.color("37;1", s, color);      # < >
 var _vartype     = func(s, color=nil) globals.string.color("33", s, color);      # func ghost
-var _proptype    = func(s, color=nil) globals.string.color("34", s, color);      # BOOL INT LONG DOUBLE ...
-var _path        = func(s, color=nil) globals.string.color("36", s, color);      # /some/property/path
-var _internal    = func(s, color=nil) globals.string.color("35", s, color);      # me parents
+var _proptype    = func(s, color=nil) globals.string.color("34;1", s, color);      # blue
+var _path        = func(s, color=nil) globals.string.color("36", s, color);      # /property/path (cyan)
+var _internal    = func(s, color=nil) globals.string.color("35", s, color);      # me parents class (magenta)
+var _parents     = func(s, color=nil) globals.string.color("33", s, color);      # me parents class (yellow)
 var _varname     = func(s, color=nil) s;                                         # variable_name
 
 
@@ -254,15 +255,38 @@ var string = func(o, color=nil, ttl=5) {
 		return _bracket("[", color) ~ s ~ _bracket("]", color);
 
 	} elsif (ishash(o)) {
-		if (contains(o, "parents") and isvec(o.parents)
-				and size(o.parents) == 1 and o.parents[0] == props.Node)
-			return _angle("'<", color) ~ _dump_prop(o, color) ~ _angle(">'", color);
-
-		var k = keys(o);
 		var s = "";
-		forindex (var i; k)
-			s ~= (i == 0 ? "" : ", ") ~ _dump_key(k[i], color) ~ ": " ~ debug.string(o[k[i]], color, ttl - 1);
-		return _brace("{", color) ~ " " ~ s ~ " " ~ _brace("}", color);
+        s ~= _brace("{", color);
+
+		if (contains(o, "parents") and isvec(o.parents) and size(o.parents)) {
+            # class hash
+            if (o.parents[0] == props.Node)
+                return _angle("'<", color) ~ _dump_prop(o, color) ~ _angle(">'", color);
+
+            s ~= _angle("<", color)~_internal("class ", color)
+	            ~(o.parents[0]["__class_name"] or "")~_angle(">", color);
+            if (size(o.parents) > 1) {
+                s ~= _angle("<", color) ~ _parents("parents ");
+                forindex (var i; o.parents) {
+                    if (i > 0) s ~= (o.parents[i]["__class_name"] or "");
+                    if (i < size(o.parents) - 1) s ~= " ";
+                }
+                s ~= _angle("> ", color);
+            }
+            #s ~= "\n";
+        }
+        #else {
+            # normal hash
+            var i = 0;
+            foreach (var key; keys(o)) {
+                if (key == "parents") continue;
+                s ~= (i == 0 ? "" : ", ") ~ _dump_key(key, color) ~ ": "
+                  ~debug.string(o[key], color, ttl - 1);
+                i += 1;
+            }
+        #}
+        s ~= _brace("}", color);
+		return s;
 
 	} elsif (isghost(o)) {
 		return _angle("'<", color) ~ _nil(ghosttype(o), color) ~ _angle(">'", color);
@@ -295,7 +319,7 @@ var local = func(frame = 0) {
 var funcname = func(f) {
     if (!isfunc(f)) return "";
     var namespace = closure(f);
-    
+
     foreach (var k; keys(namespace)) {
         if (isfunc(namespace[k])) {
             if (namespace[k] == f)
@@ -327,7 +351,7 @@ var backtrace = func(desc = nil, dump_vars = 1, skip_level = 0, shorten = 50) {
         var line = v[3];
         if (shorten >= 10 and size(filename) > shorten)
             filename = substr(filename, 0, 5)~"[...]"~substr(filename, -(shorten-10));
-        print(_section(sprintf("#%-2d called from %s:%d (%s) (locals %s):", 
+        print(_section(sprintf("#%-2d called from %s:%d (%s) (locals %s):",
             i - skip_level, filename, line, funcname(v[1]), id(v[0]))));
         if (dump_vars) dump(v[0]);
     }
@@ -492,30 +516,30 @@ var isnan = func {
 
 # Probe class - collect statistics; controlled via property tree
 # Data can be viewed / modified in the prop tree /_debug/nas/probe/<myLabel>/*
-# ./enable    bool, 
+# ./enable    bool,
 # ./reset     bool, reset hit counters to 0 and _start_time to now
 # ./hits[i]   number of hits, by default i=0 -> hits
-#             secondary counters can be added under the same path 
+#             secondary counters can be added under the same path
 #             with addCounter()
 # ./time      after generateStats() show how long the probe was enabled
 # ./hps       after generateStats() show avg. hits/second
 # ./hitratio  after generateStats() if two counters: hits[1]/hits[0]
 #
-# == Example == 
+# == Example ==
 # var myProbe = debug.Probe.new("myLabel").enable();
 # var cnt2 = myProbe.addCounter(); # create a 2nd counter
 #
 # #at the place of interest (e.g. in some loop or class method) insert:
 # myProbe.hit();        # count how often this place in the code is hit
-# if (condition) 
+# if (condition)
 #    myProbe.hit(cnt2); # count how often condition is true
 #
-# print(myProbe.getHits()); 
+# print(myProbe.getHits());
 # print(myProbe.getHits(cnt2)/myProbe.getHits()); # print hit ratio
 #
 var Probe = {
     _instances: {},
-    
+
     _uid: func(label, class) {
         class = globals.string.replace(class, " ", "_");
         label = globals.string.replace(label, " ", "_");
@@ -523,16 +547,16 @@ var Probe = {
         label = globals.string.replace(label, "\\", "_");
         return class~"-"~label;
     },
-    
-    # label:       Used in property path 
-    # prefix:      Optional 
+
+    # label:       Used in property path
+    # prefix:      Optional
     new: func(label, class = "probe") {
         if (!isscalar(label) or !isscalar(class)) {
             die("Invalid argument type to Probe.new");
         }
         var uid = me._uid(label,class);
         if (Probe._instances[uid] != nil) return Probe._instances[uid];
-        
+
         var obj = {
             parents: [Probe],
             uid: uid,
@@ -552,16 +576,16 @@ var Probe = {
         obj.node.removeChildren();
         obj._enableN = obj.node.addChild("enable");
         obj._enableN.setBoolValue(0);
-        append(obj._L, 
+        append(obj._L,
             setlistener(obj._enableN, func(n) {
                 if (n.getValue()) obj.enable();
                 else obj.disable();
             }, 0, 0)
         );
-       
+
         obj._resetN = obj.node.addChild("reset");
         obj._resetN.setBoolValue(0);
-        append(obj._L, 
+        append(obj._L,
             setlistener(obj._resetN, func(n) {
                 if (n.getValue()) {
                     obj.reset();
@@ -569,7 +593,7 @@ var Probe = {
                 }
             }, 0, 0)
         );
-        
+
         append(obj._hitsN, obj.node.addChild("hits"));
         obj._hitsN[0].setIntValue(0);
         # for live monitoring via prop browser, alias all hit counters in one place
@@ -578,7 +602,7 @@ var Probe = {
         Probe._instances[obj.uid] = obj;
         return obj;
     },
-    
+
     del: func () {
         foreach (var l; me._L) {
             removelistener(l);
@@ -586,7 +610,7 @@ var Probe = {
         me.node.remove();
         Probe._instances[me.uid] = nil;
     },
-    
+
     reset: func {
         forindex (var i; me.hits) {
             me.hits[i] = 0;
@@ -594,7 +618,7 @@ var Probe = {
         }
         me._start_time = systime();
     },
-    
+
     # set timeout, next hit() after timeout will disable()
     setTimeout: func(seconds) {
         if (!isa(me._timeoutN, props.Node))
@@ -602,14 +626,14 @@ var Probe = {
         me._timeoutN.setValue(num(seconds) or 0);
         return me;
     },
-    
-    #enable counting 
+
+    #enable counting
     enable: func {
         me._enableN.setValue(1);
         me._start_time = systime();
         return me;
     },
-    
+
     #disable counting, write time and hit/s to property tree
     disable: func {
         me._enableN.setValue(0);
@@ -629,11 +653,11 @@ var Probe = {
                 me.node.getNode("hitratio",1).setValue(me.hits[1] / me.hits[0] or 1);
         }
     },
-    
+
     getHits: func(counter_id = 0) {
         return me.hits[counter_id];
     },
-    
+
     # add secondary counter(s)
     # returns counter id
     addCounter: func {
@@ -641,7 +665,7 @@ var Probe = {
         append(me.hits, 0);
         return size(me._hitsN) - 1;
     },
-    
+
     # increment counter (if enabled)
     # use addCounter() before using counter_id > 0
     hit: func(counter_id = 0, callback = nil) {
@@ -670,15 +694,15 @@ var Probe = {
 # Breakpoint (BP) - do conditional backtrace (BT) controlled via property tree
 # * count how often the BP was hit
 # * do only a limited number of BT, avoid flooding the log / console
-# 
+#
 # Data can be viewed / modified in the prop tree /_debug/nas/bp/<myLabel>/*
 # * tokens: number of backtraces to do; each hit will decrement this by 1
 # * hits:   total number of hits
 #
-# == Example == 
+# == Example ==
 # var myBP = debug.Breakpoint.new("myLabel", 0);
-# myBP.enable(4);       # allow 4 hits, then be quiet 
-# 
+# myBP.enable(4);       # allow 4 hits, then be quiet
+#
 # #at the place of interest (e.g. in some loop or class method) insert:
 # myBP.hit();           # do backtrace here if tokens > 0, reduce tokens by 1
 # myBP.hit(myFunction); # same but call myFunction instead of backtrace
@@ -686,10 +710,10 @@ var Probe = {
 # print(myBP.getHits()); # print total number of hits
 #
 var Breakpoint = {
-    
+
     # label:       Used in property path and as text for backtrace.
     # dump_locals: bool passed to backtrace. Dump variables in BT.
-    # skip_level:  int passed to backtrace. 
+    # skip_level:  int passed to backtrace.
     new: func(label, dump_locals = 0, skip_level=0) {
         var obj = {
             parents: [Breakpoint, Probe.new(label, "bp")],
@@ -704,8 +728,8 @@ var Breakpoint = {
         return obj;
     },
 
-    # enable BP and set hit limit; 
-    # tokens: int > 0; default: 1 (single shot); 0 allowed (=disable); 
+    # enable BP and set hit limit;
+    # tokens: int > 0; default: 1 (single shot); 0 allowed (=disable);
     enable: func(tokens = 1) {
         if (num(tokens) == nil) tokens = 1;
         if (tokens < 0) tokens = 0;
@@ -713,7 +737,7 @@ var Breakpoint = {
         me._enableN.setIntValue(tokens);
         return me;
     },
-    
+
     # hit the breakpoint, e.g. do backtrace if we have tokens available
     hit: func(callback = nil) {
         me.hits[0] += 1;
@@ -726,7 +750,7 @@ var Breakpoint = {
             }
             else {
                 debug.backtrace(me.label, me.dump_locals, me.skip_level);
-            } 
+            }
             me._enableN.setValue(me.tokens);
         }
         return me;
@@ -738,15 +762,15 @@ var Breakpoint = {
 # * backtraces are written to property tree
 # * do only a limited number of BT, avoid flooding the log / console
 # * trace statistics can be dumped to XML file
-# 
+#
 # Data can be viewed / modified in the prop tree /_debug/nas/trc/<myLabel>/*
 # * tokens: number of backtraces to do; each hit will decrement this by 1
 # * hits:   total number of hits
 #
-# == Example == 
+# == Example ==
 # var myBP = debug.Tracer.new("myLabel", 0);
-# myBP.enable(4);       # allow 4 hits, then be quiet 
-# 
+# myBP.enable(4);       # allow 4 hits, then be quiet
+#
 # #at the place of interest (e.g. in some loop or class method) insert:
 # myBP.hit();           # do backtrace here if tokens > 0, reduce tokens by 1
 # myBP.hit(myFunction); # same but call myFunction instead of backtrace
@@ -754,10 +778,10 @@ var Breakpoint = {
 # print(myBP.getHits()); # print total number of hits
 #
 var Tracer = {
-    
+
     # label:       Used in property path and as text for backtrace.
     # dump_locals: bool passed to backtrace. Dump variables in BT.
-    # skip_level:  int passed to backtrace. 
+    # skip_level:  int passed to backtrace.
     new: func(label, dump_locals = 0, skip_level=0) {
         var obj = {
             parents: [Tracer, Probe.new(label, "trc")],
@@ -771,16 +795,16 @@ var Tracer = {
 
         obj._dumpN = obj.node.addChild("dump-trace");
         obj._dumpN.setBoolValue(0);
-        append(obj._L, 
+        append(obj._L,
             setlistener(obj._dumpN, func(n) {
                 if (n.getValue() == 1) obj.dumpTrace();
                 n.setBoolValue(0);
             }, 0, 0)
         );
-        
+
         obj._resetTraceN = obj.node.addChild("reset-trace");
         obj._resetTraceN.setBoolValue(0);
-        append(obj._L, 
+        append(obj._L,
             setlistener(obj._resetTraceN, func(n) {
                 if (n.getValue() == 1) obj.resetTrace();
                 n.setBoolValue(0);
@@ -789,8 +813,8 @@ var Tracer = {
         return obj;
     },
 
-    # enable BP and set hit limit; 
-    # tokens: int > 0; default: 1 (single shot); 0 allowed (=disable); 
+    # enable BP and set hit limit;
+    # tokens: int > 0; default: 1 (single shot); 0 allowed (=disable);
     enable: func(tokens = 1) {
         if (num(tokens) == nil) tokens = 1;
         if (tokens < 0) tokens = 0;
@@ -803,12 +827,12 @@ var Tracer = {
         me._enableN.setIntValue(0);
         return me;
     },
-    
+
     resetTrace: func () {
         me.node.getNode("trace",1).remove();
     },
 
-   
+
     hit: func(callback = nil) {
         me.hits[0] += 1;
         me._hitsN[0].increment();
@@ -855,13 +879,13 @@ var Tracer = {
                 if (tn.getNode("hits") == nil) {
                     tn.getNode("hits",1).setIntValue(1);
                 }
-                else { 
-                    tn.getNode("hits").increment(); 
+                else {
+                    tn.getNode("hits").increment();
                 }
             }
         }
     },
-    
+
     dumpTrace: func (path = nil) {
         #props.dump(me.node.getNode("trace",1));
         if (path == nil) {
@@ -878,7 +902,7 @@ var Tracer = {
 # f:        function to wrap with a debug probe (hit counter)
 # label:    description, passed to probe
 #
-# WARNING: call() currently breaks the call stack which affects backtrace and 
+# WARNING: call() currently breaks the call stack which affects backtrace and
 # the use of caller(i>0). Do not use addProbeToFunc on functions which rely on
 # caller (which is probably bad coding style, but allowed).
 #
@@ -903,7 +927,7 @@ var addProbeToFunc = func (f, label) {
 # f:        function to wrap with a tracer
 # label:    description, passed to breakpoint
 #
-# WARNING: call() currently breaks the call stack which affects backtrace and 
+# WARNING: call() currently breaks the call stack which affects backtrace and
 # the use of caller(i>0). Do not use addTracerToFunc on functions which rely on
 # caller (which is probably bad coding style, but allowed).
 #
@@ -940,13 +964,13 @@ var findFunctions = func (ns, recursive = 0) {
         if (isfunc(ns[key])) {
             functions[key] = ns[key];
         }
-    }    
+    }
     return functions;
 }
 
 # add probes to all functions in a namespace for finding hotspots
 # use property browser at runtime to check /_debug/nas/_stats/
-# ns:           hash 
+# ns:           hash
 # label:        description, passed to probe
 
 var _probed_ns = {};
@@ -954,7 +978,7 @@ var addProbesToNamespace = func (ns, label = "") {
     var nsid = id(ns);
     if (_probed_ns[nsid] != nil) return;
     else _probed_ns[nsid] = {};
-       
+
     var funcs = findFunctions(ns, 0);
     foreach (var key; keys(funcs)) {
         _probed_ns[nsid][key] = funcs[key];
@@ -968,7 +992,7 @@ var removeProbesFromNamespace = func (ns) {
         logprint(DEV_ALERT, "removeProbesFromNamespace: namespace not found");
         return;
     }
-        
+
     foreach (var key; keys(_probed_ns[nsid])) {
         ns[key] = _probed_ns[nsid][key];
     }
@@ -987,10 +1011,10 @@ var dumpProbeStats = func () {
         elsif (a.value == b.value) return 0;
         else return 1;
     }
-    
+
     foreach (var probe; sort(data, mysort)) {
         print(probe.name," ",probe.value);
-    }    
+    }
     return;
 }
 

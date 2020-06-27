@@ -411,68 +411,65 @@ Started September 2000 by David Megginson, david@megginson.com
         <landing-light1-offset-deg type="float">0.0</landing-light1-offset-deg>
         <landing-light2-offset-deg type="float">0.0</landing-light2-offset-deg>
         <landing-light3-offset-deg type="float">0.0</landing-light3-offset-deg>
-	<use-flashlight type="int">0</use-flashlight>
-	<num-lightspots type="int">0</num-lightspots>
-	<lightspot>
-	   <eyerel-x-m type="float">0.0</eyerel-x-m>
-	   <eyerel-x-m n="1" type="float">0.0</eyerel-x-m>
-	   <eyerel-x-m n="2" type="float">0.0</eyerel-x-m>
-	   <eyerel-x-m n="3" type="float">0.0</eyerel-x-m>
-	   <eyerel-x-m n="4" type="float">0.0</eyerel-x-m>
-	   <eyerel-y-m type="float">0.0</eyerel-y-m>
-	   <eyerel-y-m n="1" type="float">0.0</eyerel-y-m>
-	   <eyerel-y-m n="2" type="float">0.0</eyerel-y-m>
-	   <eyerel-y-m n="3" type="float">0.0</eyerel-y-m>
-	   <eyerel-y-m n="4" type="float">0.0</eyerel-y-m>
-	   <eyerel-z-m type="float">0.0</eyerel-z-m>
-	   <eyerel-z-m n="1" type="float">0.0</eyerel-z-m>
-	   <eyerel-z-m n="2" type="float">0.0</eyerel-z-m>
-	   <eyerel-z-m n="3" type="float">0.0</eyerel-z-m>
-	   <eyerel-z-m n="4" type="float">0.0</eyerel-z-m>
-	   <lightspot-r type="float">0.0</lightspot-r>
-	   <lightspot-g type="float">0.0</lightspot-g>
-	   <lightspot-b type="float">0.0</lightspot-b>
-	   <lightspot-r n="1" type="float">0.0</lightspot-r>
-	   <lightspot-g n="1" type="float">0.0</lightspot-g>
-	   <lightspot-b n="1" type="float">0.0</lightspot-b>
-	   <lightspot-r n="2" type="float">0.0</lightspot-r>
-	   <lightspot-g n="2" type="float">0.0</lightspot-g>
-	   <lightspot-b n="2" type="float">0.0</lightspot-b>
-	   <lightspot-r n="3" type="float">0.0</lightspot-r>
-	   <lightspot-g n="3" type="float">0.0</lightspot-g>
-	   <lightspot-b n="3" type="float">0.0</lightspot-b>
-	   <lightspot-r n="4" type="float">0.0</lightspot-r>
-	   <lightspot-g n="4" type="float">0.0</lightspot-g>
-	   <lightspot-b n="4" type="float">0.0</lightspot-b>
-	   <size type="float">0.0</size>
-	   <size n="1" type="float">0.0</size>
-	   <size n="2" type="float">0.0</size>
-	   <size n="3" type="float">0.0</size>
-	   <size n="4" type="float">0.0</size>
-	   <dir type="float">0.0</dir>
-	   <dir n="1" type="float">0.0</dir>
-	   <stretch type="float">0.0</stretch>
-	   <stretch n="1" type="float">0.0</stretch>
-	</lightspot>
-
+        <use-flashlight type="int">0</use-flashlight>
+        <num-lightspots type="int">0</num-lightspots>
+        <lightspot>
+          <eyerel-x-m type="float">0.0</eyerel-x-m>
+          <eyerel-x-m n="1" type="float">0.0</eyerel-x-m>
+          <eyerel-x-m n="2" type="float">0.0</eyerel-x-m>
+          <eyerel-x-m n="3" type="float">0.0</eyerel-x-m>
+          <eyerel-x-m n="4" type="float">0.0</eyerel-x-m>
+          <eyerel-y-m type="float">0.0</eyerel-y-m>
+          <eyerel-y-m n="1" type="float">0.0</eyerel-y-m>
+          <eyerel-y-m n="2" type="float">0.0</eyerel-y-m>
+          <eyerel-y-m n="3" type="float">0.0</eyerel-y-m>
+          <eyerel-y-m n="4" type="float">0.0</eyerel-y-m>
+          <eyerel-z-m type="float">0.0</eyerel-z-m>
+          <eyerel-z-m n="1" type="float">0.0</eyerel-z-m>
+          <eyerel-z-m n="2" type="float">0.0</eyerel-z-m>
+          <eyerel-z-m n="3" type="float">0.0</eyerel-z-m>
+          <eyerel-z-m n="4" type="float">0.0</eyerel-z-m>
+          <lightspot-r type="float">0.0</lightspot-r>
+          <lightspot-g type="float">0.0</lightspot-g>
+          <lightspot-b type="float">0.0</lightspot-b>
+          <lightspot-r n="1" type="float">0.0</lightspot-r>
+          <lightspot-g n="1" type="float">0.0</lightspot-g>
+          <lightspot-b n="1" type="float">0.0</lightspot-b>
+          <lightspot-r n="2" type="float">0.0</lightspot-r>
+          <lightspot-g n="2" type="float">0.0</lightspot-g>
+          <lightspot-b n="2" type="float">0.0</lightspot-b>
+          <lightspot-r n="3" type="float">0.0</lightspot-r>
+          <lightspot-g n="3" type="float">0.0</lightspot-g>
+          <lightspot-b n="3" type="float">0.0</lightspot-b>
+          <lightspot-r n="4" type="float">0.0</lightspot-r>
+          <lightspot-g n="4" type="float">0.0</lightspot-g>
+          <lightspot-b n="4" type="float">0.0</lightspot-b>
+          <size type="float">0.0</size>
+          <size n="1" type="float">0.0</size>
+          <size n="2" type="float">0.0</size>
+          <size n="3" type="float">0.0</size>
+          <size n="4" type="float">0.0</size>
+          <dir type="float">0.0</dir>
+          <dir n="1" type="float">0.0</dir>
+          <stretch type="float">0.0</stretch>
+          <stretch n="1" type="float">0.0</stretch>
+        </lightspot>
       </als-secondary-lights>
       <als-filters>
-	 <use-filtering type="bool">false</use-filtering>
- 	 <gamma type="float">0.0</gamma>
- 	 <brightness type="float">1.0</brightness>
-	 <use-night-vision type="bool">false</use-night-vision>
-	 <use-IR-vision type="bool">false</use-IR-vision>
-	 <use-normal-filters type="bool">true</use-normal-filters>
-	 <grey-factor type="float">0.0</grey-factor>
-	 <black-factor type="float">0.0</black-factor>
+        <use-filtering type="bool">false</use-filtering>
+        <gamma type="float">0.0</gamma>
+        <brightness type="float">1.0</brightness>
+        <use-night-vision type="bool">false</use-night-vision>
+        <use-IR-vision type="bool">false</use-IR-vision>
+        <use-normal-filters type="bool">true</use-normal-filters>
+        <grey-factor type="float">0.0</grey-factor>
+        <black-factor type="float">0.0</black-factor>
       </als-filters>
-
       <osm>
-	<road-traffic-enabled type="bool">true</road-traffic-enabled>
-	<road-traffic-density type="float">1.0</road-traffic-density>
-	<road-traffic-direction type="int">1</road-traffic-direction>
+        <road-traffic-enabled type="bool">true</road-traffic-enabled>
+        <road-traffic-density type="float">1.0</road-traffic-density>
+        <road-traffic-direction type="int">1</road-traffic-direction>
       </osm>
-
       <scenery-path-suffix n="0">
         <name type="string">Pylons</name>
         <enabled type="bool" userarchive="y">false</enabled>
@@ -513,12 +510,12 @@ Started September 2000 by David Megginson, david@megginson.com
         <name type="string">Terrain</name>
         <enabled type="bool" userarchive="y">true</enabled>
       </scenery-path-suffix>
-        <texture-cache>
-            <cache-enabled type="bool" userarchive="y">false</cache-enabled>
-            <compress-transparent type="bool" userarchive="y">true</compress-transparent>
-            <compress-solid type="bool" userarchive="y">true</compress-solid>
-            <compress type="bool" userarchive="y">true</compress>
-        </texture-cache>
+      <texture-cache>
+          <cache-enabled type="bool" userarchive="y">false</cache-enabled>
+          <compress-transparent type="bool" userarchive="y">true</compress-transparent>
+          <compress-solid type="bool" userarchive="y">true</compress-solid>
+          <compress type="bool" userarchive="y">true</compress>
+      </texture-cache>
 
       <pilot-model>
         <!-- Controls for the availability (set by aircraft) and visibility
@@ -545,7 +542,7 @@ Started September 2000 by David Megginson, david@megginson.com
           <should-render-face-5 type="bool">false</should-render-face-5>
         </envmap>
         <bloom>
-          <strength type="float">0.01</strength>
+          <strength type="float">0.03</strength>
           <filter-radius type="float">0.005</filter-radius>
         </bloom>
         <ambient-occlusion>
@@ -781,6 +778,9 @@ Started September 2000 by David Megginson, david@megginson.com
     </instrument-options>
     <input>
       <property-key-handler type="bool" userarchive="y">false</property-key-handler>
+      <no-event-input type="bool">true</no-event-input>
+      <no-joystick-input type="bool">false</no-joystick-input>
+      <no-hid-input type="bool">false</no-hid-input>
     </input>
     <chase-distance-m type="double">-25.0</chase-distance-m>
     <allow-toggle-cockpit type="bool">false</allow-toggle-cockpit>
@@ -1113,13 +1113,13 @@ Started September 2000 by David Megginson, david@megginson.com
       <selected-server type="string" userarchive="y"/>
       <txhost type="string" preserve="y"/>
       <lag>
-		<range type="float" userarchive="y">3.0</range>
-		<offset type="float" userarchive="y">0</offset>
-		<master type="bool" userarchive="y">0</master>
-		<spectator type="bool" userarchive="y">0</spectator>
-		<spectator-offset type="float" userarchive="y">0</spectator-offset>
-		<apply-close type="bool" userarchive="y">0</apply-close>
-	  </lag>
+        <range type="float" userarchive="y">3.0</range>
+        <offset type="float" userarchive="y">0</offset>
+        <master type="bool" userarchive="y">0</master>
+        <spectator type="bool" userarchive="y">0</spectator>
+        <spectator-offset type="float" userarchive="y">0</spectator-offset>
+        <apply-close type="bool" userarchive="y">0</apply-close>
+      </lag>
       <visibility-range-nm type="int" userarchive="y">100</visibility-range-nm> <!-- MP2017 not supported in fgms so will do nothing-->
       <debug-level type="int" userarchive="n">0</debug-level>
       <mp-clock-mode type="int">1</mp-clock-mode>

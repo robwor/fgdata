@@ -6,6 +6,7 @@ in vec2 texcoord;
 
 uniform sampler2D gbuffer0_tex;
 uniform sampler2D gbuffer1_tex;
+uniform sampler2D depth_tex;
 uniform samplerCube prefiltered_envmap_tex;
 
 uniform mat4 fg_ViewMatrixInverse;
@@ -18,7 +19,7 @@ float pow5(float x);
 // normal_encoding.glsl
 vec3 decode_normal(vec2 f);
 // pos_from_depth.glsl
-vec3 get_view_space_from_depth(vec2 uv);
+vec3 get_view_space_from_depth(vec2 uv, float depth);
 // aerial_perspective.glsl
 vec3 add_aerial_perspective(vec3 color, vec2 coord, float depth);
 vec3 get_sun_radiance_sea_level();
@@ -38,13 +39,27 @@ float D_GGX(float NdotH, float a2)
 
 void main()
 {
-    // Unpack G-Buffer
+    float depth = texture(depth_tex, texcoord).r;
+    // Ignore the background
+    if (depth == 1.0) {
+        discard;
+        return;
+    }
+
+    // Read the G-Buffer
     vec4 gbuffer0 = texture(gbuffer0_tex, texcoord);
+    // Immediately discard fragments that do not have matid=2
+    if (uint(gbuffer0.a * 3.0) != 2u) {
+        discard;
+        return;
+    }
     vec4 gbuffer1 = texture(gbuffer1_tex, texcoord);
+
+    // Unpack G-Buffer
     vec3 N = decode_normal(gbuffer0.rg);
     vec3 sea_color = gbuffer1.rgb;
 
-    vec3 P = get_view_space_from_depth(texcoord);
+    vec3 P = get_view_space_from_depth(texcoord, depth);
     vec3 V = normalize(-P);
     vec3 L = fg_SunDirection;
 

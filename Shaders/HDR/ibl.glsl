@@ -63,8 +63,12 @@ vec3 ibl_eval_specular(float NdotV, vec3 refl, float roughness, vec3 f)
 /*
  * Evaluate the contribution of image-based lights, or indirect lighting.
  */
-vec3 eval_ibl(vec3 base_color, float metallic, float roughness, vec3 f0,
-              float occlusion, vec3 ws_N, vec3 ws_refl, float NdotV)
+vec3 eval_ibl(vec3 base_color,
+              float metallic,
+              float roughness,
+              vec3 f0,
+              float occlusion,
+              vec3 ws_N, vec3 ws_refl, float NdotV)
 {
     roughness = max(roughness, 0.002025);
     vec3 F = F_Schlick_roughness(NdotV, f0, roughness);

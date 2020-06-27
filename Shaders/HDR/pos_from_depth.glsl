@@ -1,7 +1,5 @@
 #version 330 core
 
-uniform sampler2D depth_tex;
-
 uniform mat4 fg_ViewMatrixInverse;
 uniform vec2 fg_FOVScale;
 
@@ -23,18 +21,8 @@ vec3 get_view_space_from_depth(vec2 uv, float depth)
     return vs_pos;
 }
 
-vec3 get_view_space_from_depth(vec2 uv)
-{
-    return get_view_space_from_depth(uv, texture(depth_tex, uv).r);
-}
-
 vec3 get_world_space_from_depth(vec2 uv, float depth)
 {
     vec4 vs_p = vec4(get_view_space_from_depth(uv, depth), 1.0);
     return (fg_ViewMatrixInverse * vs_p).xyz;
-}
-
-vec3 get_world_space_from_depth(vec2 uv)
-{
-    return get_world_space_from_depth(uv, texture(depth_tex, uv).r);
 }

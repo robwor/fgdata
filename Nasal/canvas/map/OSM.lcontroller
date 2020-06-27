@@ -18,8 +18,8 @@ var new = func(layer) {
 		listeners: [],
 	};
 
-	layer.makeURL = string.compileTemplate('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png');
-	layer.makePath = string.compileTemplate(layer.maps_base ~ '/osm-intl/{z}/{x}/{y}.png');
+	layer.makeURL = string.compileTemplate('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
+	layer.makePath = string.compileTemplate(layer.maps_base ~ '/osm-cache/{z}/{x}/{y}.png');
 
 	layer.max_zoom = 18;
 	layer.min_zoom = 1;

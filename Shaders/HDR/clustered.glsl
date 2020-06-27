@@ -16,10 +16,13 @@ uniform int fg_ClusteredHorizontalTiles;
 uniform int fg_ClusteredVerticalTiles;
 
 // surface.glsl
-vec3 surface_eval_analytical(
-    vec3 base_color, float metallic, float roughness, vec3 f0,
-    vec3 light_intensity, float occlusion,
-    vec3 N, vec3 L, vec3 V);
+vec3 surface_eval_analytical(vec3 base_color,
+                             float metallic,
+                             float roughness,
+                             vec3 f0,
+                             vec3 light_intensity,
+                             float occlusion,
+                             vec3 N, vec3 L, vec3 V);
 
 struct PointLight {
     vec3 position;
@@ -98,7 +101,10 @@ float get_spot_angle_attenuation(vec3 l, vec3 light_dir,
     return pow(cd, exponent);
 }
 
-vec3 eval_scene_lights(vec3 base_color, float metallic, float roughness, vec3 f0,
+vec3 eval_scene_lights(vec3 base_color,
+                       float metallic,
+                       float roughness,
+                       vec3 f0,
                        vec3 P, vec3 N, vec3 V)
 {
     int slice = int(max(log2(-P.z) * fg_ClusteredSliceScale

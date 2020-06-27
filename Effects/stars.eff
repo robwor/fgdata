@@ -20,15 +20,11 @@
   <technique n="129">
     <scheme>hdr-forward</scheme>
     <pass>
-      <!-- Disable depth testing -->
       <depth>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
+        <function>less</function>
+        <write-mask>false</write-mask>
       </depth>
-      <!-- Only render the stars on top of the skydome -->
-      <stencil>
-        <function>equal</function>
-        <value>0</value>
-      </stencil>
       <!-- Make sure we render after the skydome -->
       <render-bin>
         <bin-number>-9</bin-number>

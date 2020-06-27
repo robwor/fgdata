@@ -140,32 +140,22 @@ define([
             "OpenFlightMaps":  new L.TileLayer("https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png?path=latest/aero/latest", {
                 maxZoom: 13,
                 minZoom: 7,
-                attribution: '<a target="_blank" href="http://openflightmaps.org">&copy; open flightmaps association</a>'
+                attribution: '<a target="_blank" href="https://openflightmaps.org">&copy; open flightmaps association</a>'
             }),
 
-            "OpenAIP":  new L.TileLayer("http://{s}.tile.maps.openaip.net/geowebcache/service/tms/1.0.0/openaip_basemap@EPSG%3A900913@png/{z}/{x}/{y}.png", {
-                maxZoom: 14,
-                minZoom: 4,
-                tms: true,
-                detectRetina: true,
-                subdomains: '12',
-                format: 'image/png',
-                transparent: true
-            }),
-
-            "VFRMap.com Sectionals (US)" : new L.TileLayer('http://vfrmap.com/20180104/tiles/vfrc/{z}/{y}/{x}.jpg', {
+            "VFRMap.com Sectionals (US)" : new L.TileLayer('https://vfrmap.com/20240711/tiles/vfrc/{z}/{y}/{x}.jpg', {
                 maxZoom : 12,
                 minZoom : 3,
-                attribution : '&copy; <a target="_blank" href="http://vfrmap.com">VFRMap.com</a>',
+                attribution : '&copy; <a target="_blank" href="https://vfrmap.com">VFRMap.com</a>',
                 tms : true,
                 opacity : 0.5,
                 bounds : L.latLngBounds(L.latLng(16.0, -179.0), L.latLng(72.0, -60.0)),
             }),
 
-            "VFRMap.com - Low IFR (US)" : new L.TileLayer('http://vfrmap.com/20180104/tiles/ifrlc/{z}/{y}/{x}.jpg', {
+            "VFRMap.com - Low IFR (US)" : new L.TileLayer('https://vfrmap.com/20240711/tiles/ifrlc/{z}/{y}/{x}.jpg', {
                 maxZoom : 12,
                 minZoom : 5,
-                attribution : '&copy; <a target="_blank" href="http://vfrmap.com">VFRMap.com</a>',
+                attribution : '&copy; <a target="_blank" href="https://vfrmap.com">VFRMap.com</a>',
                 tms : true,
                 opacity : 0.5,
                 bounds : L.latLngBounds(L.latLng(16.0, -179.0), L.latLng(72.0, -60.0)),
@@ -186,67 +176,6 @@ define([
                         attribution : '&copy; <a target="_blank" href="http://www.dfs.de">DFS</a>',
                         bounds : L.latLngBounds(L.latLng(46.0, 5.0), L.latLng(55.1, 16.5)),
                     }),
-
-            "France VFR" : new L.TileLayer('http://carte.f-aero.fr/oaci/{z}/{x}/{y}.png', {
-                minZoom : 5,
-                maxZoom : 15,
-                attribution : '&copy; <a target="_blank" href="http://carte.f-aero.fr/">F-AERO</a>',
-                bounds : L.latLngBounds(L.latLng(41.0, -5.3), L.latLng(51.2, 10.1)),
-            }),
-
-            "France VAC Landing" : new L.TileLayer('http://carte.f-aero.fr/vac-atterrissage/{z}/{x}/{y}.png', {
-                minZoom : 5,
-                maxZoom : 15,
-                attribution : '&copy; <a target="_blank" href="http://carte.f-aero.fr/">F-AERO</a>',
-                bounds : L.latLngBounds(L.latLng(41.0, -5.3), L.latLng(51.2, 10.1)),
-            }),
-
-            "France VAC Approach" : new L.TileLayer('http://carte.f-aero.fr/vac-approche/{z}/{x}/{y}.png', {
-                minZoom : 5,
-                maxZoom : 15,
-                attribution : '&copy; <a target="_blank" href="http://carte.f-aero.fr/">F-AERO</a>',
-                bounds : L.latLngBounds(L.latLng(41.0, -5.3), L.latLng(51.2, 10.1)),
-            }),
-
-            "OpenWeatherMap - Clouds" : new L.TileLayer('http://{s}.tile.openweathermap.org/map/clouds/{z}/{x}/{y}.png', {
-                maxZoom : 14,
-                minZoom : 0,
-                subdomains : '12',
-                format : 'image/png',
-                transparent : true,
-                opacity : 0.5,
-                attribution : '&copy; <a target="_blank" href="http://openweathermap.org/">open weather map</a>',
-            }),
-
-            "OpenWeatherMap - Precipitation" : new L.TileLayer('http://{s}.tile.openweathermap.org/map/precipitation/{z}/{x}/{y}.png', {
-                maxZoom : 14,
-                minZoom : 0,
-                subdomains : '12',
-                format : 'image/png',
-                transparent : true,
-                opacity : 0.5,
-                attribution : '&copy; <a target="_blank" href="http://openweathermap.org/">open weather map</a>',
-            }),
-
-            "OpenWeatherMap - Isobares" : new L.TileLayer('http://{s}.tile.openweathermap.org/map/pressure_cntr/{z}/{x}/{y}.png', {
-                maxZoom : 7,
-                minZoom : 0,
-                subdomains : '12',
-                format : 'image/png',
-                transparent : true,
-                opacity : 0.5,
-                attribution : '&copy; <a target="_blank" href="http://openweathermap.org/">open weather map</a>',
-            }),
-
-            "OpenWeatherMap - Wind" : new L.TileLayer('http://{s}.tile.openweathermap.org/map/wind/{z}/{x}/{y}.png', {
-                maxZoom : 7,
-                minZoom : 0,
-                subdomains : '12',
-                format : 'image/png',
-                transparent : true,
-                opacity : 0.5,
-                attribution : '&copy; <a target="_blank" href="http://openweathermap.org/">open weather map</a>',
-            }),
         }
 
         self.mapResize = function(a,b) {

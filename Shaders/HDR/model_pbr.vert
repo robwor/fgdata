@@ -1,5 +1,7 @@
 #version 330 core
 
+#pragma import_defines(USE_WINGFLEX_DEFORMATION USE_CHUTE_DEFORMATION)
+
 layout(location = 0) in vec4 pos;
 layout(location = 1) in vec3 normal;
 layout(location = 3) in vec4 multitexcoord0;
@@ -21,14 +23,31 @@ uniform mat4 fg_TextureMatrix;
 // logarithmic_depth.glsl
 float logdepth_prepare_vs_depth(float z);
 
+#ifdef USE_WINGFLEX_DEFORMATION
+// wingflex.glsl
+vec3 wingflex_apply_deformation(vec3 pos);
+#endif
+#ifdef USE_CHUTE_DEFORMATION
+// chute.glsl
+vec3 chute_apply_deformation(vec3 pos);
+#endif
+
 void main()
 {
-    gl_Position = osg_ModelViewProjectionMatrix * pos;
+    vec4 new_pos = pos;
+#ifdef USE_WINGFLEX_DEFORMATION
+    new_pos.xyz = wingflex_apply_deformation(new_pos.xyz);
+#endif
+#ifdef USE_CHUTE_DEFORMATION
+    new_pos.xyz = chute_apply_deformation(new_pos.xyz);
+#endif
+
+    gl_Position = osg_ModelViewProjectionMatrix * new_pos;
     vs_out.flogz = logdepth_prepare_vs_depth(gl_Position.w);
     vs_out.texcoord = vec2(fg_TextureMatrix * multitexcoord0);
     if (flip_vertically)
         vs_out.texcoord.y = 1.0 - vs_out.texcoord.y;
 
     vs_out.vertex_normal = osg_NormalMatrix * normal;
-    vs_out.view_vector = (osg_ModelViewMatrix * pos).xyz;
+    vs_out.view_vector = (osg_ModelViewMatrix * new_pos).xyz;
 }

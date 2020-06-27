@@ -34,6 +34,11 @@ float safe_acos(float x) {
     return acos(clamp(x, -1.0, 1.0));
 }
 
+float pow4(float x) {
+    float x2 = x*x;
+    return x2 * x2;
+}
+
 float pow5(float x) {
     float x2 = x*x;
     return x2 * x2 * x;

@@ -66,6 +66,7 @@ void main()
 
     out_gbuffer0.rg  = encode_normal(N);
     out_gbuffer1.rgb = floor_color;
+    out_gbuffer0.a   = float(2u) * (1.0 / 3.0);
 
     gl_FragDepth = logdepth_encode(fs_in.flogz);
 }

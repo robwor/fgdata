@@ -283,6 +283,7 @@
   <landclass>48</landclass>
   <material-name>Ocean</material-name>
   <water>true</water>
+  <sea>true</sea>
 </map>
 
 </PropertyList>

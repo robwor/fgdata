@@ -32,10 +32,6 @@
   </parameters>
   <technique n="1">
     <pass>
-      <stencil>
-        <function>less-or-equal</function>
-        <value>8</value>
-      </stencil>
       <texture-unit>
         <unit>8</unit>
         <image><use>texture[8]/image</use></image>
@@ -46,10 +42,10 @@
         <wrap-t><use>texture[8]/wrap-t</use></wrap-t>
         <internal-format><use>texture[8]/internal-format</use></internal-format>
       </texture-unit>
+
       <program>
         <vertex-shader>Shaders/HDR/quad.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/shading_opaque.frag</fragment-shader>
-        <fragment-shader>Shaders/HDR/gbuffer_unpack.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/normal_encoding.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/logarithmic_depth.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/pos_from_depth.glsl</fragment-shader>
@@ -65,7 +61,7 @@
         <fragment-shader>Shaders/HDR/clustered.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
       </program>
-      <!-- gbuffer_unpack.glsl -->
+
       <uniform>
         <name>gbuffer0_tex</name>
         <type>sampler-2d</type>

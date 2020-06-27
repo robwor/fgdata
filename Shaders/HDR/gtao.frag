@@ -41,11 +41,20 @@ void main()
         fragColor = 1.0;
         return;
     }
+
+    vec4 gbuffer0 = texture(gbuffer0_tex, texcoord);
+    // Ignore texels that are not the standard PBR material
+    uint mat_id = uint(gbuffer0.a * 3.0);
+    if (mat_id != 3u) {
+        fragColor = 1.0;
+        return;
+    }
+
     // Slightly push the depth towards the camera to avoid imprecision artifacts
     depth = clamp(depth * 1.00001, 0.0, 1.0);
 
     // View space normal
-    vec3 N = decode_normal(texture(gbuffer0_tex, texcoord).rg);
+    vec3 N = decode_normal(gbuffer0.rg);
     // Fragment position in view space
     vec3 P = get_view_space_from_depth(texcoord, depth);
     // View vector in view space

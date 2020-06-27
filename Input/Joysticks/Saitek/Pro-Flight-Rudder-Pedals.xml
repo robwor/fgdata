@@ -25,6 +25,7 @@ $Id$
  <name>ProFlight Cessna Rudder Pedals</name>
  <name>Pro Flight Cessna Rudder Pedals</name>
  <name>Mad Catz Pro Flight Rudder Pedals</name>
+ <device-dialog>generic-pedals</device-dialog>
 
  <axis n="0">
   <desc>Brake left</desc>
