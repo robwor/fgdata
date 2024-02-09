@@ -205,3 +205,65 @@ settimer(func {
         if(size(file) > 4 and substr(file, -4) == ".nas")
             io.load_nasal(path ~ "/" ~ file, substr(file, 0, size(file) - 4));
 }, 0);
+
+# @description Class for managing various things related to main window properties.
+#                         Currently the only thing it can be used for is to run functions when the main winodw is resized
+var MainWindow = {
+    _sizeChangedCallbacks: [],
+    _size: [0, 0],
+    _xsizeNode: props.globals.getNode("/sim/startup/xsize", 1),
+    _ysizeNode: props.globals.getNode("/sim/startup/ysize", 1),
+
+    # @description Get the size of the main window
+    # @return Vector[Int:2] Vector containing the width and height of the main window
+    getSize: func {
+        return MainWindow._size;
+    },
+
+    # @description Get the width of the main window
+    # @return Int Width of the main window
+    getWidth: func {
+        return MainWindow._size[0];
+    },
+
+    # @description Get the height of the main window
+    # @return Int Height of the main window
+    getHeight: func {
+        return MainWindow._size[1];
+    },
+
+    # @description Add callback to be called whenever the size of the main window changes
+    # @param cb Callable Callback to be added
+    addSizeChangedCallback: func(cb) {
+        if (!isfunc(cb)) {
+            die("Cannot add callback for main window size changes: callback is not callable !");
+        }
+        append(MainWindow._sizeChangedCallbacks, cb);
+        cb(MainWindow._size[0], MainWindow._size[1]);
+    },
+
+    # @description Remove size changed callback
+    # @param cb Callable Callback to be removed
+    removeSizeChangedCallback: func(cb) {
+        var i = vecindex(MainWindow._sizeChangedCallbacks, cb);
+        if (i != nil) {
+            MainWindow._sizeChangedCallbacks = subvec(MainWindow._sizeChangedCallbacks, 0, i) ~ subvec(MainWindow._sizeChangedCallbacks, i + 1);
+        }
+    },
+
+    # @private
+    # @description Helper function that calls all callbacks in @m _sizeChangedCallbacks in the order they were added.
+    _callSizeChangedCallbacks: func {
+        var newXSize = MainWindow._xsizeNode.getValue();
+        var newYSize = MainWindow._ysizeNode.getValue();
+        if (newXSize != MainWindow._size[0] or newYSize != MainWindow._size[1]) {
+            MainWindow._size = [newXSize, newYSize];
+            foreach (var cb; MainWindow._sizeChangedCallbacks) {
+                cb(newXSize, newYSize);
+            }
+        }
+    },
+};
+
+setlistener("/sim/startup/xsize", MainWindow._callSizeChangedCallbacks, 1);
+setlistener("/sim/startup/ysize", MainWindow._callSizeChangedCallbacks, 1);
