@@ -637,6 +637,45 @@ getDesktop().addEventListener("mousedown", func {
   }
 });
 
+var frameLatencyDisplay = getDesktop().createChild("text", "frame-latency-display")
+    .set("font", "accid.txf")
+    .set("character-size", 16)
+    .set("fill", "rgba(230, 100 50, 1)")
+    .set("alignment", "left-bottom")
+    .setText("0 ms");
+var frameLatencyNode = props.globals.getNode("/sim/frame-latency-max-ms", 1);
+var frameLatencyListener = setlistener(frameLatencyNode, func(n) {
+    frameLatencyDisplay.setText(sprintf("%4.0f ms", n.getValue()));
+});
+
+var fpsDisplay = getDesktop().createChild("text", "fps-display")
+    .set("font", "accid.txf")
+    .set("character-size", 16)
+    .set("fill", "rgba(230, 100, 50, 1)")
+    .set("alignment", "right-bottom")
+    .setText("0 fps");
+var fpsNode = props.globals.getNode("/sim/frame-rate", 1);
+var fpsListener = setlistener(fpsNode, func(n) {
+    fpsDisplay.setText(sprintf("%3.0f fps", n.getValue()));
+});
+
+var displayFrameLatencyNode = props.globals.getNode("/sim/rendering/frame-latency-display", 1);
+var displayFrameLatencyListener = setlistener(displayFrameLatencyNode, func(n) {
+    frameLatencyDisplay.setVisible(n.getBoolValue());
+}, 1);
+var displayFPSNode = props.globals.getNode("/sim/rendering/fps-display", 1);
+var displayFPSListener = setlistener(displayFPSNode, func(n) {
+    fpsDisplay.setVisible(n.getBoolValue());
+}, 1);
+
+var mainwindowResizeCallbackFrameLatencyFPSDisplay = func(w, h) {
+    frameLatencyDisplay.setTranslation(5, h - 5);
+    fpsDisplay.setTranslation(w - 5, h - 5);
+};
+
+MainWindow.addSizeChangedCallback(mainwindowResizeCallbackFrameLatencyFPSDisplay);
+
+
 # Provide old 'Dialog' for backwards compatiblity (should be removed for 3.0)
 var Dialog = {
   new: func(size, type = nil, id = nil)
@@ -647,4 +686,12 @@ var Dialog = {
 };
 
 var unloadGUI = func() {
+    MainWindow.removeSizeChangedCallback(mainwindowResizeCallbackFrameLatencyFPSDisplay);
+    removelistener(frameLatencyListener);
+    removelistener(fpsListener);
+    removelistener(displayFPSListener);
+    removelistener(displayFrameLatencyListener);
+    getDesktop().getElementById("frame-latency-display").del();
+    getDesktop().getElementById("fps-display").del();
 }
+

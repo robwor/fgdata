@@ -137,18 +137,6 @@ var autopilotDisableProps = [
 ];
 
 ##
-# Show/hide the fps display dialog.
-#
-var fpsDisplay = func(n) {
-    var w = isa(n, props.Node) ? n.getValue() : n;
-    fgcommand(w ? "dialog-show" : "dialog-close", props.Node.new({"dialog-name": "fps"}));
-}
-var latencyDisplay = func(n) {
-    var w = isa(n, props.Node) ? n.getValue() : n;
-    fgcommand(w ? "dialog-show" : "dialog-close", props.Node.new({"dialog-name": "frame-latency"}));
-}
-
-##
 # Pop down the tip dialog, if it is visible.
 #
 var popdown = func { fgcommand("clear-message", props.Node.new({"id": canvas.tooltip.getTooltipId()})); }
@@ -1427,26 +1415,6 @@ menuEnable("stereoscopic-options", !getprop("/sim/rendering/rembrandt/enabled"))
 menuEnable("vr-options", !getprop("/sim/rendering/rembrandt/enabled") and getprop("/sim/vr/built"));
 menuEnable("sound-config", getprop("/sim/sound/working"));
 menuEnable("swift_connection", getprop("/sim/swift/available"));
-
-# frame-per-second display
-var fps = props.globals.getNode("/sim/rendering/fps-display", 1);
-setlistener(fps, fpsDisplay, 1);
-setlistener("/sim/startup/xsize", func {
-    if (fps.getValue()) {
-        fpsDisplay(0);
-        fpsDisplay(1);
-    }
-});
-
-# frame-latency display
-var latency = props.globals.getNode("/sim/rendering/frame-latency-display", 1);
-setlistener(latency, latencyDisplay, 1);
-setlistener("/sim/startup/xsize", func {
-    if (latency.getValue()) {
-        latencyDisplay(0);
-        latencyDisplay(1);
-    }
-});
 
 # only enable precipitation if gui *and* aircraft want it
 var p = "/sim/rendering/precipitation-";
