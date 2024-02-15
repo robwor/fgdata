@@ -9,6 +9,7 @@ gui.Widget = {
       _focus_policy: cfg.get("focus-policy", gui.Widget.NoFocus),
       _hover: 0,
       _enabled: 1,
+      _expanding: cfg.get("expanding", gui.Widget.ExpandingDisabled),
       _view: nil,
       _pos: [0, 0],
       _size: [32, 32],
@@ -29,11 +30,30 @@ gui.Widget = {
       m.setFixedSize(fixedSize[0], fixedSize[1]);
     }
     m.setEnabled(m._cfg.get("enabled", 1));
+    m.setExpanding(m._expanding);
 
     return m;
   },
+
+  # @description Set expanding flag
+  # @param expanding gui.Widget.ExpandingFlag
+  # @return canvas.gui.Widget Return me to enable method chaining
+  setExpanding: func(expanding) {
+    me._expanding = expanding;
+    if (me._expanding == gui.Widget.ExpandingDisabled) {
+      me.setSizeHint([0, 0]);
+      return me;
+    }
+    if (me._expanding & gui.Widget.ExpandingHorizontal) {
+      me.setSizeHint([me._MAX_SIZE, me.sizeHint()[1]]);
+    }
+    if (me._expanding & gui.Widget.ExpandingVertical) {
+      me.setSizeHint([me.sizeHint()[0], me._MAX_SIZE]);
+    }
+  },
   setFixedSize: func(x, y)
   {
+    me._expanding = me.ExpandingDisabled;
     me.setMinimumSize([x, y]);
     me.setSizeHint([x, y]);
     me.setMaximumSize([x, y]);
@@ -209,3 +229,14 @@ gui.Widget.TabFocus = 1;
 gui.Widget.ClickFocus = 2;
 gui.Widget.StrongFocus = gui.Widget.TabFocus
                        | gui.Widget.ClickFocus;
+
+# enum ExpandingFlag:
+# Do not expand
+gui.Widget.ExpandingDisabled = 0;
+# Expand horizontally
+gui.Widget.ExpandingHorizontal = 1;
+# Expand vertically
+gui.Widget.ExpandingVertical = 2;
+# Expand in both directions
+gui.Widget.Expanding = gui.Widget.ExpandingHorizontal | gui.Widget.ExpandingVertical;
+
