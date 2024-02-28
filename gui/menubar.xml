@@ -689,7 +689,7 @@
 			<name>mp-list</name>
 			<binding>
 				<command>nasal</command>
-				<script>multiplayer.dialog.show()</script>
+				<script>multiplayer.PilotsListDialog.toggle()</script>
 			</binding>
 		</item>
 

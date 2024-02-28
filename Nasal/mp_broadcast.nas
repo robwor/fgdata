@@ -192,9 +192,7 @@ BroadcastChannel.update = func {
       props.globals.getNode("/ai/models").getChildren("multiplayer");
     foreach (var pilot; mpplayers) {
       var valid = pilot.getChild("valid");
-      if ((valid != nil) and valid.getValue() and
-          !contains(multiplayer.ignore,
-                    pilot.getChild("callsign").getValue())) {
+      if ((valid != nil) and valid.getValue() and !pilot.getBoolValue("controls/invisible")) {
         if ((me.peers[pilot.getIndex()] == nil) and
             me.accept_predicate(pilot)) {
           me.peers[pilot.getIndex()] =

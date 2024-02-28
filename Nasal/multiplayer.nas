@@ -9,7 +9,6 @@
 # 3) Allow chat messages to be written by the user.
 
 var lastmsg = {};
-var ignore = {};
 var msg_loop_id = 0;
 var msg_timeout = 0;
 var log_file = nil;
@@ -20,7 +19,7 @@ var check_messages = func(loop_id) {
     foreach (var mp; values(model.callsign)) {
         var msg = mp.node.getNode("sim/multiplay/chat", 1).getValue();
         if (msg and msg != lastmsg[mp.callsign]) {
-            if (!contains(ignore, mp.callsign))
+            if (!mp.node.getBoolValue("controls/invisible", 0))
                 echo_message(mp.callsign, msg);
             lastmsg[mp.callsign] = msg;
         }
@@ -170,192 +169,301 @@ var handle_key = func(key)
 
 
 
-# multiplayer.dialog.show() -- displays pilot list dialog
-#
-var PILOTSDLG_RUNNING = 0;
-var dialog = {
-    init: func(x = nil, y = nil) {
-        me.x = x;
-        me.y = y;
-        me.bg = [0.1, 0.1, 0.1, 0.8];    # background color
-        me.fg = [[0.9, 0.9, 0.2, 1], [1, 1, 1, 1], [1, 0.7, 0, 1], [0.557,0.847,0.463, 1]]; # active, active alternate, disabled color, fallback available
-        me.unit = 0;
-        me.toggle_unit();          # set to imperial
-        #
-        # "private"
-         me.font = { name: getprop("/sim/gui/selected-style/fonts/mp-list/name"),
-                       size: getprop("/sim/gui/selected-style/fonts/mp-list/size"),
-                       slant: getprop("/sim/gui/selected-style/fonts/mp-list/slant"),
-                     };
-        #printf('me.font is: %s', view.str(me.font));
-        if (me.font.name == nil) {
-            # We try to cope if no font is specified, so that we inherit
-            # whatever default there is.
-            printf("Failed to find font for Pilot List dialog");
-            me.font = nil;
-        }
-        
-        me.header = ["view", " callsign", " model", func dialog.dist_hdr, " ", func dialog.alt_hdr ~ " ", "", " brg", "chat", "ignore" ~ " ", " code", "ver", "airport", " set"];
-        me.columns = [
-            { type: "checkbox", legend: "", property: "view", halign: "right", "pref-height": 14, "pref-width": 14, callback: "multiplayer.view_select", argprop: "callsign", },
-            { type: "text", property: "callsign",    format: " %s",    label: "-----------",    halign: "fill" },
-            { type: "text", property: "model-short", format: " %s",     label: "--------------", halign: "fill" },
-            { type: "text", property: func dialog.dist_node, format:" %8.2f", label: "---------", halign: "right" },
-            { type: "text", property: "distance_delta", format: "%s", label: "--", halign: "right" },
-            { type: "text", property: func dialog.alt_node,  format:" %7.0f", label: "---------", halign: "right" },
-            { type: "text", property: "ascent_descent",          format: "%s", label: "-", halign: "right" },
-            { type: "text", property: "bearing-to",  format: " %3.0f", label: "----",           halign: "right" },
-            { type: "button", legend: "", halign: "right", callback: "multiplayer.compose_message", "pref-height": 14, "pref-width": 14 },
-            { type: "checkbox", property: "controls/invisible", callback: "multiplayer.dialog.toggle_ignore",
-              argprop: "callsign", label: "---------", halign: "right" },
-            { type: "text", property: "id-code",    format: " %s",    label: "-",    halign: "fill"  },
-            { type: "text", property: "sim/multiplay/protocol-version", format: " %s",     label: "--", halign: "fill"  },
-            { type: "text", property: "airport-id", format: "%s",     label: "----", halign: "fill"  },
-            { type: "text", property: "set-loaded", format: "%s",     label: "----", halign: "fill"  },
-        ];
-        me.cs_warnings = {};
-        me.name = "who-is-online";
-        me.dialog = nil;
-        me.loopid = 0;
+# @description Dialog for viewing and managing multiplayer pilots (allows viewing other pilot's aircraft models, ignoring aircraft etc.)
 
-        me.listeners=[];
-        append(me.listeners, setlistener("/sim/startup/xsize", func me._redraw_()));
-        append(me.listeners, setlistener("/sim/startup/ysize", func me._redraw_()));
-        append(me.listeners, setlistener("/sim/signals/reinit-gui", func me._redraw_()));
-        append(me.listeners, setlistener("/sim/signals/multiplayer-updated", func me._redraw_()));
-        append(me.listeners, setlistener("/sim/current-view/model-view", func me.update_view()));
+var PilotsListDialog = {
+    PilotColor: {
+        AircraftNotInstalled: [1, 0.7, 0, 1],
+        AircraftFallbackProvided: [0.557, 0.847, 0.463, 1],
+        AircraftInstalled: [0.9, 0.9, 0.2, 1],
     },
-    create: func {
-        if (me.dialog != nil)
-            me.close();
+    UpdateInterval: 0.5,
+    _position: [-1, -1],
+    _defaultSize: [500, 100],
+    _size: [-1, -1],
+    _instance: nil,
 
-        me.dialog = gui.dialog[me.name] = gui.Widget.new();
-        me.dialog.set("name", me.name);
-        me.dialog.set("dialog-name", me.name);
-        if (typeof(me.font) == 'hash' and contains(me.font, "name") and me.font.name != nil) {
-            me.dialog.set("font", me.font.name);
-        }
-        if (me.x != nil)
-            me.dialog.set("x", me.x);
-        if (me.y != nil)
-            me.dialog.set("y", me.y);
-
-        me.dialog.set("layout", "vbox");
-        me.dialog.set("default-padding", 0);
-
-        me.dialog.setColor(me.bg[0], me.bg[1], me.bg[2], me.bg[3]);
-        
-        # Sets out default foreground colour and also me.font if it is not nil.
-        #
-        set_default = func(w) {
-            w.setColor(me.fg[1][0], me.fg[1][1], me.fg[1][2], me.fg[1][3],);
-            if (me.font != nil) {
-                w.node.setValues({ "font": me.font});
+    open: func {
+        if (PilotsListDialog._instance == nil) {
+            PilotsListDialog._instance = PilotsListDialog.new();
+        } else {
+            if (PilotsListDialog._instance.window == nil) {
+                PilotsListDialog._instance.del();
+                PilotsListDialog._instance = PilotsListDialog.new();
             }
+            PilotsListDialog._instance.window.raise();
+        }
+    },
+
+    toggle: func {
+        if (PilotsListDialog._instance == nil) {
+            PilotsListDialog.open();
+        } else {
+            PilotsListDialog._instance.del();
+        }
+    },
+
+    new: func {
+        var m = {
+            parents: [PilotsListDialog],
+            mode: nil,
+            cs_warnings: {},
+            listeners: [],
+            distNodePath: "",
+            altNodePath: "",
+            distText: "",
+            altText: "",
+            lockPositionAndSize: 0,
+        };
+
+        m.window = canvas.Window.new([500, 100], "dialog")
+                        .setTitle("Multiplayer aircraft")
+                        .set("resize", 1);
+        m.window.onClose = func m.del();
+        m.root = m.window.getCanvas(1)
+                        .set("background", canvas.style.getColor("bg_color"))
+                        .set("opacity", 0.6)
+                        .createGroup();
+        m.layout = canvas.VBoxLayout.new();
+        m.window.setLayout(m.layout);
+
+        m.build();
+        m.select_mode("imperial");
+
+        globals.MainWindow.addSizeChangedCallback(func m._mainwindowSizeChangedCallback());
+        m._mainwindowSizeChangedCallback();
+        m.updateTimer = maketimer(PilotsListDialog.UpdateInterval, func { m.update(); });
+        m.updateTimer.simulatedTime = 1;
+        m.updateTimer.start();
+
+        m.update();
+        m.update_view();
+
+        append(m.listeners, setlistener("/sim/signals/multiplayer-updated", func m._redraw()));
+        #append(m.listeners, setlistener("/sim/signals/reinit-gui", func m._redraw()));
+        append(m.listeners, setlistener("/sim/current-view/model-view", func m.update_view()));
+
+        return m;
+    },
+    _mainwindowSizeChangedCallback: func {
+            me.resize(me._size);
+            me.move(me._position);
+    },
+    move: func {
+        if (size(arg) == 0 or arg[0] == nil) {
+            var (x, y) = [-1, -1];
+        } elsif (size(arg) == 1) {
+            var (x, y) = arg[0];
+        } else {
+            var (x, y) = arg;
         }
 
-        var titlebar = me.dialog.addChild("group");
-        titlebar.set("layout", "hbox");
+        me._pos = [x, y];
+        if (x < 0) {
+            x = globals.MainWindow.getWidth() - (me._size[0] > 0 ? me._size[0] : me.window.getSize()[0]);
+        }
+        if (y < 0) {
+            y = 0;
+        }
+        me.window.setPosition(x, y);
+    },
+    resize: func {
+        if (size(arg) == 0 or arg[0] == nil) {
+            var (w, h) = [-1, -1];
+        } elsif (size(arg) == 1) {
+            var (w, h) = arg[0];
+        } else {
+            var (w, h) = arg;
+        }
 
-        var view_self = titlebar.addChild("button");
-        view_self.node.setValues({ "pref-height": 20, legend: "View Self", default: 0 });
-        view_self.setBinding("nasal", "view.model_view_handler.select(getprop('/sim/multiplayer/callsign'), 1);");
+        me._size = [w, h];
+        if (w < 0) {
+            w = math.min(me._size[0] > 0 ? me._size[0] : me.window.getSize()[0], globals.MainWindow.getWidth());
+        }
+        if (h < 0) {
+            h = math.min(me._size[1] > 0 ? me._size[0] : me.window.getSize()[1], globals.MainWindow.getHeight());
+        }
+        me.window.setSize(w, h)
+    },
+    build: func {
+        me.controlsLayout = canvas.HBoxLayout.new();
+        me.controlsLayout.setAlignment(canvas.AlignTop);
+        me.layout.addItem(me.controlsLayout);
 
-        titlebar.addChild("empty").set("stretch", 1);
-        
-        var w = titlebar.addChild("button");
-        w.node.setValues({ "pref-width": 24, "pref-height": 20, legend: me.unit_button, default: 0 });
-        w.setBinding("nasal", "multiplayer.dialog.toggle_unit(); multiplayer.dialog._redraw_()");
+        me.viewSelfButton = canvas.gui.widgets.Button.new(parent: me.root, cfg: {
+            "text": "View self",
+            "alignment": canvas.AlignLeft,
+        })
+                        .listen("clicked", func {
+                            view.model_view_handler.select(props.globals.getValue("/sim/multiplayer/callsign"), 1);
+                        });
+        me.controlsLayout.addItem(me.viewSelfButton);
 
-        titlebar.addChild("empty").set("stretch", 1);
-        var w = titlebar.addChild("text");
-        w.set("label", "Pilots: ");
-        set_default(w);
+        me.modeLabel = canvas.gui.widgets.Label.new(parent: me.root, cfg: {
+            "text": "Mode:",
+        });
+        me.controlsLayout.addItem(me.modeLabel);
+        me.modeBox = canvas.gui.widgets.ComboBox.new(parent: me.root, cfg: {
+            "items": {
+                "Imperial units": "imperial",
+                "Metric units": "metric",
+                "Lag": "lag",
+            },
+        })
+                        .listen("selected-item-changed", func(e) {
+                            me.select_mode(e.detail.value);
+                        });
+        me.controlsLayout.addItem(me.modeBox);
 
-        var w = titlebar.addChild("text");
-        set_default(w);
-        w.node.setValues({ label: "---", live: 1, format: "%d", property: "ai/models/num-players" });
-        titlebar.addChild("empty").set("stretch", 1);
+        me.pilotsOnlineLabel = canvas.gui.widgets.PropertyLabel.new(parent: me.root, cfg: {
+            "text": "%d pilots online",
+            "node": props.globals.getNode("/ai/models/num-players"),
+        });
+        me.controlsLayout.addItem(me.pilotsOnlineLabel);
 
-        var w = titlebar.addChild("button");
-        w.node.setValues({ "pref-width": 20, "pref-height": 20, legend: "X", default: 0 });
-        # "Esc" causes dialog-close
-        w.set("key", "Esc");
-        w.setBinding("nasal", "multiplayer.dialog.del()");
+        me.lockPositionAndSizeButton = canvas.gui.widgets.Button.new(parent: me.root, cfg: {
+            "text": "Lock",
+            "alignment": canvas.AlignRight,
+            "checkable": 1,
+        })
+                        .listen("toggled", func(e) {
+                            me.lockPositionAndSize = e.detail.checked;
+                        });
+        me.controlsLayout.addItem(me.lockPositionAndSizeButton);
 
-        me.dialog.addChild("hrule");
+        me.closeButton = canvas.gui.widgets.Button.new(parent: me.root, cfg: {
+        	"text": "Close",
+        	"alignment": canvas.AlignRight,
+        })
+                        .listen("toggled", func(e) {
+                            PilotsListDialog._instance.del();
+                        });
+        me.controlsLayout.addItem(me.closeButton);
 
-        var content = me.dialog.addChild("group");
-        content.set("layout", "table");
-        content.set("default-padding", 0);
+        me.scroll = canvas.gui.widgets.ScrollArea.new(parent: me.root);
+        me.layout.addItem(me.scroll);
 
+        me.scrollLayout = canvas.GridLayout.new();
+        me.scrollLayout.setSpacing(3);
+        me.scroll.setLayout(me.scrollLayout);
+
+        me.buildPilotsList();
+    },
+    buildPilotsList: func {
         var row = 0;
         var col = 0;
         # First row is column headers.
-        foreach (var h; me.header) {
-            var w = content.addChild("text");
-            var l = typeof(h) == "func" ? h() : h;
-            w.node.setValues({ "label": l, "row": row, "col": col, halign: me.columns[col].halign });
-            set_default(w);
-            w = content.addChild("hrule");
-            w.node.setValues({ "row": row + 1, "col": col });
+        var headers = ["See", "Callsign", "Model", me.distText, nil, me.altText, nil, "Brg", "Chat", "Ign", "XPDR", "Ver", "Apt", "Set"];
+        me.headerLabels = {};
+        foreach (var h; headers) {
+            if (!h) {
+                col += 1;
+                continue;
+            }
+            me.headerLabels[string.lc(h)] = canvas.gui.widgets.Label.new(parent: me.scroll.getContent(), cfg: {
+                "text": h,
+            });
+            var colspan = 1;
+            if (col < size(headers) - 1 and headers[col + 1] == nil) {
+                colspan = 2;
+            }
+            me.scrollLayout.addItem(me.headerLabels[string.lc(h)], col, row, colspan, 1);
+            #me.scrollLayout.addItem(
+            #    canvas.gui.widgets.HorizontalRule.new(parent: me.scroll.getContent()),
+            #    col, row + 1,
+            #);
             col += 1;
         }
         row += 2;
-        var odd = 1;
+        me.columns = [
+            {type: "radio", property: "view", callback: func(callsign) {
+                multiplayer.view_select(callsign);
+            }},
+            {type: "text", property: "callsign", format: "%s"},
+            {type: "text", property: "model-short", format: "%s"},
+            {type: "text", property: me.distNodePath, format:"%8.2f"},
+            {type: "text", property: "distance_delta", format: "%s"},
+            {type: "text", property: me.altNodePath, format: "%7.0f"},
+            {type: "text", property: "ascent_descent", format: "%s"},
+            {type: "text", property: "bearing-to", format: "%3.0f"},
+            {type: "button", callback: func(callsign) {
+                multiplayer.compose_message(callsign);
+            }},
+            {type: "checkbox", property: "controls/invisible", enabled: 1, callback: func},
+            {type: "text", property: "id-code", format: "%s"},
+            {type: "text", property: "sim/multiplay/protocol-version", format: "%s"},
+            {type: "text", property: "airport-id", format: "%s"},
+            {type: "checkbox", property: "set-loaded", enabled: 0, callback: func},
+        ];
+
+        var viewingRadioButtonsGroup = canvas.gui.widgets.RadioButtonsGroup.new();
         # Add a row for each multiplayer aircraft.
         foreach (var mp; model.list) {
             var col = 0;
-            var color = me.fg[2];
+            var color = PilotsListDialog.PilotColor.AircraftNotInstalled;
             if (mp.node.getNode("model-installed").getValue()) {
-                color = me.fg[odd = !odd];
-                color = me.fg[1];
-            }
-            else{
-                #print("no model installed; check fallback");
-                var fbn = mp.node.getNode("sim/model/fallback-model-index");
-                if (fbn != nil){
-                    #print(" ->> got fallback node =",fbn.getValue());
+                color = PilotsListDialog.PilotColor.AircraftInstalled;
+            } else {
+                if (var fbn = mp.node.getNode("sim/model/fallback-model-index")) {
                     if (fbn.getValue() > 0) {
-                        color = me.fg[3];
+                        color = PilotsListDialog.PilotColor.AircraftFallbackProvided;
                     }
-                } else
-                    #print(" ->> no fallback node");
+                }
             }
             foreach (var column; me.columns) {
                 var w = nil;
                 if (column.type == "button") {
-                    w = content.addChild("button");
-                    w.node.setValues(column);
-                    set_default(w);
-                    w.setBinding("nasal", column.callback ~ "(\"" ~ mp.callsign ~ "\",);");
-                            w.node.setValues({ row: row, col: col});
+                    (func {
+                        var callsign = mp.callsign;
+                        var callback = column.callback;
+                        w = canvas.gui.widgets.Button.new(parent: me.scroll.getContent(), cfg: {"fixed-size": [20, 20]})
+                                        .listen("clicked", func(e) {
+                                            callback(callsign);
+                                        });
+                    })();
                 } else {
-                    var p = typeof(column.property) == "func" ? column.property() : column.property;
+                    var p = column.property;
                     if (column.type == "text") {
-                        w = content.addChild("text");
-                        w.node.setValues(column);
-                        set_default(w);
+                        w = canvas.gui.widgets.PropertyLabel.new(parent: me.scroll.getContent(), cfg: {
+                            "node": mp.node.getNode(p, 1),
+                            "text": column.format,
+                            "alignment": canvas.AlignRight,
+                        });
+                       w._view._text.setColor([color[0], color[1], color[2], color[3]]);
+                    } elsif (column.type == "radio") {
+                        (func {
+                            var callsign = mp.callsign;
+                            var callback = column.callback;
+                            w = canvas.gui.widgets.PropertyRadioButton.new(parent: me.scroll.getContent(), cfg: {
+                                "node": mp.node.getNode(p, 1),
+                                "radio-button-group": viewingRadioButtonsGroup,
+                                "fixed-size": [20, 20],
+                            })
+                                            .listen("checked", func {
+                                                callback(callsign);
+                                            });
+                        })();
                     } elsif (column.type == "checkbox") {
-                        w = content.addChild("checkbox");
-                        w.setBinding("nasal", column.callback ~ "(getprop(\"" ~ mp.root ~ "/" ~ column.argprop ~ "\"))");
-                        set_default(w);
+                        (func {
+                            var callsign = mp.callsign;
+                            var callback = column.callback;
+                            w = canvas.gui.widgets.PropertyCheckBox.new(parent: me.scroll.getContent(), cfg: {
+                                "node": mp.node.getNode(p, 1),
+                                "enabled": column.enabled,
+                                "fixed-size": [20, 20],
+                            })
+                                            .listen("toggled", func(e) {
+                                                callback(callsign);
+                                            });
+                        })();
                     }
-                    w.node.setValues({ row: row, col: col, live: 1, property: mp.root ~ "/" ~ p });
                 }
-                w.setColor(color[0], color[1], color[2], color[3]);
+
+                me.scrollLayout.addItem(w, col, row);
                 col += 1;
             }
             row += 1;
         }
-        if (me.x != nil)
-            me.dialog.set("x", me.x);
-        if (me.y != nil)
-            me.dialog.set("y", me.y);
-        me.update(me.loopid += 1);
-        fgcommand("dialog-new", me.dialog.prop());
-        fgcommand("dialog-show", me.dialog.prop());
-        me.update_view();
     },
     update_view: func() {
         # We are called when the aircraft being viewed has changed. We update
@@ -372,8 +480,7 @@ var dialog = {
         # Update actual view.
         view.model_view_handler.select(callsign, 1);
     },
-    update: func(id) {
-        id == me.loopid or return;
+    update: func {
         var self = geo.aircraft_position();
         foreach (var mp; model.list) {
             var n = mp.node;
@@ -382,8 +489,13 @@ var dialog = {
             var z = n.getNode("position/global-z").getValue();
             var ac = geo.Coord.new().set_xyz(x, y, z);
             var distance = nil;
-            var idcode = "----";
-            idcode = me.IDCode(n.getNode("instrumentation/transponder/transmitted-id").getValue());
+            var idcode = n.getNode("instrumentation/transponder/transmitted-id").getValue();
+
+            if (idcode == nil or idcode < 0) {
+                idcode = "----";
+            } else {
+                idcode = sprintf("%04d", idcode);
+            }
 
             call(func distance = self.distance_to(ac), nil, var err = []);
 
@@ -392,7 +504,7 @@ var dialog = {
                 if (me.cs_warnings[mp.callsign]!=1) {
                     # report each callsign once only (avoid cluttering)
                     me.cs_warnings[mp.callsign] = 1;
-                    print("Received invalid position data: " ~ debug._error(mp.callsign));
+                    logprint(LOG_WARN, "Received invalid position data: " ~ debug._error(mp.callsign));
                 }
                 #    debug.printerror(err);
                 #    debug.dump(self, ac, mp);
@@ -406,135 +518,96 @@ var dialog = {
                 # than just the 'sim' child (which we always create even if
                 # we couldn't load the -set.xml, in order to provide default
                 # values for views' config/z-offset-m values).
-                var set = n.getNode("set");
-                var set_numchildren = 0;
-                if (set != nil) set_numchildren = size(set.getChildren());
-                var set_loaded = (set_numchildren >= 2);
-                
-                var airport_id = n.getNode("sim/tower/airport-id");
-                if (airport_id != nil) {
-                    airport_id = airport_id.getValue();
+                var set_loaded = 0;
+                if (var set_node = n.getNode("set")) {
+                    set_loaded = (size(set_node.getChildren()) >= 2);
                 }
                 
-                var ascent_descent = n.getNode("velocities/vertical-speed-fps");
-                if (ascent_descent == nil) {
-                    ascent_descent = '';
-                }
-                else {
-                    ascent_descent = ascent_descent.getValue();
-                    if (ascent_descent > 1)         ascent_descent = '+';
-                    else if (ascent_descent < -1)   ascent_descent = '-';
-                    else ascent_descent = '';
+                var airport_id = "----";
+                if (var airport_id_node = n.getNode("sim/tower/airport-id")) {
+                    airport_id = airport_id_node.getValue();
                 }
                 
-                distance_delta_text = ' ';
-                var distance_km_old = n.getValue('distance-to-km');
-                if (distance_km_old != nil) {
-                    var distance_delta = distance - distance_km_old * 1000;
-                    if (distance_delta >  10)   distance_delta_text = ' +';
-                    if (distance_delta < -10)   distance_delta_text = ' -';
+                var ascent_descent = "";
+                if (var ascent_descent_node = n.getNode("velocities/vertical-speed-fps")) {
+                    ascent_descent = ascent_descent_node.getValue();
+                    ascent_descent = sprintf("%+4d", ascent_descent);
+                }
+                
+                var distance_delta_text = "";
+                if (var distance_km_old_node = n.getNode("distance-to-km")) {
+                    var distance_delta = distance - distance_km_old_node.getValue() * 1000;
+                    distance_delta_text = sprintf("%+6.2f", distance_delta);
                 }
                 n.setValues({
                     "model-short": mp.modelInstallNode.getValue() ? mp.model : "[" ~ mp.model ~ "]",
-                    "set-loaded": set_loaded ? "   *" : "    ",
+                    "set-loaded": set_loaded,
                     "bearing-to": self.course_to(ac),
                     "distance-to-km": distance / 1000.0,
                     "distance-to-nm": distance * M2NM,
-                    "distance_delta": distance_delta_text,
+                    "distance_delta": me.mode != "lag" ? distance_delta_text : "",
                     "position/altitude-m": mp.altitudeNode.getValue() * FT2M,
-                    "ascent_descent": ascent_descent,
-                    "controls/invisible": contains(ignore, mp.callsign),
+                    "ascent_descent": me.mode != "lag" ? ascent_descent : "",
                     "id-code": idcode,
                     "airport-id": airport_id,
                     "lag/lag-mod-averaged-ms": (mp.lagModAveragedNode.getDoubleValue() or 0) * 1000,
                 });
             }
         }
-        if (PILOTSDLG_RUNNING)
-            settimer(func me.update(id), 1, 1);
-    },
-    _redraw_: func {
-        if (me.dialog != nil) {
-            me.close();
-            me.create();
+        if (!me.lockPositionAndSize) {
+            me.scroll.setSizeHint(me.scrollLayout.sizeHint());
+            me.window.setSize(me.layout.sizeHint());
+            me.move(me._position);
         }
     },
-    toggle_unit: func {
-        me.unit += 1;
-        if (me.unit > 2) me.unit = 0;
-        if (me.unit == 0) {
-            me.alt_node = "position/altitude-m";
-            me.alt_hdr = "alt-m";
-            me.dist_hdr = "dist-km";
-            me.dist_node = "distance-to-km";
-            me.unit_button = "SI";
-        } elsif (me.unit == 1) {
-            me.alt_node = "position/altitude-ft";
-            me.dist_node = "distance-to-nm";
-            me.alt_hdr = "alt-ft";
-            me.dist_hdr = "dist-nm";
-            me.unit_button = "IM";
+    _redraw: func {
+        if (me.window != nil) {
+            me.scrollLayout.clear();
+            me.buildPilotsList();
+        }
+    },
+    select_mode: func(mode) {
+        if (mode == me.mode) {
+            return;
+        }
+        if (mode == "metric") {
+            me.altNodePath = "position/altitude-m";
+            me.distNodePath = "distance-to-km";
+            me.altText = "Altitude (m)";
+            me.distText = "Distance (km)";
+        } elsif (mode == "imperial") {
+            me.altNodePath = "position/altitude-ft";
+            me.distNodePath = "distance-to-nm";
+            me.altText = "Altitude (ft)";
+            me.distText = "Distance (nm)";
         } else {
-            me.alt_node = "lag/lag-mod-averaged-ms";
-            me.dist_node = "lag/pps-averaged";
-            me.alt_hdr = "lag-ms";
-            me.dist_hdr = "lag-pps";
-            me.unit_button = "Lag";
+            me.altNodePath = "lag/lag-mod-averaged-ms";
+            me.distNodePath = "lag/pps-averaged";
+            me.altText = "Lag (ms)";
+            me.distText = "Lag (pps)";
         }
-    },
-    toggle_ignore: func (callsign) {
-        if (contains(ignore, callsign)) {
-            delete(ignore, callsign);
-        } else {
-            ignore[callsign] = 1;
-        }
-    },
-    close: func {
-        if (me.dialog != nil) {
-            me.x = me.dialog.prop().getNode("x").getValue();
-            me.y = me.dialog.prop().getNode("y").getValue();
-        }
-        fgcommand("dialog-close", me.dialog.prop());
+        me.mode = mode;
+        me.modeBox.setSelectedByValue(mode);
+        me._redraw();
     },
     del: func {
-        PILOTSDLG_RUNNING = 0;
-        me.close();
-        delete(gui.dialog, me.name);
-        foreach (var l; me.listeners)
-            removelistener(l);
-    },
-    show: func {
-        if (!PILOTSDLG_RUNNING) {
-            PILOTSDLG_RUNNING = 1;
-            me.init(-2, -2);
-            me.create();
-            me.update(me.loopid += 1);
-        }
-    },
-    toggle: func {
-        if (!PILOTSDLG_RUNNING)
-            me.show();
-        else
-            me.del();
-    },
-    IDCode: func(code){
-
-        var idcode= "----";
-
-        if (code != nil )
-            {
-            if (code < 0)
-                {
-                idcode = "----";
-                }
-            else
-                {
-                idcode = sprintf("%04d", code);
-                }
+        if (me.window != nil) {
+            var pos = me.window.getPosition();
+            me.x = pos[0];
+            me.y = pos[1];
+            for (var i = 0; i < me.scrollLayout.count(); i += 1) {
+                me.scrollLayout.takeAt(i);
             }
-
-        return idcode;
-        },
+            me.window.del();
+            me.window = nil;
+        }
+        globals.MainWindow.removeSizeChangedCallback(me._mainwindowSizeChangedCallback);
+        me.updateTimer.stop();
+        foreach (var l; me.listeners) {
+            removelistener(l);
+        }
+        PilotsListDialog._instance = nil;
+    },
 };
 
 
