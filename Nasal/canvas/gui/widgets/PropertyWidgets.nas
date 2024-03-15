@@ -61,7 +61,9 @@ gui.widgets.PropertyWidget = {
 		if (isfunc(me._cleanup)) {
 			me._cleanup();
 		}
-		me.parents[2].del();
+		if (isfunc(me.parents[2]["del"])) {
+			me.parents[2].del();
+		}
 	}
 };
 
