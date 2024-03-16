@@ -252,7 +252,7 @@ gui.widgets.PropertyComboBox = {
 	},
 	
 	_nodeChanged: func {
-		me.setCurrentByValue(me._node.getValue());
+		me.setSelectedByValue(me._node.getValue());
 		me.listen("selected-item-changed", func(e) {
 			if (!me._propertySynced) {
 				return;
@@ -266,7 +266,7 @@ gui.widgets.PropertyComboBox = {
 				return;
 			}
 			if (n.getValue() != me._items[m._currentIndex].menuValue) {
-				me.setCurrentByValue(n.getValue());
+				me.setSelectedByValue(n.getValue());
 			}
 		}, 0, 0);
 	},
