@@ -125,8 +125,7 @@ var Window = {
 
     # arg = [child, listener_node, mode, is_child_event]
     setlistener(m._node, func m._propCallback(arg[0], arg[2]), 0, 2);
-    if( type )
-      m.set("type", type);
+    m.set("type", type or "window");
 
     return m;
   },
@@ -264,7 +263,7 @@ var Window = {
     setInputFocus(nil);
     return me;
   },
-  setPosition: func(left=nil, top=nil, right=nil, bottom=nil)
+  setPosition: func(left=nil, top=nil, right=nil, bottom=nil, center=nil)
   {
     if (typeof(left) == "vector") {
      if (size(left) == 2) {
@@ -285,15 +284,22 @@ var Window = {
 
     if (left != nil) {
       me.setInt("tf/t[0]", left);
+      me._node.removeChild("right");
     }
     if (top != nil) {
       me.setInt("tf/t[1]", top);
+      me._node.removeChild("bottom");
     }
     if (right != nil) {
       me.setInt("right", right);
     }
     if (bottom != nil) {
       me.setInt("bottom", bottom);
+    }
+    if (center != nil) {
+      me.set("center", center);
+    } else {
+      me._node.removeChild("center");
     }
     return me;
   },
@@ -307,10 +313,27 @@ var Window = {
     var bottom = me.get("bottom");
     return [top, left, bottom, right];
   },
-  centerOnScreen: func {
-    var desktopSize = [props.globals.getValue("/sim/gui/canvas/size[0]"), props.globals.getValue("/sim/gui/canvas/size[1]")];
-    var pos = [desktopSize[0] / 2 - me.getSize()[0] / 2 - 1, desktopSize[1] / 2 - me.getSize()[1] / 2 - 12];
+
+  # @description Center window on screen
+  # @param direction Optional[int] Flag to specify direction in which centering should happen
+  #                                                         Valid values are:
+  #                                                         * 0 = Center horizontally
+  #                                                         * 1 = Center vertically
+  #                                                         * 2 = Center in both directions
+  # @return canvas.gui.Window This window to support method chaining
+  centerOnScreen: func(direction=2) {
+    var desktopSize = globals.MainWindow.getSize();
+    var center = [(desktopSize[0] - me.getSize()[0]) / 2 - me._frame_width, (desktopSize[1] - me.getSize()[1] - me._title_bar_height) / 2];
+    var pos = me.getPosition();
+    if (direction == 0 or direction == 2) {
+      pos[0] = center[0];
+    }
+    if (direction == 1 or direction == 2) {
+      pos[1] = center[1];
+    }
     me.setPosition(pos);
+
+    return me;
   },
   setSize: func
   {
@@ -323,6 +346,8 @@ var Window = {
 
     if( me.onResize != nil )
       me.onResize();
+
+    me.setPosition(me.getCSSPosition(), me.get("center"));
 
     return me;
   },
@@ -442,10 +467,20 @@ var Window = {
     elsif( name == "bottom" )
       me._handlePositionAbsolute(child, mode, name, 1);
 
+    if (name == "center") {
+      if (mode == 0 or mode == 1 and (var direction = child.getValue()) != -1) {
+        me.centerOnScreen(direction);
+      }
+    }
+
     if (mode == 0) {
-        if (name == "type") me._updateDecoration();
-        elsif (name.starts_with("resize-")) me._handleResize(child, name);
-        elsif (name == "size") me._resizeDecoration();
+        if (name == "type") {
+          me._updateDecoration();
+        } elsif (name.starts_with("resize-")) {
+          me._handleResize(child, name);
+        } elsif (name == "size") {
+          me._resizeDecoration();
+        }
     }
   },
   _handlePositionAbsolute: func(child, mode, name, index)
@@ -486,143 +521,149 @@ var Window = {
   },
   _handleResize: func(child, name)
   {
-    var is_status = name == "resize-status";
-    if( !is_status and !me["_resize"] )
-      return;
-
-    var min_size = [75, 100];
-
-    var x = me.get("tf/t[0]");
-    var y = me.get("tf/t[1]");
-    var old_size = [me.get("size[0]"), me.get("size[1]")];
-    if (me.get("lock-aspect-ratio")) 
-    {
-      var old_csize = [me.get("content-size[0]"), me.get("content-size[1]")];
-      var dx = old_size[0] - old_csize[0];
-      var dy = old_size[1] - old_csize[1];
-      var ar = me.get("aspect-ratio");
-
-      if (name == "resize-right") 
-        me.set("resize-bottom", (me.get("resize-right") - dx) / ar + dy);
-      if (name == "resize-bottom") 
-        me.set("resize-right", (me.get("resize-bottom") - dy)* ar + dx);
-
-      if (name == "resize-left") 
-        me.set("resize-top", (me.get("resize-left"))/ ar );
-      if (name == "resize-top") 
-        me.set("resize-left", (me.get("resize-top"))* ar );
-    }
-
-    var l = x + math.min(me.get("resize-left"), old_size[0] - min_size[0]);
-    var t = y + math.min(me.get("resize-top"), old_size[1] - min_size[1]);
-    var r = x + math.max(me.get("resize-right"), min_size[0]);
-    var b = y + math.max(me.get("resize-bottom"), min_size[1]);
-    if( is_status )
-    {
-      me._resize = child.getValue();
-
-      if( me._resize and gui.region_highlight == nil )
-        gui.region_highlight =
-          getDesktop().createChild("path", "highlight")
-                      .set("stroke", "#ffa500")
-                      .set("stroke-width", 2)
-                      .set("fill", "rgba(255, 165, 0, 0.15)")
-                      .set("z-index", 100);
-      else if( !me._resize and gui.region_highlight != nil )
-      {
-        gui.region_highlight.hide();
-        me.setPosition(l, t);
-        me.setSize
-        (
-          me.get("content-size[0]") + (r - l) - old_size[0],
-          me.get("content-size[1]") + (b - t) - old_size[1],
-        );
-        if( me.onResize != nil )
-          me.onResize();
+    if (me.get("type") == "window" or me.get("type") == "dialog") {
+      var is_status = name == "resize-status";
+      if( !is_status and !me["_resize"] )
         return;
-      }
-    }
-    else if( !me["_resize"] )
-      return;
 
-    gui.region_highlight.reset()
-                        .moveTo(l, t)
-                        .horizTo(r)
-                        .vertTo(b)
-                        .horizTo(l)
-                        .close()
-                        .update()
-                        .show();
+      var min_size = [75, 100];
+
+      var x = me.get("tf/t[0]");
+      var y = me.get("tf/t[1]");
+      var old_size = [me.get("size[0]"), me.get("size[1]")];
+      if (me.get("lock-aspect-ratio")) 
+      {
+        var old_csize = [me.get("content-size[0]"), me.get("content-size[1]")];
+        var dx = old_size[0] - old_csize[0];
+        var dy = old_size[1] - old_csize[1];
+        var ar = me.get("aspect-ratio");
+
+        if (name == "resize-right") 
+          me.set("resize-bottom", (me.get("resize-right") - dx) / ar + dy);
+        if (name == "resize-bottom") 
+          me.set("resize-right", (me.get("resize-bottom") - dy)* ar + dx);
+
+        if (name == "resize-left") 
+          me.set("resize-top", (me.get("resize-left"))/ ar );
+        if (name == "resize-top") 
+          me.set("resize-left", (me.get("resize-top"))* ar );
+      }
+
+      var l = x + math.min(me.get("resize-left"), old_size[0] - min_size[0]);
+      var t = y + math.min(me.get("resize-top"), old_size[1] - min_size[1]);
+      var r = x + math.max(me.get("resize-right"), min_size[0]);
+      var b = y + math.max(me.get("resize-bottom"), min_size[1]);
+      if( is_status )
+      {
+        me._resize = child.getValue();
+
+        if( me._resize and gui.region_highlight == nil )
+          gui.region_highlight =
+            getDesktop().createChild("path", "highlight")
+                        .set("stroke", "#ffa500")
+                        .set("stroke-width", 2)
+                        .set("fill", "rgba(255, 165, 0, 0.15)")
+                        .set("z-index", 100);
+        else if( !me._resize and gui.region_highlight != nil )
+        {
+          gui.region_highlight.hide();
+          me.setPosition(l, t);
+          me.setSize
+          (
+            me.get("content-size[0]") + (r - l) - old_size[0],
+            me.get("content-size[1]") + (b - t) - old_size[1],
+          );
+          if( me.onResize != nil )
+            me.onResize();
+          return;
+        }
+      }
+      else if( !me["_resize"] )
+        return;
+
+      gui.region_highlight.reset()
+                          .moveTo(l, t)
+                          .horizTo(r)
+                          .vertTo(b)
+                          .horizTo(l)
+                          .close()
+                          .update()
+                          .show();
+    }
   },
   _updateDecoration: func()
   {
-    var border_radius = 9;
-    me.set("decoration-border", "25 1 1");
-    me.set("shadow-inset", int((1 - math.cos(45 * D2R)) * border_radius + 0.5));
-    me.set("shadow-radius", 5);
-    me.setBool("update", 1);
+    if (me.get("type") == "window" or me.get("type") == "dialog") {
+      var border_radius = 9;
+      me.set("decoration-border", "25 1 1");
+      me.set("shadow-inset", int((1 - math.cos(45 * D2R)) * border_radius + 0.5));
+      me.set("shadow-radius", 5);
+      me.setBool("update", 1);
 
-    var canvas_deco = me.getCanvasDecoration();
-    canvas_deco.addEventListener("mousedown", func me.raise());
-    canvas_deco.set("blend-source-rgb", "src-alpha");
-    canvas_deco.set("blend-destination-rgb", "one-minus-src-alpha");
-    canvas_deco.set("blend-source-alpha", "one");
-    canvas_deco.set("blend-destination-alpha", "one");
+      var canvas_deco = me.getCanvasDecoration();
+      canvas_deco.addEventListener("mousedown", func me.raise());
+      canvas_deco.set("blend-source-rgb", "src-alpha");
+      canvas_deco.set("blend-destination-rgb", "one-minus-src-alpha");
+      canvas_deco.set("blend-source-alpha", "one");
+      canvas_deco.set("blend-destination-alpha", "one");
 
-    var group_deco = canvas_deco.getGroup("decoration");
-    var title_bar = group_deco.createChild("group", "title_bar");
-    me._title_bar_bg = title_bar.createChild("path");
-    me._top_line = title_bar.createChild("path", "top-line");
-    me._frame = title_bar.createChild("path");
-    me._frame.set("fill", "none");
-    me._frame.set("stroke-width", me._frame_width);
+      var group_deco = canvas_deco.getGroup("decoration");
+      var title_bar = group_deco.createChild("group", "title_bar");
+      me._title_bar_bg = title_bar.createChild("path");
+      me._top_line = title_bar.createChild("path", "top-line");
+      me._frame = title_bar.createChild("path");
+      me._frame.set("fill", "none");
+      me._frame.set("stroke-width", me._frame_width);
 
-    # close icon
-    var x = 10;
-    var y = 3;
-    var w = 19;
-    var h = 19;
+      # close icon
+      var x = 10;
+      var y = 3;
+      var w = 19;
+      var h = 19;
 
-    var button_close = WindowButton.new(title_bar, "close")
-                                   .move(x, y);
-    button_close.listen("clicked", func me.onClose());
+      var button_close = WindowButton.new(title_bar, "close")
+                                     .move(x, y);
+      button_close.listen("clicked", func me.onClose());
 
-    # title
-    var title = me.get("title", "Canvas Dialog");
-    me._title = title_bar.createChild("text", "title")
-        .setText(title)
-        .setAlignment("left-center")
-        .set("character-size", 14)
-        .setFont("LiberationFonts/LiberationSans-Bold.ttf")
-        .setTranslation(int(x + 1.5 * w + 0.5), int(y + 0.5 * h + 0.5));
-   
-    me._node.getNode("title", 1).alias(me._title._node.getPath() ~ "/text");
-    title_bar.addEventListener("drag", func(e) me.move(e.deltaX, e.deltaY));
+      # title
+      var title = me.get("title", "Canvas Dialog");
+      me._title = title_bar.createChild("text", "title")
+          .setText(title)
+          .setAlignment("left-center")
+          .set("character-size", 14)
+          .setFont("LiberationFonts/LiberationSans-Bold.ttf")
+          .setTranslation(int(x + 1.5 * w + 0.5), int(y + 0.5 * h + 0.5));
+     
+      me._node.getNode("title", 1).alias(me._title._node.getPath() ~ "/text");
+      title_bar.addEventListener("drag", func(e) me.move(e.deltaX, e.deltaY));
 
-    me._resizeDecoration();
-    me._onStateChange();
+      me._resizeDecoration();
+      me._onStateChange();
+    }
   },
   _resizeDecoration: func()
   {
-    if( me["_title_bar_bg"] == nil )
-      return;
+    if (me.get("type") == "window" or me.get("type") == "dialog") {
+      if( me["_title_bar_bg"] == nil )
+        return;
 
-    var border_radius = 9;
-    me._title_bar_bg
-        .reset()
-        .rect( 0, 0,
-               me.get("size[0]"), me._title_bar_height, 
-               {"border-top-radius": border_radius} );
-    me._frame
-        .reset()
-        .rect( 0, 0,
-               me.get("size[0]"), me.get("size[1]"),
-               {"border-top-radius": border_radius} );
+      var border_radius = 9;
+      me._title_bar_bg
+          .reset()
+          .rect( 0, 0,
+                 me.get("size[0]"), me._title_bar_height, 
+                 {"border-top-radius": border_radius} );
+      me._frame
+          .reset()
+          .rect( 0, 0,
+                 me.get("size[0]"), me.get("size[1]"),
+                 {"border-top-radius": border_radius} );
 
-    me._top_line
-        .reset()
-        .moveTo(border_radius - 2, 2)
-        .lineTo(me.get("size[0]") - border_radius + 2, 2);
+      me._top_line
+          .reset()
+          .moveTo(border_radius - 2, 2)
+          .lineTo(me.get("size[0]") - border_radius + 2, 2);
+    }
   }
 }; #Window
 
