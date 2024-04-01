@@ -2,5 +2,6 @@
 
 <PropertyList>
   <type>quad</type>
+  <multiview>true</multiview>
   <effect>Effects/HDR/bloom-downsample-rest</effect>
 </PropertyList>

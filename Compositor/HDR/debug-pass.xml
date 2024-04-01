@@ -2,6 +2,7 @@
 
 <PropertyList>
   <type>quad</type>
+  <multiview>true</multiview>
   <clear-mask>depth</clear-mask>
   <condition>
     <property>/sim/rendering/hdr/debug/show-gbuffer</property>

@@ -2,6 +2,7 @@
 
 <PropertyList>
   <type>quad</type>
+  <multiview>true</multiview>
   <condition>
     <equals>
       <property>/sim/rendering/hdr/antialiasing-technique</property>

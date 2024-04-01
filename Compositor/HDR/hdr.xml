@@ -299,6 +299,7 @@
   <pass>
     <name>debug-clear-gbuffer</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/gbuffer-debug-clear</effect>
     <condition>
       <property>/sim/rendering/hdr/debug/show-gbuffer</property>
@@ -788,6 +789,7 @@
   <pass>
     <name>gtao</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/gtao</effect>
     <clear-mask>color</clear-mask>
     <clear-color type="vec4d">1.0 1.0 1.0 1.0</clear-color>
@@ -810,6 +812,7 @@
   <pass>
     <name>gtao-denoiser</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/gtao-denoiser</effect>
     <condition>
       <property>/sim/rendering/hdr/ambient-occlusion/enabled</property>
@@ -878,6 +881,7 @@
   <pass>
     <name>shading-opaque</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/shading-opaque</effect>
     <use-shadow-pass>csm0</use-shadow-pass>
     <use-shadow-pass>csm1</use-shadow-pass>
@@ -954,6 +958,7 @@
   <pass>
     <name>shading-water</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/shading-water</effect>
     <binding>
       <unit>0</unit>
@@ -1067,6 +1072,7 @@
   <pass>
     <name>demosaic</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/demosaic</effect>
     <binding>
       <unit>0</unit>
@@ -1113,6 +1119,7 @@
   <pass>
     <name>histogram-bin</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/histogram-bin</effect>
     <binding>
       <unit>0</unit>
@@ -1131,6 +1138,7 @@
   <pass>
     <name>histogram-column</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/histogram-column</effect>
     <binding>
       <unit>0</unit>
@@ -1229,6 +1237,7 @@
   <pass>
     <name>bloom-downsample1</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/bloom-downsample-first</effect>
     <binding>
       <unit>0</unit>
@@ -1405,6 +1414,7 @@
   <pass>
     <name>post</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/postprocess</effect>
     <binding>
       <unit>0</unit>
@@ -1432,6 +1442,7 @@
   <pass>
     <name>no-aa-display</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/trivial</effect>
     <condition>
       <equals>
@@ -1449,6 +1460,7 @@
   <pass>
     <name>fxaa</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <effect>Effects/HDR/fxaa</effect>
     <condition>
       <equals>
@@ -1598,6 +1610,7 @@
   <pass>
     <name>debug-histogram</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <clear-mask>depth</clear-mask>
     <effect>Effects/HDR/debug-histogram</effect>
     <condition>
@@ -1618,6 +1631,7 @@
   <pass>
     <name>debug-aerial-perspective</name>
     <type>quad</type>
+    <multiview>true</multiview>
     <clear-mask>depth</clear-mask>
     <effect>Effects/HDR/debug-aerial-perspective</effect>
     <condition>
