@@ -7,7 +7,8 @@ in VS_OUT {
     vec4 spectral_irradiance;
 } fs_in;
 
-uniform vec4 fg_Viewport;
+FG_VIEW_GLOBAL
+uniform vec4 fg_Viewport[FG_NUM_VIEWS];
 uniform mat4 osg_ProjectionMatrix;
 
 // math.glsl
@@ -44,8 +45,8 @@ void main()
 
     // Focal length is the first element of the projection matrix multiplied by
     // half the image plane width.
-    float f = osg_ProjectionMatrix[0][0] * fg_Viewport.z * 0.5;
-    float omega = solid_angle_pixel_aprox(gl_FragCoord.xy, fg_Viewport.zw, f);
+    float f = osg_ProjectionMatrix[0][0] * fg_Viewport[FG_VIEW_ID].z * 0.5;
+    float omega = solid_angle_pixel_aprox(gl_FragCoord.xy, fg_Viewport[FG_VIEW_ID].zw, f);
 
     vec4 spectral_radiance = fs_in.spectral_irradiance / max(omega, 1e-8);
 

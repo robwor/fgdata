@@ -1,7 +1,8 @@
 $FG_GLSL_VERSION
 
-uniform mat4 fg_ViewMatrixInverse;
-uniform vec2 fg_FOVScale;
+FG_VIEW_GLOBAL
+uniform mat4 fg_ViewMatrixInverse[FG_NUM_VIEWS];
+uniform vec2 fg_FOVScale[FG_NUM_VIEWS];
 
 // logarithmic_depth.glsl
 float logdepth_decode(float z);
@@ -17,12 +18,12 @@ vec3 get_view_space_from_depth(vec2 uv, float depth)
 {
     float vs_depth = logdepth_decode(depth);
     vec2 half_ndc_pos = vec2(0.5) - uv;
-    vec3 vs_pos = vec3(half_ndc_pos * fg_FOVScale * (-vs_depth), -vs_depth);
+    vec3 vs_pos = vec3(half_ndc_pos * fg_FOVScale[FG_VIEW_ID] * (-vs_depth), -vs_depth);
     return vs_pos;
 }
 
 vec3 get_world_space_from_depth(vec2 uv, float depth)
 {
     vec4 vs_p = vec4(get_view_space_from_depth(uv, depth), 1.0);
-    return (fg_ViewMatrixInverse * vs_p).xyz;
+    return (fg_ViewMatrixInverse[FG_VIEW_ID] * vs_p).xyz;
 }

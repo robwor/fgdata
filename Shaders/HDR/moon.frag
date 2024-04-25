@@ -11,7 +11,8 @@ in VS_OUT {
 uniform sampler2D color_tex;
 uniform sampler2D normal_tex;
 
-uniform vec3 fg_SunDirection;
+FG_VIEW_GLOBAL
+uniform vec3 fg_SunDirection[FG_NUM_VIEWS];
 
 // math.glsl
 float M_1_4PI();
@@ -42,7 +43,7 @@ void main()
     vec3 N = normalize(fs_in.vertex_normal);
     N = perturb_normal(N, fs_in.view_vector, fs_in.texcoord, normal_tex);
 
-    vec3 L = fg_SunDirection;
+    vec3 L = fg_SunDirection[FG_VIEW_ID];
     vec3 V = normalize(-fs_in.view_vector);
 
     float NdotL = max(dot(N, L), 0.0);

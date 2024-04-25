@@ -7,8 +7,10 @@ in vec4 ap_color;
 uniform sampler2D base_tex;
 
 uniform mat4 osg_ProjectionMatrix;
-uniform vec4 fg_Viewport;
-uniform vec3 fg_SunDirection;
+
+FG_VIEW_GLOBAL
+uniform vec4 fg_Viewport[FG_NUM_VIEWS];
+uniform vec3 fg_SunDirection[FG_NUM_VIEWS];
 
 uniform float density = 30.0;
 uniform float max_sample_dist = 0.05;
@@ -27,10 +29,10 @@ vec4 cloud_common_frag()
         discard;
 
     // Pixel position in screen space [-1, 1]
-    vec2 screen_uv = ((gl_FragCoord.xy - fg_Viewport.xy) / fg_Viewport.zw) * 2.0 - 1.0;
+    vec2 screen_uv = ((gl_FragCoord.xy - fg_Viewport[FG_VIEW_ID].xy) / fg_Viewport[FG_VIEW_ID].zw) * 2.0 - 1.0;
 
     // XXX: Sun's screen-space position. This should be passed as an uniform
-    vec4 sun_dir_screen = osg_ProjectionMatrix * vec4(fg_SunDirection, 0.0);
+    vec4 sun_dir_screen = osg_ProjectionMatrix * vec4(fg_SunDirection[FG_VIEW_ID], 0.0);
     sun_dir_screen.xyz /= sun_dir_screen.w;
     sun_dir_screen.xyz = normalize(sun_dir_screen.xyz);
 
@@ -54,7 +56,7 @@ vec4 cloud_common_frag()
     // When the camera is facing perpendicularly to the Sun, the Sun's
     // screen-space location can tend toward infinity. Fade the effect toward
     // the perpendicular.
-    float fade = smoothstep(0.1, 0.5, dot(vec3(0.0, 0.0, -1.0), fg_SunDirection));
+    float fade = smoothstep(0.1, 0.5, dot(vec3(0.0, 0.0, -1.0), fg_SunDirection[FG_VIEW_ID]));
 
     vec4 color = base * cloud_color;
     color.rgb *= base.a * mix(0.5, T, fade);

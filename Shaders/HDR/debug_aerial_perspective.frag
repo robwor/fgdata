@@ -7,14 +7,15 @@ in vec2 texcoord;
 
 uniform sampler3D aerial_perspective_tex;
 
-uniform vec4 fg_Viewport;
+FG_VIEW_GLOBAL
+uniform vec4 fg_Viewport[FG_NUM_VIEWS];
 
 // exposure.glsl
 vec3 apply_exposure(vec3 color);
 
 void main()
 {
-    vec2 pixel_size = (5.0*8.0) / fg_Viewport.zw;
+    vec2 pixel_size = (5.0*8.0) / fg_Viewport[FG_VIEW_ID].zw;
     float col = raw_texcoord.x * 8.0;
     float row = raw_texcoord.y * 8.0;
     float row2 = raw_texcoord.y * 4.0;

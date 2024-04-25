@@ -1,6 +1,7 @@
 $FG_GLSL_VERSION
 
-uniform vec3 fg_SunDirection;
+FG_VIEW_GLOBAL
+uniform vec3 fg_SunDirection[FG_NUM_VIEWS];
 
 // shadows.glsl
 float get_shadowing(vec3 P, vec3 N, vec3 L);
@@ -43,11 +44,11 @@ vec3 eval_lights_transparent(vec3 base_color,
 
     // Evaluate sunlight
     vec3 sun_radiance = get_sun_radiance(ws_P);
-    float shadow_factor = get_shadowing(P, N, fg_SunDirection);
+    float shadow_factor = get_shadowing(P, N, fg_SunDirection[FG_VIEW_ID]);
     vec3 color = surface_eval_analytical(
         base_color, metallic, roughness, f0,
         sun_radiance, shadow_factor,
-        N, fg_SunDirection, V);
+        N, fg_SunDirection[FG_VIEW_ID], V);
 
     // Evaluate image-based lights
     vec3 ws_N = (view_matrix_inverse * vec4(N, 0.0)).xyz;
@@ -66,7 +67,7 @@ vec3 eval_lights_transparent(vec3 base_color,
     // Pre-expose
     color = apply_exposure(color);
 
-    color = debug_shadow_color(color, P, N, fg_SunDirection);
+    color = debug_shadow_color(color, P, N, fg_SunDirection[FG_VIEW_ID]);
 
     return color;
 }

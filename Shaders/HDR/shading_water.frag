@@ -9,8 +9,9 @@ uniform sampler2D gbuffer1_tex;
 uniform sampler2D depth_tex;
 uniform samplerCube prefiltered_envmap_tex;
 
-uniform mat4 fg_ViewMatrixInverse;
-uniform vec3 fg_SunDirection;
+FG_VIEW_GLOBAL
+uniform mat4 fg_ViewMatrixInverse[FG_NUM_VIEWS];
+uniform vec3 fg_SunDirection[FG_NUM_VIEWS];
 
 // math.glsl
 float M_PI();
@@ -61,11 +62,11 @@ void main()
 
     vec3 P = get_view_space_from_depth(texcoord, depth);
     vec3 V = normalize(-P);
-    vec3 L = fg_SunDirection;
+    vec3 L = fg_SunDirection[FG_VIEW_ID];
 
     vec3 refl = reflect(-V, N);
-    vec3 ws_N = (fg_ViewMatrixInverse * vec4(N, 0.0)).xyz;
-    vec3 ws_refl = (fg_ViewMatrixInverse * vec4(refl, 0.0)).xyz;
+    vec3 ws_N = (fg_ViewMatrixInverse[FG_VIEW_ID] * vec4(N, 0.0)).xyz;
+    vec3 ws_refl = (fg_ViewMatrixInverse[FG_VIEW_ID] * vec4(refl, 0.0)).xyz;
 
     vec3 H = normalize(L + V);
     float VdotH = max(dot(V, H), 1e-4);

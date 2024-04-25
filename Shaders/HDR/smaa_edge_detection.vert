@@ -37,10 +37,11 @@ $FG_GLSL_VERSION
 out vec2 texcoord;
 out vec4 v_offset[3];
 
-uniform vec4 fg_Viewport;
+FG_VIEW_GLOBAL
+uniform vec4 fg_Viewport[FG_NUM_VIEWS];
 
 #define mad(a, b, c) (a * b + c)
-#define SMAA_RT_METRICS vec4(1.0 / fg_Viewport.z, 1.0 / fg_Viewport.w, fg_Viewport.z, fg_Viewport.w)
+#define SMAA_RT_METRICS vec4(1.0 / fg_Viewport[FG_VIEW_ID].z, 1.0 / fg_Viewport[FG_VIEW_ID].w, fg_Viewport[FG_VIEW_ID].z, fg_Viewport[FG_VIEW_ID].w)
 
 // mvr.vert
 vec2 mvr_raw_texcoord_transform_fb(vec2 raw_texcoord);

@@ -1,6 +1,7 @@
 $FG_GLSL_VERSION
 
-uniform vec3 fg_SunDirection;
+FG_VIEW_GLOBAL
+uniform vec3 fg_SunDirection[FG_NUM_VIEWS];
 
 // gtao.glsl
 float get_ambient_occlusion(vec2 uv, vec3 albedo);
@@ -53,9 +54,9 @@ vec3 eval_lights(vec3 base_color,
 
     // Evaluate sunlight
     vec3 sun_radiance = get_sun_radiance(ws_P);
-    float shadow_factor = get_shadowing(P, N, fg_SunDirection);
+    float shadow_factor = get_shadowing(P, N, fg_SunDirection[FG_VIEW_ID]);
     if (shadow_factor > 0.0) {
-        shadow_factor *= get_contact_shadow(P, fg_SunDirection, projection_matrix);
+        shadow_factor *= get_contact_shadow(P, fg_SunDirection[FG_VIEW_ID], projection_matrix);
     }
     vec3 color = surface_eval_analytical(base_color,
                                          metallic,
@@ -63,7 +64,7 @@ vec3 eval_lights(vec3 base_color,
                                          f0,
                                          sun_radiance,
                                          shadow_factor,
-                                         N, fg_SunDirection, V);
+                                         N, fg_SunDirection[FG_VIEW_ID], V);
 
     // Evaluate all scene lights
     color += eval_scene_lights(base_color,
@@ -93,7 +94,7 @@ vec3 eval_lights(vec3 base_color,
     // Pre-expose
     color = apply_exposure(color);
 
-    color = debug_shadow_color(color, P, N, fg_SunDirection);
+    color = debug_shadow_color(color, P, N, fg_SunDirection[FG_VIEW_ID]);
 
     return color;
 }

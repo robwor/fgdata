@@ -3,10 +3,11 @@ $FG_GLSL_VERSION
 uniform sampler2DShadow shadow_tex;
 uniform sampler2D depth_tex; // For Screen Space Shadows
 
-uniform mat4 fg_LightMatrix_csm0;
-uniform mat4 fg_LightMatrix_csm1;
-uniform mat4 fg_LightMatrix_csm2;
-uniform mat4 fg_LightMatrix_csm3;
+FG_VIEW_GLOBAL
+uniform mat4 fg_LightMatrix_csm0[FG_NUM_VIEWS];
+uniform mat4 fg_LightMatrix_csm1[FG_NUM_VIEWS];
+uniform mat4 fg_LightMatrix_csm2[FG_NUM_VIEWS];
+uniform mat4 fg_LightMatrix_csm3[FG_NUM_VIEWS];
 
 uniform bool debug_shadow_cascades;
 uniform float normal_bias;
@@ -198,10 +199,10 @@ float get_shadowing(vec3 P, vec3 N, vec3 L)
     float NdotL = saturate(dot(N, L));
 
     vec4 ls_P[4];
-    ls_P[0] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm0);
-    ls_P[1] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm1);
-    ls_P[2] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm2);
-    ls_P[3] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm3);
+    ls_P[0] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm0[FG_VIEW_ID]);
+    ls_P[1] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm1[FG_VIEW_ID]);
+    ls_P[2] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm2[FG_VIEW_ID]);
+    ls_P[3] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm3[FG_VIEW_ID]);
 
     vec2 map_size = vec2(textureSize(shadow_tex, 0));
     float visibility = 1.0;
@@ -254,10 +255,10 @@ vec3 debug_shadow_color(vec3 color, vec3 P, vec3 N, vec3 L)
     float NdotL = saturate(dot(N, L));
 
     vec4 ls_P[4];
-    ls_P[0] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm0);
-    ls_P[1] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm1);
-    ls_P[2] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm2);
-    ls_P[3] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm3);
+    ls_P[0] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm0[FG_VIEW_ID]);
+    ls_P[1] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm1[FG_VIEW_ID]);
+    ls_P[2] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm2[FG_VIEW_ID]);
+    ls_P[3] = get_light_space_position(P, N, NdotL, fg_LightMatrix_csm3[FG_VIEW_ID]);
 
     vec3 debug_color;
     if (is_inside_cascade(ls_P[0]))

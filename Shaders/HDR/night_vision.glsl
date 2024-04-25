@@ -2,7 +2,8 @@ $FG_GLSL_VERSION
 
 uniform bool night_vision_enabled;
 
-uniform vec4 fg_Viewport;
+FG_VIEW_GLOBAL
+uniform vec4 fg_Viewport[FG_NUM_VIEWS];
 uniform float osg_SimulationTime;
 
 const float FLICKER_AMOUNT = 0.05;
@@ -21,7 +22,7 @@ vec3 night_vision_apply(vec3 color, vec2 uv)
         return color;
     }
     float lum = linear_srgb_to_luminance(color);
-    float noise = noise_3d(vec3(uv * fg_Viewport.zw / GRAIN_SIZE,
+    float noise = noise_3d(vec3(uv * fg_Viewport[FG_VIEW_ID].zw / GRAIN_SIZE,
                                 mod(osg_SimulationTime * 10000.0, 10000.0)));
     lum += (noise - 0.5) * NOISE_AMOUNT;
     float flicker = rand_1d(osg_SimulationTime) * FLICKER_AMOUNT;

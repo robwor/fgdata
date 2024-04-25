@@ -2,9 +2,10 @@ $FG_GLSL_VERSION
 
 uniform sampler2D transmittance_tex;
 
+FG_VIEW_GLOBAL
 uniform float fg_CameraDistanceToEarthCenter;
 uniform float fg_EarthRadius;
-uniform vec3 fg_CameraViewUp;
+uniform vec3 fg_CameraViewUp[FG_NUM_VIEWS];
 
 const float ATMOSPHERE_RADIUS = 6471e3;
 
@@ -20,7 +21,7 @@ vec4 celestial_body_transmittance(vec3 V)
     float normalized_altitude =
         (fg_CameraDistanceToEarthCenter - fg_EarthRadius)
         / (ATMOSPHERE_RADIUS - fg_EarthRadius);
-    float cos_theta = dot(V, fg_CameraViewUp);
+    float cos_theta = dot(V, fg_CameraViewUp[FG_VIEW_ID]);
 
     vec2 uv = vec2(saturate(cos_theta * 0.5 + 0.5),
                    saturate(normalized_altitude));

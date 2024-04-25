@@ -9,7 +9,8 @@ uniform usampler2D histogram_tex;
 uniform bool is_linear;
 uniform bool enable_color;
 
-uniform vec4 fg_Viewport;
+FG_VIEW_GLOBAL
+uniform vec4 fg_Viewport[FG_NUM_VIEWS];
 
 // histogram.glsl
 float bin_index_to_luminance(float bin, float adapted_luminance);
@@ -64,7 +65,7 @@ void main()
     }
 
     float value = float(hits);
-    float max_value = fg_Viewport.z * fg_Viewport.w;
+    float max_value = fg_Viewport[FG_VIEW_ID].z * fg_Viewport[FG_VIEW_ID].w;
     if (!is_linear) {
         value = log2(value);
         max_value = log2(max_value);

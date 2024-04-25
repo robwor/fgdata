@@ -17,7 +17,8 @@ in GEOM_OUT {
 uniform sampler2D transmittance_tex;
 uniform sampler2D ms_tex;
 
-uniform mat4 fg_ViewMatrixInverse;
+FG_VIEW_GLOBAL
+uniform mat4 fg_ViewMatrixInverse[FG_NUM_VIEWS];
 uniform vec3 fg_CameraPositionCart;
 uniform vec3 fg_SunDirectionWorld;
 
@@ -44,7 +45,7 @@ float ap_apply_squared_distribution(float slice);
 void main()
 {
     vec3 ray_dir_vs = normalize(get_view_space_from_depth(fs_in.texcoord, 1.0));
-    vec3 ray_dir = vec4(fg_ViewMatrixInverse * vec4(ray_dir_vs, 0.0)).xyz;
+    vec3 ray_dir = vec4(fg_ViewMatrixInverse[FG_VIEW_ID] * vec4(ray_dir_vs, 0.0)).xyz;
 
     vec3 ray_origin = fg_CameraPositionCart;
 

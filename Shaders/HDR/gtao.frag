@@ -17,9 +17,10 @@ uniform sampler2D depth_tex;
 
 uniform float world_radius;
 
-uniform vec4 fg_Viewport;
+FG_VIEW_GLOBAL
+uniform vec4 fg_Viewport[FG_NUM_VIEWS];
 uniform vec2 fg_PixelSize;
-uniform mat4 fg_ProjectionMatrix;
+uniform mat4 fg_ProjectionMatrix[FG_NUM_VIEWS];
 
 const float SLICE_COUNT = 3.0;
 const float DIRECTION_SAMPLE_COUNT = 4.0;
@@ -72,8 +73,8 @@ void main()
     // 1 / tan(fovy / 2), so we can use that directly.
     // z_distance is the distance from the camera to the fragment, which is
     // just the positive z component of the view space fragment position.
-    float radius_pixels = world_radius * (fg_ProjectionMatrix[1][1] / abs(P.z))
-        * fg_Viewport.w * 0.5;
+    float radius_pixels = world_radius * (fg_ProjectionMatrix[FG_VIEW_ID][1][1] / abs(P.z))
+        * fg_Viewport[FG_VIEW_ID].w * 0.5;
 
     float visibility = 0.0;
 

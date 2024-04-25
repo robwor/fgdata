@@ -10,8 +10,9 @@ uniform sampler2D gbuffer2_tex;
 uniform sampler2D gbuffer3_tex;
 uniform sampler2D depth_tex;
 
-uniform mat4 fg_ViewMatrixInverse;
-uniform mat4 fg_ProjectionMatrix;
+FG_VIEW_GLOBAL
+uniform mat4 fg_ViewMatrixInverse[FG_NUM_VIEWS];
+uniform mat4 fg_ProjectionMatrix[FG_NUM_VIEWS];
 
 // normal_encoding.glsl
 vec3 decode_normal(vec2 f);
@@ -69,6 +70,6 @@ void main()
                             emissive,
                             P, N, V,
                             texcoord,
-                            fg_ViewMatrixInverse,
-                            fg_ProjectionMatrix);
+                            fg_ViewMatrixInverse[FG_VIEW_ID],
+                            fg_ProjectionMatrix[FG_VIEW_ID]);
 }

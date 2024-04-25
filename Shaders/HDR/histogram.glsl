@@ -1,6 +1,6 @@
 $FG_GLSL_VERSION
 
-uniform vec4 fg_Viewport;
+uniform vec4 fg_Viewport[FG_NUM_VIEWS];
 
 const float num_bins = 254.0; // 256 - 2
 const float inv_num_bins = 1.0 / num_bins;
@@ -56,7 +56,11 @@ float bin_index_to_luminance(float bin, float adapted_luminance)
 uint histogram_get_total_pixels(usampler2D histogram_tex)
 {
     uint first_bin_pixels = texelFetch(histogram_tex, ivec2(0), 0).r;
-    return max(uint(fg_Viewport.z * fg_Viewport.w) - first_bin_pixels, 0u);
+    // histogram represents all views
+    uint viewport_pixels = 0;
+    for (uint v = 0; v < FG_NUM_VIEWS; ++v)
+        viewport_pixels += uint(fg_Viewport[v].z * fg_Viewport[v].w);
+    return max(viewport_pixels - first_bin_pixels, 0u);
 }
 
 uint histogram_get_dark_count(uint total_pixels)
