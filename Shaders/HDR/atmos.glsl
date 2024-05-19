@@ -107,7 +107,7 @@ float molecular_phase_function(float cos_theta)
 }
 
 /*
- * Henyey-Greenstein phase function.
+ * Henyey-Greenstrein phase function.
  */
 float aerosol_phase_function(float cos_theta)
 {

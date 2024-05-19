@@ -169,7 +169,6 @@ var MessageSystem = {
             first_changed_line: 0,  # for later optimisation: first changed line in msg_list
             changed: 1,
             powerN: nil,
-            min_power: 0,
             canvas_group: nil,
             page_indicator: nil,
             page_indicator_format: "Page %2d/%2d",
@@ -183,20 +182,11 @@ var MessageSystem = {
     # },
 
     # set power prop and add listener to start/stop all registered update functions
-    setPowerProp: func(p, min_power = 1) {
+    setPowerProp: func(p) {
         me.powerN = props.getNode(p,1);
-        me.min_power = min_power;
         setlistener(me.powerN, func(n) {
-            var value = n.getValue();
-            if (value >= me.min_power) {
-                logprint(LOG_INFO, "EICAS msgsys power:" ~ value);
+            if (n.getValue()) {
                 me.init();
-            }
-            else {
-                logprint(LOG_INFO, "EICAS msgsys power:" ~ value);
-                forindex (var class; me.classes) {
-                    me["new-msg"~class].setIntValue(-1);
-                }
             }
         }, 1, 0);
     },
@@ -367,22 +357,18 @@ var MessageSystem = {
         var aural = me.messages[class][msg_id]["aural"];
         if (visible) {
             me.active_messages[class] = [msg_id]~me.active_messages[class];
-            if (me.powerN.getValue() >= me.min_power) {
-                # set new-msg flag in prop tree, e.g. to trigger sounds;
-                # may be reset from outside this class so we can trigger again here
-                me["new-msg"~class].setIntValue(1);
-                if (aural != nil) {
-                    me.active_aurals[aural] = 1;
-                    me.auralAlert(aural);
-                }
+            # set new-msg flag in prop tree, e.g. to trigger sounds;
+            # may be reset from outside this class so we can trigger again here
+            me["new-msg"~class].setIntValue(1);
+            if (aural != nil) {
+                me.active_aurals[aural] = 1;
+                me.auralAlert(aural);
             }
         }
         else {
             me.active_messages[class] = me._remove(class, msg_id);
             if (aural != nil) me.active_aurals[aural] = 0;
-            # set new-msg flag to -1 if last message is gone
-            # other components may set the flag to 0 to acknowledge active messages, 
-            # e.g. they aren't new anymore but still active
+            # clear new-msg flag if last message is gone
             if (size(me.active_messages[class]) == 0)
                 me["new-msg"~class].setIntValue(-1);
         }

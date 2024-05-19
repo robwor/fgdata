@@ -13,10 +13,11 @@
 	<save-tape>Save Flight Recorder Tape</save-tape>
 	<snap-shot>Screenshot</snap-shot>
 	<snap-shot-dir>Screenshot Directory</snap-shot-dir>
+	<video-start>Video Start</video-start>
+	<video-stop>Video Stop</video-stop>
 	<video-control>Video Control</video-control>
 	<sound-config>Sound Configuration</sound-config>
-	<mouse-config>Mouse Configuration</mouse-config>
-	<input-systems>Input Devices</input-systems>
+	<input-config>Mouse Configuration</input-config>
 	<joystick-config>Joystick Configuration</joystick-config>
 	<terrasync>Scenery Download</terrasync>
 	<aircraft-center>Aircraft Center (Experimental)</aircraft-center>
@@ -124,7 +125,7 @@
 	<print-rendering-statistics>Print Rendering Statistics</print-rendering-statistics>
 	<statistics-display>Cycle On-Screen Statistics</statistics-display>
 	<performance-monitor>Monitor System Performance</performance-monitor>
-	<write-video-config>Save Video Configuration</write-video-config>
+        <write-video-config>Save Video Configuration</write-video-config>
 	<property-browser>Browse Internal Properties</property-browser>
 	<fg1000-pfd>FG1000 PFD</fg1000-pfd>
 	<fg1000-mfd>FG1000 MFD</fg1000-mfd>

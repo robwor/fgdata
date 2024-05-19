@@ -16,12 +16,8 @@ const float TERRAIN_METALLIC  = 0.0;
 const float TERRAIN_ROUGHNESS = 0.95;
 
 // gbuffer_pack.glsl
-void gbuffer_pack_pbr_opaque(vec3 normal,
-                             vec3 base_color,
-                             float metallic,
-                             float roughness,
-                             float occlusion,
-                             vec3 emissive);
+void gbuffer_pack(vec3 normal, vec3 base_color, float metallic, float roughness,
+                  float occlusion, vec3 emissive, uint mat_id);
 // color.glsl
 vec3 eotf_inverse_sRGB(vec3 srgb);
 // logarithmic_depth.glsl
@@ -41,6 +37,6 @@ void main()
 
     vec3 N = normalize(fs_in.vertex_normal);
 
-    gbuffer_pack_pbr_opaque(N, color, TERRAIN_METALLIC, TERRAIN_ROUGHNESS, 1.0, vec3(0.0));
+    gbuffer_pack(N, color, TERRAIN_METALLIC, TERRAIN_ROUGHNESS, 1.0, vec3(0.0), 3u);
     gl_FragDepth = logdepth_encode(fs_in.flogz);
 }

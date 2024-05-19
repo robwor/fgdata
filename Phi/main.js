@@ -6,8 +6,8 @@ require.config({
         knockout : '3rdparty/knockout/knockout-3.4.0',
         kojqui : '3rdparty/knockout-jqueryui',
         sprintf : '3rdparty/sprintf/sprintf.min',
-        leaflet : '3rdparty/leaflet/leaflet',
-        geodesic : '3rdparty/leaflet/Leaflet.Geodesic.min',
+        leaflet : '3rdparty/leaflet-0.7.7/leaflet',
+        geodesic : '3rdparty/leaflet-0.7.7/Leaflet.Geodesic.min',
         text : '3rdparty/require/text',
         flot : '3rdparty/flot/jquery.flot',
         flotresize : '3rdparty/flot/jquery.flot.resize',
@@ -250,11 +250,4 @@ require([
         }, 1000);
     });
 
-    // Fix for prevent the page from refreshing when you click on the spinner
-    // button (buttons next to inputs to increase/decrease values). The spinner
-    // button is <a> without href, so it will refresh the page and for some
-    // reason the jQuery UI itself doesn't prevent it.
-    jquery(document).on('click', '.ui-spinner-button', function(event) {
-        event.preventDefault();
-    });
 });

@@ -8,7 +8,7 @@
       <image>Textures/Sky/moon_color.png</image>
       <type>2d</type>
       <filter>linear-mipmap-linear</filter>
-      <mag-filter>linear</mag-filter>
+      <mag-filter>linear-mipmap-linear</mag-filter>
       <wrap-s>clamp-to-edge</wrap-s>
       <wrap-t>clamp-to-edge</wrap-t>
       <internal-format>normalized</internal-format>
@@ -17,7 +17,7 @@
       <image>Textures/Sky/moon_n.png</image>
       <type>2d</type>
       <filter>linear-mipmap-linear</filter>
-      <mag-filter>linear</mag-filter>
+      <mag-filter>linear-mipmap-linear</mag-filter>
       <wrap-s>clamp-to-edge</wrap-s>
       <wrap-t>clamp-to-edge</wrap-t>
       <internal-format>normalized</internal-format>
@@ -41,11 +41,15 @@
   <technique n="129">
     <scheme>hdr-forward</scheme>
     <pass>
+      <!-- Disable depth testing -->
       <depth>
-        <enabled>true</enabled>
-        <function>less</function>
-        <write-mask>false</write-mask>
+        <enabled>false</enabled>
       </depth>
+      <!-- Only render the moon on top of the skydome -->
+      <stencil>
+        <function>equal</function>
+        <value>0</value>
+      </stencil>
       <!-- Make sure we render after the skydome -->
       <render-bin>
         <bin-number>-5</bin-number>

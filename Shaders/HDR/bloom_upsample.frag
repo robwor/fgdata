@@ -17,13 +17,10 @@ uniform float filter_radius;
 
 void main()
 {
-    // The filter does not map to pixels, has "holes" in it. Its radius also
-    // varies across mip resolutions.
-    vec2 texel_size = 1.0 / vec2(textureSize(tex, 0));
-    float aspect_ratio = texel_size.y / texel_size.x;
-
+    // The filter kernel is applied with a radius, specified in texture
+    // coordinates, so that the radius will vary across mip resolutions.
     float x = filter_radius;
-    float y = filter_radius * aspect_ratio;
+    float y = filter_radius;
 
     // Take 9 samples around current texel:
     // a - b - c

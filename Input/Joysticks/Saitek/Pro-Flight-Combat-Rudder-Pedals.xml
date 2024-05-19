@@ -18,7 +18,6 @@ $Id$
 
  <name>Saitek Pro Flight Combat Rudder Pedals</name>
  <name>Saitek Saitek Pro Flight Combat Rudder Pedals</name>
- <device-dialog>generic-pedals</device-dialog>
 
  <axis n="0">
   <desc>Brake left</desc>

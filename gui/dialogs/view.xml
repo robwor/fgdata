@@ -44,8 +44,7 @@
 
           var target = group.getChild("checkbox", index, 1);
           props.copy(group.getNode("checkbox-template"), target);
-          var nameValue = name != nil ? name.getValue() : nil;
-          target.getNode("label").setValue(nameValue != nil ? nameValue : ("** unnamed view " ~ index ~ " **"));
+          target.getNode("label").setValue(name != nil ? name.getValue() : ("** unnamed view " ~ index ~ " **"));
           target.getNode("property").setValue(enabled.getPath());
         }
       }

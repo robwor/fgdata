@@ -1885,6 +1885,11 @@
         <function>less</function>
         <write-mask>true</write-mask>
       </depth>
+      <stencil>
+        <function>always</function>
+        <value>10</value>
+        <pass>replace</pass>
+      </stencil>
       <texture-unit>
         <unit>0</unit>
         <type>2d</type>
@@ -1905,7 +1910,6 @@
         <fragment-shader>Shaders/HDR/gbuffer_pack.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/normal_encoding.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/color.glsl</fragment-shader>
-        <fragment-shader>Shaders/HDR/dither.glsl</fragment-shader>
       </program>
       <uniform>
         <name>color_tex</name>

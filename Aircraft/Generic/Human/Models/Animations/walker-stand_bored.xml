@@ -34,7 +34,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -48,7 +47,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -101,7 +99,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -115,7 +112,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -168,7 +164,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -182,7 +177,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -207,6 +201,7 @@
 			<y-deg type="double">0</y-deg>
 		</limb>
 	</position>
+	<trigger-upon type="string">Standing</trigger-upon>
 	<position n="3">
 		<name type="string">standing 0.3</name>
 		<rest-sec type="double">10</rest-sec>
@@ -235,7 +230,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -249,7 +243,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -302,7 +295,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -316,7 +308,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -369,7 +360,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -383,7 +373,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -436,7 +425,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -450,7 +438,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -503,7 +490,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -517,7 +503,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -570,7 +555,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -584,7 +568,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -637,7 +620,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -651,7 +633,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -704,7 +685,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -718,7 +698,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -771,7 +750,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -785,7 +763,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -838,7 +815,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -852,7 +828,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -905,7 +880,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -919,7 +893,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -972,7 +945,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -986,7 +958,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1039,7 +1010,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1053,7 +1023,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1106,7 +1075,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1120,7 +1088,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1173,7 +1140,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1187,7 +1153,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1240,7 +1205,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1254,7 +1218,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1307,7 +1270,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">50</x-deg>
@@ -1321,7 +1283,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1374,7 +1335,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1388,7 +1348,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1441,7 +1400,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1455,7 +1413,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1508,7 +1465,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1522,7 +1478,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1575,7 +1530,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1589,7 +1543,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1642,7 +1595,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1656,7 +1608,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1709,7 +1660,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">50</x-deg>
@@ -1723,7 +1673,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1776,7 +1725,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1790,7 +1738,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1843,7 +1790,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1857,7 +1803,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1910,7 +1855,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1924,7 +1868,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>
@@ -1977,7 +1920,6 @@
 		<limb n="5">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="6">
 			<x-deg type="double">-80</x-deg>
@@ -1991,7 +1933,6 @@
 		<limb n="8">
 			<x-deg type="double">0</x-deg>
 			<y-deg type="double">0</y-deg>
-			<hand-pose type="double">0</hand-pose>
 		</limb>
 		<limb n="9">
 			<x-deg type="double">0</x-deg>

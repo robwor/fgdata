@@ -34,11 +34,6 @@ float safe_acos(float x) {
     return acos(clamp(x, -1.0, 1.0));
 }
 
-float pow4(float x) {
-    float x2 = x*x;
-    return x2 * x2;
-}
-
 float pow5(float x) {
     float x2 = x*x;
     return x2 * x2 * x;
@@ -51,11 +46,4 @@ float pow5(float x) {
 float interleaved_gradient_noise(vec2 uv) {
     const vec3 m = vec3(0.06711056, 0.00583715, 52.9829189);
     return fract(m.z * fract(dot(uv, m.xy)));
-}
-
-const float one_over_log10 = 1.0 / log(10.0);
-
-float log10(float x)
-{
-    return one_over_log10 * log(x);
 }

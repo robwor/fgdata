@@ -49,6 +49,28 @@
 		</item>
 
 		<item>
+			<name>video-start</name>
+			<enabled>true</enabled>
+			<binding>
+				<command>nasal</command>
+				<script>
+					fgcommand("video-start");
+				</script>
+			</binding>
+		</item>
+
+		<item>
+			<name>video-stop</name>
+			<enabled>false</enabled>
+			<binding>
+				<command>nasal</command>
+				<script>
+					fgcommand("video-stop");
+				</script>
+			</binding>
+		</item>
+
+		<item>
 			<name>video-control</name>
 			<binding>
 				<command>dialog-show</command>
@@ -66,10 +88,18 @@
 		</item>
 
 		<item>
-			<name>input-systems</name>
+			<name>input-config</name>
 			<binding>
 				<command>dialog-show</command>
-				<dialog-name>input-systems</dialog-name>
+				<dialog-name>input-config</dialog-name>
+			</binding>
+		</item>
+
+		<item>
+			<name>joystick-config</name>
+			<binding>
+				<command>dialog-show</command>
+				<dialog-name>joystick-config</dialog-name>
 			</binding>
 		</item>
 
@@ -462,7 +492,7 @@
                                 <script>
                                   var n = props.globals.getNode("/sim/http/running");
                                   if( props.globals.getNode("/").getValue("sim/http/running",0) != 1 ) {
-                                    gui.popupTip("Internal webserver not running. Restart FlightGear with --httpd=8080", 5.0);
+                                    gui.popupTip("Internal webserver not running. Restart FlightGear with -httpd=8080", 5.0);
                                   } else {
                                     var _url = "http://localhost:" ~ getprop("/sim/http/options/listening-port") ~ "#Map";
                                     fgcommand("open-browser", props.Node.new({ "url": _url }));

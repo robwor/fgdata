@@ -461,8 +461,8 @@ var OverlaySelector = {
 #
 var FileSelector = {
     new: func(callback, title, button, pattern = nil, dir = "", file = "", dotfiles = 0, show_files=1) {
-
-
+        
+        
         var usage = gui.FILE_DIALOG_OPEN_FILE;
         if (!show_files) {
             usage = gui.FILE_DIALOG_CHOOSE_DIR;
@@ -470,23 +470,23 @@ var FileSelector = {
             # nasty, should make this explicit
             usage = gui.FILE_DIALOG_SAVE_FILE;
         }
-
+        
         m = { parents:[FileSelector],
              _inner: gui._createFileDialog(usage)};
-
+        
         m.set_title(title);
         m.set_button(button);
         m.set_directory(dir);
         m.set_file(file);
         m.set_dotfiles(dotfiles);
         m.set_pattern(pattern);
-
-        m._inner.setCallback(func (path) {
+        
+        m._inner.setCallback(func (path) {  
             var node = props.Node.new();
             node.setValue(path);
-            callback(node);
+            callback(node); 
         }   );
-
+        
         return m;
     },
     # setters only take effect after the next call to open()
@@ -496,10 +496,10 @@ var FileSelector = {
     set_file: func(file) { me._inner.placeholder = file },
     set_dotfiles: func(dot) { me._inner.show_hidden = dot },
     set_pattern: func(pattern) { me._inner.pattern = (pattern == nil) ? [] : pattern },
-
+    
     open: func() { me._inner.open(); },
     close: func() { me._inner.close(); },
-
+    
     del: func {
         me._inner.close();
         me._inner = nil;
@@ -558,20 +558,16 @@ var set_screenshotdir = func {
 # Open property browser with given target path.
 #
 var property_browser = func(dir = nil) {
-    var dlgname = "property-browser";
-    var startdir = props.getNode("/sim/gui/dialogs/" ~ dlgname ~ "-startdir", 1);
-    if (dir == nil) {
-        dir = startdir.getValue();
-        if (dir == nil) dir = "/";
-    }
+    if (dir == nil)
+        dir = "/";
     elsif (isa(dir, props.Node))
         dir = dir.getPath();
-
+    var dlgname = "property-browser";
     foreach (var module; keys(globals))
         if (find("__dlg:" ~ dlgname, module) == 0)
             return globals[module].clone(dir);
 
-    startdir.setValue(dir);
+    setprop("/sim/gui/dialogs/" ~ dlgname ~ "/last", dir);
     fgcommand("dialog-show", props.Node.new({"dialog-name": dlgname}));
 }
 
@@ -678,10 +674,10 @@ var setWeight = func(wgt, opt) {
     # something like fuel.setTankCap(tank, gals)...
     var ti = wgt.getNode("tank");
 
-    if(ti == nil or ti.getValue() == "") {
+    if(ti == nil or ti.getValue() == "") { 
         return nil;
     }
-    ti = ti.getValue();
+    ti = ti.getValue();    
 
     var gn = opt.getNode("gals");
     var gals = gn == nil ? 0 : gn.getValue();
@@ -701,14 +697,14 @@ var setWeight = func(wgt, opt) {
 var setWeightOpts = func {
     var tankchange = 0;
     var root_node = nil;
-    if(fdm == "yasim")
+    if(fdm == "yasim") 
       root_node = props.globals.getNode("sim");
-    elsif (fdm == "jsb")
+    elsif (fdm == "jsb") 
       root_node = props.globals.getNode("payload");
     if (root_node == nil) {
         print("setWeight() - not supported for ",fdm);
         tankchange = nil;
-    }
+    } 
     else {
         foreach (var w; root_node.getChildren("weight")) {
             var selected = w.getNode("selected");
@@ -756,8 +752,8 @@ var weightChangeHandler = func {
     }
 }
 
-# 2018.3 - certain aircraft (e.g. the F-15) have their own external stores dialog
-#          in addition to the standard one. This listener and associated code
+# 2018.3 - certain aircraft (e.g. the F-15) have their own external stores dialog 
+#          in addition to the standard one. This listener and associated code 
 #          allow the two dialogs to remain synchronised.
 
 var weightDialogOpen = 0;
@@ -777,7 +773,7 @@ var percentMacListener = nil;
 var weightAndFuel_x = nil;
 var weightAndFuel_y = nil;
 
-var dlg_nasal_close =
+var dlg_nasal_close = 
     "gui.weightAndFuel_y = cmdarg().getNode(\"lasty\").getValue();" ~
     "gui.weightAndFuel_x = cmdarg().getNode(\"lastx\").getValue();" ~
     "gui.weightDialogOpen = 0;" ~
@@ -812,12 +808,13 @@ var showWeightDialog = func {
 
     var header = dialog[name].addChild("group");
     header.set("layout", "hbox");
+    header.addChild("empty").set("stretch", "1");
     header.addChild("text").set("label", title);
     header.addChild("empty").set("stretch", "1");
     var w = header.addChild("button");
-    w.set("pref-width", 20);
-    w.set("pref-height", 20);
-    w.set("legend", "X");
+    w.set("pref-width", 16);
+    w.set("pref-height", 16);
+    w.set("legend", "");
     w.set("default", 0);
     # "Esc" causes dialog-close
     w.set("key", "Esc");
@@ -887,7 +884,7 @@ var showWeightDialog = func {
         val.set("format", format);
         val.set("property", n.getPath());
         val.set("live", 1);
-
+          
         row += 1;
     }
 
@@ -904,7 +901,7 @@ var showWeightDialog = func {
         tablerow("Max. Zero Fuel Weight", "maximum-zero-fuel-mass-lbs", "%.0f lb" );
     }
 
-    if( fdmdata.cg != nil ) {
+    if( fdmdata.cg != nil ) { 
         var n = props.globals.getNode("/limits/mass-and-balance/cg/dimension");
         tablerow("Center of Gravity", props.globals.getNode(fdmdata.cg), "%.2f " ~ (n == nil ? "in" : n.getValue()));
     }
@@ -1401,6 +1398,15 @@ setlistener("/sim/terrasync/stalled", func {
          popupTip("Scenery download stalled. Too many errors reported. See log output.", 600, button);
      }
      terrasync_stalled = stalled;
+});
+
+var do_welcome = 1;
+setlistener("/sim/signals/fdm-initialized", func {
+    var haveTutorials = size(props.globals.getNode("/sim/tutorials", 1).getChildren("tutorial"));
+    gui.menuEnable("tutorial-start", haveTutorials);
+    if (do_welcome and haveTutorials)
+        settimer(func { setprop("/sim/messages/copilot", "Welcome aboard! Need help? Use 'Help -> Tutorials'.");}, 5.0);
+    do_welcome = 0;
 });
 
 screenHProp = props.globals.getNode("/sim/startup/ysize");

@@ -8,6 +8,10 @@
   </parameters>
   <technique n="1">
     <pass>
+      <stencil>
+        <function>less-or-equal</function>
+        <value>8</value>
+      </stencil>
       <program>
         <vertex-shader>Shaders/HDR/quad.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/gtao.frag</fragment-shader>

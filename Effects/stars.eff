@@ -4,7 +4,7 @@
   <name>Effects/stars</name>
 
   <parameters>
-    <max-radiance type="float">20.0</max-radiance>
+    <max-radiance type="float">50.0</max-radiance>
   </parameters>
 
   <!-- Fixed-pipeline fallback -->
@@ -20,11 +20,15 @@
   <technique n="129">
     <scheme>hdr-forward</scheme>
     <pass>
+      <!-- Disable depth testing -->
       <depth>
-        <enabled>true</enabled>
-        <function>less</function>
-        <write-mask>false</write-mask>
+        <enabled>false</enabled>
       </depth>
+      <!-- Only render the stars on top of the skydome -->
+      <stencil>
+        <function>equal</function>
+        <value>0</value>
+      </stencil>
       <!-- Make sure we render after the skydome -->
       <render-bin>
         <bin-number>-9</bin-number>
@@ -40,7 +44,6 @@
       <program>
         <vertex-shader>Shaders/HDR/stars.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/stars.frag</fragment-shader>
-        <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
       </program>
       <uniform>

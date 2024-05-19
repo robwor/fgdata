@@ -13,15 +13,6 @@
 			
 			<default-padding>1</default-padding>
 
-			<text>
-				<name>title</name>
-				<label>/</label>
-				<property>/sim/gui/dialogs/property-browser/title</property>
-				<live>true</live>
-			</text>
-
-			<empty><stretch>true</stretch></empty>
-
 			<button>
 				<legend>Clone</legend>
 				<pref-width>60</pref-width>
@@ -32,27 +23,15 @@
 					<script>clone(dir)</script>
 				</binding>
 			</button>
-			<button>
-				<legend>/</legend>
-				<pref-width>20</pref-width>
-				<pref-height>20</pref-height>
-				<binding>
-					<command>nasal</command>
-					<script>
-					select("/");
-					</script>
-				</binding>
-			</button>
-			<button>
-				<legend>?</legend>
-				<key>?</key>
-				<pref-width>20</pref-width>
-				<pref-height>20</pref-height>
-				<binding>
-					<command>dialog-show</command>
-					<dialog-name>help-property-browser</dialog-name>
-				</binding>
-			</button>
+
+			<text>
+				<label>/</label>
+				<property>/sim/gui/dialogs/property-browser/title</property>
+				<live>true</live>
+			</text>
+
+			<empty><stretch>true</stretch></empty>
+
 			<button>
 				<legend>X</legend>
 				<key>Esc</key>
@@ -64,6 +43,12 @@
 			</button>
 		</group>
 	</group>
+
+	<hrule/>
+
+	<text>
+		<label>Clicking '.' symbol: CTRL to toggle verbose, SHIFT to dump</label>
+	</text>
 
 	<hrule/>
 
@@ -124,21 +109,17 @@
 
 	<nasal>
 		<open>
-		<![CDATA[
-			var self = cmdarg();	# the node tree representing this dialog as seen in this XML
-			var startdir = props.globals.getNode("/sim/gui/dialogs/property-browser-startdir", 1);
+			var self = cmdarg();
 			var dlgname = self.getNode("name").getValue();
-			
-			# props holding values of the dialog elements
 			var dlg = props.globals.getNode("/sim/gui/dialogs/" ~ dlgname, 1);
 			var title = dlg.getNode("title", 1);
 			var label = dlg.getNode("label", 1);
 			var input = dlg.getNode("input", 1);
 			var list = dlg.getNode("list", 1);
-			
 			var node = nil;         # selected node entry (props.Node)
 			var dir = nil;          # current directory (string)
 			var update_interval = 2;
+			var root_title = "Internal Properties";
 			var no_selection = "[none]";
 
 			var update = func(w) {
@@ -146,42 +127,28 @@
 				fgcommand("dialog-update", self);
 			}
 
-			var select = func(path = nil) {
+			var squeeze = func(s, n) {
+				if (n >= size(s) or 7 > n )
+					return s;
 
-				# Shift-click       adds the selected property to the property display
-				# Shift-Alt-click   adds all children of the selected property to the property display
-				# Shift-Ctrl-click  removes all properties from the display
-				var update_prop_display = func(n) {
-					if (n.getPath() != "" and getprop("/devices/status/keyboard/shift")) {
-						if (getprop("/devices/status/keyboard/ctrl"))
-							return screen.property_display.reset();
-						if (!n.getAttribute("children"))
-							screen.property_display.add(n);
-						elsif (getprop("/devices/status/keyboard/alt"))
-							screen.property_display.add(n.getChildren());
-					}
-				};
+				var l = substr(s, 0, (n - 3) / 2);
+				var r = substr(s, size(s) + size(l) + 3 - n);
+				return l ~ "..." ~ r;
+			}
 
-				if (path == nil) {
-					var lst = list.getValue();
-				}
-				else {
-					var lst = path;
-				}
+			var select = func {
+				var lst = list.getValue();
 				node = props.globals.getNode(lst);
 				if (node == nil)
 					node = props.globals;
 
-				update_prop_display(node);
-
+				setprop("/sim/gui/dialogs/property-browser/selected", node.getPath());
 				if (node.getAttribute("children")) {
 					dir = node.getPath();
-					title.setValue(node.getPath() == "" ? "Property Browser" : lst);
+					title.setValue(node.getPath() == "" ? root_title : lst);
 					node = nil;
 					label.setValue(no_selection);
 					input.setValue("");
-					list.setValue(dir);
-					update("property-list");
 				} else {
 					var name = node.getName();
 					var index = node.getIndex();
@@ -201,7 +168,7 @@
 					} elsif (type != "ALIAS") {
 						value = node.getValue() ~ "";
 					}
-					label.setValue(string.squeeze(name, 30));
+					label.setValue(squeeze(name, 30));
 					input.setValue(value);
 				}
 				update("input");
@@ -212,38 +179,39 @@
 					node.setValue(input.getValue());
 			}
 
-			var clone = func(start) {
-				startdir.setValue(start);
+			var clone = func(startdir) {
 				var base = props.globals.getNode("/sim/gui/dialogs", 1);
-				var name = "property-browser";
-				var new_ = base.addChild(name, 1);
-				var path = new_.getPath();
-				var i = new_.getIndex();
-				if (! self.getNode("x", 1).getIntValue()) {
-					self.getNode("x").setValue(self.getNode("__bx", 1).getValue() or 40);
-				}
-				if (! self.getNode("y", 1).getIntValue()) {
-					self.getNode("y").setValue(self.getNode("__by", 1).getValue() or -40);
-				}
-
-				# update the property paths for dialog elements...
+				var name = "property-browser-";
+				for (var i = 1; 1; i += 1)
+					if (base.getNode(name ~ i, 0) == nil)
+						break;
+				base = base.getNode(name ~ i, 1).getPath();
+				setprop(base ~ "/last", startdir);
 				self.setValues({
-					"name": name~"["~i~"]",
-					"dialog-name": name~"["~i~"]" ,
-					"group[0]/group[0]/text/property": path ~ "/title",
-					"property-list/property": path ~ "/list",
-					"group[1]/text/property": path ~ "/label",
-					"group[1]/input/property": path ~ "/input",
-					"x": self.getNode("x").getIntValue() + 20,
-					"y": self.getNode("y").getIntValue() - 20,
+					"name": name ~ i,
+					"dialog-name": name ~ i,
+					"group[0]/group[0]/text/property": base ~ "/title",
+					"property-list/property": base ~ "/list",
+					"group[1]/text/property": base ~ "/label",
+					"group[1]/input/property": base ~ "/input",
 				});
-				
-				# ... and create new dialog
 				fgcommand("dialog-new", self);
 				fgcommand("dialog-show", self);
+
+				var originalPath = '/sim/gui/dialogs/property-browser';
+				# reset the values, so we don't use incorrect paths
+				# when the last browser is closed and then re-opened
+				# bug: https://sourceforge.net/p/flightgear/codetickets/2044/
+				self.setValues({
+					"name": "property-browser",
+					"dialog-name": "property-browser",
+					"group[0]/group[0]/text/property": originalPath ~ "/title",
+					"property-list/property": originalPath ~ "/list",
+					"group[1]/text/property": originalPath ~ "/label",
+					"group[1]/input/property": originalPath ~ "/input",
+				});
 			}
-			
-			# this function removes the selection marker from the list
+
 			var auto_update = func {
 				list.setValue(dir);
 				update("property-list");
@@ -251,23 +219,18 @@
 					settimer(auto_update, update_interval, 1);
 			}
 
-			dir = startdir.getValue();
-			if (dir == nil) {
-				dir = "/";
-				startdir.setValue(dir);
-			}
+			dir = dlg.getNode("last") != nil ? dlg.getNode("last").getValue() : "/";
 			list.setValue(dir);
 			select();
 			auto_update();
-		]]>
 		</open>
 
 		<close>
-		<![CDATA[
 			update_interval = 0;
-			dlg.remove();			
-			startdir.setValue(dir);
-		]]>
+			if (find("property-browser-", dlgname) >= 0)
+				dlg.getParent().removeChildren(dlgname);
+			else
+				dlg.getNode("last", 1).setValue(dir);
 		</close>
 	</nasal>
 </PropertyList>

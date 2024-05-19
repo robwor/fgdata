@@ -12,8 +12,8 @@
       :                        :    Red    :  Green  :    Blue    :    Alpha    :
       :........................:...........:.........:............:.............:
       : G-Buffer 0 (RGB10_A2)  :        Normal       : Roughness  : Material ID :
-      : G-Buffer 1 (RGBA8)     :             Base Color           : Dithering   :
-      : G-Buffer 2 (RGBA8)     :  Material specific  : Metallic   : Occlusion   :
+      : G-Buffer 1 (RGBA8)     :             Base Color           : Metallic    :
+      : G-Buffer 2 (RGBA8)     :     Material specific params     : Occlusion   :
       : G-Buffer 3 (R11G11B10) :             Emission             :      -      :
       : Depth/Stencil          :      DEPTH24_STENCIL8 (Logarithmic depth)      :
       :........................:............:.........:...........:.............:
@@ -24,7 +24,7 @@
       - Since the Material ID is stored in 2 bits, we can only have 4 different
       material types. The maximum value (3 or 1.0) is reserved for the standard
       PBR metallic-roughness material.
-      - In 'Material specific params' fancier materials can use up to 16 bits
+      - In 'Material specific params' fancier materials can use up to 24 bits
       to encode any information they might need (e.g. a clearcoat layer needs
       to store the clearcoat amount and roughness).
       - Materials that are very different from the standard should write
@@ -55,12 +55,6 @@
   <!-- HDR shading result -->
   <buffer include="screen-buffer.xml">
     <name>hdr-result</name>
-    <format>rgb16f</format>
-  </buffer>
-
-  <!-- HDR buffer after demosaicing -->
-  <buffer include="screen-buffer.xml">
-    <name>hdr-demosaiced</name>
     <format>rgb16f</format>
   </buffer>
 
@@ -161,17 +155,6 @@
 
   <!-- Histogram for automatic exposure -->
   <buffer>
-    <name>histogram-bins</name>
-    <type>2d</type>
-    <width>screen</width>
-    <screen-width-scale><property>/sim/rendering/hdr/render-scale</property></screen-width-scale>
-    <height>screen</height>
-    <screen-height-scale><property>/sim/rendering/hdr/render-scale</property></screen-height-scale>
-    <format>r8ui</format>
-    <min-filter>nearest</min-filter>
-    <mag-filter>nearest</mag-filter>
-  </buffer>
-  <buffer>
     <name>histogram-partial</name>
     <type>2d</type>
     <width>screen</width>
@@ -244,18 +227,13 @@
     <screen-height-scale>0.03125</screen-height-scale>
   </buffer>
 
-  <buffer include="screen-buffer.xml">
-    <name>highlight</name>
-    <format>r8</format>
-  </buffer>
-
   <!-- SMAA buffers -->
   <buffer include="screen-buffer.xml">
     <name>smaa-edges</name>
     <format>rgba8</format>
     <wrap-s>clamp</wrap-s>
     <wrap-t>clamp</wrap-t>
-    <min-filter>linear</min-filter>
+    <min-filter>linear-mipmap-linear</min-filter>
     <mag-filter>linear</mag-filter>
   </buffer>
   <buffer include="screen-buffer.xml">
@@ -263,7 +241,7 @@
     <format>rgba8</format>
     <wrap-s>clamp</wrap-s>
     <wrap-t>clamp</wrap-t>
-    <min-filter>linear</min-filter>
+    <min-filter>linear-mipmap-linear</min-filter>
     <mag-filter>linear</mag-filter>
   </buffer>
 
@@ -860,9 +838,9 @@
   </pass>
 
   <pass>
-    <name>shading-water</name>
+    <name>water</name>
     <type>quad</type>
-    <effect>Effects/HDR/shading-water</effect>
+    <effect>Effects/HDR/water-shading</effect>
     <binding>
       <unit>0</unit>
       <buffer>gbuffer0</buffer>
@@ -916,6 +894,13 @@
     <use-shadow-pass>csm1</use-shadow-pass>
     <use-shadow-pass>csm2</use-shadow-pass>
     <use-shadow-pass>csm3</use-shadow-pass>
+    <use-clustered-uniforms>
+      <pass>geometry</pass>
+      <clusters-bind-unit>5</clusters-bind-unit>
+      <indices-bind-unit>6</indices-bind-unit>
+      <pointlights-bind-unit>16</pointlights-bind-unit>
+      <spotlights-bind-unit>15</spotlights-bind-unit>
+    </use-clustered-uniforms>
     <!--
         We should not be binding and attaching the depth buffer as that usually
         implies reading and writing to it at the same time, which will result in
@@ -969,47 +954,13 @@
   </pass>
 
   <!--
-      This pass essentially performs demosaicing on the bayer pattern produced
-      by some semi-transparent objects in the deferred geometry pass.
-  -->
-  <pass>
-    <name>demosaic</name>
-    <type>quad</type>
-    <effect>Effects/HDR/demosaic</effect>
-    <binding>
-      <unit>0</unit>
-      <buffer>hdr-result</buffer>
-    </binding>
-    <binding>
-      <unit>1</unit>
-      <buffer>gbuffer1</buffer>
-    </binding>
-    <binding>
-      <unit>2</unit>
-      <buffer>depth-stencil</buffer>
-    </binding>
-    <attachment>
-      <component>color0</component>
-      <buffer>hdr-demosaiced</buffer>
-    </attachment>
-  </pass>
-
-  <!--
       Auto exposure using a luminance histogram
       Based on the article by Alex Tardif:
       https://www.alextardif.com/HistogramLuminance.html
 
-      The first step calculates the bin numbers of every pixel of the input HDR
-      texture.
-
-      If compute shaders aren't supported, we run two fragment shaders. The
-      first calculate a partial histogram of the rows of the bin numbers
-      texture, and the second aggregates them together to obtain a single
-      histogram.
-
-      If compute shaders are supported, a fragment shader resets the histogram
-      buffer, followed by a compute shader to calculate the histogram of the bin
-      numbers.
+      Instead of using a compute shader, we run two fragment shaders. The first
+      calculates a partial histogram of the rows of the input HDR texture, and
+      the second aggregates them together to obtain a single histogram.
 
       The last step, which calculates the average scene luminance from the
       histogram, is identical even though it is implemented as a fragment shader.
@@ -1019,9 +970,9 @@
       texture) is too expensive and not worth the trouble.
   -->
   <pass>
-    <name>histogram-bin</name>
+    <name>histogram-column</name>
     <type>quad</type>
-    <effect>Effects/HDR/histogram-bin</effect>
+    <effect>Effects/HDR/histogram-column</effect>
     <binding>
       <unit>0</unit>
       <buffer>hdr-result</buffer>
@@ -1029,20 +980,6 @@
     <binding>
       <unit>14</unit>
       <buffer>prev-luminance</buffer>
-    </binding>
-    <attachment>
-      <component>color0</component>
-      <buffer>histogram-bins</buffer>
-    </attachment>
-  </pass>
-  <!-- Slower version without compute shaders -->
-  <pass>
-    <name>histogram-column</name>
-    <type>quad</type>
-    <effect>Effects/HDR/histogram-column</effect>
-    <binding>
-      <unit>0</unit>
-      <buffer>histogram-bins</buffer>
     </binding>
     <attachment>
       <component>color0</component>
@@ -1062,42 +999,6 @@
       <buffer>histogram</buffer>
     </attachment>
   </pass>
-  <!-- Faster version with compute shaders -->
-  <pass>
-    <name>histogram-clear</name>
-    <type>quad</type>
-    <effect>Effects/HDR/histogram-clear</effect>
-    <attachment>
-      <component>color0</component>
-      <buffer>histogram</buffer>
-    </attachment>
-  </pass>
-  <pass>
-    <name>histogram-compute</name>
-    <type>compute</type>
-    <workgroup-size>
-      <x>256</x>
-      <y>2</y>
-    </workgroup-size>
-    <global-size>
-      <x>screen</x>
-      <y>screen</y>
-      <z>screen</z>
-      <y-screen-scale>0.0625</y-screen-scale>
-    </global-size>
-    <effect>Effects/HDR/histogram-compute</effect>
-    <binding>
-      <unit>0</unit>
-      <buffer>histogram-bins</buffer>
-    </binding>
-    <image-binding>
-      <unit>0</unit>
-      <buffer>histogram</buffer>
-      <access>read-write</access>
-      <format>r32ui</format>
-    </image-binding>
-  </pass>
-  <!-- End of faster version with compute shaders -->
   <pass>
     <name>histogram-luminance</name>
     <type>quad</type>
@@ -1140,7 +1041,7 @@
     <effect>Effects/HDR/bloom-downsample-first</effect>
     <binding>
       <unit>0</unit>
-      <buffer>hdr-demosaiced</buffer>
+      <buffer>hdr-result</buffer>
     </binding>
     <attachment>
       <component>color0</component>
@@ -1238,28 +1139,6 @@
   </pass>
 
   <!--
-      Render objects that have a pick animation.
-      The resulting texture is later used to highlight the objects by drawing a
-      silhouette around them together with a slight tinge.
-  -->
-  <pass>
-    <name>highlights</name>
-    <type>scene</type>
-    <effect-scheme>hdr-highlight</effect-scheme>
-    <!-- Only render objects with PICK_BIT=1 -->
-    <cull-mask>0x40</cull-mask>
-    <clear-mask>color</clear-mask>
-    <attachment>
-      <component>color0</component>
-      <buffer>highlight</buffer>
-    </attachment>
-    <attachment>
-      <component>depth</component>
-      <buffer>depth-stencil</buffer>
-    </attachment>
-  </pass>
-
-  <!--
       Post-processing
       Perform miscellaneous post-processing operations, namely tonemapping
       and exposure compensation. This process converts the HDR buffer into an
@@ -1271,15 +1150,11 @@
     <effect>Effects/HDR/postprocess</effect>
     <binding>
       <unit>0</unit>
-      <buffer>hdr-demosaiced</buffer>
+      <buffer>hdr-result</buffer>
     </binding>
     <binding>
       <unit>1</unit>
       <buffer>bloomA</buffer>
-    </binding>
-    <binding>
-      <unit>2</unit>
-      <buffer>highlight</buffer>
     </binding>
     <attachment>
       <component>color0</component>
@@ -1455,54 +1330,6 @@
     <binding>
       <unit>0</unit>
       <buffer>depth-stencil</buffer>
-    </binding>
-  </pass>
-
-  <pass>
-    <name>debug-histogram</name>
-    <type>quad</type>
-    <clear-mask>depth</clear-mask>
-    <effect>Effects/HDR/debug-histogram</effect>
-    <condition>
-      <property>/sim/rendering/hdr/debug/show-histogram</property>
-    </condition>
-    <geometry>
-      <left>0.8</left>
-      <bottom>0.57</bottom>
-      <width>0.2</width>
-      <height>0.2</height>
-    </geometry>
-    <binding>
-      <unit>0</unit>
-      <buffer>histogram</buffer>
-    </binding>
-    <binding>
-      <unit>1</unit>
-      <buffer>histogram-luminance</buffer>
-    </binding>
-  </pass>
-
-  <pass>
-    <name>debug-aerial-perspective</name>
-    <type>quad</type>
-    <clear-mask>depth</clear-mask>
-    <effect>Effects/HDR/debug-aerial-perspective</effect>
-    <condition>
-      <property>/sim/rendering/hdr/debug/show-aerial-perspective</property>
-    </condition>
-    <geometry>
-      <left>0.0</left>
-      <bottom>0.23</bottom>
-      <width>0.2</width>
-      <height>0.2</height>
-    </geometry>
-    <binding>
-      <unit>1</unit>
-      <buffer>histogram-luminance</buffer>
-    </binding>
-    <binding>
-      <unit>11</unit>
-      <buffer>aerial-perspective</buffer>
     </binding>
   </pass>
 </PropertyList>
