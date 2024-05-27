@@ -7,6 +7,7 @@ out vec3 ray_dir_view;
 
 uniform mat4 osg_ModelViewMatrix;
 uniform mat4 osg_ModelViewProjectionMatrix;
+uniform mat3 osg_NormalMatrix;
 
 void main()
 {
@@ -16,5 +17,5 @@ void main()
     float altitude = length(ground_point);
     // Compensate for the skydome being fixed on the ground
     ray_dir = normalize(pos.xyz - vec3(0.0, 0.0, altitude));
-    ray_dir_view = (osg_ModelViewMatrix * vec4(ray_dir, 0.0)).xyz;
+    ray_dir_view = osg_NormalMatrix * ray_dir;
 }
