@@ -9,9 +9,15 @@
     <pass>
       <program>
         <vertex-shader>Shaders/HDR/quad_matrix.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/debug_histogram.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/histogram.glsl</fragment-shader>
       </program>
+      <!-- quad_matrix.vert -->
+      <define>
+        <name>QUAD_TEXCOORD_RAW</name>
+      </define>
+      <!-- debug_histogram.frag -->
       <uniform>
         <name>histogram_tex</name>
         <type>sampler-2d</type>

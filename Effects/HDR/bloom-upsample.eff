@@ -10,6 +10,7 @@
       </blend>
       <program>
         <vertex-shader>Shaders/HDR/quad.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/bloom_upsample.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/bloom.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/color.glsl</fragment-shader>

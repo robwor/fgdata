@@ -2,6 +2,7 @@ $FG_GLSL_VERSION
 
 layout(location = 0) out vec4 fragColor;
 
+in vec2 raw_texcoord; // QUAD_TEXCOORD_RAW
 in vec2 texcoord;
 
 uniform sampler2D hdr_tex;
@@ -27,6 +28,8 @@ vec3 redout_apply(vec3 color, vec2 uv);
 vec3 night_vision_apply(vec3 color, vec2 uv);
 // highlights.glsl
 vec3 highlight_apply(vec3 color, vec2 uv);
+// mvr.frag
+vec2 mvr_raw_texcoord_transform_fb(vec2 raw_texcoord);
 
 vec3 get_debug_color(float value)
 {
@@ -41,11 +44,11 @@ vec3 get_debug_color(float value)
 vec3 get_ev100_color(vec3 hdr)
 {
     float level;
-    if (texcoord.y < 0.05) {
+    if (raw_texcoord.y < 0.05) {
         const float w = 0.001;
-        if (texcoord.x >= (0.5 - w) && texcoord.x <= (0.5 + w))
+        if (raw_texcoord.x >= (0.5 - w) && raw_texcoord.x <= (0.5 + w))
             return vec3(1.0);
-        return get_debug_color(texcoord.x);
+        return get_debug_color(raw_texcoord.x);
     }
     float lum = max(dot(hdr, vec3(0.299, 0.587, 0.114)), 0.0001);
     float ev100 = log2(lum * 8.0);
@@ -61,7 +64,8 @@ void main()
     }
 
     // Blackout/redout applies a small distortion effect
-    vec2 uv = redout_distort(texcoord);
+    vec2 raw_uv = redout_distort(raw_texcoord);
+    vec2 uv = mvr_raw_texcoord_transform_fb(raw_uv);
 
     vec3 hdr_color = texture(hdr_tex, uv).rgb;
     // Apply bloom
@@ -71,7 +75,7 @@ void main()
     // Apply night vision filter
     color = night_vision_apply(color, uv);
     // Apply blackout/redout
-    color = redout_apply(color, uv);
+    color = redout_apply(color, raw_uv);
     // Gamma correction
     color = eotf_sRGB(color);
 

@@ -53,10 +53,17 @@
       </define>
       <program>
         <vertex-shader>Shaders/HDR/quad.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/atmos_multiple_scattering.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/atmos.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/mvr.frag</fragment-shader>
       </program>
+      <!-- quad.vert -->
+      <define>
+        <name>QUAD_TEXCOORD_RAW</name>
+      </define>
+      <!-- atmos_aerial_perspective.frag -->
       <uniform>
         <name>transmittance_lut</name>
         <type>sampler-2d</type>

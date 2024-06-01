@@ -5,6 +5,7 @@
     <pass>
       <program>
         <vertex-shader>Shaders/HDR/quad.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/demosaic.frag</fragment-shader>
       </program>
       <uniform>

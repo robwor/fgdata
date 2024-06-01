@@ -49,6 +49,7 @@
       </texture-unit>
       <program>
         <vertex-shader>Shaders/HDR/smaa_blending_weight_calculation.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/smaa_blending_weight_calculation.frag</fragment-shader>
       </program>
       <uniform>

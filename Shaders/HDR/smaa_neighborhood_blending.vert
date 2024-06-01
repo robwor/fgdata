@@ -42,10 +42,13 @@ uniform vec4 fg_Viewport;
 #define mad(a, b, c) (a * b + c)
 #define SMAA_RT_METRICS vec4(1.0 / fg_Viewport.z, 1.0 / fg_Viewport.w, fg_Viewport.z, fg_Viewport.w)
 
+// mvr.vert
+vec2 mvr_raw_texcoord_transform_fb(vec2 raw_texcoord);
+
 void main()
 {
     vec2 pos = vec2(gl_VertexID % 2, gl_VertexID / 2) * 4.0 - 1.0;
-    texcoord = pos * 0.5 + 0.5;
+    texcoord = mvr_raw_texcoord_transform_fb(pos * 0.5 + 0.5);
     gl_Position = vec4(pos, 0.0, 1.0);
 
     v_offset = mad(SMAA_RT_METRICS.xyxy, vec4(1.0, 0.0, 0.0, 1.0), texcoord.xyxy);

@@ -10,6 +10,7 @@
     <pass>
       <program>
         <vertex-shader>Shaders/HDR/quad.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/gtao.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/normal_encoding.glsl</fragment-shader>

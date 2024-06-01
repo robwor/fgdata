@@ -10,6 +10,7 @@
       </stencil>
       <program>
         <vertex-shader>Shaders/HDR/smaa_edge_detection.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/smaa_edge_detection.frag</fragment-shader>
       </program>
       <uniform>

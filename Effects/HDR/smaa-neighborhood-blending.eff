@@ -5,6 +5,7 @@
     <pass>
       <program>
         <vertex-shader>Shaders/HDR/smaa_neighborhood_blending.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/smaa_neighborhood_blending.frag</fragment-shader>
       </program>
       <uniform>

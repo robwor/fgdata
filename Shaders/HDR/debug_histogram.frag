@@ -2,6 +2,7 @@ $FG_GLSL_VERSION
 
 layout(location = 0) out vec4 fragColor;
 
+in vec2 raw_texcoord; // QUAD_TEXCOORD_RAW
 in vec2 texcoord;
 
 uniform usampler2D histogram_tex;
@@ -22,7 +23,7 @@ void main()
 {
     int num_bins = textureSize(histogram_tex, 0).x; // [0, 255]
 
-    int current_index = int(texcoord.x * float(num_bins));
+    int current_index = int(raw_texcoord.x * float(num_bins));
     uint hits = texelFetch(histogram_tex, ivec2(current_index, 0), 0).r;
 
     vec3 color = vec3(1.0, 1.0, 1.0);
