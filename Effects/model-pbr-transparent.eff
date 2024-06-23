@@ -94,6 +94,7 @@
         <vertex-shader>Shaders/HDR/model_pbr_transparent.vert</vertex-shader>
         <vertex-shader>Shaders/HDR/logarithmic_depth.glsl</vertex-shader>
         <vertex-shader>Shaders/HDR/aerial_perspective.glsl</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/model_pbr_transparent.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/normalmap.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/color.glsl</fragment-shader>
@@ -108,6 +109,7 @@
         <fragment-shader>Shaders/HDR/atmos_spectral.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/clustered.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/mvr.frag</fragment-shader>
       </program>
       <uniform>
         <name>base_color_tex</name>

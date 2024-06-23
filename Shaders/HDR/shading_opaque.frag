@@ -2,6 +2,7 @@ $FG_GLSL_VERSION
 
 layout(location = 0) out vec3 fragColor;
 
+in vec2 raw_texcoord; // QUAD_TEXCOORD_RAW
 in vec2 texcoord;
 
 uniform sampler2D gbuffer0_tex;
@@ -23,7 +24,7 @@ vec3 eval_lights(vec3 base_color,
                  float occlusion,
                  vec3 emissive,
                  vec3 P, vec3 N, vec3 V,
-                 vec2 uv,
+                 vec2 uv, vec2 raw_uv,
                  mat4 view_matrix_inverse,
                  mat4 projection_matrix);
 // pos_from_depth.glsl
@@ -69,7 +70,7 @@ void main()
                             occlusion,
                             emissive,
                             P, N, V,
-                            texcoord,
+                            texcoord, raw_texcoord,
                             fg_ViewMatrixInverse[FG_VIEW_ID],
                             fg_ProjectionMatrix[FG_VIEW_ID]);
 }

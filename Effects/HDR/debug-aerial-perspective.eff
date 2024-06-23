@@ -15,6 +15,7 @@
         <fragment-shader>Shaders/HDR/debug_aerial_perspective.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/mvr.frag</fragment-shader>
       </program>
       <!-- quad_matrix.vert -->
       <define>

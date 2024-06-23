@@ -19,3 +19,13 @@ vec2 mvr_raw_texcoord_transform_fb(vec2 raw_texcoord)
     return raw_texcoord;
 #endif
 }
+
+vec2 mvr_raw_texcoord_transform_buf(vec2 raw_texcoord)
+{
+#pragma import_defines(OSGXR_VERT_MVB_TEXCOORD(UV))
+#ifdef OSGXR_VERT_MVB_TEXCOORD
+    return OSGXR_VERT_MVB_TEXCOORD(raw_texcoord);
+#else
+    return raw_texcoord;
+#endif
+}

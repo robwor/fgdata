@@ -27,7 +27,7 @@ vec3 eval_ibl(vec3 base_color,
               float occlusion,
               vec3 ws_N, vec3 ws_refl, float NdotV);
 // aerial_perspective.glsl
-vec3 add_aerial_perspective(vec3 color, vec2 coord, vec3 P);
+vec3 add_aerial_perspective(vec3 color, vec2 raw_coord, vec3 P);
 // sun.glsl
 vec3 get_sun_radiance(vec3 p);
 // clustered.glsl
@@ -45,7 +45,7 @@ vec3 eval_lights(vec3 base_color,
                  float occlusion,
                  vec3 emissive,
                  vec3 P, vec3 N, vec3 V,
-                 vec2 uv,
+                 vec2 uv, vec2 raw_uv,
                  mat4 view_matrix_inverse,
                  mat4 projection_matrix)
 {
@@ -89,7 +89,7 @@ vec3 eval_lights(vec3 base_color,
     color += emissive;
 
     // Add aerial perspective
-    color = add_aerial_perspective(color, uv, P);
+    color = add_aerial_perspective(color, raw_uv, P);
 
     // Pre-expose
     color = apply_exposure(color);

@@ -13,6 +13,9 @@ uniform vec4 fg_Viewport[FG_NUM_VIEWS];
 // exposure.glsl
 vec3 apply_exposure(vec3 color);
 
+// mvr.frag
+vec2 mvr_raw_texcoord_transform_buf(vec2 raw_texcoord);
+
 void main()
 {
     vec2 pixel_size = (5.0*8.0) / fg_Viewport[FG_VIEW_ID].zw;
@@ -20,7 +23,7 @@ void main()
     float row = raw_texcoord.y * 8.0;
     float row2 = raw_texcoord.y * 4.0;
     float slice = (3.0 - floor(row2)) * 8.0 + floor(col);
-    vec3 coords = vec3(fract(col), fract(row), slice / 32.0);
+    vec3 coords = vec3(mvr_raw_texcoord_transform_buf(vec2(fract(col), fract(row))), slice / 32.0);
 
     vec3 color;
     if (fract(row2) < 0.5) {

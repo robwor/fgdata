@@ -2,6 +2,7 @@ $FG_GLSL_VERSION
 
 layout(location = 0) out vec3 fragColor;
 
+in vec2 raw_texcoord; // QUAD_TEXCOORD_RAW
 in vec2 texcoord;
 
 uniform sampler2D gbuffer0_tex;
@@ -22,7 +23,7 @@ vec3 decode_normal(vec2 f);
 // pos_from_depth.glsl
 vec3 get_view_space_from_depth(vec2 uv, float depth);
 // aerial_perspective.glsl
-vec3 add_aerial_perspective(vec3 color, vec2 coord, vec3 P);
+vec3 add_aerial_perspective(vec3 color, vec2 raw_coord, vec3 P);
 vec3 get_sun_radiance_sea_level();
 // exposure.glsl
 vec3 apply_exposure(vec3 color);
@@ -89,7 +90,7 @@ void main()
     vec3 sun_intensity = get_sun_radiance_sea_level();
     color += M_1_PI() * fresnel * D_GGX(NdotH, 0.001) * sun_intensity * NdotL;
 
-    color = add_aerial_perspective(color, texcoord, P);
+    color = add_aerial_perspective(color, raw_texcoord, P);
 
     // Pre-expose
     color = apply_exposure(color);

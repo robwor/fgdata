@@ -21,7 +21,13 @@
         <fragment-shader>Shaders/HDR/aerial_perspective.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/atmos_spectral.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/mvr.frag</fragment-shader>
       </program>
+      <!-- quad.vert -->
+      <define>
+        <name>QUAD_TEXCOORD_RAW</name>
+      </define>
+      <!-- water_shading.frag -->
       <uniform>
         <name>gbuffer0_tex</name>
         <type>sampler-2d</type>

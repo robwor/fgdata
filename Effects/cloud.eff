@@ -86,12 +86,14 @@
         <vertex-shader>Shaders/HDR/sun.glsl</vertex-shader>
         <vertex-shader>Shaders/HDR/aerial_perspective.glsl</vertex-shader>
         <vertex-shader>Shaders/HDR/atmos_spectral.glsl</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/3dcloud.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/3dcloud_common.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/logarithmic_depth.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/aerial_perspective.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/mvr.frag</fragment-shader>
         <attribute>
           <name>usrAttr1</name>
           <index>10</index>
