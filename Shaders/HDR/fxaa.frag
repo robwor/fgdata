@@ -2,7 +2,6 @@ $FG_GLSL_VERSION
 
 layout(location = 0) out vec4 fragColor;
 
-in vec2 texcoord;
 in vec4 pos_pos;
 
 uniform sampler2D color_tex;
