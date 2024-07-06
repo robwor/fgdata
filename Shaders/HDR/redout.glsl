@@ -31,11 +31,8 @@ vec2 redout_distort(vec2 uv)
         return uv;
     }
     uv = uv - vec2(0.5);
-    float uva = atan(uv.x, uv.y);
-    float uvd = sqrt(dot(uv, uv));
     float k = mix(0.0, -max_distorsion_amount, alpha);
-    uvd = uvd * (1.0 + k * sqr(uvd));
-    return vec2(sin(uva), cos(uva)) * uvd + vec2(0.5);
+    return uv * (1.0 + k * dot(uv, uv)) + vec2(0.5);
 }
 
 /*
