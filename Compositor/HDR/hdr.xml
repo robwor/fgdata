@@ -6,6 +6,21 @@
   <use-osg-uniforms>true</use-osg-uniforms>
   <use-vertex-attribute-aliasing>true</use-vertex-attribute-aliasing>
 
+  <!-- shader support for multiview rendering (e.g. VR) -->
+  <multiview>
+      <!-- bloomE buffer scales down to 1/32nd,
+           align views to prevent sampling outside of views in scaled
+           intermediate frame buffers -->
+      <view-align-mask>31</view-align-mask>
+
+      <!-- SceneView stereo support,
+           correct per-view handling with common uniform sequential passes -->
+      <sceneview>true</sceneview>
+
+      <!-- tiled (side-by-side) intermediate buffer support -->
+      <intermediates-tiled>true</intermediates-tiled>
+  </multiview>
+
   <!--
       G-Buffer layout
       ...........................................................................
