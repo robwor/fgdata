@@ -103,6 +103,16 @@ var Group = {
         }
     },
 
+    getWidth: func() {
+        var bb = me.getTightBoundingBox();
+        return bb[2] - bb[0];
+    },
+
+    getHeight: func() {
+        var bb = me.getTightBoundingBox();
+        return bb[3] - bb[1];
+    },
+
     # Get first child with given id (breadth-first search)
     #
     # @note Use with care as it can take several miliseconds (for me eg. ~2ms).

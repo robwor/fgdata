@@ -176,7 +176,7 @@
           <source>Immatriculation</source>
           <target>Immatriculation</target>
         </trans-unit>
-        <trans-unit id="menu/input-config:0" translate="yes" approved="yes">
+        <trans-unit id="menu/mouse-config:0" translate="yes" approved="yes">
           <source>Mouse Configuration</source>
           <target>Configuration de la souris</target>
         </trans-unit>

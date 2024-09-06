@@ -137,7 +137,7 @@ define([
             "Navigation Data": L.navdbLayer(),
             "Other Traffic": L.aiLayer(),
 
-            "OpenFlightMaps (AIRAC 2207)":  new L.TileLayer("https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png?path=2207/aero/latest", {
+            "OpenFlightMaps":  new L.TileLayer("https://nwy-tiles-api.prod.newaydata.com/tiles/{z}/{x}/{y}.png?path=latest/aero/latest", {
                 maxZoom: 13,
                 minZoom: 7,
                 attribution: '<a target="_blank" href="http://openflightmaps.org">&copy; open flightmaps association</a>'

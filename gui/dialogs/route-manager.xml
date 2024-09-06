@@ -38,7 +38,7 @@ command interface /autopilot/route-manager/input:
             }
 
             var clear = func {
-                flightplan().cleanPlan();
+                flightplan().clearAll();
                 selection.setIntValue(-1);
             }
 
@@ -700,7 +700,7 @@ command interface /autopilot/route-manager/input:
         <default-padding>8</default-padding>
 
         <button>
-            <legend>Clear List</legend>
+            <legend>Clear All</legend>
             <equal>true</equal>
             <binding>
                 <command>nasal</command>

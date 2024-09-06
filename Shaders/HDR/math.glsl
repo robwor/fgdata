@@ -47,3 +47,10 @@ float interleaved_gradient_noise(vec2 uv) {
     const vec3 m = vec3(0.06711056, 0.00583715, 52.9829189);
     return fract(m.z * fract(dot(uv, m.xy)));
 }
+
+const float one_over_log10 = 1.0 / log(10.0);
+
+float log10(float x)
+{
+    return one_over_log10 * log(x);
+}

@@ -6,15 +6,10 @@ OBJECT poly
 name "mesh"
 <<<<<<< HEAD
 loc -744.867 765.535 273.898
-<<<<<<< HEAD:Models/Weather/cirrus_alt2.ac
-texture "cirrus_textures.rgb"
-=======
-texture "cirrus_textures.rgb"
->>>>>>> rgb textures:Models/Weather/cirrus_alt2.ac
 =======
 loc -744.867 0 253.198
-texture "cirrus_textures.rgb"
 >>>>>>> iar 80 fixes + Lockheed l10 initial commit
+texture "cirrus_textures.rgb"
 crease 180.000000
 numvert 203
 11706.1 -309.916 7199.35

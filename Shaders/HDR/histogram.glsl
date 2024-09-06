@@ -3,7 +3,7 @@
 const float NUM_BINS = 254.0; // 256 - 2
 const float INV_NUM_BINS = 1.0 / NUM_BINS;
 
-const float MIN_LOG_LUM = -10.0;
+const float MIN_LOG_LUM = -5.0;
 const float LOG_LUM_RANGE = 16.0;
 const float INV_LOG_LUM_RANGE = 1.0 / LOG_LUM_RANGE;
 

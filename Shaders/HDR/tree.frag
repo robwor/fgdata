@@ -3,7 +3,7 @@
 in VS_OUT {
     float flogz;
     vec2 texcoord;
-    vec3 vertex_normal;
+    vec3 view_vector;
     float autumn_flag;
 } fs_in;
 
@@ -33,7 +33,7 @@ void main()
 
     vec3 color = eotf_inverse_sRGB(texel.rgb);
 
-    vec3 N = normalize(fs_in.vertex_normal);
+    vec3 N = normalize(-fs_in.view_vector);
 
     gbuffer_pack(N, color, 0.0, 1.0, 1.0, vec3(0.0), 3u);
     gl_FragDepth = logdepth_encode(fs_in.flogz);

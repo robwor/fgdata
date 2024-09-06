@@ -236,12 +236,5 @@ vec3 generateWaterNormal(in vec2 texCoords)
 
   vec3 N = normalize(mix(Normal + N0, Normal + N1, mixFactor) * waveRoughness);
 
-  // From observation, the normal is generated in the wrong direction, resulting
-  // in specular highlights facing away from the Sun.  This  matrix attempts to correct it
-  
-  mat3 rotMat = mat3(0.0, 0.0, 1.0,
-                     0.0, 1.0, 0.0,
-                     1.0, 0.0, 0.0);
-  N = N * rotMat;
   return N;
 }

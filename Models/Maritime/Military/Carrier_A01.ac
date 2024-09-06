@@ -1,6 +1,6 @@
 AC3Db
 MATERIAL "default" rgb 0.72 0.72 0.72 amb 0.8 0.8 0.8 emis 0.08 0.08 0.08 spec 0.2 0.2 0.2 shi 128 trans 0
-MATERIAL "0137_Black"rgb 0.2 0.2 0.2 amb 0.0000 0.0000 0.0000 emis 0 0 0 spec 0.2 0.2 0.2 shi 128 trans 0.0000
+MATERIAL "0137_Black" rgb 0.2 0.2 0.2 amb 0.0000 0.0000 0.0000 emis 0 0 0 spec 0.2 0.2 0.2 shi 128 trans 0.0000
 MATERIAL "mat5" rgb 0.6248 0.6248 0.6248 amb 0.6941 0.6941 0.6941 emis 0.0694 0.0694 0.0694 spec 0.2 0.2 0.2 shi 128 trans 0.0000
 MATERIAL "0134_DimGray" rgb 0.3706 0.3706 0.3706 amb 0.4118 0.4118 0.4118 emis 0.0412 0.0412 0.0412 spec 0.2 0.2 0.2 shi 128 trans 0.0000
 MATERIAL "mat4" rgb 0.7201 0.7201 0.7201 amb 0.8000 0.8000 0.8000 emis 0.0800 0.0800 0.0800 spec 0.2 0.2 0.2 shi 128 trans 0.0000

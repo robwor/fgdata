@@ -4,16 +4,12 @@ OBJECT world
 kids 1
 OBJECT poly
 name "mesh"
-<<<<<<< HEAD:Models/Weather/cirrus_alt4.ac
-=======
-<<<<<<< HEAD
 >>>>>>> rgb textures:Models/Weather/cirrus_alt4.ac
 loc -40.3268 269.32 -310.577
-texture "cirrus_textures1.rgb"
 =======
 loc -40.3268 82.5336 -116.516
-texture "cirrus_textures1.rgb"
 >>>>>>> iar 80 fixes + Lockheed l10 initial commit
+texture "cirrus_textures1.rgb"
 crease 180.000000
 numvert 349
 -10961.8 0 4177.85

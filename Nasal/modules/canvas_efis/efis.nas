@@ -52,6 +52,8 @@ var EFIS = {
             source_records: [], # stores infos about each source
             active_sources: [],
             powerN: nil,
+            minimum_power: 0,
+            isPowered: 0,
         };
         if (object_names != nil and isvec(object_names)
             and size(display_names) == size(object_names))
@@ -127,14 +129,17 @@ var EFIS = {
 
     # Start/stop updates on all sources 
     _powerOnOff: func(power) {
-        if (power) {
+        logprint(LOG_DEBUG, "EFIS power: "~power~", "~me.isPowered);
+        if (power >= me.minimum_power and !me.isPowered) {
             logprint(LOG_INFO, "EFIS power on");
+            me.isPowered = 1;
             foreach (var src; me.sources) {
                 src.startUpdates();
             }
         }
-        else {
-            logprint(LOG_INFO, "EFIS power off.");
+        else if (power < me.minimum_power) {
+            logprint(LOG_INFO, "EFIS power off");
+            me.isPowered = 0;
             foreach (var src; me.sources) {
                 src.stopUpdates();
             }
@@ -144,11 +149,12 @@ var EFIS = {
     #-- public methods -----------------------
     # set power prop and add listener to start/stop all registered update functions
     # e.g. power up will start updates, loss of power will stop updates
-    setPowerProp: func(path) {
+    setPowerProp: func(path, minimum_power = 1) {
         me.powerN = props.getNode(path,1);
+        me.minimum_power = minimum_power;
+        logprint(LOG_INFO, "EFIS power switch "~me.powerN.getPath()~" "~me.powerN.getValue());
         setlistener(me.powerN, func(n) {
-            var power = n.getValue();
-            me._powerOnOff(power);
+            me._powerOnOff(n.getValue());
         }, 1, 0);
     },
     

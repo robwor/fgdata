@@ -267,40 +267,30 @@ Started September 2000 by David Megginson, david@megginson.com
         <aimp-bare type="double" userarchive="y">0</aimp-bare>
         <aimp-interior type="double" userarchive="y">200</aimp-interior>
         <line-features-lod-level type="int" userarchive="y">5</line-features-lod-level>
-        <area-features-lod-level type="int" userarchive="y">5</area-features-lod-level>
         <vegetation-lod-level type="int" userarchive="y">6</vegetation-lod-level>
         <water-texture-size type="int" userarchive="y">2048</water-texture-size>
-        <coastline-lod-level type="int" userarchive="y">3</coastline-lod-level>
-        <coastline-width type="float" userarchive="y">150.0</coastline-width>
         <lod-level n="0">
-          <area-features-min-width>10000</area-features-min-width>
           <line-features-min-width>9999.9</line-features-min-width>
         </lod-level>
         <lod-level n="1">
-          <area-features-min-width>10000</area-features-min-width>
           <line-features-min-width>9999.9</line-features-min-width>
         </lod-level>
         <lod-level n="2">
-          <area-features-min-width>1000</area-features-min-width>
           <line-features-min-width>9999.9</line-features-min-width>
         </lod-level>
         <lod-level n="3">
-          <area-features-min-width>1000</area-features-min-width>
           <line-features-min-width>20.0</line-features-min-width>
         </lod-level>
         <lod-level n="4">
-          <area-features-min-width>1000</area-features-min-width>
           <line-features-min-width>10.0</line-features-min-width>
         </lod-level>
         <lod-level n="5">
-          <area-features-min-width>100</area-features-min-width>
           <line-features-min-width>7.0</line-features-min-width>
         </lod-level>
         <lod-level n="6">
-          <area-features-min-width>100</area-features-min-width>
           <line-features-min-width>3.0</line-features-min-width>
         </lod-level>
-        
+
       </static-lod>
       <random-objects type="bool" userarchive="y">true</random-objects>
       <random-vegetation type="bool" userarchive="y">true</random-vegetation>
@@ -390,9 +380,6 @@ Started September 2000 by David Megginson, david@megginson.com
             <fast-r type="double">0</fast-r>
           </log>
         </internal>
-        <red type="bool">false</red>
-        <alpha type="double">0.0</alpha>
-        <hearing-loss-volume type="double">1.0</hearing-loss-volume>
       </redout>
       <headshake>
         <enabled type="bool" userarchive="y">false</enabled>
@@ -544,7 +531,6 @@ Started September 2000 by David Megginson, david@megginson.com
         <render-scale type="float" userarchive="y">1.0</render-scale>
         <antialiasing-technique type="int" userarchive="y">2</antialiasing-technique>
         <exposure-compensation type="float">0.0</exposure-compensation>
-        <g-induced-vision-loss type="float">0.0</g-induced-vision-loss>
         <envmap>
           <cubemap-size type="int" userarchive="y">128</cubemap-size>
           <update-continuously type="bool">false</update-continuously>
@@ -577,10 +563,15 @@ Started September 2000 by David Megginson, david@megginson.com
         <night-vision>
           <enabled type="bool">false</enabled>
         </night-vision>
+        <histogram>
+          <compute type="bool">true</compute>
+        </histogram>
         <debug>
           <display-ev100 type="bool">false</display-ev100>
           <show-gbuffer type="bool">false</show-gbuffer>
           <show-shadow-cascades type="bool">false</show-shadow-cascades>
+          <show-histogram type="bool">false</show-histogram>
+          <show-aerial-perspective type="bool">false</show-aerial-perspective>
         </debug>
       </hdr>
 
@@ -763,6 +754,10 @@ Started September 2000 by David Megginson, david@megginson.com
       <property-rule>
         <name>g force effects</name>
         <path>Aircraft/Generic/g-forces.xml</path>
+      </property-rule>
+      <property-rule>
+        <name>annunciators</name>
+        <path>Aircraft/Generic/generic-annunciators.xml</path>
       </property-rule>
     </systems>
     <instrumentation>
@@ -980,7 +975,7 @@ Started September 2000 by David Megginson, david@megginson.com
         <at-model type="bool">true</at-model>
         <z-offset-m alias="/sim/chase-distance-m"/>
       </config>
-    </view>    
+    </view>
     <menubar>
       <visibility type="bool" userarchive="y">true</visibility>
       <default include="gui/menubar.xml"/>
@@ -1030,6 +1025,7 @@ Started September 2000 by David Megginson, david@megginson.com
       <skip-flight-controls-mode type="bool" userarchive="y">false</skip-flight-controls-mode>
       <flight-controls-sensitivity type="double" userarchive="y">4.0</flight-controls-sensitivity>
       <mouse-rudder-elevator type="bool" userarchive="y">false</mouse-rudder-elevator>
+      <wheel-elevator-trim-factor type="double" userarchive="y">1.0</wheel-elevator-trim-factor>
     </mouse>
     <replay>
       <duration type="double" userarchive="y">90</duration>
@@ -1066,7 +1062,7 @@ Started September 2000 by David Megginson, david@megginson.com
       <record-continuous-compression type="bool" userarchive="y">true</record-continuous-compression>
     </replay>
     <airport>
-      <min-tower-height-ft type="double">6</min-tower-height-ft>   <!-- a.k.a chap on the ground with a radio waving frantically --> 
+      <min-tower-height-ft type="double">6</min-tower-height-ft>   <!-- a.k.a chap on the ground with a radio waving frantically -->
       <max-tower-height-ft type="double">70</max-tower-height-ft>  <!-- the average tower height is 10.51m; so this is a reasonable limit-->
       <default-tower-height-ft type="double">30</default-tower-height-ft>  <!-- based on the average tower height of ~10.5m-->
       <runways>
@@ -1392,6 +1388,8 @@ Started September 2000 by David Megginson, david@megginson.com
     <mice include="mice.xml"/>
   </input>
   <instrumentation>
+    <annunciators include="annunciators.xml"/>
+
     <!-- Radio settings -->
     <comm n="0">
       <volume type="double">0.6</volume>

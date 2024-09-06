@@ -439,6 +439,7 @@
         <vertex-shader>Shaders/HDR/atmos_spectral.glsl</vertex-shader>
         <fragment-shader>Shaders/HDR/3dcloud.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/3dcloud_common.frag</fragment-shader>
+        <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/logarithmic_depth.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/aerial_perspective.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>

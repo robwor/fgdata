@@ -1,6 +1,6 @@
 AC3Db
-MATERIAL "Brick" rgb 0.6 0.4 0.2  amb 0.6 0.4 0.2  emis 0 0 0  spec 0.136842 0.0789474 0  shi 13.4737  trans 0
-MATERIAL "Roof.001" rgb 1 1 1  amb 0.178947 0.163158 0.157895  emis 0 0 0  spec 0.5 0.510526 0.505263  shi 11.4526  trans 0
+MATERIAL "Brick" rgb 0.6 0.4 0.2  amb 0.6 0.4 0.2  emis 0 0 0  spec 0.136842 0.0789474 0  shi 13  trans 0
+MATERIAL "Roof.001" rgb 1 1 1  amb 0.178947 0.163158 0.157895  emis 0 0 0  spec 0.5 0.510526 0.505263  shi 11  trans 0
 OBJECT world
 kids 2
 OBJECT poly

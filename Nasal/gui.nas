@@ -558,16 +558,20 @@ var set_screenshotdir = func {
 # Open property browser with given target path.
 #
 var property_browser = func(dir = nil) {
-    if (dir == nil)
-        dir = "/";
+    var dlgname = "property-browser";
+    var startdir = props.getNode("/sim/gui/dialogs/" ~ dlgname ~ "-startdir", 1);
+    if (dir == nil) {
+        dir = startdir.getValue();
+        if (dir == nil) dir = "/";
+    }
     elsif (isa(dir, props.Node))
         dir = dir.getPath();
-    var dlgname = "property-browser";
+
     foreach (var module; keys(globals))
         if (find("__dlg:" ~ dlgname, module) == 0)
             return globals[module].clone(dir);
 
-    setprop("/sim/gui/dialogs/" ~ dlgname ~ "/last", dir);
+    startdir.setValue(dir);
     fgcommand("dialog-show", props.Node.new({"dialog-name": dlgname}));
 }
 

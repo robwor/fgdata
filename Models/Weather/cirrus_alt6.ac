@@ -5,11 +5,7 @@ kids 1
 OBJECT poly
 name "mesh"
 loc 718.325 0 -205.257
-<<<<<<< HEAD:Models/Weather/cirrus_alt6.ac
 texture "cirrus_textures2.rgb"
-=======
-texture "cirrus_textures2.rgb"
->>>>>>> rgb textures:Models/Weather/cirrus_alt6.ac
 crease 180.000000
 numvert 319
 -5104.95 -29.5757 -1846.96

@@ -4,7 +4,7 @@ uniform vec3 fg_SunDirection;
 
 // gtao.glsl
 float get_ambient_occlusion(vec2 uv, vec3 albedo);
-// shadowing.glsl
+// shadows.glsl
 float get_shadowing(vec3 P, vec3 N, vec3 L);
 float get_contact_shadow(vec3 P, vec3 L, mat4 projection_matrix);
 vec3 debug_shadow_color(vec3 color, vec3 P, vec3 N, vec3 L);

@@ -179,7 +179,7 @@
           <source>Immatriculation</source>
           <target>Matrícula</target>
         </trans-unit>
-        <trans-unit id="menu/input-config:0" translate="yes" approved="yes">
+        <trans-unit id="menu/mouse-config:0" translate="yes" approved="yes">
           <source>Mouse Configuration</source>
           <target>Configuración del Ratón</target>
         </trans-unit>

@@ -4,7 +4,7 @@
   <name>Effects/stars</name>
 
   <parameters>
-    <max-radiance type="float">50.0</max-radiance>
+    <max-radiance type="float">20.0</max-radiance>
   </parameters>
 
   <!-- Fixed-pipeline fallback -->
@@ -44,6 +44,7 @@
       <program>
         <vertex-shader>Shaders/HDR/stars.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/stars.frag</fragment-shader>
+        <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
       </program>
       <uniform>

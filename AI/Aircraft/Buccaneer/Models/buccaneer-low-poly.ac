@@ -3,7 +3,7 @@ MATERIAL "ac3dmat12" rgb 0.266667 0.266667 0.266667  amb 0.2 0.2 0.2  emis 0 0 0
 MATERIAL "ac3dmat1" rgb 1 1 1  amb 0.752941 0.752941 0.752941  emis 0 0 0  spec 0.2 0.2 0.2  shi 128  trans 0
 MATERIAL "ac3dmat14" rgb 0.8 0.8 0.8  amb 0.752941 0.752941 0.752941  emis 0 0 0  spec 0.2 0.2 0.2  shi 128  trans 0
 MATERIAL "ac3dmat16" rgb 1 1 1  amb 1 1 1  emis 0 0 0  spec 0.2 0.2 0.2  shi 0  trans 0
-MATERIAL "black22" rgb 1 1 1  amb 1 1 1  emis 0 0 0  spec 1 1 1  shi 82.1895  trans 0.978947
+MATERIAL "black22" rgb 1 1 1  amb 1 1 1  emis 0 0 0  spec 1 1 1  shi 82  trans 0.978947
 OBJECT world
 kids 5
 OBJECT group

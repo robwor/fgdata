@@ -244,8 +244,8 @@
         <context-group purpose="location"><context context-type="linenumber">249</context></context-group>
       </trans-unit>
       <trans-unit id="_msg44" approved="yes">
-        <source xml:space="preserve">Added scenery should contain at least one of the following folders: Objects, Terrain, Buildings, Roads, Pylons, NavData, Airports, Orthophotos.</source>
-        <target xml:space="preserve">Dodana sceneria powinna zawierać przynajmniej jeden z następujących katalogów: Objects, Terrain, Buildings, Roads, Pylons, NavData, Airports, Orthophotos.</target>
+        <source xml:space="preserve">Added scenery should contain at least one of the following folders: Objects, Terrain, Buildings, Roads, Pylons, NavData, Airports, Orthophotos, vpb.</source>
+        <target xml:space="preserve">Dodana sceneria powinna zawierać przynajmniej jeden z następujących katalogów: Objects, Terrain, Buildings, Roads, Pylons, NavData, Airports, Orthophotos, vpb.</target>
         <context-group purpose="location"><context context-type="linenumber">252</context></context-group>
       </trans-unit>
     </group>
@@ -1263,7 +1263,7 @@ Lokalna ścieżka: %2</target>
       </trans-unit>
       <trans-unit id="_msg232" approved="yes">
         <source xml:space="preserve">No aircraft updates available right now</source>
-        <target xml:space="preserve">Brak dostępnych aktualizacji statków powietrznych</target>
+        <target xml:space="preserve">Wszystkie statki powietrzne są aktualne</target>
         <context-group purpose="location"><context context-type="linenumber">309</context></context-group>
       </trans-unit>
     </group>

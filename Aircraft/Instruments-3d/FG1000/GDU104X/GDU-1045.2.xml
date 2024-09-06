@@ -712,6 +712,33 @@
       </binding>
     </hovered>
   </animation>
+
+  <animation>
+    <type>knob</type>
+    <object-name>PAN</object-name>
+    <action>
+      <binding>
+        <command>FG1000HardKeyPushed</command>
+        <device>1</device>
+        <notification>RANGE</notification>
+      </binding>
+    </action>
+    <shift-action>
+      <binding>
+        <command>FG1000HardKeyPushed</command>
+        <device>1</device>
+        <notification>JOYSTICK_PRESS</notification>
+      </binding>
+    </shift-action>
+    <hovered>
+      <binding>
+        <command>set-tooltip</command>
+        <tooltip-id>PAN</tooltip-id>
+        <label>Change map range (Shift to activate map pointer)</label>
+      </binding>
+    </hovered>
+  </animation>
+
   <animation>
     <type>pick</type>
     <object-name>PANUp</object-name>

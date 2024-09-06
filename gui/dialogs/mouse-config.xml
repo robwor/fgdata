@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 
 <PropertyList>
-  <name>input-config</name>
+  <name>mouse-config</name>
 
   <nasal>
     <open>
         var syncRadioState = func()
         {
             var cycle = getprop("/sim/mouse/right-button-mode-cycle-enabled");
-            setprop("/sim/gui/dialogs/input-config/right-mouse-look", !cycle);
-            setprop("/sim/gui/dialogs/input-config/right-mouse-cycle", cycle);
+            setprop("/sim/gui/dialogs/mouse-config/right-mouse-look", !cycle);
+            setprop("/sim/gui/dialogs/mouse-config/right-mouse-cycle", cycle);
         }
 
         var rightMouseMode = func(newMode)
@@ -109,7 +109,7 @@
     <radio>
       <halign>left</halign>
       <label> Press and hold right mouse to look around</label>
-      <property>/sim/gui/dialogs/input-config/right-mouse-look</property>
+      <property>/sim/gui/dialogs/mouse-config/right-mouse-look</property>
       <live>true</live>
       <binding>
         <command>nasal</command>
@@ -122,7 +122,7 @@
     <radio>
       <halign>left</halign>
       <label> Click right mouse to cycle mouse behaviour</label>
-      <property>/sim/gui/dialogs/input-config/right-mouse-cycle</property>
+      <property>/sim/gui/dialogs/mouse-config/right-mouse-cycle</property>
       <live>true</live>
       <binding>
         <command>nasal</command>
@@ -271,6 +271,56 @@
     </text>
 
   <!-- end group 6 -->
+  </group>
+
+  <!-- start group 7 -->
+  <group>
+
+    <halign>left</halign>
+    <valign>top</valign>
+    <layout>hbox</layout>
+
+    <!-- gap to left border -->
+    <text>
+        <halign>left</halign>
+        <label>   </label>
+    </text>
+
+    <text>
+      <halign>left</halign>
+      <label>Mouse wheel elevator-trim factor: </label>
+    </text>
+    <combo>
+      <name>wheel-elevator-trim-factor</name>
+      <halign>right</halign>
+      <stretch>true</stretch>
+      <pref-width>75</pref-width>
+      <property>/sim/mouse/wheel-elevator-trim-factor</property>
+      <value>0.1</value>
+      <value>0.2</value>
+      <value>0.5</value>
+      <value>1.0</value>
+      <value>2.0</value>
+      <value>5.0</value>
+      <value>10.0</value>
+      <binding>
+          <command>dialog-apply</command>
+          <object-name>wheel-elevator-trim-factor</object-name>
+      </binding>
+      <binding>
+          <command>dialog-update</command>
+      </binding>
+    </combo>
+
+    <!-- empty line before next -->
+    <text>
+      <row>1</row>
+      <col>0</col>
+      <label> </label>
+      <halign>left</halign>
+    </text>
+
+  <!-- end group 7 -->
   </group>
 
   <hrule/>

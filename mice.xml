@@ -88,18 +88,40 @@ current mode for each mouse is held in the
    <!-- these are often assigned to mouse-wheel motion in Linux -->
    <button n="3">
     <binding>
-     <command>property-adjust</command>
-     <property>/controls/flight/elevator-trim</property>
-     <step type="double">0.01</step>
+      <command>nasal</command>
+      <script>controls.adjElevatorTrimWithFactor( 0.001 );</script>
     </binding>
+    <mod-alt>
+      <binding>
+        <command>nasal</command>
+        <script>controls.adjElevatorTrimWithFactor( 0.0001 );</script>
+      </binding>
+    </mod-alt>
+    <mod-shift>
+      <binding>
+        <command>nasal</command>
+        <script>controls.adjElevatorTrimWithFactor( 0.01 );</script>
+      </binding>
+    </mod-shift>
    </button>
 
    <button n="4">
     <binding>
-     <command>property-adjust</command>
-     <property>/controls/flight/elevator-trim</property>
-     <step type="double">-0.01</step>
+      <command>nasal</command>
+      <script>controls.adjElevatorTrimWithFactor( -0.001 );</script>
     </binding>
+    <mod-alt>
+      <binding>
+        <command>nasal</command>
+        <script>controls.adjElevatorTrimWithFactor( -0.0001 );</script>
+      </binding>
+    </mod-alt>
+    <mod-shift>
+      <binding>
+        <command>nasal</command>
+        <script>controls.adjElevatorTrimWithFactor( -0.01 );</script>
+      </binding>
+    </mod-shift>
    </button>
 
    <!-- Mouse left/right motion. -->

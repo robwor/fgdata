@@ -1,6 +1,6 @@
 AC3Db
-MATERIAL "MetalPanel" rgb 0.331579 0.342105 0.326316  amb 0.331579 0.321053 0.321053  emis 0 0 0  spec 0.757895 0.773684 0.784211  shi 10.1053  trans 0
-MATERIAL "Material" rgb 1 1 1  amb 0.221053 0.215789 0.221053  emis 0 0 0  spec 0.184211 0.2 0.184211  shi 9.43158  trans 0
+MATERIAL "MetalPanel" rgb 0.331579 0.342105 0.326316  amb 0.331579 0.321053 0.321053  emis 0 0 0  spec 0.757895 0.773684 0.784211  shi 11  trans 0
+MATERIAL "Material" rgb 1 1 1  amb 0.221053 0.215789 0.221053  emis 0 0 0  spec 0.184211 0.2 0.184211  shi 9  trans 0
 OBJECT world
 kids 4
 OBJECT poly

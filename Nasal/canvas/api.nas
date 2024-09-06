@@ -81,9 +81,53 @@ var get = func(arg)
   return wrapCanvas(_getCanvasGhost(node._g));
 };
 
+# subclass of Group representing the desktop
+var Desktop = {
+    new: func(ghost) {
+        var obj = {
+            parents: [Desktop, Group.new(ghost)],
+            _sizeChangedCallbacks: [],
+            _xsizeNode: nil,
+            _ysizeNode: nil
+        };
+
+        obj._xsizeNode = props.globals.getNode("/sim/startup/xsize", 1);
+        obj._ysizeNode = props.globals.getNode("/sim/startup/ysize", 1);
+
+        setlistener(obj._xsizeNode, func { obj._callSizeChangedCallbacks(); }, 1);
+        setlistener(obj._ysizeNode, func { obj._callSizeChangedCallbacks(); }, 1);
+        return obj;
+    },
+
+    addResizedCallback: func(cb)
+    {
+      if (!isfunc(cb)) {
+            die("Cannot add callback for main window size changes: callback is not callable !");
+      }
+
+      append(me._sizeChangedCallbacks, cb);
+      cb(me._xsizeNode.getValue(), me._ysizeNode.getValue());
+    },
+
+    removeResizedCallback: func(cb)
+    {
+      remove(me._sizeChangedCallbacks, cb);
+    },
+
+    # @private
+    # @description Helper function that calls all callbacks in @m _sizeChangedCallbacks in the order they were added.
+    _callSizeChangedCallbacks: func {
+        var newXSize = me._xsizeNode.getValue();
+        var newYSize = me._ysizeNode.getValue();
+        foreach (var cb; me._sizeChangedCallbacks) {
+            cb(newXSize, newYSize);
+        }
+    }
+};
+
 var getDesktop = func()
 {
-  return Group.new(_getDesktopGhost());
+  return Desktop.new(_getDesktopGhost());
 };
 
 

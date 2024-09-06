@@ -2,10 +2,7 @@
 
 uniform sampler2D depth_tex;
 
-uniform vec2 fg_NearFar;
 uniform mat4 fg_ViewMatrixInverse;
-uniform mat4 fg_ProjectionMatrixInverse;
-
 uniform vec2 fg_FOVScale;
 
 // logarithmic_depth.glsl

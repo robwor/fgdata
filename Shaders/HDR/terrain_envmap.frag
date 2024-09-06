@@ -14,7 +14,6 @@ uniform sampler2D orthophoto_tex;
 
 uniform bool orthophotoAvailable;
 uniform vec3 fg_SunDirectionWorld;
-uniform vec4 fg_Viewport;
 
 // math.glsl
 float M_1_PI();

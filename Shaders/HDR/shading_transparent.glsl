@@ -2,7 +2,7 @@
 
 uniform vec3 fg_SunDirection;
 
-// shadowing.glsl
+// shadows.glsl
 float get_shadowing(vec3 P, vec3 N, vec3 L);
 vec3 debug_shadow_color(vec3 color, vec3 P, vec3 N, vec3 L);
 // surface.glsl

@@ -97,8 +97,60 @@ var Node = {
         return p;
     },
     
+    # add to numeric property
+    # n: value to add
+    # optional:
+    #   max: if not nil, clamp value to max
+    #   range: if not nil, if exceeding max, wrap around
+    # example: headingProp.add(1, 360, 360)
+    add: func(n, max = nil, range = nil) {
+        if (me.isNumeric()) {
+            var v = me.getValue() + num(n);
+            if (max != nil and v > max) {
+                if (num(range) and range > 0) {
+                    while (v > max) {
+                        v -= range;
+                    }
+                }
+                else v = max;
+            }
+            if (me.setIntValue(v)) return v;
+        }
+        else  {
+            logprint(DEV_ALERT, "props.add() can be used only on numeric props "~
+                me.getPath()~" "~me.getType());
+            return nil;
+        }
+    },
+
+    # subtract from numeric property
+    # n: value to subtract
+    # optional:
+    #   min: if not nil, clamp value to min
+    #   range: if not nil, if reducing below min, wrap around
+    # example: headingProp.sub(1, 0, 360)
+    sub: func(n, min = nil, range = nil) {
+        if (me.isNumeric()) {
+            var v = me.getValue() - num(n);
+            if (min != nil and v < min) {
+                if (num(range) and range > 0) {
+                    while (v < min) {
+                        v += range;
+                    }
+                }
+                else v = min;
+            }
+            if (me.setIntValue(v)) return v;
+        }
+        else {
+            logprint(DEV_ALERT, "props.sub() can be used only on numeric props"~
+                me.getPath()~" "~me.getType());
+            return nil;
+        }
+    },
+    
     # add n to int property, do nothing, if prop type is not int
-    # n will be integer and defaults to 1
+    # n shall be integer and defaults to 1
     increment: func(n = 1) {
         if (me.isInt()) {
             var v = me.getValue() + int(n);
@@ -112,15 +164,16 @@ var Node = {
     },
     
     # sub n from int property, do nothing, if prop type is not int
-    # n will be integer and defaults to 1
+    # n shall be integer and defaults to 1
     decrement: func(n = 1) {
-        if (me.isInt())
+        if (me.isInt()) {
             var v = me.getValue() - int(n);
             if (me.setIntValue(v)) return v;
+        }
         else {
             logprint(DEV_ALERT, "props.decrement() can be used only on integer props"~
                 me.getPath()~" "~me.getType());
-            return 0;
+            return nil;
         }
     },
     
@@ -328,10 +381,9 @@ var setAll = func(base, child, value) {
     var name = node.getName();
     node = node.getParent();
     if(node == nil) return;
-    var children = node.getChildren();
+    var children = node.getChildren(name);
     foreach(var c; children)
-        if(c.getName() == name)
-            c.getNode(child, 1).setValue(value);
+        c.getNode(child, 1).setValue(value);
 }
 
 # createNodeObjectsFromHash - create nasal node objects from hash

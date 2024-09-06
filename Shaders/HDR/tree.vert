@@ -9,7 +9,7 @@ layout(location = 12) in float fogcoord;
 out VS_OUT {
     float flogz;
     vec2 texcoord;
-    vec3 vertex_normal;
+    vec3 view_vector;
     float autumn_flag;
 } vs_out;
 
@@ -72,6 +72,5 @@ void main()
     gl_Position = osg_ModelViewProjectionMatrix * vec4(position, 1.0);
     vs_out.flogz = logdepth_prepare_vs_depth(gl_Position.w);
 
-    vec3 view_vector = (osg_ModelViewMatrix * vec4(position, 1.0)).xyz;
-    vs_out.vertex_normal = normalize(-view_vector);
+    vs_out.view_vector = (osg_ModelViewMatrix * vec4(position, 1.0)).xyz;
 }

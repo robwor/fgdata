@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+
+<!--
+************************************************************************
+* Setup for Saitek Pro Flight Rudder Pedals.
+*
+* These are USB rudder pedals with toe brakes.  Bindings are as
+* follow:
+*
+* Axis 0 (left pedal): left brake
+* Axis 1 (right pedal): right brake
+* Axis 2 (sliding both pedals): rudder (and nosewheel)
+************************************************************************
+$Id$
+-->
+
+<PropertyList>
+    <name>Saitek Pro Flight Rudder Pedals</name>
+    <name>Saitek Pro Flight Rudder Pedals (USB)</name>
+    <name>Saitek Saitek Pro Flight Rudder Pedals</name>
+    <name>Mad Catz Pro Flight Cessna Rudder Pedals</name>
+    <name>Saitek Pro Flight Cessna Rudder Pedals</name>
+    <name>Saitek Saitek Pro Flight Cessna Rudder Pedals</name>
+    <name>ProFlight Cessna Rudder Pedals</name>
+    <name>Pro Flight Cessna Rudder Pedals</name>
+    <name>Mad Catz Pro Flight Rudder Pedals</name>
+
+    <debug-events type="bool">false</debug-events>
+
+    <event>
+        <desc>Brake left</desc>
+        <name>abs-y-translate</name>
+        <min-range>0</min-range>
+        <max-range>127</max-range>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/gear/brake-left</property>
+            <offset>1</offset>
+            <factor>0.5</factor>
+        </binding>
+    </event>
+    <event>
+        <desc>Brake right</desc>
+        <name>abs-x-translate</name>
+        <min-range>0</min-range>
+        <max-range>127</max-range>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/gear/brake-right</property>
+            <offset>1</offset>
+            <factor>0.5</factor>
+        </binding>
+    </event>
+    <event>
+        <desc>Rudder</desc>
+        <name>abs-z-rotate</name>
+        <min-range>0</min-range>
+        <max-range>511</max-range>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/flight/rudder</property>
+        </binding>
+    </event>
+</PropertyList>

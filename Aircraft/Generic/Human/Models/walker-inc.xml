@@ -403,6 +403,10 @@
    </equals>
   </condition>
  </animation>
+	<model>
+		<name>flashlight</name>
+		<path>equipment/flashlight.xml</path>
+	</model>
 
 <!-- hip -->
 	<animation>

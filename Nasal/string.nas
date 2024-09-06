@@ -496,3 +496,14 @@ var color = func(color, s, enabled=nil) {
 #
 var color_enabled = 0;
 setlistener("/sim/startup/terminal-ansi-colors", func(n) setcolors(n.getBoolValue()), 1, 0);
+
+##
+# shorten sting s to length by replacing characters in the middle by '...'
+var squeeze = func(s, length) {
+	if (size(s) <= length or length < 7)
+		return s;
+
+	var l = substr(s, 0, (length - 3) / 2);
+	var r = substr(s, size(s) + size(l) + 3 - length);
+	return l ~ "..." ~ r;
+}

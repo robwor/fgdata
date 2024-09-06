@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<!--
+File:    annunciators.xml
+Created: 29.03.2024
+Author:  jsb
+
+This file is included by defaults.xml as /instrumentation/annunciators/
+
+The goal of this property subtree is to have a common place for annunciator
+status data for external devices like joystick, yoke, throttle quadrant,
+custom cockpit hardware, but also elements in the 3D cockpit or canvas can
+use them.
+FG aircraft should write their state info for annunciator lights to the 
+property that matches best or alias properties as far as practical.
+In the best case, a large number of aircrafts could work mostly automatically
+with any annunciator 'device' consuming these props as input.
+
+see also https://wiki.flightgear.org/Aircraft_properties_reference
+-->
+
+<PropertyList>
+    <!-- master switch -->
+    <serviceable type="bool">true</serviceable>
+
+    <!-- generic door warning: true = at least one door is not save for flight -->
+    <doors type="bool">false</doors>
+
+    <master-caution><state type="bool"/></master-caution>
+    <master-warning><state type="bool"/></master-warning>
+
+    <!-- autoflight -->
+    <autoflight>
+        <ap>
+            <enabled type="bool">false</enabled>
+            <!-- selected ap mode -->
+            <mode>
+                <alt type="bool">false</alt>
+                <apr type="bool">false</apr>
+                <hdg type="bool">false</hdg>
+                <ias type="bool">false</ias>
+                <nav type="bool">false</nav>
+                <rev type="bool">false</rev>
+                <vs type="bool">false</vs>
+            </mode>
+        </ap>
+        <flightdirector>
+            <enabled type="bool">false</enabled>
+        </flightdirector>
+    </autoflight>
+
+    <engines>
+        <apu>
+            <enabled type="bool">false</enabled>
+            <fire type="bool">false</fire>
+        </apu>
+        <!-- individual engines can be added for detailed annunciator panels
+            or in aircraft file
+        <engine n="0">
+            <enabled type="bool">false</enabled>
+            <fire type="bool">false</fire>
+            <oil-pressure-low type="bool">false</oil-pressure-low>
+            <starter type="bool">false</starter>
+        </engine>
+        -->
+        <!-- summary props for all engines -->
+        <fire type="bool">false</fire>
+        <oil-pressure-low type="bool">false</oil-pressure-low>
+        <starter type="bool">false</starter>
+    </engines>
+
+    <!-- landing gear status -->
+    <gear>
+        <nose>
+            <down type="bool">false</down>
+            <in-transition type="bool">false</in-transition>
+            <unsafe type="bool">false</unsafe>
+            <up type="bool">false</up>
+        </nose>
+        <left>
+            <down type="bool">false</down>
+            <in-transition type="bool">false</in-transition>
+            <unsafe type="bool">false</unsafe>
+            <up type="bool">false</up>
+        </left>
+        <right>
+            <down type="bool">false</down>
+            <in-transition type="bool">false</in-transition>
+            <unsafe type="bool">false</unsafe>
+            <up type="bool">false</up>
+        </right>
+
+        <!-- all gear down and locked -->
+        <down type="bool">false</down>
+        <!-- at least on gear in transition -->
+        <in-transition type="bool">false</in-transition>
+        <!-- at least one gear unsafe -->
+        <unsafe type="bool">false</unsafe>
+        <!-- all gear up and locked -->
+        <up type="bool">false</up>
+        <parking-brake alias="/controls/gear/brake-parking"/>
+    </gear>
+
+    <!-- systems -->
+    <systems>
+        <anti-ice>
+            <enabled type="bool">false</enabled>
+        </anti-ice>
+        <electric>
+            <low-voltage type="bool">false</low-voltage>
+        </electric>
+        <fuel>
+            <system>
+                <pressure-low type="bool">false</pressure-low>
+            </system>
+            <system>
+                <pressure-low type="bool">false</pressure-low>
+            </system>
+            <system>
+                <pressure-low type="bool">false</pressure-low>
+            </system>
+            <aux-pump type="bool">false</aux-pump>
+            <pressure-low type="bool">false</pressure-low>
+        </fuel>
+        <!-- hydraulic systems -->
+        <hyd>
+            <system>
+                <pressure-low type="bool">false</pressure-low>
+            </system>
+            <system>
+                <pressure-low type="bool">false</pressure-low>
+            </system>
+            <system>
+                <pressure-low type="bool">false</pressure-low>
+            </system>
+            <pressure-low type="bool">false</pressure-low>
+        </hyd>
+        <vacuum type="bool">false</vacuum>
+    </systems>
+</PropertyList>
+

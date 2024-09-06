@@ -10,6 +10,8 @@ uniform sampler2D landclass;
 uniform sampler2DArray atlas;
 uniform sampler2D perlin;
 
+uniform mat4 osg_ViewMatrix;
+
 // Passed from VPBTechnique, not the Effect
 uniform float fg_tileWidth;
 uniform float fg_tileHeight;
@@ -31,6 +33,7 @@ const vec3 WATER_COLOR = vec3(0.1, 0.1, 0.3);
 const float WATER_METALLIC = 0.0;
 const float WATER_ROUGHNESS = 0.25;
 
+// water.glsl
 // Procedurally generate a water normal for this fragment
 vec3 generateWaterNormal(in vec2 texCoords);
 
@@ -56,8 +59,8 @@ void main()
 
 		// The Landclass for this particular fragment.  This can be used to
 		// index into the atlas textures.
-		int lc = int(texture2D(landclass, fs_in.texcoord).g * 255.0 + 0.5);
-		bool water = (texture2D(landclass, fs_in.texcoord).z > 0.9) || (texture2D(coastline, fs_in.texcoord).b > 0.05);
+		int lc = int(texture(landclass, fs_in.texcoord).g * 255.0 + 0.5);
+		bool water = (texture(landclass, fs_in.texcoord).z > 0.9) || (texture(coastline, fs_in.texcoord).b > 0.05);
 		uint tex1 = uint(fg_textureLookup1[lc].r * 255.0 + 0.5);
 
 		//color = ambientArray[lc] + diffuseArray[lc] * NdotL * gl_LightSource[0].diffuse;
@@ -80,7 +83,11 @@ void main()
 		texel = texture(atlas, vec3(st, tex1)).rgb;
 
 		if (water) {
-			N = generateWaterNormal(fs_in.texcoord);
+			vec3 vs_north = (osg_ViewMatrix * vec4(0.0, 0.0, 1.0, 0.0)).xyz;
+			vec3 T = normalize(cross(vs_north, N));
+			vec3 B = cross(N, T);
+			mat3 tbn = mat3(T, B, N);
+			N = tbn * generateWaterNormal(fs_in.texcoord);
 			texel = WATER_COLOR;
 			roughness = WATER_ROUGHNESS;
 			metallic = WATER_METALLIC;

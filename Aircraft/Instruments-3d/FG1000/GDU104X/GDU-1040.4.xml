@@ -311,12 +311,6 @@
   <animation>
     <type>knob</type>
     <object-name>VolCom</object-name>
-    <center>
-      <x-m>0.00252</x-m><y-m>0.1223</y-m><z-m>0.07776</z-m>
-    </center>
-    <axis>
-      <x>-1</x><y>0</y><z>0</z>
-    </axis>
     <action>
       <binding>
         <command>FG1000HardKeyPushed</command>

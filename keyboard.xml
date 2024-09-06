@@ -89,15 +89,6 @@ top down before the key bindings are parsed.
   </mod-alt>
  </key>
 
- <key n="3">
-  <name>Alt-C</name>
-  <desc>Toggle clickable panel hotspots</desc>
-  <binding>
-   <command>property-toggle</command>
-   <property>/sim/panel-hotspots</property>
-  </binding>
- </key>
-
  <key n="7">
   <name>Ctrl-G</name>
   <desc>Toggle autopilot glide slope lock</desc>

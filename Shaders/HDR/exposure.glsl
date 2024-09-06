@@ -5,10 +5,8 @@ uniform float exposure_compensation;
 
 const float one_over_log10 = 1.0 / log(10.0);
 
-float log10(float x)
-{
-    return one_over_log10 * log(x);
-}
+// math.glsl
+float log10(float x);
 
 /*
  * Exposure curve from 'Perceptual Effects in Real-time Tone Mapping'.

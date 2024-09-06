@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+    <name>hid-config</name>
+    <layout>vbox</layout>
+    <resizable>true</resizable>
+    <pref-width>300</pref-width>
+
+    <nasal>
+        <open>
+            var dlgRoot = cmdarg();
+            var dlgPrefix = "/sim/gui/dialogs/hid-config/";
+        </open>
+    </nasal>
+
+    <group>
+        <layout>hbox</layout>
+
+        <text>
+            <label>HID config</label>
+        </text>
+        
+        <empty><stretch>true</stretch></empty>
+    
+        <button>
+            <legend>X</legend>
+            <key>Esc</key>
+            <pref-width>20</pref-width>
+            <pref-height>20</pref-height>
+            <binding>
+                <command>dialog-close</command>
+            </binding>
+        </button>
+    </group>
+
+    <hrule/>
+        
+    <group>
+        <layout>vbox</layout>
+        <text>
+            <label>Not yet implemented</label>
+        </text>
+    </group>
+</PropertyList>

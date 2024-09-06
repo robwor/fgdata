@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+ <!--
+File:    generic-annunciators.xml
+Created: 29.03.2024
+Author:  jsb
+-->
+
+<PropertyList>
+	 <!-- nose gear -->
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-nose-down</name>
+		<input>
+			<equals>
+				<property>/gear/gear[0]/position-norm</property>
+				<value>1</value>
+			</equals>
+		</input>
+		<output>/instrumentation/annunciators/gear/nose/down</output>
+	</logic>
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-nose-up</name>
+		<input>
+			<equals>
+				<property>/gear/gear[0]/position-norm</property>
+				<value>0</value>
+			</equals>
+		</input>
+		<output>/instrumentation/annunciators/gear/nose/up</output>
+	</logic>
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-nose-in-transition</name>
+		<input>
+			<not><or>
+				<property>/instrumentation/annunciators/gear/nose/down</property>
+				<property>/instrumentation/annunciators/gear/nose/up</property>
+			</or></not>
+		</input>
+		<output>/instrumentation/annunciators/gear/nose/in-transition</output>
+	</logic>
+	<!-- left gear -->
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-left-down</name>
+		<input>
+			<equals>
+				<property>/gear/gear[1]/position-norm</property>
+				<value>1</value>
+			</equals>
+		</input>
+		<output>/instrumentation/annunciators/gear/left/down</output>
+	</logic>
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-left-up</name>
+		<input>
+			<equals>
+				<property>/gear/gear[1]/position-norm</property>
+				<value>0</value>
+			</equals>
+		</input>
+		<output>/instrumentation/annunciators/gear/left/up</output>
+	</logic>
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-left-in-transition</name>
+		<input>
+			<not><or>
+				<property>/instrumentation/annunciators/gear/left/down</property>
+				<property>/instrumentation/annunciators/gear/left/up</property>
+			</or></not>
+		</input>
+		<output>/instrumentation/annunciators/gear/left/in-transition</output>
+	</logic>
+	<!-- right gear -->
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-right-down</name>
+		<input>
+			<equals>
+				<property>/gear/gear[2]/position-norm</property>
+				<value>1</value>
+			</equals>
+		</input>
+		<output>/instrumentation/annunciators/gear/right/down</output>
+	</logic>
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-right-up</name>
+		<input>
+			<equals>
+				<property>/gear/gear[2]/position-norm</property>
+				<value>0</value>
+			</equals>
+		</input>
+		<output>/instrumentation/annunciators/gear/right/up</output>
+	</logic>
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-gear-right-in-transition</name>
+		<input>
+			<not><or>
+				<property>/instrumentation/annunciators/gear/right/down</property>
+				<property>/instrumentation/annunciators/gear/right/up</property>
+			</or></not>
+		</input>
+		<output>/instrumentation/annunciators/gear/right/in-transition</output>
+	</logic>
+	<!-- engines summarization rules - assume max 3+3+1APU -->
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-summary-engine-fire</name>
+		<input>
+			<or>
+				<property>instrumentation/annunciators/engines/engine[0]/fire</property>
+				<property>instrumentation/annunciators/engines/engine[1]/fire</property>
+				<property>instrumentation/annunciators/engines/engine[2]/fire</property>
+				<property>instrumentation/annunciators/engines/engine[3]/fire</property>
+				<property>instrumentation/annunciators/engines/engine[4]/fire</property>
+				<property>instrumentation/annunciators/engines/engine[5]/fire</property>
+				<property>instrumentation/annunciators/engines/engine[6]/fire</property>
+			</or>
+		</input>
+		<output>instrumentation/annunciators/engines/fire</output>
+	</logic>
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-summary-engine-starter</name>
+		<input>
+			<or>
+				<property>instrumentation/annunciators/engines/engine[0]/starter</property>
+				<property>instrumentation/annunciators/engines/engine[1]/starter</property>
+				<property>instrumentation/annunciators/engines/engine[2]/starter</property>
+				<property>instrumentation/annunciators/engines/engine[3]/starter</property>
+				<property>instrumentation/annunciators/engines/engine[4]/starter</property>
+				<property>instrumentation/annunciators/engines/engine[5]/starter</property>
+				<property>instrumentation/annunciators/engines/engine[6]/starter</property>
+			</or>
+		</input>
+		<output>instrumentation/annunciators/engines/starter</output>
+	</logic>
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-summary-engine-oil</name>
+		<input>
+			<or>
+				<property>instrumentation/annunciators/engines/engine[0]/oil-pressure-low</property>
+				<property>instrumentation/annunciators/engines/engine[1]/oil-pressure-low</property>
+				<property>instrumentation/annunciators/engines/engine[2]/oil-pressure-low</property>
+				<property>instrumentation/annunciators/engines/engine[3]/oil-pressure-low</property>
+				<property>instrumentation/annunciators/engines/engine[4]/oil-pressure-low</property>
+				<property>instrumentation/annunciators/engines/engine[5]/oil-pressure-low</property>
+				<property>instrumentation/annunciators/engines/engine[6]/oil-pressure-low</property>
+			</or>
+		</input>
+		<output>instrumentation/annunciators/engines/oil-pressure-low</output>
+	</logic>
+	<!-- fuel summarization rules -->
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-summary-fuel-pressure</name>
+		<input>
+			<or>
+				<property>instrumentation/annunciators/systems/fuel/system[0]/pressure-low</property>
+				<property>instrumentation/annunciators/systems/fuel/system[1]/pressure-low</property>
+				<property>instrumentation/annunciators/systems/fuel/system[2]/pressure-low</property>
+			</or>
+		</input>
+		<output>instrumentation/annunciators/systems/fuel/pressure-low</output>
+	</logic>
+	<!-- hydraulic summarization rules -->
+	<logic>
+		<debug type="bool">false</debug>
+		<name>annunciator-summary-hydraulic-pressure</name>
+		<input>
+			<or>
+				<property>instrumentation/annunciators/systems/hyd/system[0]/pressure-low</property>
+				<property>instrumentation/annunciators/systems/hyd/system[1]/pressure-low</property>
+				<property>instrumentation/annunciators/systems/hyd/system[2]/pressure-low</property>
+			</or>
+		</input>
+		<output>instrumentation/annunciators/systems/hyd/pressure-low</output>
+	</logic>
+</PropertyList>

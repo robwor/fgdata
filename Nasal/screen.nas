@@ -398,12 +398,6 @@ var log = nil;
 var property_display = nil;
 var controls = nil;
 
-
-# Shift-click       in the property browser adds the selected property to the property display
-# Shift-Alt-click   adds all children of the selected property to the property display
-# Shift-Ctrl-click  removes all properties from the display
-#
-
 var search_name_in_msg = func(msg, call) {
 	var matching = 0;
 	var found = 0;
@@ -549,23 +543,12 @@ _setlistener("/sim/signals/nasal-dir-initialized", func {
 
 
 #-- Init -----------------------------------------------------------------------
+# property_display is used by property-browser dialog for live monitoring of props
 if (getprop("/sim/gui/chat-box-location") == "left") {
     property_display = display.new(5, -250);
 } else {
     property_display = display.new(5, -25);
 }
-listener.display = setlistener("/sim/gui/dialogs/property-browser/selected", func(n) {
-    var n = n.getValue();
-    if (n != "" and getprop("/devices/status/keyboard/shift")) {
-        if (getprop("/devices/status/keyboard/ctrl"))
-            return property_display.reset();
-        n = props.globals.getNode(n);
-        if (!n.getAttribute("children"))
-            property_display.add(n);
-        elsif (getprop("/devices/status/keyboard/alt"))
-            property_display.add(n.getChildren());
-    }
-});
 
 setlistener("/sim/gui/current-style", func {
     theme_font = getprop("/sim/gui/selected-style/fonts/message-display/name");

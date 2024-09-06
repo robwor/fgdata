@@ -350,6 +350,14 @@ setRudderTrimToPosition = func() {
     }
 }
 
+# Adjust elevator-trim applying user defined factor
+# (intendet to be sued from mouse wheel binding)
+adjElevatorTrimWithFactor = func(step) {
+    var factor  = getprop("/sim/mouse/wheel-elevator-trim-factor");
+    var nextVal = getprop("/controls/flight/elevator-trim") + step*factor;
+    setprop("/controls/flight/elevator-trim", nextVal);
+}
+
 ##
 # Handlers.  These are suitable for binding to repeatable button press
 # events.  They are *not* good for binding to the keyboard, since (at

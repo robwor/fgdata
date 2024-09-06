@@ -49,28 +49,6 @@
 		</item>
 
 		<item>
-			<name>video-start</name>
-			<enabled>true</enabled>
-			<binding>
-				<command>nasal</command>
-				<script>
-					fgcommand("video-start");
-				</script>
-			</binding>
-		</item>
-
-		<item>
-			<name>video-stop</name>
-			<enabled>false</enabled>
-			<binding>
-				<command>nasal</command>
-				<script>
-					fgcommand("video-stop");
-				</script>
-			</binding>
-		</item>
-
-		<item>
 			<name>video-control</name>
 			<binding>
 				<command>dialog-show</command>
@@ -88,18 +66,10 @@
 		</item>
 
 		<item>
-			<name>input-config</name>
+			<name>input-systems</name>
 			<binding>
 				<command>dialog-show</command>
-				<dialog-name>input-config</dialog-name>
-			</binding>
-		</item>
-
-		<item>
-			<name>joystick-config</name>
-			<binding>
-				<command>dialog-show</command>
-				<dialog-name>joystick-config</dialog-name>
+				<dialog-name>input-systems</dialog-name>
 			</binding>
 		</item>
 

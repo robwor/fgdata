@@ -188,7 +188,6 @@
   <animation>
     <type>knob</type>
     <object-name>NavOuter</object-name>
-    <value>0</value>
     <action>
       <binding>
         <command>FG1000HardKeyPushed</command>
@@ -284,7 +283,6 @@
     <type>knob</type>
     <object-name>AltOuter</object-name>
     <object-name>AltInner</object-name>
-    <value>0</value>
     <action>
       <binding>
         <command>FG1000HardKeyPushed</command>
@@ -446,7 +444,7 @@
       <binding>
         <command>set-tooltip</command>
         <tooltip-id>BARO</tooltip-id>
-        <label>Change barometric pressure setting)</label>
+        <label>Change barometric pressure setting</label>
       </binding>
     </hovered>
   </animation>

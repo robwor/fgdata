@@ -155,6 +155,17 @@
 
   <!-- Histogram for automatic exposure -->
   <buffer>
+    <name>histogram-bins</name>
+    <type>2d</type>
+    <width>screen</width>
+    <screen-width-scale><property>/sim/rendering/hdr/render-scale</property></screen-width-scale>
+    <height>screen</height>
+    <screen-height-scale><property>/sim/rendering/hdr/render-scale</property></screen-height-scale>
+    <format>r8ui</format>
+    <min-filter>nearest</min-filter>
+    <mag-filter>nearest</mag-filter>
+  </buffer>
+  <buffer>
     <name>histogram-partial</name>
     <type>2d</type>
     <width>screen</width>
@@ -958,9 +969,17 @@
       Based on the article by Alex Tardif:
       https://www.alextardif.com/HistogramLuminance.html
 
-      Instead of using a compute shader, we run two fragment shaders. The first
-      calculates a partial histogram of the rows of the input HDR texture, and
-      the second aggregates them together to obtain a single histogram.
+      The first step calculates the bin numbers of every pixel of the input HDR
+      texture.
+
+      If compute shaders aren't supported, we run two fragment shaders. The
+      first calculate a partial histogram of the rows of the bin numbers
+      texture, and the second aggregates them together to obtain a single
+      histogram.
+
+      If compute shaders are supported, a fragment shader resets the histogram
+      buffer, followed by a compute shader to calculate the histogram of the bin
+      numbers.
 
       The last step, which calculates the average scene luminance from the
       histogram, is identical even though it is implemented as a fragment shader.
@@ -970,9 +989,9 @@
       texture) is too expensive and not worth the trouble.
   -->
   <pass>
-    <name>histogram-column</name>
+    <name>histogram-bin</name>
     <type>quad</type>
-    <effect>Effects/HDR/histogram-column</effect>
+    <effect>Effects/HDR/histogram-bin</effect>
     <binding>
       <unit>0</unit>
       <buffer>hdr-result</buffer>
@@ -980,6 +999,20 @@
     <binding>
       <unit>14</unit>
       <buffer>prev-luminance</buffer>
+    </binding>
+    <attachment>
+      <component>color0</component>
+      <buffer>histogram-bins</buffer>
+    </attachment>
+  </pass>
+  <!-- Slower version without compute shaders -->
+  <pass>
+    <name>histogram-column</name>
+    <type>quad</type>
+    <effect>Effects/HDR/histogram-column</effect>
+    <binding>
+      <unit>0</unit>
+      <buffer>histogram-bins</buffer>
     </binding>
     <attachment>
       <component>color0</component>
@@ -999,6 +1032,42 @@
       <buffer>histogram</buffer>
     </attachment>
   </pass>
+  <!-- Faster version with compute shaders -->
+  <pass>
+    <name>histogram-clear</name>
+    <type>quad</type>
+    <effect>Effects/HDR/histogram-clear</effect>
+    <attachment>
+      <component>color0</component>
+      <buffer>histogram</buffer>
+    </attachment>
+  </pass>
+  <pass>
+    <name>histogram-compute</name>
+    <type>compute</type>
+    <workgroup-size>
+      <x>256</x>
+      <y>2</y>
+    </workgroup-size>
+    <global-size>
+      <x>screen</x>
+      <y>screen</y>
+      <z>screen</z>
+      <y-screen-scale>0.0625</y-screen-scale>
+    </global-size>
+    <effect>Effects/HDR/histogram-compute</effect>
+    <binding>
+      <unit>0</unit>
+      <buffer>histogram-bins</buffer>
+    </binding>
+    <image-binding>
+      <unit>0</unit>
+      <buffer>histogram</buffer>
+      <access>read-write</access>
+      <format>r32ui</format>
+    </image-binding>
+  </pass>
+  <!-- End of faster version with compute shaders -->
   <pass>
     <name>histogram-luminance</name>
     <type>quad</type>
@@ -1330,6 +1399,54 @@
     <binding>
       <unit>0</unit>
       <buffer>depth-stencil</buffer>
+    </binding>
+  </pass>
+
+  <pass>
+    <name>debug-histogram</name>
+    <type>quad</type>
+    <clear-mask>depth</clear-mask>
+    <effect>Effects/HDR/debug-histogram</effect>
+    <condition>
+      <property>/sim/rendering/hdr/debug/show-histogram</property>
+    </condition>
+    <geometry>
+      <left>0.8</left>
+      <bottom>0.57</bottom>
+      <width>0.2</width>
+      <height>0.2</height>
+    </geometry>
+    <binding>
+      <unit>0</unit>
+      <buffer>histogram</buffer>
+    </binding>
+    <binding>
+      <unit>1</unit>
+      <buffer>histogram-luminance</buffer>
+    </binding>
+  </pass>
+
+  <pass>
+    <name>debug-aerial-perspective</name>
+    <type>quad</type>
+    <clear-mask>depth</clear-mask>
+    <effect>Effects/HDR/debug-aerial-perspective</effect>
+    <condition>
+      <property>/sim/rendering/hdr/debug/show-aerial-perspective</property>
+    </condition>
+    <geometry>
+      <left>0.0</left>
+      <bottom>0.23</bottom>
+      <width>0.2</width>
+      <height>0.2</height>
+    </geometry>
+    <binding>
+      <unit>1</unit>
+      <buffer>histogram-luminance</buffer>
+    </binding>
+    <binding>
+      <unit>11</unit>
+      <buffer>aerial-perspective</buffer>
     </binding>
   </pass>
 </PropertyList>

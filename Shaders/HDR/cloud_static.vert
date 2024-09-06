@@ -20,5 +20,5 @@ void main()
     // Perspective division and scale to [0, 1] to get the screen position
     // of the vertex.
     vec2 coord = (gl_Position.xy / gl_Position.w) * 0.5 + 0.5;
-    ap_color = get_aerial_perspective(coord, length(vs_pos));
+    ap_color = get_aerial_perspective(coord, length(vs_pos.xyz));
 }

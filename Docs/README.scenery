@@ -38,7 +38,8 @@ Contents ----------------------------------------------------------------------
    6.1  static models
    6.2  AI models
 
-
+7  WS3.0 tools
+   7.1  
 
 
 1 scenery path ----------------------------------------------------------------
@@ -421,7 +422,9 @@ Syntax
   BUILDING_LIST <filename> <material name> <lon> <lat> <elev>
 
 Where:
-- <filename> is the name of a file containing building positions.  May be a .gz file
+- <filename> is the name of a file containing building positions.  May be a .txt or
+  a gzipped .txt.gz file.  If FlightGear is unable to open <filename> it will
+  automatically try to open <filename>.gz.  
 - <material name> is the name of the material that will be referenced to find
   random building parameters.
 - <lat>, <lon>, <elev> defines the center of the set of buildings, and also
@@ -476,14 +479,16 @@ the tree shader (aka Random vegetation).
 
 Example:
 
-  TREE_LIST trees.txt.gz DeciduousBroadCover -3.36074090 55.95297494 30.3822
+  TREE_LIST trees.txt DeciduousBroadCover -3.36074090 55.95297494 30.3822
 
 Syntax
 
   TREE_LIST <filename> <material name> <lon> <lat> <elev>
 
 Where:
-- <filename> is the name of a file containing tree positions, may be a .gz file
+- <filename> is the name of a file containing tree positions.  May be a .txt or
+  a gzipped .txt.gz file.  If FlightGear is unable to open <filename> it will
+  automatically try to open <filename>.gz.  
 - <material name> is the name of the material that will be referenced to find
   random vegetation parameters such as size, texture.
 - <lat>, <lon>, <elev> defines the center of the set of trees, and also
@@ -492,7 +497,7 @@ Where:
 
 See README.materials for details on configuring the random vegetation parameters.
 
-The referenced <filename> (in the example trees.txt.gz) contains lines of the form
+The referenced <filename> (in the example trees.txt) contains lines of the form
 
 X Y Z A B C
 
@@ -508,20 +513,22 @@ particular Material.  E.g. Road, Waterways
 
 Example:
 
-  LINEAR_FEATURE_LIST roads.txt.gz Road
+  LINEAR_FEATURE_LIST roads.txt Road
 
 Syntax
 
   LINEAR_FEATURE_LIST <filename> <material name>
 
 Where:
-- <filename> is the name of a file containing linear feature positions, may be a .gz file
+- <filename> is the name of a file containing linear feature positions.  May be a .txt or
+  a gzipped .txt.gz file.  If FlightGear is unable to open <filename> it will
+  automatically try to open <filename>.gz.  
 - <material name> is the name of the material that will be used to render the feature.
   This can use an Effect as normal, e.g. for road traffic.
 
 See README.materials for details on configuring the linear feature parameters.
 
-The referenced <filename> (in the example road.txt.gz) contains lines of the form
+The referenced <filename> (in the example road.txt) contains lines of the form
 
 W ATTR A B C D lon0 lat0 lon1 lat1 lon2 lat2 lon3 lat4
 
@@ -626,7 +633,9 @@ Syntax
   LIGHT_LIST <filename> <lon> <lat> <elev>
 
 Where:
-- <filename> is the name of a file containing light positions and properties
+- <filename> is the name of a file containing building positions.  May be a .txt or
+  a gzipped .txt.gz file.  If FlightGear is unable to open <filename> it will
+  automatically try to open <filename>.gz.  
 - <lat>, <lon>, <elev> defines the center of the set of lights
 
 The referenced <filename> (in the example light_list.txt) contains lines defining lights of various types
@@ -660,7 +669,7 @@ Syntax:
 
 Where:
 - <object-path> is the path to an object relative to the data directory (same as OBJECT_SHARED). Models used should be raw models (e.g. *.ac) and not *.xml's, and should contain as few objects as possible (recommendation is single object per model), using a texture atlas for representing different semantic parts in the model instead of splitting them into various objects.
-- <filename> is the name of the file containing instance positions and other properties
+- <filename> is the name of a file containing instance positions and other properties.  May be a .txt or a gzipped .txt.gz file.  If FlightGear is unable to open <filename> it will automatically try to open <filename>.gz.  
 - <effect-path> is the name of the effect that will be applied. See below for currently available options.
 - <lon>, <lat>, <elev-m> defines the position relative to which all the instances will be placed (similar to BUILDING_LIST)
 

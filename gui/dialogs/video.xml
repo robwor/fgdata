@@ -240,6 +240,45 @@
                 </binding>
             </input>
         </group>
+
+        <hrule/>
+
+        <group>
+            <layout>vbox</layout>
+            <text>
+                <label>Control</label>
+            </text>
+            
+            <group>
+                <layout>hbox</layout>
+                <button>
+                    <legend>Start</legend>
+                    <equal>true</equal>
+                    <enable>
+                        <not><property>/sim/video/is-encoding</property></not>
+                    </enable>
+                    <binding>
+                        <command>nasal</command>
+                        <script>fgcommand("video-start");</script>
+                    </binding>
+                    <binding>
+                        <command>dialog-close</command>
+                    </binding>
+                </button>
+                
+                <button>
+                    <legend>Stop</legend>
+                    <equal>true</equal>
+                    <enable>
+                        <property>/sim/video/is-encoding</property>
+                    </enable>
+                    <binding>
+                        <command>nasal</command>
+                        <script>fgcommand("video-stop");</script>
+                    </binding>
+                </button>
+            </group>
+        </group>
     </group>
     
     <nasal>
