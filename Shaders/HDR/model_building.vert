@@ -24,6 +24,8 @@ uniform mat3 osg_NormalMatrix;
 const float c_precision = 128.0;
 const float c_precisionp1 = c_precision + 1.0;
 
+const float EPSILON = 1e-7;
+
 // logarithmic_depth.glsl
 float logdepth_prepare_vs_depth(float z);
 
@@ -88,13 +90,28 @@ void main()
     float wtex1x = attr2.x; // Front/Roof texture X1
     float stex1x = attr3.y; // Side texture X1
     float wtex1y = attr2.y; // Front/Roof/Side texture Y1
-    vec2 tex0 = vec2(sign(multitexcoord0.x) * (vertex_color.x*wtex0x + vertex_color.y*rtex0x + vertex_color.a*wtex0x),
+
+    float mtcx = multitexcoord0.x - EPSILON;
+
+    // Adjust the top texture coordinates to match roof shape
+    float is_roof_top_vertex = vertex_color.z;
+    float is_roof_bottom_vertex = 1.0 - is_roof_top_vertex;
+    float rooftop_scale_x = attr3.z;
+    float rooftop_scale_y = attrib2.y;
+
+    // Front/Back rooftop scaling differs from Left/Right scaling
+    float is_front_or_back = max(sign(EPSILON - abs(normal.y)), 0.0); // abs(gl_Normal.y) < EPSILON;
+
+    mtcx = is_front_or_back * (is_roof_bottom_vertex * (mtcx) + is_roof_top_vertex * ((mtcx + 0.5) * rooftop_scale_y - 0.5)) +
+        (1.0 - is_front_or_back) * (is_roof_bottom_vertex * (mtcx) + is_roof_top_vertex * ((mtcx + 0.5) * rooftop_scale_x - 0.5));
+
+    vec2 tex0 = vec2(sign(mtcx) * (vertex_color.x*wtex0x + vertex_color.y*rtex0x + vertex_color.a*wtex0x),
                      vertex_color.x*wtex0y + vertex_color.y*rtex0y + vertex_color.a*wtex0y);
 
     vec2 tex1 = vec2(vertex_color.x*wtex1x + vertex_color.y*wtex1x + vertex_color.a*stex1x,
                      wtex1y);
 
-    vs_out.texcoord.x = tex0.x + multitexcoord0.x * tex1.x;
+    vs_out.texcoord.x = tex0.x + mtcx * tex1.x;
     vs_out.texcoord.y = tex0.y + multitexcoord0.y * tex1.y;
 
     // Rotate the normal.

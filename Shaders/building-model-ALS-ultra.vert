@@ -29,7 +29,7 @@ uniform int  		nmap_enabled;
 uniform int  		shader_qual;
 uniform int     color_is_position;
 
-const float epsilon = 1e-7;
+const float EPSILON = 1e-7;
 
 //////Fog Include///////////
 // uniform	int 	fogType;
@@ -112,7 +112,7 @@ void	main(void)
   float stex1x = attr3.y; // Side texture X1
   float wtex1y = attr2.y; // Front/Roof/Side texture Y1
 
-  float mtcx = gl_MultiTexCoord0.x - epsilon;
+  float mtcx = gl_MultiTexCoord0.x - EPSILON;
 
   // Adjust the top texture coordinates to match roof shape
   float is_roof_top_vertex = gl_Color.z;
@@ -121,7 +121,7 @@ void	main(void)
   float rooftop_scale_y = attrib2.y;
 
   // Front/Back rooftop scaling differs from Left/Right scaling
-  float is_front_or_back = max(sign(epsilon - abs(gl_Normal.y)), 0.0); // abs(gl_Normal.y) < epsilon;
+  float is_front_or_back = max(sign(EPSILON - abs(gl_Normal.y)), 0.0); // abs(gl_Normal.y) < EPSILON;
 
   mtcx = is_front_or_back * (is_roof_bottom_vertex * (mtcx) + is_roof_top_vertex * ((mtcx + 0.5) * rooftop_scale_y - 0.5)) +
     (1.0 - is_front_or_back) * (is_roof_bottom_vertex * (mtcx) + is_roof_top_vertex * ((mtcx + 0.5) * rooftop_scale_x - 0.5));
