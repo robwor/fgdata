@@ -84,7 +84,7 @@ gui.widgets.ComboBox = {
 # helper to set the current item by passing in
 # a value of an item
   setSelectedByValue: func(value) {
-    if (me._items[me._currentIndex].menuValue == value) {
+    if (!size(me._items) or me._currentIndex == nil or me._items[me._currentIndex].menuValue == value) {
       return;
     }
 
