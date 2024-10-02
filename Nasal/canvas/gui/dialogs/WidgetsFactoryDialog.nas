@@ -264,6 +264,35 @@ var WidgetsFactoryDialog = {
 		m.dialWrapCheckBox.setAlignment(canvas.AlignTop);
 		m.dialOptionsBox.addItem(m.dialWrapCheckBox);
 
+		m.layoutsTab = VBoxLayout.new();
+		m.tabs.addTab("layouts", "Layouts", m.layoutsTab);
+
+		var hbox = HBoxLayout.new();
+		for (var i = 0; i < 5; i += 1) {
+			hbox.addItem(
+				gui.widgets.Label.new(m.tabsContent).setText("Label " ~ i)
+			);
+		}
+		m.layoutsTab.addItem(hbox);
+
+		var vbox = VBoxLayout.new();
+		for (var i = 0; i < 5; i += 1) {
+			vbox.addItem(
+				gui.widgets.Label.new(m.tabsContent).setText("Label " ~ i)
+			);
+		}
+		m.layoutsTab.addItem(vbox);
+
+		var grid = GridLayout.new();
+		for (var i = 0; i < 5; i += 1) {
+			for (var j = 0; j < 5; j += 1) {
+				grid.addItem(
+					gui.widgets.Button.new(m.tabsContent).setText("Label " ~ i ~ " " ~ j),
+					i, j,
+				);
+			}
+		}
+		m.layoutsTab.addItem(grid);
 
 		return m;
 	},
