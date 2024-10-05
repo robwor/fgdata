@@ -121,7 +121,6 @@ var Window = {
     m.setInt("content-size[0]", size[0]);
     m.setInt("content-size[1]", size[1]);
     m.setDouble("aspect-ratio", size[0]/size[1]);
-    m.setDouble("opacity", 0.5);
     m.setBool("lock-aspect-ratio", 0);
     if (type == "window" or type == "dialog") {
       m.centerOnScreen();
