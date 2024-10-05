@@ -444,6 +444,7 @@ var unloadTooltips = func
   removecommand("tooltip-timeout");
   removecommand("show-message");
   removecommand("clear-message");
+  tooltip.del();
 
   setprop("/sim/mouse/tooltip-commands-registered", 0);
 }
