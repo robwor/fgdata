@@ -27,16 +27,16 @@ gui.widgets.ComboBox = {
               me.setSelectedByIndex(0);
             }
           } elsif (ishash(item)) {
-            m.addMenuItem(item["text"], item["value"]);
+            m.createItem(item["text"], item["value"]);
           } elsif (isvec(item) and size(item) == 2) {
-            m.addMenuItem(item[0], item[1]);
+            m.createItem(item[0], item[1]);
           } else {
-            m.addMenuItem(item, item);
+            m.createItem(item, item);
           }
         }
       } elsif (typeof(items) == "hash") {
         foreach (var text; keys(items)) {
-          m.addMenuItem(text, items[text]);
+          m.createItem(text, items[text]);
         }
       }
     }
@@ -68,8 +68,13 @@ gui.widgets.ComboBox = {
     return me._menu;
   },
 
-# convenience helper to add simple items
   addMenuItem: func(text, value) {
+    logprint(LOG_WARN, "canvas.gui.Widgets.ComboBox.addMenuItem is deprecated, please use createItem instead");
+    me.createItem(text, value)
+  },
+
+# convenience helper to add simple items
+  createItem: func(text, value) {
     var index = size(me._items);
     var m = me;
     var item = me.menu().createItem(text, func { m._itemCallback(index);}, {});
