@@ -124,7 +124,11 @@ gui.widgets.Dial = {
         return;
       }
 
-      me.setValue(me._value + e.deltaY * me._stepSize);
+      if (me._stepSize > 0) {
+        me.setValue(me._value + e.deltaY * me._stepSize);
+      } else {
+        me.setValue(me._value + e.deltaY);
+      }
       e.stopPropagation();
     });
     el.addEventListener("keydown", func(e) {
