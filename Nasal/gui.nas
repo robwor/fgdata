@@ -564,7 +564,7 @@ var property_browser = func(dir = nil) {
             return globals[module].clone(dir);
 
     startdir.setValue(dir);
-    fgcommand("dialog-show", props.Node.new({"dialog-name": dlgname}));
+    canvas.PropertyTreeBrowser.new(dir);
 }
 
 
