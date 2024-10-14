@@ -44,9 +44,13 @@ gui.widgets.Slider = {
 
   setValue: func(val)
   {
-    me._value = math.clamp(val, me._minValue, me._maxValue);
+    value = math.clamp(val, me._minValue, me._maxValue);
     if (me._view != nil) {
       me._view.setNormValue(me, me._normValue());
+    }
+    if (me._value != value) {
+      me._value = value;
+      me._trigger("value-changed", {"value": value});
     }
     return me;
   },
