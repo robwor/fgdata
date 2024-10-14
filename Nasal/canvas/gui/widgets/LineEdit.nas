@@ -47,7 +47,7 @@ gui.widgets.LineEdit = {
 
     if( me._view != nil )
       me._view.setText(me, me._text);
-    me._trigger("text-changed");
+    me._trigger("text-changed", {"text": me._text});
 
     return me;
   },
@@ -67,7 +67,7 @@ gui.widgets.LineEdit = {
 
     if( me._view != nil )
       me._view.setText(me, "");
-    me._trigger("text-changed");
+    me._trigger("text-changed", {"text": me._text});
     me._onStateChange();
   },
   text: func()
@@ -88,7 +88,7 @@ gui.widgets.LineEdit = {
     me._text = utf8.substr(me._text, 0, me._max_length);
     if( me._view != nil )
       me._view.setText(me, "");
-    me._trigger("text-changed");
+    me._trigger("text-changed", {"text": me._text});
     me.moveCursor(me._cursor);
     return me;
   },
@@ -159,7 +159,7 @@ gui.widgets.LineEdit = {
     if (me._view != nil) {
       me._view.setText(me, me._text);
     }
-    me._trigger("text-changed");
+    me._trigger("text-changed", {"text": me._text});
 
     me._onStateChange();
     return me;
@@ -195,7 +195,7 @@ gui.widgets.LineEdit = {
     if (me._view != nil) {
       me._view.setText(me, me._text);
     }
-    me._trigger("text-changed");
+    me._trigger("text-changed", {"text": me._text});
 
     me._onStateChange();
     return me
