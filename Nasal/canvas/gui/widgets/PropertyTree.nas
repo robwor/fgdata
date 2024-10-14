@@ -50,6 +50,15 @@ gui.widgets.PropertyTree = {
         },
         
         setNode: func(node) {
+                if (isscalar(node)) {
+                        me._node = props.globals.getNode(node);
+                } elsif (ishash(node)) {
+                        me._node = props.Node.new(node);
+                } elsif (isa(node, props.Node)) {
+                        me._node = node;
+                } else {
+                        die("Cannot set node to object of type '" ~ typeof(node) ~ "'");
+                }
                 me._node = node;
                 me.rebuildList();
                 me._trigger("node-changed", {"node": me._node, "path": me._node.getPath()});

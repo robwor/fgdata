@@ -1,7 +1,15 @@
 var PropertyTreeBrowser = {
         new: func(node = nil) {
-                if (node == nil) {
+                if (isscalar(node)) {
+                        node = props.globals.getNode(node);
+                } elsif (ishash(node)) {
+                        node = props.Node.new(node);
+                } elsif (isa(node, props.Node)) {
+                        node = node;
+                } elsif (node == nil) {
                         node = props.globals.getNode(props.globals.getValue("/sim/gui/dialogs/property-browser/selected"));
+                } else {
+                        die("Cannot set node to object of type '" ~ typeof(node) ~ "'");
                 }
                 var m = {
                         parents: [PropertyTreeBrowser],
