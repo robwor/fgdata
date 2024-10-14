@@ -52,6 +52,8 @@ gui.widgets.PropertyTree = {
         setNode: func(node) {
                 me._node = node;
                 me.rebuildList();
+                me._trigger("node-changed", {"node": me._node, "path": me._node.getPath()});
+
                 return me;
         },
         
