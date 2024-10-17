@@ -1,0 +1,1436 @@
+# == walker animation v1.4 for FlightGear version 1.9 with OSG ==
+
+var walker1_node = props.globals.getNode("sim/model/walker[1]", 1);
+var w1_animate_node = props.globals.getNode("sim/model/walker[1]/animate", 1);
+var w1_loop_enabled_node = props.globals.getNode("sim/model/walker[1]/loop-enabled", 1);
+var w1a_enabled_current_node = props.globals.getNode("sim/model/walker[1]/animate/enabled-current", 1);
+var w1a_dialog_position_node = props.globals.getNode("sim/model/walker[1]/animate/dialog-position", 1);
+var w1a_list_node = props.globals.getNode("sim/model/walker[1]/animate/list", 1);
+var w1a_sequence_selected_node = props.globals.getNode("sim/model/walker[1]/animate/sequence-selected", 1);
+var sequence_node = w1a_list_node.getNode("sequence[" ~ w1a_sequence_selected_node.getValue() ~ "]", 1);
+var triggered_seq_node = nil;
+var seq_node_now = nil;
+var content_modified_node = props.globals.getNode("sim/gui/dialogs/position-modified", 1);
+var walker_dialog1 = nil;
+var walker_dialog2 = nil;
+var walker_dialog3 = nil;
+var walker_dialog4 = nil;
+var sequence_count = 0;
+var position_count = 0;
+var anim_enabled = 0;
+var anim_running = -1;
+var triggers_enabled = 1;
+
+var triggers = {
+	"standing"      : { abbrev: "S", state: 0, trig_c: 8 },
+	"walking"       : { abbrev: "W", state: 0, trig_c: 1 },
+	"running"       : { abbrev: "R", state: 0, trig_c: 2 },
+	"backwards"     : { abbrev: "B", state: 0, trig_c: 4 },
+	"falling"       : { abbrev: "F", state: 0, trig_c: 16 },
+	"open-parachute": { abbrev: "P", state: 0, trig_c: 32 },
+	"landing"       : { abbrev: "L", state: 0, trig_c: 64 },
+	"crashing"      : { abbrev: "C", state: 0, trig_c: 128 },
+	"free1"         : { abbrev: "",  state: 0, trig_c: 32 },
+};
+
+# Initialize trigger nodes
+foreach (var key; keys(triggers)) {
+	triggers[key].node = props.globals.getNode("sim/model/walker[1]/animate/triggers/" ~ key, 1);
+}
+
+var log_priority = getprop("sim/logging/priority");
+var log_level = 0;
+if (log_priority == "info" or log_priority == "debug") {
+	log_level += 1;
+	print ("incr log_level");
+}
+var walking_momentum = 0;
+var w_outside = 0;
+var in_air = 0;
+var parachute_deployed_ft = 0;
+var animate_time_start = 0;
+var animate_current_position = 0.0;
+var animate_time_length = 0.0;
+var loop_enabled = 0;
+var loop_to = 0;
+var loop_start_sec = 0.0;
+var loop_length_sec = 0.0;
+var time_chart = [];
+var w_speed_mps = 0;
+var w_key_speed = 0;
+var am_L_id = nil;
+var tm_L_id = nil;
+var tr_L_id = nil;
+var ta_L_id = nil;
+var tj_L_id = nil;
+var tl_L_id = nil;
+var tc_L_id = nil;
+var to_L_id = nil;
+
+# remember preference for animations turned on or off
+aircraft.data.add("sim/model/walker[1]/animate/enabled-triggers");
+
+var interpolate_limb = func (a, b, p) {
+	if (a == nil or b == nil or p == nil){
+		print ("Undefined input error at walker-animate.interpolate_limb a= ",a," b= ",b," p= ",p);
+	} else {
+		return (a + ((b - a) * p));
+	}
+}
+
+var clamp = func(v, min, max) { v < min ? min : v > max ? max : v }
+
+var gui_list_node = props.globals.getNode("/sim/gui/dialogs/anim-sequence", 1);
+if (gui_list_node.getNode("list", 1) == nil)
+	gui_list_node.getNode("list", 1).setValue("");
+
+gui_list_node = gui_list_node.getNode("list", 1);
+var listbox_apply = func {
+	var id = pop(split(" ",gui_list_node.getValue()));
+	id = substr(id, 1, find(")", id) - 1);  # strip parentheses
+	w1a_sequence_selected_node.setValue(int(id));
+	sequence_node = w1a_list_node.getNode("sequence[" ~ int(w1a_sequence_selected_node.getValue()) ~ "]", 1);
+#	sequence_selected = 3;
+}
+
+var apply = func {
+	return gui_list_node.getValue();
+}
+
+var sequence = {
+	new_animation:	func (name) {
+		if (walker_dialog2 != nil) {
+			fgcommand("dialog-close", props.Node.new({ "dialog-name" : "walker-config" }));
+			walker_dialog2 = nil;
+			return;
+		}
+		var s = "";
+		for (var i = 0; i < size(name); i += 1) {
+			if ((string.isascii(name[i]) and !string.ispunct(name[i])) or int(name[i]) == 95 or int(name[i]) == 45) {
+				s ~= chr(name[i]);
+			}
+		}
+		s = string.trim(s, 0);
+		if (s == nil or s == "" or s == " ") {
+			return 0;
+		}
+		var new_sequence = props.globals.getNode("sim/model/walker[1]/animate/list/sequence[" ~ size(w1a_list_node.getChildren("sequence")) ~ "]", 1);
+		sequence_count = size(w1a_list_node.getChildren("sequence"));
+		w1a_sequence_selected_node.setValue(int(sequence_count - 1));
+		sequence_node = new_sequence;
+		new_sequence.getNode("name", 1).setValue(s);
+		new_sequence.getNode("loop-enabled", 1).setBoolValue(0);
+		new_sequence.getNode("loop-to", 1).setIntValue(0);
+		new_sequence.getNode("trigger-upon", 1).setValue("Disabled");
+	},
+	edit_animation:	func {
+		sequence_node = w1a_list_node.getNode("sequence[" ~ int(w1a_sequence_selected_node.getValue()) ~ "]", 1);
+		position_count = size(sequence_node.getChildren("position"));
+		if (position_count == 0) {
+			animate.reset_position();
+			w1a_dialog_position_node.setValue(-1);
+		} else {
+			w1a_dialog_position_node.setValue(0);
+			animate.copy_position(sequence_node.getNode("position[0]", 1), walker1_node);
+			w1_loop_enabled_node.setBoolValue(sequence_node.getNode("loop-enabled", 1).getValue());
+			walker1_node.getNode("loop-to", 1).setIntValue(sequence_node.getNode("loop-to", 1).getValue());
+			walker1_node.getNode("trigger-upon", 1).setValue(sequence_node.getNode("trigger-upon", 1).getValue());
+		}
+		w1a_enabled_current_node.setValue(0);
+		setprop("sim/model/walker[1]/animate/enabled-triggers", 0);
+		fgcommand("dialog-close", props.Node.new({ "dialog-name" : "walker-sequences" }));
+		walker_dialog1 = nil;
+		animate.showDialog();
+	},
+	load_animation:	func {
+		var load_sel = nil;
+		var load = func(n) {
+			print ("Loading from ",n.getValue());
+			var new_sequence = props.globals.getNode("sim/model/walker[1]/animate/list/sequence[" ~ size(w1a_list_node.getChildren("sequence")) ~ "]", 1);
+			io.read_properties(n.getValue(), new_sequence);
+			var s = new_sequence.getNode("name", 1).getValue();
+			if (s != nil) {
+				sequence_node = new_sequence;
+				sequence_count = size(w1a_list_node.getChildren("sequence"));
+				w1a_sequence_selected_node.setValue(int(sequence_count - 1));
+				sequence.reloadDialog();
+				discover_triggers(0);
+			} else {
+				w1a_list_node.removeChild("sequence", (size(w1a_list_node.getChildren("sequence")) - 1));
+			}
+		}
+		load_sel = gui.FileSelector.new(load, "Load Walker Sequence", "Load",
+			["walker-*.xml"], getprop("/sim/fg-home") ~ "/aircraft-data", "");
+		load_sel.open();
+	},
+	save_animation:	func {
+		var data_path = getprop("/sim/fg-home") ~ "/aircraft-data/walker-" ~ sequence_node.getNode("name", 1).getValue() ~ ".xml";
+		print ("Saving to ",data_path);
+		io.write_properties(data_path, sequence_node);
+	},
+	showDialog: func {
+		var name1 = "walker-sequences";
+		if (walker_dialog1 != nil) {
+			fgcommand("dialog-close", props.Node.new({ "dialog-name" : name1 }));
+			walker_dialog1 = nil;
+			return;
+		}
+
+		var margin = 2;
+
+		walker_dialog1 = gui.Widget.new();
+		walker_dialog1.set("layout", "vbox");
+		walker_dialog1.set("name", name1);
+		walker_dialog1.set("x", -40);
+		walker_dialog1.set("y", -40);
+
+		# "window" titlebar
+		var titlebar = walker_dialog1.addChild("group");
+		titlebar.set("layout", "hbox");
+		titlebar.addChild("empty").set("stretch", 1);
+		titlebar.addChild("text").set("label", "Walker posing animations");
+		titlebar.addChild("empty").set("stretch", 1);
+
+		var w = titlebar.addChild("button");
+		w.set("pref-width", 20);
+		w.set("pref-height", 20);
+		w.set("legend", "X");
+		w.set("keynum", 27);
+		w.prop().getNode("binding[0]/command", 1).setValue("nasal");
+		w.prop().getNode("binding[0]/script", 1).setValue("walker.walker_dialog1 = nil");
+		w.prop().getNode("binding[1]/command", 1).setValue("dialog-close");
+
+		walker_dialog1.addChild("hrule").addChild("dummy");
+
+		var g = walker_dialog1.addChild("group");
+		g.set("layout", "hbox");
+		g.addChild("empty").set("pref-width", margin);
+		var content = g.addChild("input");
+		content.set("name", "input");
+		content.set("layout", "hbox");
+		content.set("halign", "fill");
+		content.set("pref-width", 200);
+		content.set("editable", 1);
+		content.set("property", "/sim/gui/dialogs/anim-sequence/list");
+		content.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		content.prop().getNode("binding[0]/object-name", 1).setValue("input");
+		content.prop().getNode("binding[1]/command", 1).setValue("dialog-update");
+		content.prop().getNode("binding[1]/object-name", 1).setValue("sequence-list");
+#		var box1 = g.addChild("button");
+#		box1.set("legend", "Search");
+#		box1.set("label", "");
+#		box1.set("pref-width", 50);
+#		box1.set("pref-height", 18);
+#		box1.set("border", 2);
+#		box1.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+#		box1.prop().getNode("binding[0]/object-name", 1).setValue("input");
+#		box1.prop().getNode("binding[1]/command", 1).setValue("dialog-update");
+#		box1.prop().getNode("binding[1]/object-name", 1).setValue("sequence-list");
+		var box2 = g.addChild("button");
+		box2.set("halign", "left");
+		box2.set("label", "");
+		box2.set("pref-width", 50);
+		box2.set("legend", "New");
+		box2.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		box2.prop().getNode("binding[0]/object-name", 1).setValue("input");
+		box2.prop().getNode("binding[1]/command", 1).setValue("nasal");
+		box2.prop().getNode("binding[1]/script", 1).setValue("walker.sequence.new_animation(walker.apply())");
+		box2.prop().getNode("binding[2]/command", 1).setValue("dialog-update");
+		box2.prop().getNode("binding[2]/object-name", 1).setValue("sequence-list");
+		box2.prop().getNode("binding[3]/command", 1).setValue("nasal");
+		box2.prop().getNode("binding[3]/script", 1).setValue("walker.sequence.reloadDialog()");
+		box2.prop().getNode("binding[4]/command", 1).setValue("nasal");
+		box2.prop().getNode("binding[4]/script", 1).setValue("walker.sequence.edit_animation()");
+		g.addChild("empty").set("stretch", 1);
+
+		var listGroup = walker_dialog1.addChild("group");
+		listGroup.set("layout", "hbox");
+		listGroup.addChild("empty").set("pref-width", margin);
+		var a = listGroup.addChild("list");
+		a.set("name", "sequence-list");
+		a.set("pref-height", 160);
+		a.set("halign", "fill");
+		a.set("valign", "fill");
+		a.set("stretch", 1);
+		a.set("property", "/sim/gui/dialogs/anim-sequence/list");
+		sequence_count = size(w1a_list_node.getChildren("sequence"));
+		var sList = [];
+		for (var i = 0 ; i < sequence_count ; i += 1) {
+			var name_in = w1a_list_node.getNode("sequence[" ~ i ~ "]", 1).getNode("name", 1).getValue();
+			var trigger_in = w1a_list_node.getNode("sequence[" ~ i ~ "]", 1).getNode("trigger-upon", 1).getValue();
+			trigger_in = string.lc(trigger_in);
+			var trigger_ab = contains(triggers, trigger_in)
+				? triggers[trigger_in].abbrev 
+				: "";
+
+			if (name_in != nil) {
+				append(sList, { index: i , name: name_in,
+					comb: w1a_list_node.getNode("sequence[" ~ i ~ "]", 1).getNode("name", 1).getValue() ~ " (" ~ i ~ ")" ~ trigger_ab });
+			}
+		}
+		sList = sort(sList, func(a,b) {cmp(a.name, b.name)});
+		for (var i = 0 ; i < size(sList) ; i += 1) {
+			a.set("value[" ~ i ~ "]", sList[i].comb);
+		}
+		a.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		a.prop().getNode("binding[0]/object-name", 1).setValue("sequence-list");
+		a.prop().getNode("binding[1]/command", 1).setValue("nasal");
+		a.prop().getNode("binding[1]/script", 1).setValue("walker.listbox_apply()");
+		listGroup.addChild("empty").set("pref-width", margin);
+
+		var g = walker_dialog1.addChild("group");
+		g.set("layout", "hbox");
+		g.addChild("empty").set("pref-width", margin);
+		var box2 = g.addChild("button");
+		box2.set("halign", "left");
+		box2.set("label", "");
+		box2.set("pref-width", 80); # including Tortola fonts
+		box2.set("default", 1);
+		box2.set("legend", "Edit/Run");
+		box2.prop().getNode("binding[0]/command", 1).setValue("nasal");
+		box2.prop().getNode("binding[0]/script", 1).setValue("walker.sequence.edit_animation()");
+		var box3 = g.addChild("button");
+		box3.set("halign", "left");
+		box3.set("label", "");
+		box3.set("pref-width", 50);
+		box3.set("legend", "Help");
+		box3.prop().getNode("binding[0]/command", 1).setValue("nasal");
+		box3.prop().getNode("binding[0]/script", 1).setValue("walker.sequence.helpDialog()");
+		g.addChild("empty").set("stretch", 1);
+
+		g.addChild("empty").set("pref-width", margin);
+		g.addChild("text").set("label", "File:");
+		var box4 = g.addChild("button");
+		box4.set("halign", "right");
+		box4.set("legend", "Load");
+		box4.set("pref-width", 50);
+		box4.prop().getNode("binding[0]/command", 1).setValue("nasal");
+		box4.prop().getNode("binding[0]/script", 1).setValue("walker.sequence.load_animation()");
+		var box5 = g.addChild("button");
+		box5.set("halign", "right");
+		box5.set("legend", "Save");
+		box5.set("pref-width", 50);
+		box5.prop().getNode("binding[0]/command", 1).setValue("nasal");
+		box5.prop().getNode("binding[0]/script", 1).setValue("walker.sequence.save_animation()");
+		g.addChild("empty").set("pref-width", margin);
+
+		walker_dialog1.addChild("hrule").addChild("dummy");
+
+		var g = walker_dialog1.addChild("group");
+		g.set("layout", "hbox");
+		g.addChild("empty").set("pref-width", margin);
+		var box = g.addChild("checkbox");
+		box.set("halign", "left");
+		box.set("live", 1);
+		box.set("label", "Enable animations upon Trigger");
+		box.set("property", "sim/model/walker[1]/animate/enabled-triggers");
+		box.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		g.addChild("empty").set("stretch", 1);
+
+		# finale
+		walker_dialog1.addChild("empty").set("pref-height", "3");
+		fgcommand("dialog-new", walker_dialog1.prop());
+		gui.showDialog(name1);
+	},
+	reloadDialog: func {
+		if (walker_dialog1 != nil) {
+			fgcommand("dialog-close", props.Node.new({ "dialog-name" : "walker-sequences" }));
+			walker_dialog1 = nil;
+			sequence.showDialog();
+		}
+	},
+	helpDialog: func {
+		var name3 = "walker-sequence-help";
+		if (walker_dialog3 != nil) {
+			fgcommand("dialog-close", props.Node.new({ "dialog-name" : name3 }));
+			walker_dialog3 = nil;
+			return;
+		}
+
+		walker_dialog3 = gui.Widget.new();
+		walker_dialog3.set("layout", "vbox");
+		walker_dialog3.set("name", name3);
+		walker_dialog3.set("x", (370 - getprop("/sim/startup/xsize")));
+		walker_dialog3.set("y", -40);
+
+		# "window" titlebar
+		var titlebar = walker_dialog3.addChild("group");
+		titlebar.set("layout", "hbox");
+		titlebar.addChild("empty").set("stretch", 1);
+		titlebar.addChild("text").set("label", "Walker posing animations - Help");
+		titlebar.addChild("empty").set("stretch", 1);
+
+		var w = titlebar.addChild("button");
+		w.set("pref-width", 20);
+		w.set("pref-height", 20);
+		w.set("legend", "X");
+		w.set("keynum", 27);
+		w.prop().getNode("binding[0]/command", 1).setValue("nasal");
+		w.prop().getNode("binding[0]/script", 1).setValue("walker.walker_dialog3 = nil");
+		w.prop().getNode("binding[1]/command", 1).setValue("dialog-close");
+
+		walker_dialog3.addChild("hrule").addChild("dummy");
+
+		var text1 = props.globals.getNode("sim/about/text1", 1);
+		text1.setValue("This model comes preloaded with an animation for every trigger.\n\n" ~
+			"To add a new sequence, click in the text box left of [New], input a " ~
+			"name, (hint: remember to press [Enter] after inputting in any of the " ~
+			"text or number boxes,) and click [New]. This new sequence is now " ~
+			"selected. It is recommended to use the underscore instead of spaces " ~
+			"between words.\n\n" ~
+			"To edit an existing sequence, click on it to select it.\n" ~
+			"Then press [Enter] or click on [Edit/Run] (This button is the default, " ~
+			"as depicted by the dashed lines around it's edge.)\n\n " ~
+			"The number in parenthesis is the ID number for each sequence.\n\n" ~
+			"The letter following the parenthesis indicated a trigger is set for this sequence.\n\n" ~
+			"Your creations can be saved, shared with friends, and loaded from here. " ~
+			"The animation files will be saved in:\n " ~
+			"{home directory}/.fgfs/aircraft-data/\n\n" ~
+			"The checkbox at the bottom enables the triggering of animations, " ~
+			"and is automatically turned off when editing a sequence.\n\n" ~
+			"To close this dialog box, press [Esc] or click on the button in the " ~
+			"upper right corner.");
+		w = walker_dialog3.addChild("textbox");
+		w.set("halign", "fill");
+		w.set("pref-width", 350);
+		w.set("pref-height", 250);
+		w.set("editable", 0);
+		w.set("property", "sim/about/text1");
+
+		# finale
+		walker_dialog3.addChild("empty").set("pref-height", "3");
+		fgcommand("dialog-new", walker_dialog3.prop());
+		gui.showDialog(name3);
+	},
+};
+
+var animate = {
+	add_position:	func {	# add to the end of list and fill with current values
+		var new_position = sequence_node.getNode("position[" ~ size(sequence_node.getChildren("position")) ~ "]", 1);
+		position_count = size(sequence_node.getChildren("position"));
+		w1a_dialog_position_node.setValue(position_count - 1);
+		if (position_count == 0) {
+			animate.reset_position();
+		} else {
+			animate.copy_position(walker1_node, new_position);
+			animate.save_header();
+		}
+		content_modified_node.setValue(5);
+		return new_position;
+	},
+	ins_position:	func {
+		var dialog_position = w1a_dialog_position_node.getValue();
+		if (dialog_position > -1) {
+			i = position_count;
+			while (i > dialog_position) {
+				animate.copy_position(sequence_node.getNode("position[" ~ (i - 1) ~ "]", 1), 
+					sequence_node.getNode("position[" ~ i ~ "]", 1));
+				i -= 1;
+			}
+			animate.save_position();
+			position_count = size(sequence_node.getChildren("position"));
+			content_modified_node.setValue(5);
+		}
+	},
+	del_position:	func {
+		position_count = size(sequence_node.getChildren("position"));
+		var dialog_position = w1a_dialog_position_node.getValue();
+		var i = dialog_position;
+		while (i < (position_count - 1)) {
+			animate.copy_position(sequence_node.getNode("position[" ~ (i + 1) ~ "]", 1), 
+				sequence_node.getNode("position[" ~ i ~ "]", 1));
+			i += 1;
+		}
+		sequence_node.removeChild("position", (position_count - 1));
+		position_count = size(sequence_node.getChildren("position"));
+		if (position_count == 0) {
+			w1a_dialog_position_node.setValue(position_count - 1);
+			animate.reset_position();
+		} else {
+			if (dialog_position >= position_count) {
+				w1a_dialog_position_node.setValue(position_count - 1);
+			}
+			animate.load_position();
+		}
+		content_modified_node.setValue(0);
+	},
+	copy_position:	func (from_node, to_node) {
+		to_node.getNode("name", 1).setValue(from_node.getNode("name", 1).getValue());
+		to_node.getNode("rest-sec", 1).setValue(from_node.getNode("rest-sec", 1).getValue());
+		var t = from_node.getNode("transit-sec", 1);
+		if (t.getValue() <= 0) {
+			t.setValue(0.1);
+		}
+
+		to_node.getNode("transit-sec", 1).setValue(t.getValue());
+
+		animate.copy_limb("limb[0]",  "y-deg", from_node, to_node);
+		animate.copy_limb("limb[0]",  "z-m",   from_node, to_node);
+		animate.copy_limb("limb[1]",  "y-deg", from_node, to_node);
+		animate.copy_limb("limb[1]",  "z-deg", from_node, to_node);
+		animate.copy_limb("limb[2]",  "y-deg", from_node, to_node);
+		animate.copy_limb("limb[2]",  "z-deg", from_node, to_node);
+		animate.copy_limb("limb[3]",  "x-deg", from_node, to_node);
+		animate.copy_limb("limb[3]",  "y-deg", from_node, to_node);
+		animate.copy_limb("limb[3]",  "z-deg", from_node, to_node);
+		animate.copy_limb("limb[4]",  "y-deg", from_node, to_node);
+		animate.copy_limb("limb[4]",  "z-deg", from_node, to_node);
+		animate.copy_limb("limb[5]",  "x-deg", from_node, to_node);
+		animate.copy_limb("limb[5]",  "y-deg", from_node, to_node);
+		animate.copy_limb("limb[5]",  "hand-pose", from_node, to_node);
+		animate.copy_limb("limb[6]",  "x-deg", from_node, to_node);
+		animate.copy_limb("limb[6]",  "y-deg", from_node, to_node);
+		animate.copy_limb("limb[6]",  "z-deg", from_node, to_node);
+		animate.copy_limb("limb[7]",  "y-deg", from_node, to_node);
+		animate.copy_limb("limb[7]",  "z-deg", from_node, to_node);
+		animate.copy_limb("limb[8]",  "x-deg", from_node, to_node);
+		animate.copy_limb("limb[8]",  "y-deg", from_node, to_node);
+		animate.copy_limb("limb[8]",  "hand-pose", from_node, to_node);
+		animate.copy_limb("limb[9]",  "x-deg", from_node, to_node);
+		animate.copy_limb("limb[9]",  "y-deg", from_node, to_node);
+		animate.copy_limb("limb[9]",  "z-deg", from_node, to_node);
+		animate.copy_limb("limb[10]", "y-deg", from_node, to_node);
+		animate.copy_limb("limb[11]", "y-deg", from_node, to_node);
+		animate.copy_limb("limb[12]", "x-deg", from_node, to_node);
+		animate.copy_limb("limb[12]", "y-deg", from_node, to_node);
+		animate.copy_limb("limb[12]", "z-deg", from_node, to_node);
+		animate.copy_limb("limb[13]", "y-deg", from_node, to_node);
+		animate.copy_limb("limb[14]", "y-deg", from_node, to_node);
+	},
+	copy_limb: func (parent_node, child_node, from_node, to_node) {
+		var value = from_node.getNode(parent_node, 1).getNode(child_node, 1).getValue();
+		to_node.getNode(parent_node, 1).getNode(child_node, 1).setValue(value);
+	},
+	incr_position:	func {
+		if (position_count > 0) {
+			var dialog_position = w1a_dialog_position_node.getValue() + 1;
+			if (dialog_position <= (position_count - 1)) {
+				w1a_dialog_position_node.setValue(dialog_position);
+				animate.load_position();
+			}
+			content_modified_node.setValue(2);
+		}
+	},
+	decr_position:	func {
+		var dialog_position = w1a_dialog_position_node.getValue() - 1;
+		if (dialog_position >= 0) {
+			w1a_dialog_position_node.setValue(dialog_position);
+			animate.load_position();
+		}
+		content_modified_node.setValue(3);
+	},
+	reset_position:	func {
+		setprop("sim/model/walker[1]/name", "");
+		setprop("sim/model/walker[1]/limb[0]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[0]/z-m", 0.0);
+		setprop("sim/model/walker[1]/limb[1]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[1]/z-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[2]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[2]/z-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[3]/x-deg", -80.0);
+		setprop("sim/model/walker[1]/limb[3]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[3]/z-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[4]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[4]/z-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[5]/x-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[5]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[5]/hand-pose", 0.0);
+		setprop("sim/model/walker[1]/limb[6]/x-deg", -80.0);
+		setprop("sim/model/walker[1]/limb[6]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[6]/z-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[7]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[7]/z-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[8]/x-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[8]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[8]/hand-pose", 0.0);
+		setprop("sim/model/walker[1]/limb[9]/x-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[9]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[9]/z-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[10]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[11]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[12]/x-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[12]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[12]/z-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[13]/y-deg", 0.0);
+		setprop("sim/model/walker[1]/limb[14]/y-deg", 0.0);
+		w1_loop_enabled_node.setValue(1);
+		setprop("sim/model/walker[1]/loop-to", 0);
+		setprop("sim/model/walker[1]/rest-sec", 0.0);
+		setprop("sim/model/walker[1]/transit-sec", 1.0);
+		setprop("sim/model/walker[1]/trigger-upon", "Disabled");
+		content_modified_node.setValue(1);
+	},
+	save_header:	func {
+		sequence_node.getNode("loop-enabled", 1).setBoolValue(w1_loop_enabled_node.getValue());
+		sequence_node.getNode("loop-to", 1).setIntValue(walker1_node.getNode("loop-to", 1).getValue());
+		var trigger_name = walker1_node.getNode("trigger-upon", 1).getValue();
+		if (trigger_name != sequence_node.getNode("trigger-upon", 1).getValue()) {
+			sequence_node.getNode("trigger-upon", 1).setValue(trigger_name);
+
+			trigger_name = string.lc(trigger_name);
+
+			if (contains(triggers, trigger_name)) {
+				triggers[trigger_name].node.setValue(int(w1a_sequence_selected_node.getValue()));
+				print ("  saving animation: " ~ trigger_name ~ " to position ", w1a_sequence_selected_node.getValue());
+			}
+
+			discover_triggers(0);
+		}
+	},
+	save_position:	func {
+		var dialog_position = w1a_dialog_position_node.getValue();
+		if (position_count == 0) {
+			animate.add_position();
+			w1a_dialog_position_node.setValue(0);
+		} else {
+			animate.copy_position(walker1_node, sequence_node.getNode("position[" ~ dialog_position ~ "]", 1));
+		}
+		animate.save_header();
+		content_modified_node.setValue(6);
+	},
+	load_position:	func {
+		var dialog_position = int(w1a_dialog_position_node.getValue());
+		if (dialog_position >= 0) {
+			animate.copy_position(sequence_node.getNode("position[" ~ dialog_position ~ "]", 1), walker1_node);
+			var i1 = sequence_node.getNode("loop-enabled", 1).getValue();
+			if (i1 == nil) {
+				i1 = 0;
+			}
+			w1_loop_enabled_node.setBoolValue(i1);
+			var i2 = sequence_node.getNode("loop-to", 1).getValue();
+			if (i2 == nil) {
+				i2 = 0;
+			}
+			walker1_node.getNode("loop-to", 1).setIntValue(i2);
+			var i3 = sequence_node.getNode("trigger-upon", 1).getValue();
+			if (i3 == nil) {
+				i3 = "Disabled";
+			}
+			walker1_node.getNode("trigger-upon", 1).setValue(i3);
+			content_modified_node.setValue(7);
+		}
+	},
+	check_loop: func {
+		var i = walker1_node.getNode("loop-to", 1).getValue();
+		if (i >= position_count or i < 0 or i == "") {
+			walker1_node.getNode("loop-to", 1).setValue(0);
+		}
+	},
+	showDialog: func {
+		var name2 = "walker-config";
+		if (walker_dialog2 != nil) {
+			fgcommand("dialog-close", props.Node.new({ "dialog-name" : name2 }));
+			walker_dialog2 = nil;
+			return;
+		}
+
+		walker_dialog2 = gui.Widget.new();
+		walker_dialog2.set("layout", "vbox");
+		walker_dialog2.set("name", name2);
+		walker_dialog2.set("x", -10);
+		walker_dialog2.set("y", -3);
+
+		# "window" titlebar
+		var titlebar = walker_dialog2.addChild("group");
+		titlebar.set("layout", "hbox");
+		titlebar.addChild("empty").set("stretch", 1);
+		titlebar.addChild("text").set("label", "Walker position config -- " ~ sequence_node.getNode("name", 1).getValue());
+		titlebar.addChild("empty").set("stretch", 1);
+
+		walker_dialog2.addChild("hrule").addChild("dummy");
+
+		var w = titlebar.addChild("button");
+		w.set("pref-width", 20);
+		w.set("pref-height", 20);
+		w.set("legend", "X");
+		w.set("keynum", 27);
+		w.prop().getNode("binding[0]/command", 1).setValue("nasal");
+		w.prop().getNode("binding[0]/script", 1).setValue("walker.sequence.showDialog()");
+		w.prop().getNode("binding[1]/command", 1).setValue("nasal");
+		w.prop().getNode("binding[1]/script", 1).setValue("walker.walker_dialog2 = nil");
+		w.prop().getNode("binding[2]/command", 1).setValue("dialog-close");
+
+		var g = walker_dialog2.addChild("group");
+		g.set("layout", "hbox");
+		g.set("default-padding", 2);
+		g.addChild("empty").set("pref-width", 4);
+		var t = g.addChild("text");
+		t.set("label", "Position");
+		var content = g.addChild("input");
+		content.set("name", "position");
+		content.set("layout", "hbox");
+		content.set("halign", "fill");
+		content.set("label", "");
+		content.set("default-padding", 1);
+		content.set("pref-width", 40);
+		content.set("editable", 1);
+		content.set("live", 1);
+		content.set("property", "sim/model/walker[1]/animate/dialog-position");
+		content.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		content.prop().getNode("binding[0]/object-name", 1).setValue("position");
+		content.prop().getNode("binding[1]/command", 1).setValue("nasal");
+		content.prop().getNode("binding[1]/script", 1).setValue("walker.animate.load_position()");
+		var gv = g.addChild("group");
+		gv.set("layout", "table");
+		gv.set("default-padding", 1);
+		var box1 = gv.addChild("button");
+		box1.set("row", 1);
+		box1.set("column", 0);
+		box1.set("halign", "left");
+		box1.set("label", "");
+		box1.set("pref-width", 20);
+		box1.set("pref-height", 14);
+		var pos_children_size = size(sequence_node.getChildren("position"));
+		var dia_pos = w1a_dialog_position_node.getValue();
+		box1.set("border", (pos_children_size > 1 ? (dia_pos > 0 ? 2 : 0) : 0));
+		box1.set("legend", "-");
+		box1.prop().getNode("binding[0]/command", 1).setValue("nasal");
+		box1.prop().getNode("binding[0]/script", 1).setValue("walker.animate.decr_position()");
+		var box2 = gv.addChild("button");
+		box2.set("row", 0);
+		box2.set("column", 0);
+		box2.set("halign", "left");
+		box2.set("label", "");
+		box2.set("pref-width", 20);
+		box2.set("pref-height", 14);
+		box2.set("border", (pos_children_size > 1 ? (dia_pos < (pos_children_size - 1) ? 2 : 0) : 0));
+		box2.set("legend", "+");
+		box2.prop().getNode("binding[0]/command", 1).setValue("nasal");
+		box2.prop().getNode("binding[0]/script", 1).setValue("walker.animate.incr_position()");
+		g.addChild("empty").set("stretch", 1);
+		var t = g.addChild("text");
+		t.set("label", "Desc.");
+		var content = g.addChild("input");
+		content.set("name", "input");
+		content.set("layout", "hbox");
+		content.set("halign", "fill");
+		content.set("label", "");
+		content.set("default-padding", 1);
+		content.set("pref-width", 200);
+		content.set("editable", 1);
+		content.set("live", 1);
+		content.set("property", "sim/model/walker[1]/name");
+		content.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		content.prop().getNode("binding[0]/object-name", 1).setValue("input");
+		# content.prop().getNode("binding[1]/command", 1).setValue("property-assign");
+		# content.prop().getNode("binding[1]/property", 1).setValue("sim/gui/dialogs/position-modified");
+		# content.prop().getNode("binding[1]/value", 1).setValue(1);
+		g.addChild("empty").set("pref-width", 4);
+
+
+		var btnsGroup = walker_dialog2.addChild("group");
+		btnsGroup.set("layout", "hbox");
+		btnsGroup.set("default-padding", 2);
+		btnsGroup.addChild("empty").set("pref-width", 4);
+
+		var changeColor = dia_pos < 0;
+		var border = (content_modified_node.getValue() == 1 ? 2 : 1);
+		animate.addButtonToDialog(btnsGroup, "Insert", "walker.animate.ins_position()", changeColor);
+		animate.addButtonToDialog(btnsGroup, "Add",    "walker.animate.add_position()");
+		animate.addButtonToDialog(btnsGroup, "Delete", "walker.animate.del_position()", changeColor);
+		animate.addButtonToDialog(btnsGroup, "Reset",  "walker.animate.reset_position()");
+		animate.addButtonToDialog(btnsGroup, "Revert", "walker.animate.load_position()", changeColor, border);
+		animate.addButtonToDialog(btnsGroup, "Save",   "walker.animate.save_position()", 0, border);
+
+		walker_dialog2.addChild("hrule").addChild("dummy");
+
+		animate.addSliderToDialog("0.y",  15,   3, "Hip 0y",    300,  -180.0, 180.0, nil,     "Hip forward  < >  backward   ");
+		animate.addSliderToDialog("0.z",  20,  25, "Body 0z",   270, -0.8225,   1.0, nil,     "Body down  < >  up                   ");
+		animate.addSliderToDialog("1.y",  20,   3, "Chest 1y",  200,  -135.0,  45.0, nil,     "               Chest forward  < >  backward");
+		animate.addSliderToDialog("1.z",  20,  16, "Chest 1z",  264,   -30.0,  30.0, nil,     "Chest left  < >  right        ");
+		animate.addSliderToDialog("2.y",  20,  49, "Head 2y",   170,   -90.5,  62.5, nil,     " Head forward  < >  backward");
+		animate.addSliderToDialog("2.z",  20,  48, "Head 2z",   200,   -90.0,  90.0, nil,     "Head left  < >  right       ");
+		animate.addSliderToDialog("3.x",  20,  53, "Arm1R 3x",  200,   -85.0,  95.0, "green", "Right Arm1 down  < >  up                        ");
+		animate.addSliderToDialog("3.y",  20,  63, "Arm1R 3y",  240,   -90.0, 180.0, "green", "counter-clockwise < > clockwise                               ");
+		animate.addSliderToDialog("3.z",  20,  30, "Arm1R 3z",  220,  -106.0,  92.0, "green", "Right Arm1 forward left  < >  back right                ");
+		# animate.addSliderToDialog("4.y",  20, nil, "Arm2R 4y",  300,   -90.0,  90.0, nil,     "Right Arm2 counter-clockwise < > clockwise");
+		animate.addSliderToDialog("4.z",  20, 139, "Arm2R 4z",  165,     0.0, 150.0, nil,     "Right Arm2 straighten  < >  bend                                                             ");
+		animate.addSliderToDialog("5.x",  20,  50, "HandR 5x",  176,   -90.0,  70.0, nil,     "Right Hand down  < >  up                 ");
+		animate.addSliderToDialog("5.y",  20,  67, "HandR 5y",  233,   -90.0, 180.0, nil,     "counter-clockwise < > clockwise                               ");
+		animate.addHandPoseToDialog("Right Hand Pose Nr.", "limb[5]/hand-pose");
+		animate.addSliderToDialog("6.x",  20,  53, "Arm1L 6x",  200,   -85.0,  95.0, "red",   "Left Arm1 down  < >  up                      ");
+		animate.addSliderToDialog("6.y",  15, nil, "Arm1L 6y",  240,  -180.0,  90.0, "red",   "     counter-clockwise < > clockwise");
+		animate.addSliderToDialog("6.z",  20,  30, "Arm1L 6z",  220,  -106.0,  92.0, "red",   "Left Arm1 forward right  < >  back left                 ");
+		# animate.addSliderToDialog("7.y",  20, nil, "Arm2L 7y",  300,   -90.0,  90.0, nil,     "counter-clockwise < > clockwise");
+		animate.addSliderToDialog("7.z",  20, 139, "Arm2L 7z",  165,     0.0, 150.0, nil,     "Left Arm2 straighten  < >  bend                                                           ");
+		animate.addSliderToDialog("8.x",  20,  50, "HandL 8x",  176,   -90.0,  70.0, nil,     "Left Hand down  < >  up               ");
+		animate.addSliderToDialog("8.y",  21, nil, "HandL 8y",  233,  -180.0,  90.0, nil,     "    counter-clockwise < > clockwise");
+		animate.addHandPoseToDialog("Left Hand Pose Nr.", "limb[8]/hand-pose");
+		animate.addSliderToDialog("9.x",  20,  53, "Leg1R 9x",  100,   -90.0,   0.0, "green", "   Right Leg1 out  < >  in");
+		animate.addSliderToDialog("9.y",  20,   1, "Leg1R 9y",  240,  -135.0,  81.0, "green", "Right Leg1 forward  < >  back       ");
+		animate.addSliderToDialog("9.z",  20,  60, "Leg1R 9z",  140,   -81.0,  45.0, "green", "counter-clockwise in < > clockwise out   ");
+		animate.addSliderToDialog("10.y", 20, 125, "Leg2R 10y", 160,   -14.0, 130.0, nil,     "Right Leg2 straighten  < >  bend                                                     ");
+		animate.addSliderToDialog("11.y", 20,  98, "FootR 11y", 100,   -45.0,  45.0, nil,     "Right Foot down  < >  up                     ");
+		animate.addSliderToDialog("12.x", 20,  53, "Leg1L 12x", 100,   -90.0,   0.0, "red",   "     Left Leg1 out  < >  in");
+		animate.addSliderToDialog("12.y", 20,   1, "Leg1L 12y", 240,  -135.0,  81.0, "red",   "Left Leg1 forward  < >  back      ");
+		animate.addSliderToDialog("12.z", 20,  95, "Leg1L 12z", 140,   -45.0,  81.0, "red",   "counter-clockwise out < > clockwise in                        ");
+		animate.addSliderToDialog("13.y", 20, 125, "Leg2L 13y", 160,   -14.0, 130.0, nil,     "Left Leg2 straighten  < >  bend                                                   ");
+		animate.addSliderToDialog("14.y", 20,  98, "FootL 14y", 100,   -45.0,  45.0, nil,     "Left Foot down  < >  up                   ");
+
+		var g = walker_dialog2.addChild("group");
+		g.set("layout", "hbox");
+		g.set("default-padding", 2);
+		g.addChild("empty").set("pref-width", 4);
+		g.addChild("text").set("label", "Rest here");
+		var content1 = g.addChild("input");
+		content1.set("name", "rest");
+		content1.set("layout", "hbox");
+		content1.set("halign", "fill");
+		content1.set("label", "sec.");
+		content1.set("default-padding", 1);
+		content1.set("pref-width", 40);
+		content1.set("editable", 1);
+		content1.set("live", 1);
+		content1.set("property", "sim/model/walker[1]/rest-sec");
+		content1.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		content1.prop().getNode("binding[0]/object-name", 1).setValue("rest");
+		# content1.prop().getNode("binding[1]/command", 1).setValue("property-assign");
+		# content1.prop().getNode("binding[1]/property", 1).setValue("sim/gui/dialogs/position-modified");
+		# content1.prop().getNode("binding[1]/value", 1).setValue(1);
+		g.addChild("empty").set("stretch", 1);
+		g.addChild("text").set("label", "Transit time to next");
+		var content2 = g.addChild("input");
+		content2.set("name", "transit");
+		content2.set("layout", "hbox");
+		content2.set("halign", "fill");
+		content2.set("label", "");
+		content2.set("default-padding", 1);
+		content2.set("pref-width", 40);
+		content2.set("editable", 1);
+		content2.set("live", 1);
+		content2.set("property", "sim/model/walker[1]/transit-sec");
+		content2.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		content2.prop().getNode("binding[0]/object-name", 1).setValue("transit");
+		# content2.prop().getNode("binding[1]/command", 1).setValue("property-assign");
+		# content2.prop().getNode("binding[1]/property", 1).setValue("sim/gui/dialogs/position-modified");
+		# content2.prop().getNode("binding[1]/value", 1).setValue(1);
+		g.addChild("text").set("label", "seconds");
+		g.addChild("empty").set("pref-width", 4);
+
+		walker_dialog2.addChild("hrule").addChild("dummy");
+
+		var g = walker_dialog2.addChild("group");
+		g.set("layout", "hbox");
+		g.set("default-padding", 0);
+		g.addChild("empty").set("pref-width", 11);
+		var box = g.addChild("checkbox");
+		box.set("halign", "left");
+		box.set("label", "Loop to position");
+		box.set("live", 1);
+		box.set("property", "sim/model/walker[1]/loop-enabled");
+		box.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		box.prop().getNode("binding[1]/command", 1).setValue("property-assign");
+		box.prop().getNode("binding[1]/property", 1).setValue("sim/gui/dialogs/position-modified");
+		box.prop().getNode("binding[1]/value", 1).setValue(1);
+		var content = g.addChild("input");
+		content.set("name", "loop-input");
+		content.set("layout", "hbox");
+		content.set("halign", "fill");
+		content.set("label", "");
+		content.set("default-padding", 1);
+		content.set("pref-width", 40);
+		content.set("editable", 1);
+		content.set("live", 1);
+		content.set("property", "sim/model/walker[1]/loop-to");
+		content.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		content.prop().getNode("binding[0]/object-name", 1).setValue("loop-input");
+		# content.prop().getNode("binding[]/command", 1).setValue("property-assign");
+		# content.prop().getNode("binding[]/property", 1).setValue("sim/gui/dialogs/position-modified");
+		content.prop().getNode("binding[1]/command", 1).setValue("nasal");
+		content.prop().getNode("binding[1]/script", 1).setValue("walker.animate.check_loop()");
+		g.addChild("empty").set("stretch", 1);
+		g.addChild("text").set("label", "Trigger");
+		var combo = g.addChild("combo");
+		combo.set("default-padding", 1);
+		combo.set("pref-width", 130);
+		combo.set("live", 1);
+		combo.set("property", "sim/model/walker[1]/trigger-upon");
+		combo.prop().getNode("value[0]", 1).setValue("Disabled");
+		combo.prop().getNode("value[1]", 1).setValue("Standing");
+		combo.prop().getNode("value[2]", 1).setValue("Walking");
+		combo.prop().getNode("value[3]", 1).setValue("Running");
+		combo.prop().getNode("value[4]", 1).setValue("Backwards");
+		combo.prop().getNode("value[5]", 1).setValue("Falling");
+		combo.prop().getNode("value[6]", 1).setValue("Open-Parachute");
+		combo.prop().getNode("value[7]", 1).setValue("Landing");
+		combo.prop().getNode("value[8]", 1).setValue("Crashing");
+		combo.prop().getNode("value[9]", 1).setValue("free1");
+		combo.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		combo.prop().getNode("binding[1]/command", 1).setValue("property-assign");
+		combo.prop().getNode("binding[1]/property", 1).setValue("sim/gui/dialogs/position-modified");
+		combo.prop().getNode("binding[1]/value", 1).setValue(1);
+		g.addChild("empty").set("pref-width", 8);
+
+		var g = walker_dialog2.addChild("group");
+		g.set("layout", "hbox");
+		g.set("default-padding", 2);
+		g.addChild("empty").set("pref-width", 5);
+		var box = g.addChild("checkbox");
+		box.set("halign", "left");
+		box.set("label", "Enable This Animation Now");
+		box.set("property", "sim/model/walker[1]/animate/enabled-current");
+		box.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+
+		g.addChild("empty").set("stretch", 1);
+		animate.addButtonToDialog(g, "Help", "walker.animate.helpDialog()");
+		g.addChild("empty").set("pref-width", 8);
+
+		walker_dialog2.addChild("empty").set("pref-height", "3");
+		fgcommand("dialog-new", walker_dialog2.prop());
+		gui.showDialog(name2);
+	},
+	addButtonToDialog: func (group, legend, script, changeColor = 0, border = 2) {
+		var btn = group.addChild("button");
+		btn.set("name", string.lc(legend));
+		btn.set("halign", "left");
+		btn.set("label", "");
+		btn.set("pref-width", 50);
+		btn.set("pref-height", 18);
+		btn.set("border", border);
+		btn.set("legend", legend);
+		if (changeColor) {
+			btn.setColor(0.44, 0.31, 0.31);
+		}
+		btn.prop().getNode("binding[0]/command", 1).setValue("nasal");
+		btn.prop().getNode("binding[0]/script", 1).setValue(script);
+	},
+	getPropPathFromLimbId: func (limbId) {
+		var parts = split(".", limbId);
+		# exception that "0.z" is in "m", not "deg"
+		var unit = limbId == "0.z" ? "m" : "deg";
+		return sprintf("sim/model/walker[1]/limb[%s]/%s-%s", parts[0], parts[1], unit);
+	},
+	getNumberFormatFromLimbId: func (limbId) {
+		return limbId == "0.z" ? "%6.2f" : "%6.1f";
+	},
+	addSliderToDialog: func (limbId, limbIdW, emptyW, name, sliderW, min, max, color, legend) {
+		var propPath = animate.getPropPathFromLimbId(limbId);
+		var format = animate.getNumberFormatFromLimbId(limbId);
+
+		var grpSlider = walker_dialog2.addChild("group");
+		grpSlider.set("layout", "hbox");
+		grpSlider.set("default-padding", 2);
+		grpSlider.addChild("empty").set("pref-width", 4);
+
+		var txtLimb = grpSlider.addChild("text");
+		txtLimb.set("label", limbId);
+		txtLimb.set("pref-width", limbIdW);
+		if (emptyW != nil) {
+			grpSlider.addChild("empty").set("pref-width", emptyW);
+		}
+		
+		var slider = grpSlider.addChild("slider");
+		slider.set("name", name);
+		slider.set("property", propPath);
+		slider.set("legend", legend);
+		slider.set("pref-width", sliderW);
+		slider.set("pref-height", 16);
+		slider.set("live", 1);
+		slider.set("min", min);
+		slider.set("max", max);
+		if (color == "green") {
+			slider.setColor(0.5, 1, 0.5);
+		}
+		else if (color == "red") {
+			slider.setColor(1, 0.5, 0.5);
+		}
+		slider.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		slider.prop().getNode("binding[0]/object-name", 1).setValue(name);
+
+		# Assign /sim/gui/dialogs/position-modified here causes Segmentation fault
+		# (flightgear/src/GUI/FGPUIDialog.cxx:334 fgPopup::checkHit)
+		# because it triggers the listener to reload the dialog when using the slider.
+		# slider.prop().getNode("binding[1]/command", 1).setValue("property-assign");
+		# slider.prop().getNode("binding[1]/property", 1).setValue("sim/gui/dialogs/position-modified");
+		# slider.prop().getNode("binding[1]/value", 1).setValue(1);
+
+		grpSlider.addChild("empty").set("stretch", 1);
+		var txtNumber = grpSlider.addChild("text");
+		txtNumber.set("property", propPath);
+		txtNumber.set("pref-width", 32);
+		txtNumber.set("format", format);
+		txtNumber.set("live", 1);
+		grpSlider.addChild("empty").set("pref-width", 4);
+	},
+	addHandPoseToDialog: func (label, propPath) {
+		propPath = "sim/model/walker[1]/" ~ propPath;
+
+		var grp = walker_dialog2.addChild("group");
+		grp.set("layout", "hbox");
+		grp.set("default-padding", 2);
+		grp.addChild("empty").set("pref-width", 4);
+		grp.addChild("text").set("label", label);
+
+		var input = grp.addChild("input");
+		input.set("name", "transit");
+		input.set("layout", "hbox");
+		input.set("halign", "fill");
+		input.set("label", "");
+		input.set("default-padding", 1);
+		input.set("pref-width", 40);
+		input.set("editable", 1);
+		input.set("live", 1);
+		input.set("property", propPath);
+		input.prop().getNode("binding[0]/command", 1).setValue("dialog-apply");
+		input.prop().getNode("binding[0]/object-name", 1).setValue("transit");
+		# input.prop().getNode("binding[1]/command", 1).setValue("property-assign");
+		# input.prop().getNode("binding[1]/property", 1).setValue("sim/gui/dialogs/position-modified");
+		# input.prop().getNode("binding[1]/value", 1).setValue(1);
+		grp.addChild("text").set("label", "1-6.");
+		grp.addChild("empty").set("pref-width", 4);
+	},
+	reloadDialog: func {
+		if (walker_dialog2 != nil) {
+			fgcommand("dialog-close", props.Node.new({ "dialog-name" : "walker-config" }));
+			walker_dialog2 = nil;
+			animate.showDialog();
+		}
+	},
+	helpDialog: func {
+		var name4 = "walker-position-help";
+		if (walker_dialog4 != nil) {
+			fgcommand("dialog-close", props.Node.new({ "dialog-name" : name4 }));
+			walker_dialog4 = nil;
+			return;
+		}
+
+		walker_dialog4 = gui.Widget.new();
+		walker_dialog4.set("layout", "vbox");
+		walker_dialog4.set("name", name4);
+		walker_dialog4.set("x", (400 - getprop("/sim/startup/xsize")));
+		walker_dialog4.set("y", -40);
+
+		# "window" titlebar
+		var titlebar = walker_dialog4.addChild("group");
+		titlebar.set("layout", "hbox");
+		titlebar.addChild("empty").set("stretch", 1);
+		titlebar.addChild("text").set("label", "Walker animation position editing - Help");
+		titlebar.addChild("empty").set("stretch", 1);
+
+		var w = titlebar.addChild("button");
+		w.set("pref-width", 20);
+		w.set("pref-height", 20);
+		w.set("legend", "X");
+		w.set("keynum", 27);
+		w.prop().getNode("binding[0]/command", 1).setValue("nasal");
+		w.prop().getNode("binding[0]/script", 1).setValue("walker.walker_dialog4 = nil");
+		w.prop().getNode("binding[1]/command", 1).setValue("dialog-close");
+
+		walker_dialog4.addChild("hrule").addChild("dummy");
+
+		var text2 = props.globals.getNode("sim/about/text2", 1);
+		text2.setValue("Each animation sequence is made up of 2 or more positions.\n" ~
+			"A new sequence starts with no positions, as indicated by the " ~
+			"position indicator showing -1. (the first position is zero in most " ~
+			"computer languages.) Input a description (remember to press [Enter]), " ~
+			"adjust the locations of the limbs, and press [Save]. Any change made " ~
+			"to any position must be Saved before moving to another position. " ~
+			"This allows you to Revert or discard changes. \n\n" ~
+			"[Insert] will save the current settings before this position.\n" ~
+			"[Add] will save the current settings to the end.\n\n" ~
+			"Rest here will insert a timed delay of the indicated seconds " ~
+			"after arriving here at this position, and before moving to the next " ~
+			"position.\n Transit time is how long it takes to move the limbs from " ~
+			"the current position to the next position.\n\n" ~
+			"The bottom section does not change with each position, but instead is " ~
+			"part of the sequence definition. If Loop To is enabled, the animation " ~
+			"will loop endlessly between the indicated (you input) position and the " ~
+			"end position. If Loop To is disabled, the animation will make One pass " ~
+			"and stop at the end position.\n\n" ~
+			"If a trigger is defined, this animation sequence will be played at the " ~
+			"appropriate time. If you want to replace an existing trigger, after saving " ~
+			"this sequence, just edit the other animation that has a duplicate trigger, " ~
+			"change the trigger setting, save it, exit the dialog, and re-enable " ~
+			"the Trigger checkbox on the other (sequence) dialog.\n\n" ~
+			"To test your animation before enabling the trigger, just click in the " ~
+			"checkbox at the bottom, to enable this current animation.");
+		w = walker_dialog4.addChild("textbox");
+		w.set("halign", "fill");
+		w.set("pref-width", 380);
+		w.set("pref-height", 250);
+		w.set("editable", 0);
+		w.set("property", "sim/about/text2");
+
+		walker_dialog4.addChild("hrule").addChild("dummy");
+
+		# finale
+		walker_dialog4.addChild("empty").set("pref-height", "3");
+		fgcommand("dialog-new", walker_dialog4.prop());
+		gui.showDialog(name4);
+	},
+};
+
+var animate_update = func (seq_node) {
+	var current_time = getprop("sim/time/elapsed-sec");
+	var time_elapsed = current_time - animate_time_start;
+	var i = 0;
+	if (time_elapsed >= animate_time_length) {
+		if (w1_loop_enabled_node.getValue()) {
+			animate_current_position -= position_count;
+			animate_current_position += loop_to;
+			animate_time_start += loop_length_sec;
+			time_elapsed -= loop_length_sec;
+		} else {
+			animate_current_position = position_count - 1;
+			animate_current_position = int(animate_current_position);
+			i = 99;
+		}
+	}
+	animate_current_position = clamp(animate_current_position, 0.0, position_count);
+	var move_percent = 0.0;
+	if (i < 99) {
+		while ((time_elapsed > time_chart[int(animate_current_position)].transit_until) and (animate_current_position < position_count)) {
+			animate_current_position = int(animate_current_position) + 1;
+		}
+		if (animate_current_position >= position_count) {
+			animate_current_position = loop_to;
+		}
+		if (time_elapsed <= time_chart[int(animate_current_position)].rest_until) {
+			animate_current_position = int(animate_current_position) + ((time_elapsed - time_chart[int(animate_current_position)].time0) / (time_chart[int(animate_current_position)].transit_until - time_chart[int(animate_current_position)].time0));
+		} elsif (time_elapsed <= time_chart[int(animate_current_position)].transit_until) {
+			move_percent = (time_elapsed - time_chart[int(animate_current_position)].rest_until) / time_chart[int(animate_current_position)].transit;
+			animate_current_position = int(animate_current_position) + ((time_elapsed - time_chart[int(animate_current_position)].time0) / (time_chart[int(animate_current_position)].transit_until - time_chart[int(animate_current_position)].time0));
+		}
+		animate_current_position = clamp(animate_current_position, 0.0, position_count);
+	}
+	w1a_dialog_position_node.setValue(int(animate_current_position));
+	var s = "position[" ~ int(animate_current_position) ~ "]";
+	var from_node = seq_node.getNode(s, 1);
+	walker1_node.getNode("name", 1).setValue(from_node.getNode("name", 1).getValue());
+	walker1_node.getNode("rest-sec", 1).setValue(from_node.getNode("rest-sec", 1).getValue());
+	walker1_node.getNode("transit-sec", 1).setValue(from_node.getNode("transit-sec", 1).getValue());
+	if (i == 99) {
+		var next_position = int(animate_current_position);
+		var to_node = seq_node.getNode("position[" ~ (position_count - 1) ~ "]", 1);
+	} else {
+		var next_position = int(animate_current_position) + 1;
+		if (next_position > (position_count - 1)) {
+			var to_node = seq_node.getNode("position[" ~ loop_to ~ "]", 1);
+		} else {
+			var to_node = seq_node.getNode("position[" ~ next_position ~ "]", 1);
+		}
+	}
+
+	animate_update_limb("limb[0]", "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[0]", "z-m",   from_node, to_node, move_percent);
+	animate_update_limb("limb[1]", "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[1]", "z-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[2]", "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[2]", "z-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[3]", "x-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[3]", "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[3]", "z-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[4]", "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[4]", "z-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[5]", "x-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[5]", "y-deg", from_node, to_node, move_percent);
+
+	# walker1_node.getNode("limb[5]", 1).getNode("hand-pose", 1).setValue(
+	# 	interpolate_limb(
+	# 		from_node.getNode("limb[5]", 1).getNode("y-deg", 1).getValue(),
+	# 		to_node.getNode("limb[5]", 1).getNode("hand-pose", 1).getValue(),
+	# 		move_percent
+	# 	)
+	# );
+
+	animate_update_limb("limb[6]",  "x-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[6]",  "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[6]",  "z-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[7]",  "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[7]",  "z-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[8]",  "x-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[8]",  "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[9]",  "x-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[9]",  "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[9]",  "z-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[10]", "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[11]", "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[12]", "x-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[12]", "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[12]", "z-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[13]", "y-deg", from_node, to_node, move_percent);
+	animate_update_limb("limb[14]", "y-deg", from_node, to_node, move_percent);
+	
+	if (i == 99) {
+		if (anim_enabled) {
+			w1a_enabled_current_node.setValue(0);
+		}
+		seq_node_now = nil;
+		settimer(func { animate.reloadDialog() }, 0);
+	}
+}
+
+var animate_update_limb = func (parent_node, child_node, from_node, to_node, move_percent) {
+	walker1_node.getNode(parent_node, 1).getNode(child_node, 1).setValue(
+		interpolate_limb(
+			from_node.getNode(parent_node, 1).getNode(child_node, 1).getValue(),
+			to_node.getNode(parent_node, 1).getNode(child_node, 1).getValue(),
+			move_percent
+		)
+	);
+}
+
+var animate_loop_id = 0;
+var animate_loop = func (id, seq_node) {
+	id == animate_loop_id or return;
+	if (anim_enabled or (anim_running >= 0)) {
+		if (seq_node == seq_node_now) {
+			animate_update(seq_node);
+			settimer(func { animate_loop(animate_loop_id += 1, seq_node) }, 0.01);
+		}
+	}
+}
+
+var start_animation = func (seq_node, seqId) {
+	seq_node_now = seq_node;
+	if (anim_running != seqId) {
+		position_count = size(seq_node.getChildren("position"));
+		w1a_dialog_position_node.setValue(0);
+		loop_enabled = seq_node.getNode("loop-enabled", 1).getValue();
+		w1_loop_enabled_node.setValue(loop_enabled);
+		var s = seq_node.getNode("trigger-upon", 1).getValue();
+		walker1_node.getNode("trigger-upon", 1).setValue(s);
+		if (position_count >= 2) {
+			animate_current_position = 0.0;
+			time_chart = [];
+			var t = 0.0;
+			loop_to = (loop_enabled ? seq_node.getNode("loop-to", 1).getValue() : position_count - 1);
+			for (var i = 0 ; i < position_count ; i += 1) {
+				var i_node = seq_node.getNode("position[" ~ i ~ "]", 1);
+				var rest_sec = i_node.getNode("rest-sec", 1).getValue();
+				var transit_sec = i_node.getNode("transit-sec", 1).getValue();
+				if (i == loop_to) {
+					loop_start_sec = t;
+				}
+				append(time_chart, { position: i, time0: t , rest_until: (t + rest_sec), 
+					transit_until: (t + rest_sec + transit_sec),
+					transit: transit_sec });
+				if (loop_enabled or i < (position_count - 1)) {
+					t += rest_sec;
+					t += transit_sec;
+				}
+			}
+			animate_time_length = t;
+			loop_length_sec = t - loop_start_sec;
+			if (t > 0.0) {
+				anim_running = seqId;
+				animate_time_start = getprop("sim/time/elapsed-sec");
+				if (getprop("logging/walker-debug")) {
+					print ("Starting animation: ",seqId," ",seq_node.getNode("name", 1).getValue()," animate_time_length= ",animate_time_length," loop_length_sec= ",loop_length_sec, " animate_time_start= ",animate_time_start);
+				}
+				settimer(func { animate_loop(animate_loop_id += 1, seq_node) }, 0);
+			}
+		}
+	}
+}
+
+var stop_animation = func {
+	if (anim_enabled) {
+		settimer(func { w1a_enabled_current_node.setValue(0) }, 0.1);
+	}
+	anim_running = -1;
+}
+
+var check_walk_animations = func {	# keyboard handling for osg version
+	walking_momentum = getprop("sim/walker/walking-momentum");
+	if (triggers_enabled) {
+		var s = nil;
+		if (!getprop("sim/walker/airborne")) {	# on ground
+			var w_direction = getprop("sim/walker/key-triggers/forward");
+			var w_slide = getprop("sim/walker/key-triggers/slide");
+			if (walking_momentum) {
+				if (getprop("sim/current-view/view-number") != 0) {
+					if (w_direction < 0) {
+						if (triggers["backwards"].state >= 0) {
+							s = int(triggers["backwards"].node.getValue());
+						}
+					} elsif (w_direction > 0 or w_slide != 0) {
+						#print ("listener: walking ",walking_momentum," ",w_direction," w_key_speed= ",w_key_speed,"  speed_mps= ",w_speed_mps);
+						if (w_key_speed < (w_speed_mps * 2)) {
+							if (triggers["walking"].state >= 0) {
+								s = int(triggers["walking"].node.getValue());
+							}
+						} else {
+							if (triggers["running"].state >= 0) {
+								s = int(triggers["running"].node.getValue());
+							}
+						}
+					}
+				}
+			} else {
+				if (triggers["standing"].state >= 0) {
+					if (w_outside) {
+						s = int(triggers["standing"].node.getValue());
+					} else {
+						stop_animation();
+						animate.reset_position();
+					}
+				}
+			}
+			if ((s != nil) and (s >= 0)) {
+				triggered_seq_node = props.globals.getNode("sim/model/walker[1]/animate/list/sequence[" ~ s ~ "]", 1);
+				if (triggered_seq_node != nil and (s != anim_running)) {
+					start_animation(triggered_seq_node, s);
+				}
+			} else {
+				stop_animation();
+			}
+		}	# else no animation if attempt to walk in midair
+	}
+}
+
+var reset_triggers_state = func () {
+	foreach (var key; keys(triggers)) {
+		triggers[key].state = 0;
+	}
+}
+
+var discover_triggers = func (verbose) {
+	var a = size(w1a_list_node.getChildren("sequence"));
+	reset_triggers_state();
+	var trig_c = 0;
+	for (var i = 0; i < a; i += 1) {
+		var trigger_name = props.globals.getNode("sim/model/walker[1]/animate/list/sequence[" ~ i ~"]", 1).getNode("trigger-upon", 1).getValue();
+		trigger_name = string.lc(trigger_name);
+		if (contains(triggers, trigger_name)) {
+			if (triggers[trigger_name].state == 0) {
+				triggers[trigger_name].node.setValue(int(i));
+				if (verbose and log_level > 0) {
+					print ("    found trigger: loading animation for "~trigger_name~" to position ", i);
+				}
+				triggers[trigger_name].state = 1;
+				trig_c += triggers[trigger_name].trig_c;
+			} else {
+				print ("  ignoring duplicate trigger ("~i~") for "~trigger_name);
+				gui.popupTip("Ignoring duplicate trigger ("~i~") for "~trigger_name, 6);
+			}
+		}
+	}
+
+	foreach (var key; keys(triggers)) {
+		if (triggers[key].state == 0) {
+			triggers[key].node.setValue(-1);
+		}
+	}
+
+	# add listener for each animation.
+	if (trig_c > 0) {
+		if (tm_L_id == nil) {
+			tm_L_id = setlistener("sim/walker/walking-momentum", func {
+				check_walk_animations();
+			},, 0);
+		}
+
+		if (tr_L_id == nil) {
+			tr_L_id = setlistener("sim/walker/key-triggers/speed", func(n) {
+				w_key_speed = n.getValue();
+				check_walk_animations();
+			},, 0);
+		}
+
+		if (ta_L_id == nil) {
+			ta_L_id = setlistener("sim/walker/airborne", func(n) {
+				in_air = n.getValue();
+				if (w_outside and triggers_enabled) {
+					var s = nil;
+					if (in_air) {
+						if (triggers["falling"].state) {
+							s = int(triggers["falling"].node.getValue());
+						}
+					} else {
+						var crash_landing = getprop("sim/walker/crashed");
+						if (!crash_landing and triggers["landing"].state and getprop("sim/walker/parachute-opened-sec") > 2) {
+							s = int(triggers["landing"].node.getValue());
+						} elsif (crash_landing and triggers["crashing"].state) {
+							s = int(triggers["crashing"].node.getValue());
+						} else {
+							stop_animation();
+						}
+					}
+					if ((s != nil) and (s >= 0)) {
+						triggered_seq_node = props.globals.getNode("sim/model/walker[1]/animate/list/sequence[" ~ s ~ "]", 1);
+						start_animation(triggered_seq_node, s);
+					} else {
+						stop_animation();
+					}
+				}
+			},, 0);
+		}
+
+		if (tj_L_id == nil) {
+			tj_L_id = setlistener("sim/walker/parachute-opened-altitude-ft", func(n) {
+				parachute_deployed_ft = n.getValue();
+				if (w_outside and triggers_enabled) {
+					var s = nil;
+					if (parachute_deployed_ft > 0) {
+						if (in_air) {
+							if (triggers["open-parachute"].state) {
+								s = int(triggers["open-parachute"].node.getValue());
+							}
+						}
+						if ((s != nil) and (s >= 0)) {
+							triggered_seq_node = props.globals.getNode("sim/model/walker[1]/animate/list/sequence[" ~ s ~ "]", 1);
+							start_animation(triggered_seq_node, s);
+						} else {
+							stop_animation();
+						}
+					}
+				}
+			},, 0);
+		}
+
+		if (to_L_id == nil) {
+			to_L_id = setlistener("sim/walker/outside", func(n) {
+				if (n.getValue() == 0) {
+					stop_animation();
+					animate.reset_position();
+				}
+			},, 0);
+		}
+
+	} else {
+		stop_animation();
+	}
+}
+
+var init_walker = func {
+	sequence_node = w1a_list_node.getNode("sequence[" ~ int(w1a_sequence_selected_node.getValue()) ~ "]", 1);
+	position_count = size(sequence_node.getChildren("position"));
+	w1a_dialog_position_node.setValue(0);
+	setlistener("sim/model/walker[1]/animate/enabled-triggers", func(n) {
+		triggers_enabled = n.getValue();
+		stop_animation();
+		if (triggers_enabled) {
+			animate.reset_position();
+		}
+	}, 1, 0);
+
+	am_L_id = setlistener("sim/gui/dialogs/position-modified", func {
+		if (!anim_enabled and (anim_running == -1)) {
+			animate.reloadDialog();
+		}
+	}, 0, 0);
+
+	setlistener("sim/walker/speed-mps", func(n) { w_speed_mps = n.getValue() }, 1, 0);
+
+	setlistener("sim/walker/outside", func(n) { w_outside = n.getValue() }, 1, 0);
+
+	setlistener("sim/model/walker[1]/animate/enabled-current", func(n) {
+		anim_enabled = n.getValue();
+		if (anim_enabled) {
+			var seqId = int(w1a_sequence_selected_node.getValue());
+			start_animation(sequence_node, seqId);
+		} else {
+			if (anim_running >= 0) {
+				stop_animation();
+			}
+		}
+	}, 1, 0);
+
+	# remember trigger settings for the two versions of standing
+	aircraft.data.add("sim/model/walker[1]/animate/list/sequence[0]/trigger-upon");
+	aircraft.data.add("sim/model/walker[1]/animate/list/sequence[8]/trigger-upon");
+
+	discover_triggers(1);
+}
+settimer(init_walker,0);

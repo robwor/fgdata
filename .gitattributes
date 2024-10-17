@@ -1,0 +1,2 @@
+/Textures/Globe/ocean_depth_1.xcf filter=lfs diff=lfs merge=lfs -text
+/Airports/apt.dat.ws3.gz filter=lfs diff=lfs merge=lfs -text

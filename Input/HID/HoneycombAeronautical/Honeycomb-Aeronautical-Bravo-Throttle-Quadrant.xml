@@ -1,0 +1,1328 @@
+<?xml version="1.0"?>
+<!--
+
+  Copyright (c) 2021 FlightGear Flight Simulator
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!--
+********************************************************************
+*
+* Bindings for Honeycomb Aeronautical Bravo Throttle Quadrant
+*
+* Note: The throttle quadrant comes with a set of exchangeable levers for the
+* six axis so they can have different functions depending on which lever you
+* put onto which axis. In general there are setup for Single Engine (SE),
+* dual engine (DE) each with or without variable prop (blue lever) and jet
+*
+Levers left to right:
+         jet setup    SE fix    SE var   DE fix         DE var
+Lever 0: Speed brake  Throttle  Throttle Throttle left  Throttle left
+Lever 1: Engine 1     Mixture   Prop     Throttle right Throttle right
+Lever 2: Engine 2               Mixture  Mixture  left  Prop left
+Lever 3: Engine 3                        Mixture  right Prop right
+Lever 4: Engine 4                                       Mixture left
+Lever 5: Flaps                                          Mixture right
+
+HID buttons start at 1 (i.e js button +1)
+Joystick    Description
+Button  0:  Autopilot - Heading Hold
+Button  1:  Autopilot - Nav Hold
+Button  2:  Autopilot - APR
+Button  3:  Autopilot - REV
+Button  4:  Autopilot - ALT Hold
+Button  5:  Autopilot - Vertical Speed hold
+Button  6:  Autopilot - IAS Hold
+Button  7:  Autopilot - Toggle AP engage
+Button  8:  Reverse Thrust - Engine 1
+Button  9:  Reverse Thrust - Engine 2
+Button 10:  Reverse Thrust - Engine 3
+Button 11:  Reverse Thrust - Engine 4
+Button 12:  Increase  - IAS / CRS / HDG / VS / ALT
+Button 13:  Decrease  - IAS / CRS / HDG / VS / ALT
+Button 14:  Flaps Down
+Button 15:  Flaps UP
+Button 16:  Select IAS
+Button 17:  Select CRS
+Button 18:  Select HDG
+Button 19:  Select VS
+Button 20:  Select ALT
+Button 21:  Trim Down
+Button 22:  Trim Up
+Button 23:  Handle 1 (left) - Fully down
+Button 24:  Handle 2 (eng1) - Fully down
+Button 25:  Handle 3 (eng2) - Fully down
+Button 26:  Handle 4 (eng3) - Fully down
+Button 27:  Handle 5 (eng4) - Fully down
+Button 28:  TOGA Switch on Handle 1 or 2 (1 GA config, 2 Airliner config)
+Button 29:  TOGA Switch on Handle 3
+Button 30:  Gear Up
+Button 31:  Gear Down
+Button 32:  Handle 6 (right) - Fully down
+Button 33:  Switch 1 - up
+Button 34:  Switch 1 - down
+Button 35:  Switch 2 - up
+Button 36:  Switch 2 - down
+Button 37:  Switch 3 - up
+Button 38:  Switch 3 - down
+Button 39:  Switch 4 - up
+Button 40:  Switch 4 - down
+Button 41:  Switch 5 - up
+Button 42:  switch 5 - down
+Button 43:  Switch 6 - up
+Button 44:  Switch 6 - down
+Button 45:  Switch 7 - up
+Button 46:  Switch 7 - down
+Button 47:  TOGA on Handle 4
+
+********************************************************************
+-->
+
+<PropertyList>
+  <vendor-id>honeycomb</vendor-id>
+  <model-id>bravo</model-id>
+  <name>Honeycomb Aeronautical Bravo Throttle Quadrant</name>
+  <device-dialog>honeycomb-bravo</device-dialog>
+  <debug-events type="bool">false</debug-events>
+  <hid-debug-raw type="bool">false</hid-debug-raw>
+  <nasal>
+    <open>
+      <![CDATA[
+      print("Honeycomb Bravo Nasal (event) open");
+      bravo = input_helpers.honeycomb.bravo.new(cmdarg());
+      ]]>
+    </open>
+    <close>
+      <![CDATA[
+      print("Honeycomb Bravo Nasal (event) close");
+      if (ishash(bravo) and isfunc(bravo['close']))
+        bravo.close(cmdarg());
+      ]]>
+    </close>
+  </nasal>
+  <config-variants>
+    <variant>
+      <id>jet2</id>
+      <description>Airliner (two engines)</description>
+      <mapping>
+        <id>lev0</id>
+        <input>/input/honeycomb/bravo/lever[0]</input>
+        <output>/controls/flight/speed-brake</output>
+      </mapping>
+      <mapping>
+        <id>lev2</id>
+        <input>/input/honeycomb/bravo/lever[2]</input>
+        <output>/controls/engines/engine[0]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lev3</id>
+        <input>/input/honeycomb/bravo/lever[3]</input>
+        <output>/controls/engines/engine[1]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lb2</id>
+        <input>/input/honeycomb/bravo/lever-down-button[2]</input>
+        <output>/controls/engines/engine[0]/cutoff</output>
+      </mapping>
+      <mapping>
+        <id>lb3</id>
+        <input>/input/honeycomb/bravo/lever-down-button[3]</input>
+        <output>/controls/engines/engine[1]/cutoff</output>
+      </mapping>
+      <mapping>
+        <id>rev2</id>
+        <input>/input/honeycomb/bravo/reverser[2]</input>
+        <output>/controls/engines/engine[0]/reverser-cmd</output>
+      </mapping>
+      <mapping>
+        <id>rev3</id>
+        <input>/input/honeycomb/bravo/reverser[3]</input>
+        <output>/controls/engines/engine[1]/reverser-cmd</output>
+      </mapping>
+      <mapping>
+        <id>lev5</id>
+        <input>/input/honeycomb/bravo/lever[5]</input>
+        <output>/controls/flaps-lever-continuous</output>
+      </mapping>
+    </variant>
+    <variant>
+      <id>jet4</id>
+      <description>Airliner (four engines)</description>
+      <mapping>
+        <id>lev0</id>
+        <input>/input/honeycomb/bravo/lever[0]</input>
+        <output>/controls/flight/speed-brake</output>
+      </mapping>
+      <mapping>
+        <id>lev1</id>
+        <input>/input/honeycomb/bravo/lever[1]</input>
+        <output>/controls/engines/engine[0]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lev2</id>
+        <input>/input/honeycomb/bravo/lever[2]</input>
+        <output>/controls/engines/engine[1]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lev3</id>
+        <input>/input/honeycomb/bravo/lever[3]</input>
+        <output>/controls/engines/engine[2]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lev4</id>
+        <input>/input/honeycomb/bravo/lever[4]</input>
+        <output>/controls/engines/engine[3]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lb1</id>
+        <input>/input/honeycomb/bravo/lever-down-button[1]</input>
+        <output>/controls/engines/engine[0]/cutoff</output>
+      </mapping>
+      <mapping>
+        <id>lb2</id>
+        <input>/input/honeycomb/bravo/lever-down-button[2]</input>
+        <output>/controls/engines/engine[1]/cutoff</output>
+      </mapping>
+      <mapping>
+        <id>lb3</id>
+        <input>/input/honeycomb/bravo/lever-down-button[3]</input>
+        <output>/controls/engines/engine[2]/cutoff</output>
+      </mapping>
+      <mapping>
+        <id>lb4</id>
+        <input>/input/honeycomb/bravo/lever-down-button[4]</input>
+        <output>/controls/engines/engine[3]/cutoff</output>
+      </mapping>
+      <mapping>
+        <id>rev1</id>
+        <input>/input/honeycomb/bravo/reverser[1]</input>
+        <output>/controls/engines/engine[0]/reverser-cmd</output>
+      </mapping>
+      <mapping>
+        <id>rev2</id>
+        <input>/input/honeycomb/bravo/reverser[2]</input>
+        <output>/controls/engines/engine[1]/reverser-cmd</output>
+      </mapping>
+      <mapping>
+        <id>rev3</id>
+        <input>/input/honeycomb/bravo/reverser[3]</input>
+        <output>/controls/engines/engine[2]/reverser-cmd</output>
+      </mapping>
+      <mapping>
+        <id>rev4</id>
+        <input>/input/honeycomb/bravo/reverser[4]</input>
+        <output>/controls/engines/engine[3]/reverser-cmd</output>
+      </mapping>
+      <mapping>
+        <id>lev5</id>
+        <input>/input/honeycomb/bravo/lever[5]</input>
+        <output>/controls/flaps-lever-continuous</output>
+      </mapping>
+    </variant>
+    <variant>
+      <id>tm</id>
+      <description>Throttle/Mixture</description>
+      <mapping>
+        <id>lev0</id>
+        <input>/input/honeycomb/bravo/lever[0]</input>
+        <output>/controls/engines/engine[0]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lev1</id>
+        <input>/input/honeycomb/bravo/lever[1]</input>
+        <output>/controls/engines/engine[0]/mixture</output>
+      </mapping>
+    </variant>
+    <variant>
+      <id>tpm</id>
+      <description>Throttle/Prop/Mixture</description>
+      <mapping>
+        <id>lev0</id>
+        <input>/input/honeycomb/bravo/lever[0]</input>
+        <output>/controls/engines/engine[0]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lev1</id>
+        <input>/input/honeycomb/bravo/lever[1]</input>
+        <output>/controls/engines/engine[0]/propeller-pitch</output>
+      </mapping>
+      <mapping>
+        <id>lev2</id>
+        <input>/input/honeycomb/bravo/lever[2]</input>
+        <output>/controls/engines/engine[0]/mixture</output>
+      </mapping>
+    </variant>
+    <variant>
+      <id>ttmm</id>
+      <description>Throttle/Mixture (two engines)</description>
+      <mapping>
+        <id>lev0</id>
+        <input>/input/honeycomb/bravo/lever[0]</input>
+        <output>/controls/engines/engine[0]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lev1</id>
+        <input>/input/honeycomb/bravo/lever[1]</input>
+        <output>/controls/engines/engine[1]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lev2</id>
+        <input>/input/honeycomb/bravo/lever[2]</input>
+        <output>/controls/engines/engine[0]/mixture</output>
+      </mapping>
+      <mapping>
+        <id>lev3</id>
+        <input>/input/honeycomb/bravo/lever[3]</input>
+        <output>/controls/engines/engine[1]/mixture</output>
+      </mapping>
+    </variant>
+    <variant>
+      <id>ttppmm</id>
+      <description>Throttle/Prop/Mixture (two engines)</description>
+      <mapping>
+        <id>lev0</id>
+        <input>/input/honeycomb/bravo/lever[0]</input>
+        <output>/controls/engines/engine[0]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lev1</id>
+        <input>/input/honeycomb/bravo/lever[1]</input>
+        <output>/controls/engines/engine[1]/throttle</output>
+      </mapping>
+      <mapping>
+        <id>lev2</id>
+        <input>/input/honeycomb/bravo/lever[2]</input>
+        <output>/controls/engines/engine[0]/propeller-pitch</output>
+      </mapping>
+      <mapping>
+        <id>lev3</id>
+        <input>/input/honeycomb/bravo/lever[3]</input>
+        <output>/controls/engines/engine[1]/propeller-pitch</output>
+      </mapping>
+      <mapping>
+        <id>lev4</id>
+        <input>/input/honeycomb/bravo/lever[4]</input>
+        <output>/controls/engines/engine[0]/mixture</output>
+      </mapping>
+      <mapping>
+        <id>lev5</id>
+        <input>/input/honeycomb/bravo/lever[5]</input>
+        <output>/controls/engines/engine[1]/mixture</output>
+      </mapping>
+    </variant>
+  </config-variants>
+  <!-- LEDs -->
+  <event>
+    <desc>LED HDG</desc>
+    <name>vendor-0</name>
+    <interval-sec>0.5</interval-sec>
+    <setting>
+      <property>/instrumentation/annunciators/autoflight/ap/mode/hdg</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>LED NAV</desc>
+    <name>vendor-1</name>
+    <setting>
+      <property>/instrumentation/annunciators/autoflight/ap/mode/nav</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>LED APR</desc>
+    <name>vendor-2</name>
+    <setting>
+      <property>/instrumentation/annunciators/autoflight/ap/mode/apr</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>LED REV</desc>
+    <name>vendor-3</name>
+    <setting>
+      <property>/instrumentation/annunciators/autoflight/ap/mode/rev</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>LED HDG</desc>
+    <name>vendor-4</name>
+    <setting>
+      <property>/instrumentation/annunciators/autoflight/ap/mode/alt</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>LED NAV</desc>
+    <name>vendor-5</name>
+    <setting>
+      <property>/instrumentation/annunciators/autoflight/ap/mode/vs</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>LED APR</desc>
+    <name>vendor-6</name>
+    <setting>
+      <property>/instrumentation/annunciators/autoflight/ap/mode/ias</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>LED REV</desc>
+    <name>vendor-7</name>
+    <setting>
+      <property>/instrumentation/annunciators/autoflight/ap/enabled</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+
+  <event>
+    <desc>LG left green</desc>
+    <name>vendor-8</name>
+    <setting>
+      <property>/instrumentation/annunciators/gear/left/down</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>LG nose green</desc>
+    <name>vendor-10</name>
+    <setting>
+      <property>/instrumentation/annunciators/gear/nose/down</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>LG right green</desc>
+    <name>vendor-12</name>
+    <setting>
+      <property>/instrumentation/annunciators/gear/right/down</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+
+  <event>
+    <desc>LG left red</desc>
+    <name>vendor-9</name>
+    <setting>
+      <property>/instrumentation/annunciators/gear/left/in-transition</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>LG nose red</desc>
+    <name>vendor-11</name>
+    <setting>
+      <property>/instrumentation/annunciators/gear/nose/in-transition</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>LG right red</desc>
+    <name>vendor-13</name>
+    <setting>
+      <property>/instrumentation/annunciators/gear/right/in-transition</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+
+  <event>
+    <desc>Master Warning</desc>
+    <name>vendor-14</name>
+    <setting>
+      <property>/instrumentation/annunciators/master-warning/state</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>Engine fire</desc>
+    <name>vendor-15</name>
+    <setting>
+      <property>/instrumentation/annunciators/engines/fire</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>Low oil press</desc>
+    <name>vendor-16</name>
+    <setting>
+      <property>/instrumentation/annunciators/engines/oil-pressure-low</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>Low fuel press</desc>
+    <name>vendor-17</name>
+    <setting>
+      <property>/instrumentation/annunciators/systems/fuel/pressure-low</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>Anti-Ice </desc>
+    <name>vendor-18</name>
+    <setting>
+      <property>/instrumentation/annunciators/systems/anti-ice/enabled</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>Starter engaged</desc>
+    <name>vendor-19</name>
+    <setting>
+      <property>/instrumentation/annunciators/engines/starter</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>APU</desc>
+    <name>vendor-20</name>
+    <setting>
+      <property>/instrumentation/annunciators/engines/apu/enabled</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>Master Caution</desc>
+    <name>vendor-21</name>
+    <setting>
+      <property>/instrumentation/annunciators/master-caution/state</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>Vacuum</desc>
+    <name>vendor-22</name>
+    <setting>
+      <property>/instrumentation/annunciators/systems/vacuum</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>Low hyd press</desc>
+    <name>vendor-23</name>
+    <setting>
+      <property>/instrumentation/annunciators/systems/hyd/pressure-low</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>Aux fuel pump</desc>
+    <name>vendor-24</name>
+    <setting>
+      <property>/instrumentation/annunciators/systems/fuel/aux-pump</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>Parking break</desc>
+    <name>vendor-25</name>
+    <setting>
+      <property>/instrumentation/annunciators/gear/parking-brake</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>low volts</desc>
+    <name>vendor-26</name>
+    <setting>
+      <property>/instrumentation/annunciators/systems/electric/low-voltage</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event>
+  <event>
+    <desc>doors</desc>
+    <name>vendor-27</name>
+    <setting>
+      <property>/instrumentation/annunciators/doors</property>
+      <condition>
+        <value>1</value>
+      </condition>
+    </setting>
+  </event> <!-- end LED section-->
+  <!-- levers; LinuxEvent input has a different mapping than USB HID input -->
+  <event>
+    <desc>Lever 0</desc>
+    <name>abs-x-translate</name>
+    <min-range>-1023</min-range>
+    <max-range>1023</max-range>
+    <binding>
+      <command>property-scale</command>
+      <property>/input/honeycomb/bravo/lever[0]</property>
+    </binding>
+  </event>
+  <event>
+    <desc>Lever 1</desc>
+    <name>abs-y-translate</name>
+    <min-range>-1023</min-range>
+    <max-range>1023</max-range>
+    <binding>
+      <command>property-scale</command>
+      <property>/input/honeycomb/bravo/lever[1]/</property>
+    </binding>
+  </event>
+  <event>
+    <desc>Lever 2</desc>
+    <name>abs-x-rotate</name>
+    <min-range>-1023</min-range>
+    <max-range>1023</max-range>
+    <binding>
+      <command>property-scale</command>
+      <property>/input/honeycomb/bravo/lever[2]</property>
+    </binding>
+  </event>
+  <event>
+    <desc>Lever 3</desc>
+    <name>abs-y-rotate</name>
+    <min-range>-1023</min-range>
+    <max-range>1023</max-range>
+    <binding>
+      <command>property-scale</command>
+      <property>/input/honeycomb/bravo/lever[3]</property>
+    </binding>
+  </event>
+  <event>
+    <desc>Lever 4</desc>
+    <name>abs-z-rotate</name>
+    <min-range>-1023</min-range>
+    <max-range>1023</max-range>
+    <binding>
+      <command>property-scale</command>
+      <property>/input/honeycomb/bravo/lever[4]</property>
+    </binding>
+  </event>
+  <event>
+    <desc>Lever 5</desc>
+    <min-range>-1023</min-range>
+    <max-range>1023</max-range>
+    <name>abs-z-translate</name>
+    <binding>
+      <command>property-scale</command>
+      <property>/input/honeycomb/bravo/lever[5]</property>
+    </binding>
+  </event>
+
+  <!-- HID buttons -->
+  <event>
+    <name>button-1</name>
+    <desc>AP mode HDG</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/hdg</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/hdg</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-2</name>
+    <desc>AP mode NAV</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/nav</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/nav</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-3</name>
+    <desc>AP mode approach</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/apr</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/apr</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-4</name>
+    <desc>AP mode rev</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/rev</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/rev</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-5</name>
+    <desc>AP mode alt</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/alt</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/alt</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-6</name>
+    <desc>AP mode VS</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/vs</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/vs</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-7</name>
+    <desc>AP mode speed (IAS)</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/ias</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/ias</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-8</name>
+    <desc>AP enabled</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/autopilot</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/autopilot</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+
+  <event>
+    <name>button-9</name>
+    <desc>Reverser 1</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/reverser[1]</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/reverser[1]</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-10</name>
+    <desc>Reverser 2</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/reverser[2]</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/reverser[2]</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-11</name>
+    <desc>Reverser 3</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/reverser[3]</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/reverser[3]</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-12</name>
+    <desc>Reverser 4</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/reverser[4]</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/reverser[4]</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+
+  <event>
+    <name>button-13</name>
+    <desc>Increase setting</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>nasal</command>
+      <script>bravo.incAPSetting();</script>
+    </binding>
+  </event>
+  <event>
+    <name>button-14</name>
+    <desc>Decrease setting</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>nasal</command>
+      <script>bravo.decAPSetting();</script>
+    </binding>
+  </event>
+
+  <event>
+    <name>button-15</name>
+    <desc>Flaps down</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>nasal</command>
+      <script>controls.flapsDown(1);</script>
+    </binding>
+  </event>
+  <event>
+    <name>button-16</name>
+    <desc>Flaps up</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>nasal</command>
+      <script>controls.flapsDown(-1);</script>
+    </binding>
+  </event>
+  <!-- AP settings selector -->
+  <event>
+    <name>button-17</name>
+    <desc>Selector IAS</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>nasal</command>
+      <script>bravo.setIncDecSelector("ias");</script>
+    </binding>
+  </event>
+  <event>
+    <name>button-18</name>
+    <desc>Selector CRS</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>nasal</command>
+      <script>bravo.setIncDecSelector("crs");</script>
+    </binding>
+  </event>
+  <event>
+    <name>button-19</name>
+    <desc>Selector HDG</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>nasal</command>
+      <script>bravo.setIncDecSelector("hdg");</script>
+    </binding>
+  </event>
+  <event>
+    <name>button-20</name>
+    <desc>Selector VS</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>nasal</command>
+      <script>bravo.setIncDecSelector("vs");</script>
+    </binding>
+  </event>
+  <event>
+    <name>button-21</name>
+    <desc>Selector ALT</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>nasal</command>
+      <script>bravo.setIncDecSelector("alt");</script>
+    </binding>
+  </event>
+  <!-- trim -->
+  <event>
+    <name>button-22</name>
+    <desc>Trim down</desc>
+    <repeatable>true</repeatable>
+    <binding>
+      <command>nasal</command>
+      <script>controls.elevatorTrim(1);</script>
+    </binding>
+  </event>
+  <event>
+    <name>button-23</name>
+    <desc>Trim up</desc>
+    <repeatable>true</repeatable>
+    <binding>
+      <command>nasal</command>
+      <script>controls.elevatorTrim(-1);</script>
+    </binding>
+  </event>
+
+  <event>
+    <name>button-24</name>
+    <desc>Lever0-down-button</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/lever-down-button[0]</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/lever-down-button[0]</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-25</name>
+    <desc>Lever1-down-button</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/lever-down-button[1]</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/lever-down-button[10]</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-26</name>
+    <desc>Lever2-down-button</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/lever-down-button[2]</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/lever-down-button[2]</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-27</name>
+    <desc>Lever3-down-button</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/lever-down-button[3]</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/lever-down-button[3]</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-28</name>
+    <desc>Lever4-down-button</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/lever-down-button[4]</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/lever-down-button[4]</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+
+  <event>
+    <name>button-29</name>
+    <desc>TOGA 1/2</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/toga</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/toga</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <event>
+    <name>button-30</name>
+    <desc>TOGA 3</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/toga</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/toga</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+  <!-- gear lever -->
+  <event>
+    <name>button-31</name>
+    <desc>Gear UP</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/gear-lever-up</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/gear-lever-up</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+    <binding>
+      <command>nasal</command>
+      <script>controls.gearDown(-1);</script>
+    </binding>
+  </event>
+  <event>
+    <name>button-32</name>
+    <desc>Gear DOWN</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/gear-lever-down</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/gear-lever-down</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+    <binding>
+      <command>nasal</command>
+      <script>controls.gearDown(1);</script>
+    </binding>
+  </event>
+
+  <event>
+    <name>button-33</name>
+    <desc>Lever5-down-button</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/lever-down-button[5]</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/lever-down-button[5]</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+
+  <event>
+    <name>button-34</name>
+    <desc>Switch 1 up</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[1]</property>
+      <value>1</value>
+    </binding>
+  </event>
+  <event>
+    <name>button-35</name>
+    <desc>Switch 1 down</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[1]</property>
+      <value>0</value>
+    </binding>
+  </event>
+
+  <event>
+    <name>button-36</name>
+    <desc>Switch 2 up</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[2]</property>
+      <value>1</value>
+    </binding>
+  </event>
+  <event>
+    <name>button-37</name>
+    <desc>Switch 2 down</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[2]</property>
+      <value>0</value>
+    </binding>
+  </event>
+
+  <event>
+    <name>button-38</name>
+    <desc>Switch 3 up</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[3]</property>
+      <value>1</value>
+    </binding>
+  </event>
+  <event>
+    <name>button-39</name>
+    <desc>Switch 3 down</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[3]</property>
+      <value>0</value>
+    </binding>
+  </event>
+
+  <event>
+    <name>button-40</name>
+    <desc>Switch 4 up</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[4]</property>
+      <value>1</value>
+    </binding>
+  </event>
+  <event>
+    <name>button-41</name>
+    <desc>Switch 4 down</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[4]</property>
+      <value>0</value>
+    </binding>
+  </event>
+
+  <event>
+    <name>button-42</name>
+    <desc>Switch 5 up</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[5]</property>
+      <value>1</value>
+    </binding>
+  </event>
+  <event>
+    <name>button-43</name>
+    <desc>Switch 5 down</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[5]</property>
+      <value>0</value>
+    </binding>
+  </event>
+
+  <event>
+    <name>button-44</name>
+    <desc>Switch 6 up</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[6]</property>
+      <value>1</value>
+    </binding>
+  </event>
+  <event>
+    <name>button-45</name>
+    <desc>Switch 6 down</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[6]</property>
+      <value>0</value>
+    </binding>
+  </event>
+
+  <event>
+    <name>button-46</name>
+    <desc>Switch 7 up</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[7]</property>
+      <value>1</value>
+    </binding>
+  </event>
+  <event>
+    <name>button-47</name>
+    <desc>Switch 7 down</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/switches/s[7]</property>
+      <value>0</value>
+    </binding>
+  </event>
+
+  <event>
+    <name>button-48</name>
+    <desc>TOGA on handle 4</desc>
+    <repeatable>false</repeatable>
+    <binding>
+      <command>property-assign</command>
+      <property>/input/honeycomb/bravo/buttons/toga</property>
+      <value>1</value>
+    </binding>
+    <mod-up>
+      <binding>
+        <command>property-assign</command>
+        <property>/input/honeycomb/bravo/buttons/toga</property>
+        <value>0</value>
+      </binding>
+    </mod-up>
+  </event>
+</PropertyList>

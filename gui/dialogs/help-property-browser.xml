@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+	<name>help-property-browser</name>
+	<layout>vbox</layout>
+	<resizable>true</resizable>
+	<default-padding>3</default-padding>
+
+	<group>
+		<layout>vbox</layout>
+        <valign>top</valign>
+		<group>
+			<layout>hbox</layout>
+			<default-padding>1</default-padding>
+			<text>
+				<name>title</name>
+				<label>Property Browser Help</label>
+			</text>
+			<empty><stretch>true</stretch></empty>
+            <button>
+				<legend>X</legend>
+				<key>Esc</key>
+				<pref-width>20</pref-width>
+				<pref-height>20</pref-height>
+				<binding>
+					<command>dialog-close</command>
+				</binding>
+			</button>
+		</group>
+
+        <hrule/>
+        <group>
+            <layout>vbox</layout>
+            <valign>top</valign>
+            <text>
+                <halign>left</halign>
+                <label>Press '/' on your keyboard to open a new property browser.</label>
+            </text>
+            <text>
+                <halign>left</halign>
+                <label> </label>
+            </text>
+            <text>
+                <halign>left</halign>
+                <label>'.' and '..' entry</label>
+            </text>
+            <text>
+                <halign>left</halign>
+                <label>Ctrl click '.' = toggle verbose; Shift click '.' = dump props to console</label>
+            </text>
+            <text>
+                <halign>left</halign>
+                <label>Ctrl click '..' = goto root</label>
+            </text>
+            <text>
+                <halign>left</halign>
+                <label> </label>
+            </text>
+            <text>
+                <halign>left</halign>
+                <label>Other props:</label>
+            </text>
+            <text>
+                <halign>left</halign>
+                <label>Ctrl click = toggle bool value</label>
+            </text>
+            <text>
+                <halign>left</halign>
+                <label>Alt click = toggle trace_write; Ctrl+Alt click = toggle trace_read </label>
+            </text>
+            <text>
+                <halign>left</halign>
+                <label>Shift click add the selected property to the property display</label>
+            </text>
+            <text>
+                <halign>left</halign>
+                <label>Shift-Alt click adds all children of the selected property to the property display</label>
+            </text>
+            <text>
+                <halign>left</halign>
+                <label>Shift-Ctrl click removes all properties from the display</label>
+            </text>
+        </group>
+	</group>
+</PropertyList>

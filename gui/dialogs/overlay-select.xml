@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+	<name>overlay-select</name>
+	<layout>vbox</layout>
+	<resizable>true</resizable>
+	<x>-20</x>
+	<pref-width>200</pref-width>
+
+	<group>
+		<layout>hbox</layout>
+
+		<text>
+			<label>$name</label>
+		</text>
+
+		<empty><stretch>1</stretch></empty>
+
+		<button>
+			<legend>X</legend>
+			<key>Esc</key>
+			<pref-width>20</pref-width>
+			<pref-height>20</pref-height>
+			<binding>
+				<command>nasal</command>
+				<script>$close</script>
+			</binding>
+		</button>
+	</group>
+
+	<hrule/>
+
+	<list>
+		<halign>fill</halign>
+		<valign>fill</valign>
+		<stretch>true</stretch>
+		<pref-height>205</pref-height>
+		<property>$result</property>
+		<binding>
+			<command>dialog-apply</command>
+		</binding>
+		<value>$value</value>
+	</list>
+</PropertyList>

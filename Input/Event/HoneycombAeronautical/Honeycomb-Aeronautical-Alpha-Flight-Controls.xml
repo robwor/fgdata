@@ -1,0 +1,448 @@
+<?xml version="1.0"?>
+
+<!--
+
+  Copyright (c) 2021 FlightGear Flight Simulator
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+<!--
+********************************************************************
+*
+* Bindings for Honeycomb Aeronautical Alpha Flight Controls - Yoke
+*
+*
+* Axis 0: ailerons
+* Axis 1: elevator
+* Axes 2 and 3 (hat): view direction
+*
+* Button  0: button-trigger  YOKE white-Trigger left-handle           AP disconnect
+* Button  1: button-thumb    YOKE white-top-Button left-handle        PTT
+* Button  2: button-thumb2   YOKE white-top-Button right-handle       View, Reset
+* Button  3: button-top      YOKE red-top-Button right-handle
+* Button  4: button-top2     YOKE outer-Rocker down left-handle       Elevator Trim, Up
+* Button  5: button-pinkie   YOKE outer-Rocker up left-handle         Elevator Trim, Down
+* Button  6: button-base     YOKE inner-Rocker down left-handle       View, zoom out
+* Button  7: button-base2    YOKE inner-Rocker up left-handle         View, zoom in
+* Button  8: button-base3    YOKE top-Rocker inward right-handle      Aileron Trim, Left
+* Button  9: button-base4    YOKE top-Rocker outward right-handle     Aileron Trim, Right
+* Button 10: button-base5    YOKE bottom-Rocker inward right-handle   Rudder Trim, Right
+* Button 11: button-base6    YOKE bottom-Rocker outward right-handle  Rudder Trim, Right
+* Button 12: button-300      BASE Master Alternator up
+* Button 13: button-301      BASE Master Alternator down
+* Button 14: button-302      BASE Master Battery up
+* Button 15: button-dead     BASE Master Battery down
+* Button 16: button-704      BASE Avionics Bus1 up
+* Button 17: button-705      BASE Avionics Bus1 down
+* Button 18: button-706      BASE Avionics Bus2 up
+* Button 19: button-707      BASE Avionics Bus2 down
+* Button 20: button-708      BASE Beacon up
+* Button 21: button-709      BASE Beacon down
+* Button 22: button-710      BASE Land up
+* Button 23: button-711      BASE Land down
+* Button 24: button-712      BASE Taxi up
+* Button 25: button-713      BASE Taxi down
+* Button 26: button-714      BASE Nav up
+* Button 27: button-715      BASE Nav down
+* Button 28: button-716      BASE Strobe up
+* Button 29: button-717      BASE Strobe down
+* Button 30: button-718      BASE Magneto Of
+* Button 31: button-719      BASE Right Mag
+* Button 32: button-720      BASE Left Mag
+* Button 33: button-721      BASE Both Mag
+* Button 34: button-722      BASE Start
+
+********************************************************************
+-->
+
+<PropertyList>
+    <vendor-id>honeycomb</vendor-id>
+    <model-id>alpha</model-id>
+    <name type="string">Honeycomb Aeronautical Alpha Flight Controls</name>
+    <debug-events type="bool">true</debug-events>
+    <hid-debug-raw type="bool">false</hid-debug-raw>
+    <meta-config>
+        <linux-event>
+            <enabled type="bool">true</enabled>
+            <device-ignore-list>
+                <name-prefix>js</name-prefix>
+            </device-ignore-list>
+        </linux-event>
+    </meta-config>
+    <nasal>
+        <open>
+            <![CDATA[
+            print("Honeycomb Alpha Nasal (event) open");
+            alpha = input_helpers.honeycomb.alpha.new(cmdarg());
+            ]]>
+        </open>
+        <close>
+            <![CDATA[
+            print("Honeycomb Alpha Nasal (event) close");
+            if (ishash(alpha) and isfunc(alpha['close']))
+                alpha.close(cmdarg());
+            ]]>
+        </close>
+    </nasal>
+    <!--config-variants>
+        <variant>
+            <id>default</id>
+            <description>Default config</description>
+        </variant>
+    </config-variants-->
+    <event>
+        <desc>Aileron</desc>
+        <name>abs-y-translate</name>
+        <min-range>0</min-range>
+        <max-range>1023</max-range>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/flight/aileron</property>
+        </binding>
+    </event>
+    <event>
+        <desc>Elevator</desc>
+        <name>abs-x-translate</name>
+        <min-range>0</min-range>
+        <max-range>1023</max-range>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/flight/elevator</property>
+            <factor>-1</factor>
+        </binding>
+    </event>
+    <event>
+        <desc>View control</desc>
+        <name>abs-hat</name>
+        <repeatable>true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>alpha.adjustView(cmdarg());</script>
+        </binding>
+    </event>
+    <event>
+        <desc>LH yoke trigger button</desc>
+        <name>button-1</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.ptt(1)</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>controls.ptt(0)</script>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <desc>LH yoke top white button</desc>
+        <name>button-2</name>
+        <repeatable>false</repeatable>
+
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/autoflight/autopilot/engage</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <desc>RH yoke white button</desc>
+        <name>button-3</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>
+                view.resetView()
+            </script>
+        </binding>
+    </event>
+    <event>
+        <desc>RH yoke red button</desc>
+        <name>button-4</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-toggle</command>
+            <property>/controls/gear/brake-parking</property>
+        </binding>
+    </event>
+
+    <event>
+        <desc>Elevator trim up</desc>
+        <name>button-5</name>
+        <repeatable>true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.elevatorTrim(-0.5)</script>
+        </binding>
+    </event>
+    <event>
+        <desc>Elevator trim down</desc>
+        <name>button-6</name>
+        <binding>
+            <command>nasal</command>
+            <script>controls.elevatorTrim(0.5)</script>
+        </binding>
+    </event>
+
+    <event>
+        <desc>zoom out</desc>
+        <name>button-7</name>
+        <binding>
+            <command>nasal</command>
+            <script>view.increase()</script>
+        </binding>
+    </event>
+
+    <event>
+        <desc>zoom in</desc>
+        <name>button-8</name>
+        <binding>
+            <command>nasal</command>
+            <script>view.decrease()</script>
+        </binding>
+    </event>
+
+    <event>
+        <desc>Aileron Trim, Left</desc>
+        <name>button-9</name>
+        <repeatable>true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.aileronTrim(-1)</script>
+        </binding>
+    </event>
+    <event>
+        <desc>Aileron Trim, Right</desc>
+        <name>button-10</name>
+        <repeatable>true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.aileronTrim(1)</script>
+        </binding>
+    </event>
+
+    <event>
+        <desc>Rudder Trim, Left</desc>
+        <name>button-11</name>
+        <repeatable>true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.rudderTrim(-1)</script>
+        </binding>
+    </event>
+    <event>
+        <desc>Rudder Trim, Right</desc>
+        <name>button-12</name>
+        <repeatable>true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.rudderTrim(1)</script>
+        </binding>
+    </event>
+
+    <event>
+        <desc>Alternator</desc>
+        <name>button-13</name>
+        <binding>
+            <command>nasal</command>
+            <script>setprop("/controls/electric/alternator", 1);</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>setprop("/controls/electric/alternator", 0)</script>
+            </binding>
+        </mod-up>
+    </event>
+
+    <event>
+        <desc>Battery Master</desc>
+        <name>button-15</name>
+        <binding>
+            <command>nasal</command>
+            <script>setprop("/controls/electric/battery-switch", 1)</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>setprop("/controls/electric/battery-switch", 0)</script>
+            </binding>
+        </mod-up>
+    </event>
+
+    <event>
+        <desc>Avionics</desc>
+        <name>button-17</name>
+        <binding>
+            <command>nasal</command>
+            <script>setprop("/controls/electric/avionics", 1)</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>setprop("/controls/electric/avionics", 0)</script>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <desc>Avionics2</desc>
+        <name>button-19</name>
+        <binding>
+            <command>nasal</command>
+            <script>setprop("/controls/electric/avionics2", 1)</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>setprop("/controls/electric/avionics2", 0)</script>
+            </binding>
+        </mod-up>
+    </event>
+
+
+    <event>
+        <desc>Beacon, ON OFF</desc>
+        <name>button-21</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>setprop("/controls/lighting/beacon", 1)</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>setprop("/controls/lighting/beacon", 0)</script>
+            </binding>
+        </mod-up>
+    </event>
+
+    <event>
+        <desc>Landing Lights, ON OFF</desc>
+        <name>button-23</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>setprop("/controls/lighting/landing-lights", 1)</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>setprop("/controls/lighting/landing-lights", 0)</script>
+            </binding>
+        </mod-up>
+    </event>
+
+    <event>
+        <desc>Taxi Lights, ON OFF</desc>
+        <name>button-25</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>setprop("/controls/lighting/taxi-light", 1)</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>setprop("/controls/lighting/taxi-light", 0)</script>
+            </binding>
+        </mod-up>
+    </event>
+
+    <event>
+        <desc>Navigation Lights, ON OFF</desc>
+        <name>button-27</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>setprop("/controls/lighting/nav-lights", 1)</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>setprop("/controls/lighting/nav-lights", 0)</script>
+            </binding>
+        </mod-up>
+    </event>
+
+    <event>
+        <desc>Strobe Light, ON OFF</desc>
+        <name>button-29</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>setprop("/controls/lighting/strobe", 1)</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>setprop("/controls/lighting/strobe", 0)</script>
+            </binding>
+        </mod-up>
+    </event>
+
+    <event>
+        <desc>Magneto, OFF</desc>
+        <name>button-31</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>alpha.setMagnetos(0);</script>
+        </binding>
+    </event>
+    <event>
+        <desc>Magneto, Right</desc>
+        <name>button-32</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>alpha.setMagnetos(1);</script>
+        </binding>
+    </event>
+    <event>
+        <desc>Magneto, Left</desc>
+        <name>button-33</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>alpha.setMagnetos(2);</script>
+        </binding>
+    </event>
+    <event>
+        <desc>Magneto, Both</desc>
+        <name>button-34</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>alpha.setMagnetos(3);</script>
+        </binding>
+    </event>
+    <event>
+        <desc>Starter, ON OFF</desc>
+        <name>button-35</name>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>alpha.setStarter(1)</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>alpha.setStarter(0)</script>
+            </binding>
+        </mod-up>
+    </event>
+</PropertyList>
