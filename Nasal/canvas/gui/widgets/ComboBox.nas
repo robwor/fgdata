@@ -186,6 +186,7 @@ gui.widgets.ComboBox = {
   {
     me.menu().setPosition(x, y);
     me.menu().show();
+    me.menu().setSize(math.max(me._size[0], me.menu().getSize()[0]), me.menu().getSize()[1]);
   },
   
   _hideMenu: func {
