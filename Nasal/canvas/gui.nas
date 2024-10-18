@@ -95,8 +95,11 @@ var Window = {
   # Constructor
   #
   # @param size ([width, height])
-  new: func(size, type = nil, id = nil, allowfocus = 1, destroy_on_close = 1)
+  new: func(size = nil, type = nil, id = nil, allowfocus = 1, destroy_on_close = 1)
   {
+    if (size == nil) {
+      die("canvas.Window.new: size argument is null");
+    }
     var ghost = _newWindowGhost(id);
     var m = {
       parents: [Window, PropertyElement, ghost],
@@ -115,7 +118,9 @@ var Window = {
     m.setInt("content-size[1]", size[1]);
     m.setDouble("aspect-ratio", size[0]/size[1]);
     m.setBool("lock-aspect-ratio", 0);
-    m.centerOnScreen();
+    if (type == "window" or type == "dialog") {
+      m.centerOnScreen();
+    }
     
     if (destroy_on_close) {
       m.setFocus();
