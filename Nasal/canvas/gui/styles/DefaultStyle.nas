@@ -281,15 +281,15 @@ DefaultStyle.widgets.label = {
   new: func(parent, cfg)
   {
     me._root = parent.createChild("group", "label");
-    me._text = me._root.createChild("text", "text")
-            .set("font", "LiberationFonts/LiberationSans-Regular.ttf")
-            .set("character-size", 14)
-            .set("alignment", "left-baseline")
-            .setVisible(0);
     me._bg = me._root.createChild("path", "bg")
             .setVisible(0);
     me._img = me._root.createChild("image", "image")
             .set("preserveAspectRatio", "xMidYMid slice")
+            .setVisible(0);
+    me._text = me._root.createChild("text", "text")
+            .set("font", "LiberationFonts/LiberationSans-Regular.ttf")
+            .set("character-size", 14)
+            .set("alignment", "left-baseline")
             .setVisible(0);
   },
   setSize: func(model, w, h)
