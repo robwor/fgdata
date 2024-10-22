@@ -52,7 +52,6 @@ var ConfigStore = {
     APS  : { enabled: 1, declutter: 3, range: 2000, max_range: 2000, static : 0,  factory : canvas.SymbolLayer, priority : 4  },
 
     STAMEN_terrain  : { enabled: 1, declutter: 3, range: 500, max_range: 2000, static : 1, factory : canvas.OverlayLayer, priority : 1  },
-    OpenAIP : { enabled: 1, declutter: 1, range: 150, max_range: 300, static : 1, factory : canvas.OverlayLayer, priority : 1  },
     STAMEN  : { enabled: 1, declutter: 3, range: 500, max_range: 2000, static : 1, factory : canvas.OverlayLayer, priority : 1  },
   },
 

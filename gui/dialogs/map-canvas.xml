@@ -280,20 +280,6 @@
             </checkbox>
 
             <checkbox>
-                <label>OpenAIP</label>
-                <halign>left</halign>
-
-                <property>/sim/gui/dialogs/map-canvas/draw-OpenAIP</property>
-                <live>true</live>
-                <binding>
-                  <command>dialog-apply</command>
-                </binding>
-                <binding>
-                  <command>property-toggle</command>
-                </binding>
-            </checkbox>
-
-            <checkbox>
                 <label>STAMEN</label>
                 <halign>left</halign>
 
@@ -558,7 +544,7 @@
                             })();
                         }
 
-                        foreach(var type; [ r('OSM'), r('VFRChart'), r('OpenAIP'), r('STAMEN') ]) {
+                        foreach(var type; [ r('OSM'), r('VFRChart'), r('STAMEN') ]) {
                             TestMap.addLayer(factory: canvas.OverlayLayer, type_arg: type.name,
                                              visible: 0, priority: 1,
                                              style: Styles.get(type.name),
