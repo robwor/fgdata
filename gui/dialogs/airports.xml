@@ -158,21 +158,6 @@
         setprop("/sim/gui/dialogs/airports/display-mode", 0);
       }
 
-      var displayTaxiways = getprop("/sim/gui/dialogs/airports/display-taxiways");
-      if ((displayTaxiways != 0) and (displayTaxiways != 1)) {
-        setprop("/sim/gui/dialogs/airports/display-taxiways", 1);
-      }
-
-      var displayParking = getprop("/sim/gui/dialogs/airports/display-parking");
-      if ((displayParking != 0) and (displayParking != 1)) {
-        setprop("/sim/gui/dialogs/airports/display-parking", 0);
-      }
-
-      var displayTower = getprop("/sim/gui/dialogs/airports/display-tower");
-      if ((displayTower != 0) and (displayTower != 1)) {
-        setprop("/sim/gui/dialogs/airports/display-tower", 1);
-      }
-
       var showHelipads = getprop("/sim/gui/dialogs/airports/show-helipads");
       if ((showHelipads != 0) and (showHelipads != 1)) {
         setprop("/sim/gui/dialogs/airports/show-helipads", 0);
@@ -785,8 +770,10 @@
                     Styles.APS.scale_factor = 0.25;
 
                     var r = func(name,vis=1,zindex=nil) return caller(0)[0];
+                    var drawDme = getprop("sim/gui/dialogs/map-canvas/draw-DME");
+                    var drawParking = getprop("/sim/gui/dialogs/map-canvas/draw-PARKING");
                     # TODO: we'll need some z-indexing here, right now it's in the layer order
-                    foreach(var type; [r('TAXI',1,0),r('RWY',1,1),r('TWR',1,2),r('DME',0,3),r('VOR',0,4),r('NDB',0,5),r('FIX',0,6),r('PARKING',0,7)] ) {
+                    foreach(var type; [r('TAXI',1,0),r('RWY',1,1),r('TWR',1,2),r('DME',drawDme,3),r('VOR',drawDme,4),r('NDB',drawDme,5),r('FIX',drawDme,6),r('PARKING',drawParking,7)] ) {
                         AirportChart.addLayer(factory: canvas.SymbolLayer, type_arg: type.name,
                                          visible: type.vis, priority: 4,
                                          style: Styles.get(type.name),
