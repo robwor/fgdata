@@ -947,6 +947,9 @@ setlistener("/sim/current-view/view-number", func(n) {
 #
 setlistener("/sim/current-view/view-number-raw", func(n) {
     var index = n.getValue();
+    if (index == nil) {
+        return;
+    }
     forindex (var i; views) {
         if (views[i].getIndex() == index) {
             props.globals.getNode("/sim/current-view/view-number", 1).setValue(i);
