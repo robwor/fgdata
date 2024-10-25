@@ -4,4 +4,4 @@
     This Compositor is used by default when none has been specified in the
     CameraGroup settings.
 -->
-<PropertyList include="Classic/classic.xml"/>
+<PropertyList include="HDR/hdr.xml"/>
