@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PropertyList>
-  <!-- Classic -->
-  <scheme>
-    <name>classic-shadow</name>
-    <description>Used during the shadow mapping passes.</description>
-    <fallback>Effects/Fallback/classic-shadow</fallback>
-  </scheme>
   <!-- HDR -->
   <scheme>
     <name>hdr-geometry</name>
