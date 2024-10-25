@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Legacy Effect.
+It's kept for backwards compatibility and should not be used on new projects.
+
+This Effect is used by the AC3D model loader.
+See simgear/scene/model/ReaderWriterAC3D.cxx
+-->
 <PropertyList>
   <name>Effects/model-transparent</name>
   <inherits-from>Effects/model-default</inherits-from>
 
   <parameters>
+    <pbr-metallic type="float">0.0</pbr-metallic>
+    <pbr-roughness type="float">0.1</pbr-roughness>
+
     <!-- shadows.glsl -->
     <show-shadow-cascades>
       <use>/sim/rendering/hdr/debug/show-shadow-cascades</use>
@@ -29,12 +39,14 @@
     </exposure-compensation>
   </parameters>
 
+  <!-- Disable rendering on the geometry and shadow passes -->
   <technique n="108">
     <scheme>hdr-geometry</scheme>
   </technique>
   <technique n="118">
     <scheme>hdr-shadow</scheme>
   </technique>
+
   <technique n="128">
     <scheme>hdr-forward</scheme>
     <pass>
@@ -48,21 +60,14 @@
         <type><use>texture[0]/type</use></type>
         <image><use>texture[0]/image</use></image>
         <filter><use>texture[0]/filter</use></filter>
-        <mag-filter><use>texture[0]/mag-filter</use></mag-filter>
         <wrap-s><use>texture[0]/wrap-s</use></wrap-s>
         <wrap-t><use>texture[0]/wrap-t</use></wrap-t>
       </texture-unit>
-      <texture-unit>
-        <unit>8</unit>
-        <image><use>texture[8]/image</use></image>
-        <type><use>texture[8]/type</use></type>
-        <filter><use>texture[8]/filter</use></filter>
-        <mag-filter><use>texture[8]/mag-filter</use></mag-filter>
-        <wrap-s><use>texture[8]/wrap-s</use></wrap-s>
-        <wrap-t><use>texture[8]/wrap-t</use></wrap-t>
-        <internal-format><use>texture[8]/internal-format</use></internal-format>
-      </texture-unit>
-      <blend>1</blend>
+      <blend>
+        <active>true</active>
+        <source>src-alpha</source>
+        <destination>one-minus-src-alpha</destination>
+      </blend>
       <rendering-hint>transparent</rendering-hint>
       <cull-face><use>cull-face</use></cull-face>
       <program>
@@ -89,14 +94,14 @@
         <value type="int">0</value>
       </uniform>
       <uniform>
-        <name>color_mode</name>
-        <type>int</type>
-        <value><use>material/color-mode</use></value>
+        <name>pbr_metallic</name>
+        <type>float</type>
+        <value><use>pbr-metallic</use></value>
       </uniform>
       <uniform>
-        <name>material_diffuse</name>
-        <type>float-vec4</type>
-        <value><use>material/diffuse</use></value>
+        <name>pbr_roughness</name>
+        <type>float</type>
+        <value><use>pbr-roughness</use></value>
       </uniform>
       <!-- shadows.glsl -->
       <uniform>

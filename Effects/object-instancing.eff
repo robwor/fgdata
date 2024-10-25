@@ -1,43 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PropertyList>
   <name>Effects/object-instancing</name>
-  <inherits-from>Effects/model-default</inherits-from>
-
-  <technique n="5">
-    <pass>
-      <program>
-        <vertex-shader>Shaders/object_instancing.vert</vertex-shader>
-        <vertex-shader>Shaders/object_instancing.glsl</vertex-shader>
-        <vertex-shader>Shaders/shadows-include.vert</vertex-shader>
-        <vertex-shader>Shaders/generic_ALS_base.glsl</vertex-shader>
-        <attribute>
-          <name>instance_position</name>
-          <index>6</index>
-        </attribute>
-        <attribute>
-          <name>instance_rotation_and_scale</name>
-          <index>7</index>
-        </attribute>
-      </program>
-    </pass>
-  </technique>
-
-  <technique n="11">
-    <pass>
-      <program n="0">
-        <vertex-shader>Shaders/object_instancing_lowspec.vert</vertex-shader>
-        <vertex-shader>Shaders/object_instancing.glsl</vertex-shader>
-        <vertex-shader>Shaders/shadows-include.vert</vertex-shader>
-        <attribute>
-          <name>instance_position</name>
-          <index>6</index>
-        </attribute>
-        <attribute>
-          <name>instance_rotation_and_scale</name>
-          <index>7</index>
-        </attribute>
-      </program>
-    </pass>
-  </technique>
-
 </PropertyList>

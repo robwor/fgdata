@@ -2,48 +2,4 @@
 <PropertyList>
   <name>Effects/object-instancing-colored</name>
   <inherits-from>Effects/object-instancing</inherits-from>
-
-  <technique n="5">
-    <pass>
-      <program>
-        <vertex-shader n="0">Shaders/object_instancing_colored.vert</vertex-shader>
-        <fragment-shader n="0">Shaders/object_instancing_colored.frag</fragment-shader>
-        <fragment-shader n="100">Shaders/model_ALS_base.glsl</fragment-shader>
-        <attribute>
-          <name>instance_position</name>
-          <index>6</index>
-        </attribute>
-        <attribute>
-          <name>instance_rotation_and_scale</name>
-          <index>7</index>
-        </attribute>
-        <attribute>
-          <name>instance_custom_attrib</name>
-          <index>10</index>
-        </attribute>
-      </program>
-    </pass>
-  </technique>
-
-  <technique n="11">
-    <pass>
-      <program n="0">
-        <vertex-shader n="0">Shaders/object_instancing_colored_lowspec.vert</vertex-shader>
-        <fragment-shader n="1">Shaders/object_instancing_colored_lowspec.frag</fragment-shader>
-        <attribute>
-          <name>instance_position</name>
-          <index>6</index>
-        </attribute>
-        <attribute>
-          <name>instance_rotation_and_scale</name>
-          <index>7</index>
-        </attribute>
-        <attribute>
-          <name>instance_custom_attrib</name>
-          <index>10</index>
-        </attribute>
-      </program>
-    </pass>
-  </technique>
-
 </PropertyList>

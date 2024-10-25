@@ -2,7 +2,7 @@
 <PropertyList>
   <name>Effects/tree-european-deciduous</name>
   <inherits-from>Effects/tree</inherits-from>
-	<parameters>
-		<num_deciduous_trees>8</num_deciduous_trees>
-	</parameters>
+  <parameters>
+    <num_deciduous_trees>8</num_deciduous_trees>
+  </parameters>
 </PropertyList>

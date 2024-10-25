@@ -9,8 +9,8 @@ in VS_OUT {
 
 uniform sampler2D color_tex;
 
-const float DEFAULT_METALLIC  = 0.0;
-const float DEFAULT_ROUGHNESS = 0.5;
+uniform float pbr_metallic;
+uniform float pbr_roughness;
 
 // gbuffer_pack.glsl
 void gbuffer_pack_pbr_opaque(vec3 normal,
@@ -28,9 +28,7 @@ void main()
 {
     vec3 texel = texture(color_tex, fs_in.texcoord).rgb;
     vec3 color = eotf_inverse_sRGB(texel) * fs_in.material_color.rgb;
-
     vec3 N = normalize(fs_in.vertex_normal);
-
-    gbuffer_pack_pbr_opaque(N, color, DEFAULT_METALLIC, DEFAULT_ROUGHNESS, 1.0, vec3(0.0));
+    gbuffer_pack_pbr_opaque(N, color, pbr_metallic, pbr_roughness, 1.0, vec3(0.0));
     gl_FragDepth = logdepth_encode(fs_in.flogz);
 }

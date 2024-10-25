@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PropertyList>
-  <name>Effects/wingflex-pbr</name>
+  <name>Effects/model-pbr-wingflex</name>
   <inherits-from>Effects/model-pbr</inherits-from>
 
   <parameters>

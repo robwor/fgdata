@@ -1,5 +1,4 @@
 #version 330 core
-#extension GL_EXT_draw_instanced : enable
 
 layout(location = 0)  in vec4 pos;
 layout(location = 1)  in vec3 normal;
@@ -21,9 +20,6 @@ uniform mat4 osg_ModelViewMatrix;
 uniform mat4 osg_ModelViewProjectionMatrix;
 uniform mat3 osg_NormalMatrix;
 
-const float c_precision = 128.0;
-const float c_precisionp1 = c_precision + 1.0;
-
 const float EPSILON = 1e-7;
 
 // logarithmic_depth.glsl
@@ -31,6 +27,8 @@ float logdepth_prepare_vs_depth(float z);
 
 vec3 float2vec(float value)
 {
+    const float c_precision = 128.0;
+    const float c_precisionp1 = c_precision + 1.0;
     vec3 val;
     val.x = mod(value, c_precisionp1) / c_precision;
     val.y = mod(floor(value / c_precisionp1), c_precisionp1) / c_precision;

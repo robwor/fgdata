@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PropertyList>
-  <name>Effects/chute-pbr</name>
+  <name>Effects/model-pbr-chute</name>
   <inherits-from>Effects/model-pbr</inherits-from>
 
   <parameters>

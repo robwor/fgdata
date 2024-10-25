@@ -16,8 +16,10 @@ out VS_OUT {
     float scale;
 } vs_out;
 
-uniform int num_deciduous_trees;
+uniform float snow_level;
 uniform float season;
+uniform int num_deciduous_trees;
+uniform bool use_forest_effect;
 uniform float forest_effect_size;
 uniform float forest_effect_shape;
 uniform float WindN;
@@ -51,7 +53,8 @@ void main()
     float sr = sin(fogcoord + vertex_color.x);
     float cr = cos(fogcoord + vertex_color.x);
     vs_out.texcoord = vec2(tex_fract, multitexcoord0.y);
-    vs_out.texcoord.y = vs_out.texcoord.y + 0.5 * season;
+    // Determine the y texture coordinate based on whether it's summer, winter, snowy.
+    vs_out.texcoord.y = vs_out.texcoord.y + 0.25 * step(snow_level, vertex_color.z) + 0.5 * season;
 
     // scaling
     vec3 position = pos.xyz * normal.xxy;
@@ -59,18 +62,19 @@ void main()
     // Rotation of the generic quad to specific one for the tree.
     position.xy = vec2(dot(position.xy, vec2(cr, sr)), dot(position.xy, vec2(-sr, cr)));
 
-    // XXX: Wind makes things shimmer too much, disable it for now
     // Shear by wind. Note that this only applies to the top vertices
-    // float vertex_color_sum = vertex_color.x + vertex_color.y + vertex_color.z;
-    // float wind_offset = position.z * (
-    //     sin(osg_SimulationTime * 1.8 + vertex_color_sum * 0.01) + 1.0) * 0.0025;
-    // position.x = position.x + wind_offset * WindN;
-    // position.y = position.y + wind_offset * WindE;
+    float vertex_color_sum = vertex_color.x + vertex_color.y + vertex_color.z;
+    float wind_offset = position.z * (
+        sin(osg_SimulationTime * 1.8 + vertex_color_sum * 0.01) + 1.0) * 0.0025;
+    position.x = position.x + wind_offset * WindN;
+    position.y = position.y + wind_offset * WindE;
 
     // Scale by random domains
-    float voronoi = 0.5 + 1.0 * voronoi_noise_2d(
-        vertex_color.xy, forest_effect_size, forest_effect_shape, forest_effect_shape);
-    position.xyz *= voronoi;
+    if (use_forest_effect) {
+        float voronoi = 0.5 + 1.0 * voronoi_noise_2d(
+            vertex_color.xy, forest_effect_size, forest_effect_shape, forest_effect_shape);
+        position.xyz *= voronoi;
+    }
 
     position = position + vertex_color.xyz;
     gl_Position = osg_ModelViewProjectionMatrix * vec4(position, 1.0);

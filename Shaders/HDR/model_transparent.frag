@@ -13,11 +13,11 @@ in VS_OUT {
 
 uniform sampler2D color_tex;
 
+uniform float pbr_metallic;
+uniform float pbr_roughness;
+
 uniform mat4 osg_ViewMatrixInverse;
 uniform vec4 fg_Viewport;
-
-const float TRANSPARENT_METALLIC  = 0.0;
-const float TRANSPARENT_ROUGHNESS = 0.1;
 
 // color.glsl
 vec3 eotf_inverse_sRGB(vec3 srgb);
@@ -37,14 +37,14 @@ void main()
 {
     vec4 texel = texture(color_tex, fs_in.texcoord);
     vec3 base_color = eotf_inverse_sRGB(texel.rgb) * fs_in.material_color.rgb;
-    float alpha = fs_in.material_color.a * texel.a;
+    float alpha = texel.a * fs_in.material_color.a;
 
     vec3 N = normalize(fs_in.vertex_normal);
     vec3 V = normalize(-fs_in.view_vector);
 
     vec3 color = eval_lights_transparent(base_color,
-                                         TRANSPARENT_METALLIC,
-                                         TRANSPARENT_ROUGHNESS,
+                                         pbr_metallic,
+                                         pbr_roughness,
                                          1.0,
                                          vec3(0.0),
                                          fs_in.view_vector, N, V,
