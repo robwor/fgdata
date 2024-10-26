@@ -1,10 +1,10 @@
-#version 330 core
-
-out vec2 texImageCoord;
-out vec2 paintCoord;
+#version 410 core
 
 in vec2 pos;
 in vec2 textureUV;
+
+out vec2 texImageCoord;
+out vec2 paintCoord;
 
 // UNUSED
 // uniform mat4 sh_Model;

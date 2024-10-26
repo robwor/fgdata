@@ -1,4 +1,4 @@
-#version 330 core
+#version 410 core
 
 #define PAINT_TYPE_COLOR            0x1B00
 #define PAINT_TYPE_LINEAR_GRADIENT  0x1B01
@@ -26,8 +26,8 @@ uniform sampler2D imageSampler;
 uniform sampler2D rampSampler;
 uniform sampler2D patternSampler;
 
-float linear_gradient(vec2 fragCoord, vec2 p0, vec2 p1){
-
+float linear_gradient(vec2 fragCoord, vec2 p0, vec2 p1)
+{
     float x  = fragCoord.x;
     float y  = fragCoord.y;
     float x0 = p0.x;
@@ -39,11 +39,11 @@ float linear_gradient(vec2 fragCoord, vec2 p0, vec2 p1){
 
     return
         ( dx * (x - x0) + dy * (y - y0) )
-     /  ( dx*dx + dy*dy );
+        /  ( dx*dx + dy*dy );
 }
 
-float radial_gradient(vec2 fragCoord, vec2 centerCoord, vec2 focalCoord, float r){
-
+float radial_gradient(vec2 fragCoord, vec2 centerCoord, vec2 focalCoord, float r)
+{
     float x   = fragCoord.x;
     float y   = fragCoord.y;
     float cx  = centerCoord.x;
@@ -57,7 +57,7 @@ float radial_gradient(vec2 fragCoord, vec2 centerCoord, vec2 focalCoord, float r
 
     return
         ( (dx * dfx + dy * dfy) + sqrt(r*r*(dx*dx + dy*dy) - pow(dx*dfy - dy*dfx, 2.0)) )
-     /  ( r*r - (dfx*dfx + dfy*dfy) );
+        /  ( r*r - (dfx*dfx + dfy*dfy) );
 }
 
 void main()
@@ -66,30 +66,30 @@ void main()
 
     switch(paintType){
     case PAINT_TYPE_LINEAR_GRADIENT:
-        {
-            vec2  x0 = paintParams[0];
-            vec2  x1 = paintParams[1];
-            float factor = linear_gradient(paintCoord, x0, x1);
-            col = texture(rampSampler, vec2(factor, 0.5));
-        }
-        break;
+    {
+        vec2  x0 = paintParams[0];
+        vec2  x1 = paintParams[1];
+        float factor = linear_gradient(paintCoord, x0, x1);
+        col = texture(rampSampler, vec2(factor, 0.5));
+    }
+    break;
     case PAINT_TYPE_RADIAL_GRADIENT:
-        {
-            vec2  center = paintParams[0];
-            vec2  focal  = paintParams[1];
-            float radius = paintParams[2].x;
-            float factor = radial_gradient(paintCoord, center, focal, radius);
-            col = texture(rampSampler, vec2(factor, 0.5));
-        }
-        break;
+    {
+        vec2  center = paintParams[0];
+        vec2  focal  = paintParams[1];
+        float radius = paintParams[2].x;
+        float factor = radial_gradient(paintCoord, center, focal, radius);
+        col = texture(rampSampler, vec2(factor, 0.5));
+    }
+    break;
     case PAINT_TYPE_PATTERN:
-        {
-            float width  = paintParams[0].x;
-            float height = paintParams[0].y;
-            vec2  texCoord = vec2(paintCoord.x / width, paintCoord.y / height);
-            col = texture(patternSampler, texCoord);
-        }
-        break;
+    {
+        float width  = paintParams[0].x;
+        float height = paintParams[0].y;
+        vec2  texCoord = vec2(paintCoord.x / width, paintCoord.y / height);
+        col = texture(patternSampler, texCoord);
+    }
+    break;
     default:
     case PAINT_TYPE_COLOR:
         col = paintColor;
@@ -98,7 +98,7 @@ void main()
 
     if(drawMode == DRAW_MODE_IMAGE) {
         col = texture(imageSampler, texImageCoord)
-                  * (imageMode == DRAW_IMAGE_MULTIPLY ? col : vec4(1.0, 1.0, 1.0, 1.0));
+            * (imageMode == DRAW_IMAGE_MULTIPLY ? col : vec4(1.0, 1.0, 1.0, 1.0));
     }
 
     fragColor = col * scaleFactorBias[0] + scaleFactorBias[1];

@@ -1,5 +1,4 @@
-// -*-C++-*-
-#version 330 core
+#version 410 core
 
 out vec4 fragColor;
 
