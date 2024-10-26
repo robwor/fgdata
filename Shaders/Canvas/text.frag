@@ -3,7 +3,10 @@
 #pragma import_defines(BACKDROP_COLOR, SHADOW, OUTLINE)
 #pragma import_defines(SIGNED_DISTANCE_FIELD, TEXTURE_DIMENSION, GLYPH_DIMENSION)
 
-#if 0
+// GL_ALPHA and GL_LUMINANCE_ALPHA are deprecated in GL3/GL4 core profile,
+// use GL_RED & GL_RB in this case.
+// See osgText/Glyph.cpp
+#if 1
 #  define ALPHA r
 #  define SDF g
 #else
