@@ -10,7 +10,7 @@
 #-------------------------------------------------------------------------------
 
 #load only once (via /Nasal/std.nas) not via C++ module loader
-if (ishash(globals["std"]) and ishash(std["Hash"])) 
+if (ishash(globals["std"]) and ishash(std["Hash"]))
     return;
 
 Hash = {
@@ -21,38 +21,38 @@ Hash = {
             _h: {},
             _callback: func,
         };
-        if (ishash(hash)) 
+        if (ishash(hash))
             obj._h = hash;
         return obj;
     },
-   
+
     set: func (key, value) {
         me._h[key] = value;
         me._callback(key, value);
         return me;
     },
-    
-    get: func (key) {
-        return me._h[key];
+
+    get: func (key, default=nil) {
+        return me._h[key] != nil ? me._h[key] : default;
     },
 
     clear: func() {
         me._h = {};
         return me;
     },
-    
+
     contains: func(key) {
         return contains(me._h, key);
     },
-    
+
     getName: func () {
         return me.name;
     },
-    
+
     getKeys: func () {
         return keys(me._h);
     },
-    
+
     # export keys to props p/<keys>
     # p:    root property path or props.Node object
     keys2props: func (p) {
@@ -64,7 +64,7 @@ Hash = {
         }
         return me;
     },
-    
+
     # export hash to props p/<key>=<value>
     # p:    root property path or props.Node object
     hash2props: func (p) {
@@ -74,7 +74,7 @@ Hash = {
         p.setValues(me._h);
         return me;
     },
-    
+
     # callback for set()
     addCallback: func (f) {
         if (isfunc(f)) {

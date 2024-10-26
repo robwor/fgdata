@@ -19,7 +19,9 @@ var test_hash = func {
     unitTest.assert(hash.getName() == "testhash" , "std.Hash.getName");
 
     unitTest.assert(hash.set("foo", 42) == hash, "std.Hash.set");
-    unitTest.assert(hash.get("foo") == 42 , "std.Hash.get");
+    unitTest.assert(hash.get("foo") == 42, "std.Hash.get");
+    unitTest.assert(hash.get("foo2") == nil, "std.Hash.get");
+    unitTest.assert(hash.get("foo2", 4) == 4, "std.Hash.get");
     unitTest.assert(hash.contains("foo"), "std.Hash.contains");
 
     hash.set("bar", 21);
@@ -29,26 +31,26 @@ var test_hash = func {
     unitTest.assert(hash.clear() == hash, "std.Hash.clear");
     unitTest.assert(!hash.contains("foo"), "std.Hash.contains after clear");
     unitTest.assert(size(hash.getKeys()) == 0, "std.Hash.getKeys after clear");
-    
+
     var cb_hash = {};
     unitTest.assert(hash.addCallback(func(key, val) { cb_hash[key] = val; }) == hash,
         "std.Hash.addCallback");
     hash.set("foo", 21);
     unitTest.assert(cb_hash["foo"] == 21, "std.addCallback worked");
-    
+
     hash.set("funct", func {});
     hash.set("vec", [0,1,2]);
-    hash.set("hsh", {a:1, b:2});    
+    hash.set("hsh", {a:1, b:2});
 
     var tmp = props.Node.new();
     hash.keys2props(tmp);
     unitTest.assert(isa(tmp.getNode("foo"), props.Node), "std.keys2props node ok");
-    
+
     var tmp = props.Node.new();
     hash.hash2props(tmp);
-    unitTest.assert(tmp.getNode("foo").getValue() == 21, "std.hash2props ok");    
+    unitTest.assert(tmp.getNode("foo").getValue() == 21, "std.hash2props ok");
 }
-    
+
 #-- test std.String
 var test_stoul = func {
     unitTest.assert(std.stoul("123") == 123, "std.stoul 123");
@@ -59,17 +61,17 @@ var test_string = func {
     var x = std.String.new("FlightGear");
     unitTest.assert(isa(x, std.String), "std.String.new");
     unitTest.assert(x.compare("FlightGear"), "std.String.compare");
-    
+
     unitTest.assert(x.starts_with("Fli"), "std.String.starts_with");
     unitTest.assert(!x.starts_with("Gear"), "std.String.starts_with");
-    
+
     unitTest.assert(x.find_first_of("i") == 2, "std.String.find_first_of");
     unitTest.assert(x.find_first_of("i", 3) == -1, "std.String.find_first_of");
     unitTest.assert(x.find_first_not_of("F") == 1, "std.String.find_first_not_of");
     unitTest.assert(x.find_first_not_of("F", 2) == 2, "std.String.find_first_not_of");
     unitTest.assert(x.find_first_not_of("F", 3) == 3, "std.String.find_first_not_of");
 }
-    
+
 #-- test std.Vector
 var test_vector = func {
     var x = std.Vector.new();
@@ -190,6 +192,5 @@ var test_vector = func {
     unitTest.assert(x.pop(-3) == "a");
     unitTest.assert_equal(x.vector, ["b", "d"]);
     x.insert(0, "a");
-    unitTest.assert_equal(x.vector, ["a", "b", "d"]);    
+    unitTest.assert_equal(x.vector, ["a", "b", "d"]);
 }
-    
