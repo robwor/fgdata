@@ -4,7 +4,7 @@
   <technique n="1">
     <pass>
       <program>
-        <vertex-shader>Shaders/HDR/quad_matrix.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/quad.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/bloom_downsample.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/color.glsl</fragment-shader>
       </program>
