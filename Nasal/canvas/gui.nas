@@ -2,7 +2,7 @@
 # FlightGear canvas gui
 # Namespace:    canvas
 #
-# Classes: 
+# Classes:
 #   WindowButton
 #   Window
 #
@@ -23,12 +23,13 @@ var gui = {
   }
 };
 
+var Config = std.Hash;
+
 var gui_dir = getprop("/sim/fg-root") ~ "/Nasal/canvas/gui/";
 var loadGUIFile = func(file) io.load_nasal(gui_dir ~ file, "canvas");
 var loadWidget = func(name) loadGUIFile("widgets/" ~ name ~ ".nas");
 var loadDialog = func(name) loadGUIFile("dialogs/" ~ name ~ ".nas");
 
-loadGUIFile("Config.nas");
 loadGUIFile("Menu.nas");
 loadGUIFile("MenuBar.nas");
 loadGUIFile("Overlay.nas");
@@ -63,6 +64,8 @@ loadDialog("PropertyTreeBrowser");
 
 var style = DefaultStyle.new("AmbianceClassic", "Humanity");
 var WindowButton = {
+  _class_name: "WindowButton",
+
   new: func(parent, name)
   {
     var m = {
@@ -92,6 +95,7 @@ var WindowButton = {
 };
 
 var Window = {
+  _class_name: "Window",
   # Constructor
   #
   # @param size ([width, height])
@@ -121,7 +125,7 @@ var Window = {
     if (type == "window" or type == "dialog") {
       m.centerOnScreen();
     }
-    
+
     if (destroy_on_close) {
       m.setFocus();
     } else {
@@ -380,7 +384,7 @@ var Window = {
     me.setInt("z-index", me.get("z-index", gui.STACK_INDEX["default"]));
 
     me.setFocus();
-    
+
     foreach(var p; gui.open_popups) {
       p.hide();
     }
@@ -536,21 +540,21 @@ var Window = {
       var x = me.get("tf/t[0]");
       var y = me.get("tf/t[1]");
       var old_size = [me.get("size[0]"), me.get("size[1]")];
-      if (me.get("lock-aspect-ratio")) 
+      if (me.get("lock-aspect-ratio"))
       {
         var old_csize = [me.get("content-size[0]"), me.get("content-size[1]")];
         var dx = old_size[0] - old_csize[0];
         var dy = old_size[1] - old_csize[1];
         var ar = me.get("aspect-ratio");
 
-        if (name == "resize-right") 
+        if (name == "resize-right")
           me.set("resize-bottom", (me.get("resize-right") - dx) / ar + dy);
-        if (name == "resize-bottom") 
+        if (name == "resize-bottom")
           me.set("resize-right", (me.get("resize-bottom") - dy)* ar + dx);
 
-        if (name == "resize-left") 
+        if (name == "resize-left")
           me.set("resize-top", (me.get("resize-left"))/ ar );
-        if (name == "resize-top") 
+        if (name == "resize-top")
           me.set("resize-left", (me.get("resize-top"))* ar );
       }
 
@@ -638,7 +642,7 @@ var Window = {
           .set("character-size", 14)
           .setFont("LiberationFonts/LiberationSans-Bold.ttf")
           .setTranslation(int(x + 1.5 * w + 0.5), int(y + 0.5 * h + 0.5));
-     
+
       me._node.getNode("title", 1).alias(me._title._node.getPath() ~ "/text");
       title_bar.addEventListener("drag", func(e) me.move(e.deltaX, e.deltaY));
 
@@ -656,7 +660,7 @@ var Window = {
       me._title_bar_bg
           .reset()
           .rect( 0, 0,
-                 me.get("size[0]"), me._title_bar_height, 
+                 me.get("size[0]"), me._title_bar_height,
                  {"border-top-radius": border_radius} );
       me._frame
           .reset()
@@ -677,7 +681,7 @@ getDesktop().addEventListener("mousedown", func {
   if (gui.focused_window != nil) {
     gui.focused_window.clearFocus();
   }
-  
+
   foreach (var p; gui.open_popups) {
     p.hide();
   }
@@ -740,4 +744,3 @@ var unloadGUI = func() {
     getDesktop().getElementById("frame-latency-display").del();
     getDesktop().getElementById("fps-display").del();
 }
-
