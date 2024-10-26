@@ -9,73 +9,72 @@ var cwidgets = canvas.gui.widgets;
 # it manages creating some top level Canvas (eg a Window) according
 # to the XML data
 var XMLDialog = {
+    init: func(dialogProps)
+    {
+        var d = me.dialog();
+        var sz = [d.width, d.height];
+        me._window = canvas.Window.new(sz, "dialog", d.name);
 
-init: func(dialogProps)
-{
-    var d = me.dialog();
-    var sz = [d.width, d.height];
-    me._window = canvas.Window.new(sz, "dialog", d.name);
-    
-    # FIXME: lookup translated dialog name, this is the 
-    # key string here
-    me._window.setTitle(d.name);
-    me._window.set("resize", 1);
+        # FIXME: lookup translated dialog name, this is the
+        # key string here
+        me._window.setTitle(d.name);
+        me._window.set("resize", 1);
 
-    var m = me;
-    me._window.del = func { 
-        m.onWindowClosed();
+        var m = me;
+        me._window.del = func {
+            m.onWindowClosed();
+        }
+    },
+
+    didBuild: func()
+    {
+        var ourCanvas = me._window.getCanvas(1); # create, probably
+        ourCanvas.set("background", canvas.style.getColor("bg_color"));
+        var rootCanvasGroup = ourCanvas.createGroup();
+
+        # get the root XMLObject, almost certainly a container of
+        # some kind. (eg frame / group / scroll area)
+        var rootObject = me.dialog().root;
+
+        # show the root object inside our Canvas group. We could delay this
+        # until we are made visible to make things more efficient/lazy
+        rootObject.show(rootCanvasGroup);
+        ourCanvas.setLayout(rootObject.layoutItem());
+    },
+
+    # this is the callback from the canvas.Window: we request a close of
+    # the dialog, which will end up with us in 'onClosed'
+    onWindowClosed: func
+    {
+        logprint(LOG_WARN, "XMLDialog window was requested to closed");
+        me.dialog().close();
+
+        # hack: manually trigger onClose for now. This should happen automatically
+        # in response to dialog().close().
+        me.onClose();
+    },
+
+    onBringToFront: func()
+    {
+        me._window.raise();
+    },
+
+    onGeometryChanged: func()
+    {
+        var d = me.dialog();
+        logprint(LOG_INFO, "Dialog geometry is now:" ~ d.x ~ ", " ~ d.y ~ " w:" ~ d.width ~ ", h:" ~ d.height);
+        me._window.setPosition(d.x, d.y);
+        me._window.setSize(d.width, d.height);
+    },
+
+    onClose: func
+    {
+        logprint(LOG_WARN, "XMLDialog closed");
+
+        # call the base canvas.Window delete method, not
+        # our wrapper above.
+        call(canvas.Window.del, [], me._window);
     }
-},
-
-didBuild: func()
-{
-    var ourCanvas = me._window.getCanvas(1); # create, probably
-    ourCanvas.set("background", canvas.style.getColor("bg_color"));
-    var rootCanvasGroup = ourCanvas.createGroup();
-
-    # get the root XMLObject, almost certainly a container of 
-    # some kind. (eg frame / group / scroll area)
-    var rootObject = me.dialog().root;
-    
-    # show the root object inside our Canvas group. We could delay this
-    # until we are made visible to make things more efficient/lazy
-    rootObject.show(rootCanvasGroup);
-    ourCanvas.setLayout(rootObject.layoutItem());
-},
-
-# this is the callback from the canvas.Window: we request a close of
-# the dialog, which will end up with us in 'onClosed'
-onWindowClosed: func
-{
-    logprint(LOG_WARN, "XMLDialog window was requested to closed");
-    me.dialog().close();
-
-    # hack: manually trigger onClose for now. This should happen automatically
-    # in response to dialog().close().
-    me.onClose();
-},
-
-onBringToFront: func()
-{
-    me._window.raise();
-},
-
-onGeometryChanged: func()
-{
-    var d = me.dialog();
-    logprint(LOG_INFO, "Dialog geometry is now:" ~ d.x ~ ", " ~ d.y ~ " w:" ~ d.width ~ ", h:" ~ d.height);
-    me._window.setPosition(d.x, d.y);
-    me._window.setSize(d.width, d.height);
-},
-
-onClose: func
-{
-    logprint(LOG_WARN, "XMLDialog closed");
-
-    # call the base canvas.Window delete method, not
-    # our wrapper above.
-    call(canvas.Window.del, [], me._window);
-}
 
 };
 
@@ -120,9 +119,9 @@ var _getDoubleProp = func(objectProps, name, def)
 
 #################################################################################################
 
-var XMLObjectBase = 
+var XMLObjectBase =
 {
-    _configValue: func(name, def = nil) 
+    _configValue: func(name, def = nil)
     {
         var node = me.config.getNode(name);
         if (node == nil)
@@ -130,7 +129,7 @@ var XMLObjectBase =
         return node.getValue();
     },
 
-    _configDouble: func(name, def = 0.0) 
+    _configDouble: func(name, def = 0.0)
     {
         var node = me.config.getNode(name);
         if (node == nil)
@@ -138,7 +137,7 @@ var XMLObjectBase =
         return node.getDoubleValue();
     },
 
-    _configBool: func(name, def = 0) 
+    _configBool: func(name, def = 0)
     {
         var node = me.config.getNode(name);
         if (node == nil)
@@ -215,7 +214,7 @@ var XMLObjectBase =
             # cover these cases where XML dialogs specify sizes on
             # layouts
         }
-        
+
     },
 
     view: func { return me._view; },
@@ -227,12 +226,12 @@ var XMLObjectBase =
 #
 # For each object defined in XML, we create a C++ object (PUICompatObject) and invoke
 # the callback below (_createCompatObject) to create a corresponding Nasal peer. There is
-# no requirement for a 1:1 mapping from XML types to the classes below. 
+# no requirement for a 1:1 mapping from XML types to the classes below.
 #
 # The Nasal peer class responds to callbacks from C++, especially showing and hiding, to
 # create some visual representation of the object. It's important that this view of the
 # object is only created on demand, so that invisible GUI elements do not create Canvas
-# objects, which have a rendering cost. 
+# objects, which have a rendering cost.
 
 var XMLButton =
 {
@@ -253,7 +252,7 @@ var XMLButton =
 };
 
 var XMLCheckbox =
-{ 
+{
     show: func(viewParent)
     {
         me._view = cwidgets.CheckBox.new(viewParent, canvas.style, {"text": me._configValue("label")});
@@ -280,7 +279,7 @@ var XMLCheckbox =
 };
 
 var XMLLabel =
-{ 
+{
     show: func(viewParent)
     {
         me._view = cwidgets.Label.new(viewParent, canvas.style, {});
@@ -315,7 +314,7 @@ var XMLLabel =
     }
 };
 
-var XMLGroup = 
+var XMLGroup =
 {
     init: func(objectProps)
     {
@@ -382,7 +381,7 @@ var XMLGroup =
 };
 
 var XMLSlider =
-{ 
+{
     init: func(objectProps)
     {
         # TODO: support vertical sliders
@@ -425,7 +424,7 @@ var XMLSlider =
 };
 
 var XMLDial =
-{ 
+{
     show: func(viewParent)
     {
         me._view = cwidgets.Dial.new(viewParent, canvas.style, {
@@ -462,7 +461,7 @@ var XMLDial =
 };
 
 var XMLTextEdit =
-{ 
+{
     init: func(objectProps)
     {
         # TODO: config to restrict to numerical / decimal input, etc
@@ -499,7 +498,7 @@ var XMLTextEdit =
 };
 
 var XMLEmpty =
-{ 
+{
     show: func(viewParent)
     {
         # TODO: add Nasal-Canvas API to create spacer items
@@ -518,7 +517,7 @@ var XMLEmpty =
 };
 
 var XMLHRule =
-{ 
+{
     show: func(viewParent)
     {
         me._view = cwidgets.HorizontalRule.new(viewParent, canvas.style, {});
@@ -545,7 +544,7 @@ var XMLHRule =
 };
 
 var XMLVRule =
-{ 
+{
     show: func(viewParent)
     {
         me._view = cwidgets.VerticalRule.new(viewParent, canvas.style, {});
@@ -587,7 +586,7 @@ var XMLComboBox =
             }
             me.activateBindings();
         });
-        
+
         me._layout = me._view;
         me._applyLayoutConfig();
         me.update();
@@ -608,7 +607,7 @@ var XMLComboBox =
     }
 };
 
-var XMLList = { 
+var XMLList = {
     show: func(viewParent) {
         me._view = canvas.gui.widgets.List.new(viewParent);
 
@@ -633,7 +632,7 @@ var XMLList = {
     update: func() {
         me.valueChanged();
     },
-    
+
     valueChanged: func() {
         me._view.filter(me.value);
     }
@@ -672,4 +671,3 @@ var _createCompatObject = func(type)
 };
 
 logprint(LOG_INFO, "Loaded gui.XMLDialog");
-
