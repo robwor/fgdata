@@ -24,10 +24,14 @@ const vec3  TEXT_EMISSION   = vec3(0.0);
 // color.glsl
 vec3 eotf_inverse_sRGB(vec3 srgb);
 // shading_transparent.glsl
-vec3 eval_lights_transparent(
-    vec3 base_color, float metallic, float roughness, float occlusion,
-    vec3 emissive, vec3 P, vec3 N, vec3 V, vec2 uv, vec4 ap,
-    mat4 view_matrix_inverse);
+vec3 eval_lights_transparent(vec3 base_color,
+                             float metallic,
+                             float roughness,
+                             float occlusion,
+                             vec3 emissive,
+                             vec3 P, vec3 N, vec3 V,
+                             vec4 ap,
+                             mat4 view_matrix_inverse);
 // logarithmic_depth.glsl
 float logdepth_encode(float z);
 
@@ -39,9 +43,14 @@ void main()
     vec3 V = normalize(-fs_in.view_vector);
     vec2 uv = (gl_FragCoord.xy - fg_Viewport.xy) / fg_Viewport.zw;
 
-    vec3 color = eval_lights_transparent(
-        TEXT_BASE_COLOR, TEXT_METALLIC, TEXT_ROUGHNESS, 1.0, TEXT_EMISSION,
-        fs_in.view_vector, N, V, uv, fs_in.ap_color, osg_ViewMatrixInverse);
+    vec3 color = eval_lights_transparent(TEXT_BASE_COLOR,
+                                         TEXT_METALLIC,
+                                         TEXT_ROUGHNESS,
+                                         1.0,
+                                         TEXT_EMISSION,
+                                         fs_in.view_vector, N, V,
+                                         fs_in.ap_color,
+                                         osg_ViewMatrixInverse);
 
     fragColor = vec4(color, alpha);
     gl_FragDepth = logdepth_encode(fs_in.flogz);
