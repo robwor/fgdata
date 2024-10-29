@@ -610,6 +610,13 @@ var PilotsListDialog = {
     },
 };
 
+# For backwards compatibility
+var dialog = {
+	show: func {
+		logprint(DEV_WARN, "Deprecated multiplayer.dialog.show() was used - please use multiplayer.PilotsListDialog.open() instead !");
+		PilotsListDialog.open();
+	}
+};
 
 
 # Autonomous singleton class that monitors multiplayer aircraft,
