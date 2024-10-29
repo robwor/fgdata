@@ -5,7 +5,7 @@
 
   <parameters>
     <texture n="0">
-      <type>white</type>
+      <!-- texture[0]/image written by TreeBin.cxx -->
     </texture>
     <num_deciduous_trees>0</num_deciduous_trees>
     <use_forest_effect>true</use_forest_effect>
@@ -34,8 +34,8 @@
         <type>2d</type>
         <image><use>texture[0]/image</use></image>
         <filter>linear-mipmap-linear</filter>
-        <wrap-s>clamp</wrap-s>
-        <wrap-t>clamp</wrap-t>
+        <wrap-s>clamp-to-edge</wrap-s>
+        <wrap-t>clamp-to-edge</wrap-t>
       </texture-unit>
       <blend>0</blend>
       <rendering-hint>opaque</rendering-hint>

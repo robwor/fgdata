@@ -253,16 +253,16 @@
   <buffer include="screen-buffer.xml">
     <name>smaa-edges</name>
     <format>rgba8</format>
-    <wrap-s>clamp</wrap-s>
-    <wrap-t>clamp</wrap-t>
+    <wrap-s>clamp-to-edge</wrap-s>
+    <wrap-t>clamp-to-edge</wrap-t>
     <min-filter>linear</min-filter>
     <mag-filter>linear</mag-filter>
   </buffer>
   <buffer include="screen-buffer.xml">
     <name>smaa-blend</name>
     <format>rgba8</format>
-    <wrap-s>clamp</wrap-s>
-    <wrap-t>clamp</wrap-t>
+    <wrap-s>clamp-to-edge</wrap-s>
+    <wrap-t>clamp-to-edge</wrap-t>
     <min-filter>linear</min-filter>
     <mag-filter>linear</mag-filter>
   </buffer>
