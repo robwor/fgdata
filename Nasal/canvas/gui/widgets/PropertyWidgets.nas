@@ -10,6 +10,7 @@ gui.widgets.PropertyWidget = {
 		var m = base.new(parent, style, cfg);
 		m.parents = [propertybase, gui.widgets.PropertyWidget] ~ m.parents;
 		m._nodeListener = nil;
+		m._node = nil;
 		m._propertySynced = 1;
 		
 		m._configure();
