@@ -1658,7 +1658,7 @@ Started September 2000 by David Megginson, david@megginson.com
       <enabled type="bool">false</enabled>
     </Autopush>
     <gui>
-          <enabled type="bool">false</enabled>
+      <enabled type="bool">true</enabled>
     </gui>
   </nasal>
   <scenery>
