@@ -1,4 +1,6 @@
 gui.widgets.CheckBox = {
+  _CLASS: "CheckBox",
+
   new: func(parent, style = nil, cfg = nil)
   {
     cfg = Config.new(cfg);

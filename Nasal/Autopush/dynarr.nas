@@ -12,6 +12,8 @@
 
 var dynarr =
 {
+	_CLASS: "Autopush.dynarr",
+
 	new: func(size = 8)
 	{
 		var this = {parents:[dynarr]};

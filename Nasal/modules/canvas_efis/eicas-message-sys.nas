@@ -5,6 +5,8 @@
 
 # simple pager to get a sub vector of messages
 var Pager = {
+    _CLASS: "Pager",
+
     new: func(page_length, prop_path) {
         var obj = {
             parents: [me],
@@ -95,6 +97,8 @@ var Pager = {
 };
 
 var MessageClass = {
+    _CLASS: "MessageClass",
+
     #static, increased by new()
     prio: 0,
 
@@ -144,6 +148,7 @@ var Message = {
 };
 
 var MessageSystem = {
+    _CLASS: "MessageSystem",
     PAGING: 1,
     NO_PAGING: 0,
 
@@ -381,7 +386,7 @@ var MessageSystem = {
             me.active_messages[class] = me._remove(class, msg_id);
             if (aural != nil) me.active_aurals[aural] = 0;
             # set new-msg flag to -1 if last message is gone
-            # other components may set the flag to 0 to acknowledge active messages, 
+            # other components may set the flag to 0 to acknowledge active messages,
             # e.g. they aren't new anymore but still active
             if (size(me.active_messages[class]) == 0)
                 me["new-msg"~class].setIntValue(-1);

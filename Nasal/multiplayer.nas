@@ -172,6 +172,7 @@ var handle_key = func(key)
 # @description Dialog for viewing and managing multiplayer pilots (allows viewing other pilot's aircraft models, ignoring aircraft etc.)
 
 var PilotsListDialog = {
+    _CLASS: "multiplayer.PilotsListDialog",
     PilotColor: {
         AircraftNotInstalled: [1, 0.7, 0, 1],
         AircraftFallbackProvided: [0.557, 0.847, 0.463, 1],
@@ -471,12 +472,12 @@ var PilotsListDialog = {
         # being viewed is checked. If the user's aircraft is being viewed, none
         # of these boxes will be checked.
         var callsign = getprop("/sim/current-view/model-view");
-        
+
         # Update Pilot View checkboxes.
         foreach (var mp; model.list) {
             mp.node.setValues({'view': mp.callsign == callsign});
         }
-        
+
         # Update actual view.
         view.model_view_handler.select(callsign, 1);
     },
@@ -513,7 +514,7 @@ var PilotsListDialog = {
             else
             {
                 # Node with valid position data (and "distance!=nil").
-                
+
                 # For 'set-loaded' column, we find whether the 'set' has more
                 # than just the 'sim' child (which we always create even if
                 # we couldn't load the -set.xml, in order to provide default
@@ -522,18 +523,18 @@ var PilotsListDialog = {
                 if (var set_node = n.getNode("set")) {
                     set_loaded = (size(set_node.getChildren()) >= 2);
                 }
-                
+
                 var airport_id = "----";
                 if (var airport_id_node = n.getNode("sim/tower/airport-id")) {
                     airport_id = airport_id_node.getValue();
                 }
-                
+
                 var ascent_descent = "";
                 if (var ascent_descent_node = n.getNode("velocities/vertical-speed-fps")) {
                     ascent_descent = ascent_descent_node.getValue();
                     ascent_descent = sprintf("%+4d", ascent_descent);
                 }
-                
+
                 var distance_delta_text = "";
                 if (var distance_km_old_node = n.getNode("distance-to-km")) {
                     var distance_delta = distance - distance_km_old_node.getValue() * 1000;
@@ -707,7 +708,7 @@ var model = {
 var mp_mode_changed = func(n) {
     var is_online = getprop("/sim/multiplay/online");
     var is_replaying = getprop("/sim/replay/replay-state");
-    
+
     # Always activate multiplayer items if we are replaying, in case the
     # recording contains MP info.
     #

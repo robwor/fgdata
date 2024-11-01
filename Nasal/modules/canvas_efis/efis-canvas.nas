@@ -13,6 +13,8 @@
 # * several listener factories for common animations
 
 var EFISCanvas = {
+    _CLASS: "EFISCanvas",
+
     # static members
     _instances: [],
     unload: func() {
@@ -64,9 +66,9 @@ var EFISCanvas = {
     },
 
     # register an update function with a certain update interval
-    # f: function 
+    # f: function
     # f_me: if there is any "me" reference in "f", you can set "me" with this
-    #       defaults to EFISCanvas instance calling this method, useful if "f" 
+    #       defaults to EFISCanvas instance calling this method, useful if "f"
     #       is a member of the EFISCanvas instance
     addUpdateFunction: func(f, interval, f_me = nil) {
         if (!isfunc(f)) {

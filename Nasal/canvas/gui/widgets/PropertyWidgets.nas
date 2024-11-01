@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 gui.widgets.PropertyWidget = {
+	_CLASS: "PropertyWidget",
+
 	new: func(propertybase, base, parent, style = nil, cfg = nil) {
 		style = style or canvas.style;
 		cfg = Config.new(cfg);
@@ -12,18 +14,18 @@ gui.widgets.PropertyWidget = {
 		m._nodeListener = nil;
 		m._node = nil;
 		m._propertySynced = 1;
-		
+
 		m._configure();
 		m.setNode(cfg.get("node"));
-		
+
 		return m;
 	},
-	
+
 	setPropertySynced: func(synced = 1) {
 		me._propertySynced = synced;
 		return me;
 	},
-	
+
 	setNode: func(n) {
 		if (n == nil) {
 			if (me._node != nil) {
@@ -47,7 +49,7 @@ gui.widgets.PropertyWidget = {
 		if (isfunc(me._nodeChanged)) {
 			me._nodeChanged();
 		}
-		
+
 		return me;
 	},
 	_nodeChanged: func,
@@ -69,12 +71,14 @@ gui.widgets.PropertyWidget = {
 };
 
 gui.widgets.PropertySwitch = {
+	_CLASS: "PropertySwitch",
+
 	new: func(parent, style = nil, cfg = nil) {
 		var m = gui.widgets.PropertyWidget.new(gui.widgets.PropertySwitch, gui.widgets.Switch, parent, style, cfg);
-		
+
 		return m;
 	},
-	
+
 	_nodeChanged: func {
 		me.setChecked(me._node.getBoolValue());
 		me.listen("toggled", func(e) {
@@ -95,10 +99,12 @@ gui.widgets.PropertySwitch = {
 };
 
 gui.widgets.PropertyButton = {
+	_CLASS: "PropertyButton",
+
 	new: func(parent, style = nil, cfg = nil) {
 		var m = gui.widgets.PropertyWidget.new(gui.widgets.PropertyButton, gui.widgets.Button, parent, style, cfg);
 		m._checkable = 1;
-		
+
 		return m;
 	},
 	_nodeChanged: func {
@@ -121,16 +127,18 @@ gui.widgets.PropertyButton = {
 };
 
 gui.widgets.PropertyRadioButtonsGroup = {
+	_CLASS: "PropertyRadioButtonsGroup",
+
 	new: func(node, name = "unnamed") {
 		var m = gui.widgets.RadioButtonsGroup.new(name);
 		m.parents = [gui.widgets.PropertyRadioButtonsGroup] ~ m.parents;
 		m._propertySynced = 1;
 		m._nodeListener = nil;
 		m.setNode(node);
-		
+
 		return m;
 	},
-	
+
 	_nodeChanged: func {
 		me._propertySynced = 1;
 		me._nodeListener = setlistener(me._node, func(n) {
@@ -147,17 +155,17 @@ gui.widgets.PropertyRadioButtonsGroup = {
 			}
 		});
 	},
-	
+
 	setNode: func(n) {
 		call(gui.widgets.PropertyWidget.setNode, [n], me);
 		return me;
 	},
-	
+
 	setPropertySynced: func(synced = 1) {
 		me._propertySynced = synced;
 		return me;
 	},
-	
+
 	_onRadioToggled: func {
 		if (!me._propertySynced) {
 			return;
@@ -173,24 +181,26 @@ gui.widgets.PropertyRadioButtonsGroup = {
 	_cleanup: func {
 		call(gui.widgets.PropertyWidget._cleanup, nil, me);
 	},
-	
+
 	del: func {
 		call(gui.widgets.PropertyWidget.del, nil, me);
 	},
 };
 
 gui.widgets.PropertyRadioButton = {
+	_CLASS: "PropertyRadioButton",
+
 	new: func(parent, style = nil, cfg = nil) {
 		cfg = Config.new(cfg);
 		if (!cfg.get("parent-radio") and !cfg.get("radio-button-group")) {
 			cfg.set("radio-button-group", gui.widgets.PropertyRadioButtonsGroup.new(cfg.get("node")));
 		}
-		
+
 		var m = gui.widgets.PropertyWidget.new(gui.widgets.PropertyRadioButton, gui.widgets.RadioButton, parent, style, cfg);
-		
+
 		return m;
 	},
-	
+
 	_nodeChanged: func {
 		me.setChecked(me._node.getBoolValue());
 		me.listen("toggled", func(e) {
@@ -211,12 +221,14 @@ gui.widgets.PropertyRadioButton = {
 };
 
 gui.widgets.PropertyList = {
+	_CLASS: "PropertyList",
+
 	new: func(parent, style = nil, cfg = nil) {
 		var m = gui.widgets.PropertyWidget.new(gui.widgets.PropertyList, gui.widgets.List, parent, style, cfg);
-		
+
 		return m;
 	},
-	
+
 	_nodeChanged: func {
 		if (var value = str(me.findItemByData("property-value", me._node.getValue()))) {
 			me.setItemSelection(value);
@@ -246,12 +258,14 @@ gui.widgets.PropertyList = {
 };
 
 gui.widgets.PropertyComboBox = {
+	_CLASS: "PropertyComboBox",
+
 	new: func(parent, style = nil, cfg = nil) {
 		var m = gui.widgets.PropertyWidget.new(gui.widgets.PropertyComboBox, gui.widgets.ComboBox, parent, style, cfg);
 
 		return m;
 	},
-	
+
 	_nodeChanged: func {
 		me.setSelectedByValue(me._node.getValue());
 		me.listen("selected-item-changed", func(e) {
@@ -274,18 +288,20 @@ gui.widgets.PropertyComboBox = {
 };
 
 gui.widgets.PropertyLabel = {
+	_CLASS: "PropertyLabel",
+
 	new: func(parent, style = nil, cfg = nil) {
 		cfg = Config.new(cfg);
 		var m = gui.widgets.PropertyWidget.new(gui.widgets.PropertyLabel, gui.widgets.Label, parent, style, cfg);
-		
+
 		return m;
 	},
-	
+
 	_configure: func {
 		me._format = me._cfg.get("text", "%s");
 		me._default = me._cfg.get("default");
 	},
-	
+
 	_nodeChanged: func {
 		me.setText(sprintf(me._format, me._node.getValue()));
 		me._nodeListener = setlistener(me._node, func(n) {
@@ -303,12 +319,14 @@ gui.widgets.PropertyLabel = {
 
 
 gui.widgets.PropertyLineEdit = {
+	_CLASS: "PropertyLineEdit",
+
 	new: func(parent, style = nil, cfg = nil) {
 		var m = gui.widgets.PropertyWidget.new(gui.widgets.PropertyLineEdit, gui.widgets.LineEdit, parent, style, cfg);
-		
+
 		return m;
 	},
-	
+
 	_nodeChanged: func {
 		me.setText(me._node.getValue());
 		me.listen("text-changed", func(e) {
@@ -329,12 +347,14 @@ gui.widgets.PropertyLineEdit = {
 };
 
 gui.widgets.PropertyCheckBox = {
+	_CLASS: "PropertyCheckBox",
+
 	new: func(parent, style = nil, cfg = nil) {
 		var m = gui.widgets.PropertyWidget.new(gui.widgets.PropertyCheckBox, gui.widgets.CheckBox, parent, style, cfg);
-		
+
 		return m;
 	},
-	
+
 	_nodeChanged: func {
 		me.setChecked(me._node.getBoolValue());
 		me.listen("toggled", func(e) {
@@ -355,12 +375,14 @@ gui.widgets.PropertyCheckBox = {
 };
 
 gui.widgets.PropertySlider = {
+	_CLASS: "PropertySlider",
+
 	new: func(parent, style = nil, cfg = nil) {
 		var m = gui.widgets.PropertyWidget.new(gui.widgets.PropertySlider, gui.widgets.Slider, parent, style, cfg);
-		
+
 		return m;
 	},
-	
+
 	_nodeChanged: func {
 		me.setValue(me._node.getValue());
 		me.listen("value-changed", func(e) {
@@ -381,12 +403,14 @@ gui.widgets.PropertySlider = {
 };
 
 gui.widgets.PropertyDial = {
+	_CLASS: "PropertyDial",
+
 	new: func(parent, style = nil, cfg = nil) {
 		var m = gui.widgets.PropertyWidget.new(gui.widgets.PropertyDial, gui.widgets.Dial, parent, style, cfg);
-		
+
 		return m;
 	},
-	
+
 	_nodeChanged: func {
 		me.setValue(me._node.getValue());
 		me.listen("value-changed", func(e) {
@@ -405,4 +429,3 @@ gui.widgets.PropertyDial = {
 		}, 0, 0);
 	},
 };
-

@@ -14,13 +14,15 @@
 # if you disable it, the built-in route-manager dialog may not work as expected.
 # Especially, this dialog is responsible for building departure, approach and
 # arrival waypoints corresponding to the requested SID/STAR/approach,
-# and replacing them when the inputs change (eg, user seelcted a different 
+# and replacing them when the inputs change (eg, user seelcted a different
 # destination or STAR while enroute)
 #
 # You can disable the default GPS behaviour *without* touching this delegate : they are
 # kept seperate since this first one is less likely to need changes
 
 var RouteManagerDelegate = {
+    _CLASS: "RouteManagerDelegate",
+
     new: func(fp) {
     # if this property is set, don't build a delegate at all
     if (getprop('/autopilot/route-manager/disable-route-manager'))
@@ -149,6 +151,8 @@ var GPSPath = "/instrumentation/gps";
 #
 
 var DefaultGPSDeleagte = {
+    _CLASS: "DefaultGPSDeleagte",
+
     new: func(fp) {
         # if this property is set, don't build a delegate at all
         if (getprop('/autopilot/route-manager/disable-fms'))
@@ -360,4 +364,3 @@ var update_time_string = func(){
 _setlistener("/sim/signals/nasal-dir-initialized", func {
 	update_time_string();
 });
-

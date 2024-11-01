@@ -64,7 +64,7 @@ loadDialog("PropertyTreeBrowser");
 
 var style = DefaultStyle.new("AmbianceClassic", "Humanity");
 var WindowButton = {
-  _class_name: "WindowButton",
+  _CLASS: "canvas.WindowButton",
 
   new: func(parent, name)
   {
@@ -95,7 +95,7 @@ var WindowButton = {
 };
 
 var Window = {
-  _class_name: "Window",
+  _CLASS: "canvas.Window",
   # Constructor
   #
   # @param size ([width, height])

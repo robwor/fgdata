@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 gui.widgets.Dial = {
+  _CLASS: "Dial",
+
   new: func(parent, style = nil, cfg = nil) {
     style = style or canvas.style;
     cfg = Config.new(cfg);
@@ -99,7 +101,7 @@ gui.widgets.Dial = {
     call(gui.Widget._setView, [view], me);
 
     var el = view._root;
-    
+
     el.addEventListener("drag", func(e) {
       me._dragDial(e);
       e.stopPropagation();
@@ -172,7 +174,7 @@ gui.widgets.Dial = {
       me._dragging = 1;
       return;
     }
-    
+
     var value = me._mouseValue + (me._maxValue - me._minValue) * (deltaAngle / 360);
     if (!me._wraps) {
       if (value > me._maxValue) {

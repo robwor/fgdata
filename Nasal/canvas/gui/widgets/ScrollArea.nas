@@ -1,4 +1,6 @@
 gui.widgets.ScrollArea = {
+  _CLASS: "ScrollArea",
+
   new: func(parent, style = nil, cfg = nil)
   {
     style = style or canvas.style;

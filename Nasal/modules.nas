@@ -40,6 +40,7 @@ var _instances = {};
 # Class Module
 # to handle a re-loadable Nasal module at runtime
 var Module = {
+    _CLASS: "modules.Module",
     _orig_setlistener: setlistener,
     _orig_maketimer: maketimer,
     _orig_settimer: settimer,
@@ -78,12 +79,12 @@ var Module = {
         obj.lcountN = obj.node.initNode("listeners", 0, "INT");
         obj.tcountN = obj.node.initNode("timers", 0, "INT");
         obj.lhitN = obj.node.initNode("listener-hits", 0, "INT");
-        
+
         obj.reloadL = setlistener(obj.reloadN, func(n) {
             if (n.getValue()) {
                 n.setValue(0);
                 logprint(DEV_ALERT, "Reload triggered for ", obj.id, " (",
-                    obj.reloadL, ")");                
+                    obj.reloadL, ")");
                 obj.reload();
             }
         });
@@ -144,7 +145,7 @@ var Module = {
         me._setlistener_runtime_default = int(i);
         return me;
     },
-    
+
     # load module
     # if no arguments are given, the Module object will be passed to main()
     load: func(myargs...) {
@@ -364,4 +365,3 @@ var commandModuleReload = func(node)
 };
 
 addcommand("nasal-module-reload", commandModuleReload);
-

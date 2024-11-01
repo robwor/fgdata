@@ -10,6 +10,8 @@ var custom_bindings = {};
 
 # Class for an individual joystick axis binding
 var Axis = {
+  _CLASS: "joystick.Axis",
+
   new: func(name, prop, invertable) {
     var m = { parents: [Axis] };
     m.name = name;
@@ -50,6 +52,7 @@ var Axis = {
 };
 
 var CustomAxis = {
+  _CLASS: "joystick.CustomAxis",
   new: func() {
     var m = { parents: [CustomAxis, Axis.new("Custom", "", 0) ] };
     me.custom_binding = nil;
@@ -83,6 +86,8 @@ var CustomAxis = {
 };
 
 var UnboundAxis = {
+  _CLASS: "joystick.UnboundAxis",
+
   new: func() {
     var m = { parents: [UnboundAxis, Axis.new("None", "", 0) ] };
     return m;
@@ -104,6 +109,8 @@ var UnboundAxis = {
 
 
 var PropertyScaleAxis = {
+  _CLASS: "joystick.PropertyScaleAxis",
+
   new: func(name, prop, factor=1, offset=0, power=1) {
     var m = { parents: [PropertyScaleAxis, Axis.new(name, prop, 1) ] };
     m.prop=prop;
@@ -167,6 +174,7 @@ var PropertyScaleAxis = {
 };
 
 var NasalScaleAxis = {
+  _CLASS: "joystick.NasalScaleAxis",
   new: func(name, script, prop) {
     var m = { parents: [NasalScaleAxis, Axis.new(name, prop, 0) ] };
     m.script = script;
@@ -205,6 +213,7 @@ var NasalScaleAxis = {
 };
 
 var NasalLowHighAxis = {
+  _CLASS: "joystick.NasalLowHighAxis",
   new: func(name, lowscript, highscript, prop, repeatable) {
     var m = { parents: [NasalLowHighAxis, Axis.new(name, prop, 1) ] };
     m.lowscript = lowscript;
@@ -324,6 +333,7 @@ var axisBindings = [
 
 # Button bindings
 var ButtonBinding = {
+  _CLASS: "joystick.ButtonBinding",
   new: func(name, binding, repeatable) {
     var m = { parents: [ButtonBinding] };
     m.name = name;
@@ -350,6 +360,7 @@ var ButtonBinding = {
 };
 
 var CustomButton = {
+  _CLASS: "joystick.CustomButton",
   new: func() {
     var m = { parents: [CustomButton, ButtonBinding.new("Custom", "", 0) ] };
     m.custom_binding = nil;
@@ -382,6 +393,7 @@ var CustomButton = {
 };
 
 var UnboundButton = {
+  _CLASS: "joystick.UnboundButton",
   new: func() {
     var m = { parents: [UnboundButton, ButtonBinding.new("None", "", 0) ] };
     return m;
@@ -405,6 +417,7 @@ var UnboundButton = {
 
 
 var PropertyToggleButton = {
+  _CLASS: "joystick.PropertyToggleButton",
   new: func(name, prop) {
     var m = { parents: [PropertyToggleButton, ButtonBinding.new(name, prop, 0) ] };
     return m;
@@ -432,6 +445,7 @@ var PropertyToggleButton = {
 };
 
 var PropertyAdjustButton = {
+  _CLASS: "joystick.PropertyAdjustButton",
   new: func(name, prop, step) {
     var m = { parents: [PropertyAdjustButton, ButtonBinding.new(name, prop, 0) ] };
     m.step = step;
@@ -462,6 +476,7 @@ var PropertyAdjustButton = {
 };
 
 var NasalButton = {
+  _CLASS: "joystick.NasalButton",
   new: func(name, script, repeatable) {
     var m = { parents: [NasalButton, ButtonBinding.new(name, script, repeatable) ] };
     return m;
@@ -497,6 +512,7 @@ var NasalButton = {
 
 
 var NasalHoldButton = {
+  _CLASS: "joystick.NasalHoldButton",
   new: func(name, script, scriptUp) {
     var m = { parents: [NasalHoldButton, ButtonBinding.new(name, script, 0) ] };
     m.scriptUp = scriptUp;

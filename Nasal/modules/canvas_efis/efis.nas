@@ -3,13 +3,15 @@
 # author:       jsb
 # created:      12/2017
 #-------------------------------------------------------------------------------
-    
+
 # class EFIS
 # manage cockpit displays (=outputs) and sources (image generators for PFD, MFD, EICAS...)
 # allow redirection of sources to alternate displays (allow for simulated display fault)
 var EFIS = {
+    _CLASS: "EFIS",
+
     #-- static members
-    _instances: [],   
+    _instances: [],
     unload: func() {
         foreach (var instance; EFIS._instances) {
             instance.del();
@@ -17,25 +19,25 @@ var EFIS = {
         EFIS._instances = [];
     },
     NO_SRC: -1,
-    
+
     defaultcanvas_settings: {
         "name": "EFIS_display",
         "size": [1024,1024],
         "view": [1024,1024],
         "mipmapping": 1
     },
-    
+
     window_size: [450,450],
-    
-    colors: canvas.colors, 
-    
+
+    colors: canvas.colors,
+
     del: func() {
     },
 
     # create EFIS object
-    # display_names: vector of display names, one DisplayUnit per entry will be 
+    # display_names: vector of display names, one DisplayUnit per entry will be
     #   created
-    # object_names: vector of same size and order as display_names, containing 
+    # object_names: vector of same size and order as display_names, containing
     #   3D object names for canvas placement of the DisplayUnits
     new: func(display_names, object_names, canvas_settings=nil) {
         if (!isvec(display_names)) {
@@ -101,8 +103,8 @@ var EFIS = {
         var n = me.source_records[source_id].visibleN;
         n.setValue(n.getValue() + 1);
     },
-    
-    # mapping can be either: 
+
+    # mapping can be either:
     #  - vector of source ids, size must equal size(display_units)
     #    values nil = do nothing, 0..N select source, -1 no source
     #  - hash {<unit_name>: source_id}
@@ -127,7 +129,7 @@ var EFIS = {
         }
     },
 
-    # Start/stop updates on all sources 
+    # Start/stop updates on all sources
     _powerOnOff: func(power) {
         logprint(LOG_DEBUG, "EFIS power: "~power~", "~me.isPowered);
         if (power >= me.minimum_power and !me.isPowered) {
@@ -157,7 +159,7 @@ var EFIS = {
             me._powerOnOff(n.getValue());
         }, 1, 0);
     },
-    
+
     setWindowSize: func(window_size) {
         if (window_size != nil and isvec(window_size)) {
             me.window_size = window_size;
@@ -170,7 +172,7 @@ var EFIS = {
     boot: func() {
         me._powerOnOff(me.powerN.getValue());
     },
-    
+
     setDUPowerProps: func(power_props, minimum_power=0) {
         if (power_props != nil and isvec(power_props)) {
             forindex (var i; me.display_names) {
@@ -181,7 +183,7 @@ var EFIS = {
     },
 
     # add a EFISCanvas instance as display source
-    # EFIS controls updating by tracking how often source is used 
+    # EFIS controls updating by tracking how often source is used
     # returns source ID that can be used in mappings
     addSource: func(efis_canvas) {
         append(me.sources, efis_canvas);
@@ -217,14 +219,14 @@ var EFIS = {
         #print("addDisplayControl "~ctrl);
         me.controls[ctrl] = {L: setlistener(ctrlN, listener, 0, 0), mappings: mappings};
     },
-    
+
     # selected: property (node or path) containing source number (integer)
     # target:   contains the DU number to which the source will be mapped
     # sources:  optional vector,  selected -> source ID (as returned by addSource)
     #           defaults to all registered sources
     addSourceSelector: func(selected, target, sources=nil){
         if (isscalar(selected)) {
-            selected = props.getNode(selected,1);            
+            selected = props.getNode(selected,1);
         }
         if (isscalar(target)) {
             target = props.getNode(target,1);
@@ -249,11 +251,11 @@ var EFIS = {
             me._activateRouting(me.default_mapping);
         }
     },
-        
+
     getDU: func(i) {return me.display_units[i]},
-    
+
     #getSources: func() { return me.source_records; },
-    
+
     getDisplayName: func(id) {
         id = num(id);
         if (id != nil and id >=0 and id < size(me.display_names))

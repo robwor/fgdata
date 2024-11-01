@@ -5,6 +5,7 @@
 
 
 var volcano = {
+	_CLASS: "volcano",
 	new: func(name, lat, lon) {
 	        var v = { parents: [volcano] };
 	        v.lat = lat;
@@ -14,61 +15,61 @@ var volcano = {
 			v.loaded = 0;
 	        return v;
 	},
-	
+
 };
 
 
 var volcano_manager = {
-	
+
 	dist_to_load: 100000.0,
 	active: 0,
-	
+
 	init: func {
-		
+
 		me.volcano_array = [];
 		me.pos = {};
 		me.init_state();
-	
+
 	},
-	
+
 	start: func {
-	
+
 		if (me.active == 1)
 			{
 			me.run(0);
 			}
-	
+
 	},
-	
+
 	init_state: func {
 		var state = getprop("/environment/volcanoes/enable-volcanoes");
 		me.active = state;
-		if (state == 1) 
+		if (state == 1)
 			{logprint(LOG_INFO, "Volcanic activity on.");}
 		else {logprint(LOG_DEBUG, "Volcanic activity off.");}
 	},
-	
+
 	set_state: func {
 		var state = getprop("/environment/volcanoes/enable-volcanoes");
 		me.active = state;
-		if (state == 1) 
+		if (state == 1)
 			{
 			logprint(LOG_INFO, "Volcanic activity on.");
 			me.run(0);
 			}
 		else {logprint(LOG_INFO, "Volcanic activity off.");}
-	
-	},
-	
-	run: func (index) {
-		
-		
-		if (me.active == 0) {return;}
-		
-		if (index > size(me.volcano_array) - 1) {index = 0;}
-			
 
-		
+	},
+
+	run: func (index) {
+
+
+		if (me.active == 0) {return;}
+
+		if (index > size(me.volcano_array) - 1) {index = 0;}
+
+
+
 		if (me.volcano_array[index].loaded == 0)
 			{
 			me.pos = geo.aircraft_position();
@@ -76,8 +77,8 @@ var volcano_manager = {
 			#print ("Distance is now: ", dist);
 
 			var visibility = getprop("/environment/visibility-m");
-		
-			
+
+
 			if ((dist < me.dist_to_load) and (dist < visibility))
 				{
 				logprint(LOG_INFO, "Loading ", me.volcano_array[index].name, ".");
@@ -85,9 +86,9 @@ var volcano_manager = {
 				me.volcano_array[index].loaded = 1;
 				}
 			}
-			
+
 		index += 1;
-	
+
 		settimer( func { me.run(index);}, 1.0);
 	},
 
@@ -188,6 +189,3 @@ settimer(func {volcano_manager.start();}, 5.0);
 # set the relevant listeners
 
 setlistener("/environment/volcanoes/enable-volcanoes", func {volcano_manager.set_state();},0,0 );
-
-
-

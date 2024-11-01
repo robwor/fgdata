@@ -1,4 +1,6 @@
 var RouteDriver = {
+    _CLASS: "canvas.RouteDriver",
+
     new: func(){
         var m = {
             parents: [RouteDriver],
@@ -24,6 +26,8 @@ var RouteDriver = {
 };
 
 var MultiRouteDriver = {
+    _CLASS: "canvas.MultiRouteDriver",
+
     parents: [RouteDriver],
     new: func(){
         var m = {

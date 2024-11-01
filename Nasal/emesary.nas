@@ -8,7 +8,7 @@
  #	                     : must first register with an instance of a Transmitter, and provide a Receive method
  #
  #	                     : To send a message use a Transmitter with an object. That's all there is to it.
- #  
+ #
  #  References           : http://chateau-logic.com/content/emesary-nasal-implementation-flightgear
  #                       : http://www.chateau-logic.com/content/class-based-inter-object-communication
  #                       : http://chateau-logic.com/content/emesary-efficient-inter-object-communication-using-interfaces-and-inheritance
@@ -31,7 +31,7 @@
 
 var __emesaryUniqueId = 14; # 0-15 are reserved, this way the global transmitter will be 15.
 
-# add registry so we can find a transmitter by name in genericEmesaryGlobalTransmitterTransmit 
+# add registry so we can find a transmitter by name in genericEmesaryGlobalTransmitterTransmit
 var _transmitters = std.Hash.new({}, "transmitters");
 
 var _registerTransmitter = func (key, t) {
@@ -44,6 +44,7 @@ var getTransmitter = func (key) {
 # Transmitters send notifications to all recipients that are registered.
 var Transmitter =
 {
+    _CLASS: "emesary.Transmitter",
     ReceiptStatus_OK : 0,          # Processing completed successfully
     ReceiptStatus_Fail : 1,        # Processing resulted in at least one failure
     ReceiptStatus_Abort : 2,       # Fatal error, stop processing any further recipients of this message. Implicitly failed.
@@ -60,7 +61,7 @@ var Transmitter =
             logprint(LOG_ALERT, "Transmitter.new: argument must be a scalar!")
         }
         __emesaryUniqueId += 1;
-        var new_class = { 
+        var new_class = {
             parents : [Transmitter],
             Recipients : [],
             Ident : _ident,
@@ -71,7 +72,7 @@ var Transmitter =
         _registerTransmitter(_ident, new_class);
         return new_class;
     },
-    
+
     OverrunDetection: func(max_ms=0){
         if (isnum(max_ms) and max_ms) {
             if (me.Timestamp == nil)
@@ -108,16 +109,16 @@ var Transmitter =
                 logprint(DEV_ALERT, "Transmitter.Register: Recipient already registered: " ~ r.Ident ~ " (" ~ r.UniqueId ~")");
                 return 1;
             }
-        }        
+        }
         append(me.Recipients, recipient);
         return 1;
     },
-    
+
     DeleteAllRecipients: func
     {
         me.Recipients = [];
     },
-    
+
     # Stops a recipient from receiving notifications from this transmitter.
     DeRegister: func(todelete_recipient)
     {
@@ -152,7 +153,7 @@ var Transmitter =
     },
 
     # Notify all registered recipients. Stop when receipt status of abort or finished are received.
-    # The receipt status from this method will be 
+    # The receipt status from this method will be
     #  - OK > message handled
     #  - Fail > message not handled. A status of Abort from a recipient will result in our status
     #           being fail as Abort means that the message was not and cannot be handled, and
@@ -177,17 +178,17 @@ var Transmitter =
 
                 message.Timestamp = me.Timestamp;
                 call(func {me._rstat = recipient.Receive(message);},nil,nil,nil,var err = []);
-                
+
                 if (size(err)){
                     foreach(var line; err) {
                         print(line);
                     }
-                    logprint(LOG_ALERT, "Recipient ",recipient.Ident, 
+                    logprint(LOG_ALERT, "Recipient ",recipient.Ident,
                         " has been removed from transmitter (", me.Ident,
                         ") because of the above error");
                     me.DeRegister(recipient);
                     #need to break the foreach due to having modified what its iterating over.
-                    return Transmitter.ReceiptStatus_Abort; 
+                    return Transmitter.ReceiptStatus_Abort;
                 }
                 if (me.Timestamp != nil) {
                     recipient.TimeTaken = me.Timestamp.elapsedUSec()/1000.0;
@@ -255,6 +256,7 @@ var Transmitter =
 
 var QueuedTransmitter =
 {
+    _CLASS: "emesary.Transmitter",
  new: func(_ident){
      var new_class = { parents:[QueuedTransmitter], base:emesary.Transmitter};
      new_class = emesary.Transmitter.new(_ident);
@@ -281,10 +283,10 @@ var QueuedTransmitter =
 
 
 #---------------------------------------------------------------------------
-# Notification - base class 
-# By convention a Notification has a type and a value. Derived classes can add 
+# Notification - base class
+# By convention a Notification has a type and a value. Derived classes can add
 # extra properties or methods.
-# 
+#
 # NotificationType: Notification Type
 # Ident:      Can be an ident, or for simple messages a value that needs transmitting.
 # IsDistinct: non zero if this message supercedes previous messages of this type.
@@ -295,15 +297,16 @@ var QueuedTransmitter =
 #             or ATC acknowledgements that all need to be transmitted
 # The IsDistinct is important for any messages that are bridged over MP as
 # only the most recently sent distinct message will be transmitted over MP.
-# Example: 
-# position update, where only current position is relevant -> IsDistinct=1; 
-# 0 = queue all messages for MP bridging 
+# Example:
+# position update, where only current position is relevant -> IsDistinct=1;
+# 0 = queue all messages for MP bridging
 # 1 = queue only latest message (replace any old message of same type+ident)
-#        
+#
 var TypeIdUnspecified = 1;
 var NotificationAutoTypeId = 1;
 var Notification =
 {
+    _CLASS: "emesary.Notification",
     new: func(_type, _ident, _typeid=0)
     {
         if (!isscalar(_type)) {
@@ -314,7 +317,7 @@ var Notification =
             logprint(DEV_ALERT, "Notification.new: _ident is not scalar but ", typeof(_ident));
             return nil;
         }
-        
+
 # typeID of 0 means that the notification does not have an assigned type ID
 #           <0 means an automatic ID is required
 #           >= 16 is a reserved ID
@@ -337,18 +340,18 @@ var Notification =
             _typeid = NotificationAutoTypeId;
         }
 
-        var new_class = { 
+        var new_class = {
             parents: [Notification],
             NotificationType: _type,
             Ident: _ident,
-            IsDistinct: 1,          #1: MP bridge only latest notification 
+            IsDistinct: 1,          #1: MP bridge only latest notification
             FromIncomingBridge: 0,
             Callsign: nil,
             TypeId: _typeid,        # used in MP bridged
         };
         return new_class;
     },
-    
+
     setType: func(_type) {
         if (!isscalar(_type)) {
             logprint(DEV_ALERT, "Notification.new: _type must be a scalar!");
@@ -357,7 +360,7 @@ var Notification =
         me.NotificationType = _type;
         return me;
     },
-    
+
     setIdent: func(_ident) {
         if (!isscalar(_ident)) {
             logprint(DEV_ALERT, "Notification.new: _ident is not scalar but ", typeof(_ident));
@@ -366,7 +369,7 @@ var Notification =
         me.Ident = _ident;
         return me;
     },
-    
+
     GetBridgeMessageNotificationTypeKey: func {
         return me.NotificationType~"."~me.Ident;
     },
@@ -379,6 +382,7 @@ var Notification =
 # The Receive method must return a sensible ReceiptStatus_* code
 var Recipient =
 {
+    _CLASS: "emesary.Recipient",
     new: func(_ident)
     {
         if (_ident == nil or _ident == "")
@@ -395,13 +399,13 @@ var Recipient =
         };
         return new_class;
     },
-    
+
     Receive: func(notification)
     {
         logprint(DEV_ALERT, "Emesary Error: Receive function not implemented in recipient ", me.Ident);
         return Transmitter.ReceiptStatus_NotProcessed;
     },
-    
+
     setReceive: func(f)
     {
         if (isfunc(f)) { me.Receive = f; }
@@ -411,8 +415,8 @@ var Recipient =
 };
 
 #
-# Instantiate a Global Transmitter, this is a convenience and a known starting point. 
-# Generally most classes will use this transmitters, however other transmitters 
+# Instantiate a Global Transmitter, this is a convenience and a known starting point.
+# Generally most classes will use this transmitters, however other transmitters
 # can be created and merely use the global transmitter to discover each other.
 var GlobalTransmitter =  Transmitter.new("GlobalTransmitter");
 
@@ -420,10 +424,10 @@ var GlobalTransmitter =  Transmitter.new("GlobalTransmitter");
 # Base method of transferring all numeric based values.
 # Using the same techinque as base64 - except this is base248 because we can use a much wider range of characters.
 #
-var BinaryAsciiTransfer = 
+var BinaryAsciiTransfer =
 {
     #excluded chars 32 (<space>), 33 (!), 35 (#), 36($), 126 (~), 127 (<del>)
-    alphabet : 
+    alphabet :
          chr(1)~chr(2)~chr(3)~chr(4)~chr(5)~chr(6)~chr(7)~chr(8)
         ~chr(9)~chr(10)~chr(11)~chr(12)~chr(13)~chr(14)~chr(15)~chr(16)~chr(17)~chr(18)~chr(19)
         ~chr(20)~chr(21)~chr(22)~chr(23)~chr(24)~chr(25)~chr(26)~chr(27)~chr(28)~chr(29)
@@ -443,9 +447,9 @@ var BinaryAsciiTransfer =
         ~chr(230)~chr(231)~chr(232)~chr(233)~chr(234)~chr(235)~chr(236)~chr(237)~chr(238)~chr(239)
         ~chr(240)~chr(241)~chr(242)~chr(243)~chr(244)~chr(245)~chr(246)~chr(247)~chr(248)~chr(249)
         ~chr(250)~chr(251)~chr(252)~chr(253)~chr(254)~chr(255),
-    # base248: powers of 2 (i.e. po2(x) = f(248 ^ x); 
+    # base248: powers of 2 (i.e. po2(x) = f(248 ^ x);
     # 0 based list so the first item is really[1]; i.e. 124 which is 248/2 as po2 is the magnitude excluding sign
-    po2: [1, 124, 30752, 7626496, 1891371008, 469060009984, 116326882476032, 28849066854055936], 
+    po2: [1, 124, 30752, 7626496, 1891371008, 469060009984, 116326882476032, 28849066854055936],
 
     _base: 248,
     spaces: "                                  ",
@@ -519,7 +523,7 @@ var BinaryAsciiTransfer =
     }
 };
 
-var TransferString = 
+var TransferString =
 {
     MaxLength:16,
 #
@@ -548,7 +552,7 @@ var TransferString =
                 actual_len = actual_len + 1;
             }
         }
-    
+
         rv = BinaryAsciiTransfer.encodeNumeric(l,1,1.0) ~ rv;
         return rv;
     },
@@ -569,7 +573,7 @@ var TransferString =
 
 #
 # encode an int into a specified number of characters.
-var TransferInt = 
+var TransferInt =
 {
     encode : func(v, length)
     {
@@ -581,7 +585,7 @@ var TransferInt =
     }
 };
 
-var TransferFixedDouble = 
+var TransferFixedDouble =
 {
     encode : func(v, length, factor)
     {
@@ -593,7 +597,7 @@ var TransferFixedDouble =
     }
 };
 
-var TransferNorm = 
+var TransferNorm =
 {
     powers: [1,10.0, 100.0, 1000.0, 10000.0, 100000.0, 1000000.0, 10000000.0, 100000000.0, 1000000000.0, 10000000000.0, 100000000000.0],
 
@@ -609,7 +613,7 @@ var TransferNorm =
     }
 };
 
-var TransferByte = 
+var TransferByte =
 {
     encode : func(v)
     {
@@ -621,29 +625,29 @@ var TransferByte =
     }
 };
 
-var TransferCoord = 
+var TransferCoord =
 {
-# LatLon scaling; 
-# 1 degree = 110574 meters; 
+# LatLon scaling;
+# 1 degree = 110574 meters;
 # requires 4 bytes for 1 meter resolution.
 # permits 0.1 meter resolution.
     LatLonLength: 4,
-    LatLonFactor: 0.000001, 
+    LatLonFactor: 0.000001,
     AltLength: 3,
 
     encode : func(v)
     {
         return  BinaryAsciiTransfer.encodeNumeric(v.lat(), TransferCoord.LatLonLength, TransferCoord.LatLonFactor)
-        ~ BinaryAsciiTransfer.encodeNumeric(v.lon(), TransferCoord.LatLonLength, TransferCoord.LatLonFactor) 
+        ~ BinaryAsciiTransfer.encodeNumeric(v.lon(), TransferCoord.LatLonLength, TransferCoord.LatLonFactor)
         ~ emesary.TransferInt.encode(v.alt(), TransferCoord.AltLength);
     },
     decode : func(v,pos)
     {
-        var dv = BinaryAsciiTransfer.decodeNumeric(v, TransferCoord.LatLonLength, TransferCoord.LatLonFactor,   pos); 
+        var dv = BinaryAsciiTransfer.decodeNumeric(v, TransferCoord.LatLonLength, TransferCoord.LatLonFactor,   pos);
         var lat = (dv.value);
         dv = BinaryAsciiTransfer.decodeNumeric(v, TransferCoord.LatLonLength, TransferCoord.LatLonFactor,   dv.pos);
         var lon = (dv.value);
-        dv = emesary.TransferInt.decode(v, TransferCoord.AltLength, dv.pos); 
+        dv = emesary.TransferInt.decode(v, TransferCoord.AltLength, dv.pos);
         var alt =dv.value;
 
         dv.value = geo.Coord.new().set_latlon(lat, lon).set_alt(alt);
@@ -680,13 +684,13 @@ var genericEmesaryGlobalTransmitterTransmit  = func(node)
     if (ident == nil) {
         logprint(LOG_WARN, "emesary-transmit requires an ident");
         return;
-    }    
+    }
     var typeid = node.getNode("typeid",1).getValue() or 0;
-    if (typeid == 0) { 
+    if (typeid == 0) {
         typeid = TypeIdUnspecified;
         logprint(LOG_WARN, "emesary-transmit using generic typeid ", typeid);
     }
-    
+
     var message = emesary.Notification.new(type, ident, typeid);
     node.removeChild("type");
     node.removeChild("id");

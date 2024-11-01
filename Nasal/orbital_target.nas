@@ -1,5 +1,5 @@
 ###########################################################################
-# simulation of a faraway orbital target (needs handover to spacecraft-specific 
+# simulation of a faraway orbital target (needs handover to spacecraft-specific
 # code for close range)
 #
 # SPDX-License-Identifier: GPL-2.0-or-later
@@ -13,11 +13,13 @@
 
 
 var orbitalTarget = {
+	_CLASS: "orbitalTarget",
+
 	new: func(altitude, inclination, node_longitude, anomaly) {
 	        var t = { parents: [orbitalTarget] };
 		t.altitude = altitude;
 		t.radius = 20908323.0 * 0.3048 + t.altitude;
-		t.GM =  398759391386476.0; 
+		t.GM =  398759391386476.0;
 		#t.GM = 	 398600441800000.0;
 		t.period = 2.0 * math.pi * math.sqrt(math.pow(t.radius, 3.0)/ t.GM);
 		t.inclination = inclination;
@@ -47,13 +49,13 @@ var orbitalTarget = {
 		#print ("inc_var:", inc_var);
 
 		t.coeff1 =  (10268. - 0.99579 * (t.altitude / 1000.0)) * inc_var;
-		t.coeff2 = 0.212 * 2.0 * math.pi;		
+		t.coeff2 = 0.212 * 2.0 * math.pi;
 
 
-		#t.node_drift = -4361.26 * 1./math.pow(t.radius/1000.0 ,2.0) * math.cos(t.inc_rad); 
-		
-		t.node_drift = -2.16732e+9 /math.pow(t.radius/1000.0, 3.48908) * math.cos(t.inc_rad); 	
-	
+		#t.node_drift = -4361.26 * 1./math.pow(t.radius/1000.0 ,2.0) * math.cos(t.inc_rad);
+
+		t.node_drift = -2.16732e+9 /math.pow(t.radius/1000.0, 3.48908) * math.cos(t.inc_rad);
+
 		print ("Drift rate: ", t.node_drift);
 		return t;
 	},
@@ -80,7 +82,7 @@ var orbitalTarget = {
 		var lla = me.get_latlonalt();
 		print("Lat: ", lla[0], " lon: ", lla[1], " alt: ", lla[2]);
 	},
-	
+
 	evolve: func {
 		var dt = getprop("/sim/time/delta-sec");
 		#var speedup = getprop("/sim/speed-up");
@@ -99,7 +101,7 @@ var orbitalTarget = {
 		var l_tmp = me.l_vec[0];
 		me.l_vec[0] = math.sin(me.nl_rad) * l_tmp;
 		me.l_vec[1] = -math.cos(me.nl_rad) * l_tmp;
-	
+
 		#print (me.label);
 
 
@@ -130,7 +132,7 @@ var orbitalTarget = {
 	get_inertial_speed: func () {
 
 		# obtain via numerical discretization from two points
-	
+
 		var anomaly_rad = me.anomaly_rad;
 		while (anomaly_rad > 2.0 * math.pi)
 			{
@@ -157,7 +159,7 @@ var orbitalTarget = {
 	get_inertial_speed_at_time: func (time) {
 
 		# obtain via numerical discretization from two points
-	
+
 		var anomaly_rad = me.initial_anomaly_rad + (time- me.delta_time)/me.period * 2.0 * math.pi;
 		while (anomaly_rad > 2.0 * math.pi)
 			{
@@ -211,7 +213,7 @@ var orbitalTarget = {
 		var x = (me.radius + r_corr) * math.cos(anomaly_rad);
 		var y = (me.radius + r_corr) * math.sin(anomaly_rad);
 		var z = 0;
-	
+
 		# tilt with inclination
 		z = y * math.sin(me.inc_rad);
 		y = y * math.cos(me.inc_rad);
@@ -220,19 +222,19 @@ var orbitalTarget = {
 		# rotate with node longitude
 
 		var xp = x * math.cos(nl_rad) - y * math.sin(nl_rad);
-		var yp = x * math.sin(nl_rad) + y * math.cos(nl_rad); 
+		var yp = x * math.sin(nl_rad) + y * math.cos(nl_rad);
 
 		# this is a good bit of trickery to capture leading J3 dynamics
 
 		var corr_200 = 	-2.6e-5 * me.inclination + 1.00321;
-		
+
 		var corr = corr_200 * (1.0 + (me.altitude/1000.0-200.0) * 6e-7);
-		
+
 		corr = 1.0 + (0.64 * (corr -1.0));
 		#print ("Corr200 is now:", corr_200);
 		#print ("Corr is now:", corr);
 		#print ("Altitude: ", me.altitude);
-		
+
 		var radius_orig = math.sqrt(xp * xp + yp * yp + z* z);
 
 
@@ -240,9 +242,9 @@ var orbitalTarget = {
 
 		var radius_corr = math.sqrt(xp * xp + yp * yp + z* z);
 
-		xp *= radius_orig/radius_corr;		
-		yp *= radius_orig/radius_corr;		
-		z *= radius_orig/radius_corr;		
+		xp *= radius_orig/radius_corr;
+		yp *= radius_orig/radius_corr;
+		z *= radius_orig/radius_corr;
 
 		return [xp, yp, z];
 
@@ -254,7 +256,7 @@ var orbitalTarget = {
 		var inertial_pos = me.get_inertial_pos();
 		coordinates.set_xyz(inertial_pos[0], inertial_pos[1], inertial_pos[2]);
 		coordinates.set_lon(coordinates.lon() - me.delta_lon);
-	
+
 		return [coordinates.lat(), coordinates.lon(), coordinates.alt()];
 	},
 
@@ -273,7 +275,7 @@ var orbitalTarget = {
 		if (me.running_flag == 1)
 			{settimer(func me.run(), 0);}
 	},
-	
+
 
 	test_suite: func {
 
@@ -285,11 +287,11 @@ var orbitalTarget = {
 			{
 			time = i * 60;
 			pos = me.get_inertial_pos_at_time(time);
-			
-			radius = math.sqrt(pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2]);		
+
+			radius = math.sqrt(pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2]);
 
 			print (time, " ", radius);
-			
+
 
 			}
 

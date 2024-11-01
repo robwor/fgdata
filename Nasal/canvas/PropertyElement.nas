@@ -17,6 +17,7 @@ var _makeNode = func(n) {
 # Baseclass for all property controlled elements/objects
 #
 var PropertyElement = {
+  _CLASS: "canvas.PropertyElement",
   # Constructor
   #
   # @param node     Node to be used for element or vector [parent, type] for

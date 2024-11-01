@@ -80,6 +80,8 @@ var StaticNotification_Id = 25;  # static object created.
 # So although the notification will be transmitted
 var PropertySyncNotificationBase =
 {
+    _CLASS: "notifications.PropertySyncNotificationBase",
+
     new: func(_ident="none", _name="", _kind=0, _secondary_kind=0)
     {
         var new_class = emesary.Notification.new("PropertySyncNotification", _ident, PropertySyncNotificationBase_Id);
@@ -132,6 +134,8 @@ var PropertySyncNotificationBase =
 # two parameters - the event Id and the event value which is a 4 byte length (+/- 1,891371.000)
 var AircraftControlNotification =
 {
+    _CLASS: "notifications.AircraftControlNotification",
+
     new: func(_ident="none")
     {
         var new_class = emesary.Notification.new("AircraftControlNotification", _ident, AircraftControlNotification_Id);
@@ -165,6 +169,8 @@ var AircraftControlNotification =
 # models that are simulated locally (e.g. tankers) appear on other player's MP sessions.
 var GeoEventNotification =
 {
+    _CLASS: "notifications.GeoEventNotification",
+
 # new:
 # _ident - the identifier for the notification. not bridged.
 # _name - name of the notification, bridged.
@@ -543,6 +549,8 @@ var GeoEventNotification =
 # models that are simulated locally (e.g. tankers) appear on other player's MP sessions.
 var PFDEventNotification =
 {
+    _CLASS: "notifications.PFDEventNotification",
+
 # new:
 # _ident - the identifier for the notification. not bridged.
 # _pfd_id - numeric identification of the PFD within the model

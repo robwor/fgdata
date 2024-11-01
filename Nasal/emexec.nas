@@ -6,16 +6,16 @@
  #
  #	Description          : Uses Emesary notifications to permit Nasal subsystems to be invoked in
  #                       : a controlled manner.
- #                       : 
+ #                       :
  #                       : Sends out a FrameNotification for each frame recipient can implement
  #                       : workload reduction as appropriate based on skipping frames (2=half,
  #                       : 4=quarter etc.) because some code can safely be run at quarter rate
  #                       : (e.g. ~10hz).
- #                       : 
+ #                       :
  #                       : The developer should interleave slower rate modules to spread out
  #                       : workload A frame is defined by the timer rate; which is usually the
  #                       : maximum rate as determined by the FPS.
- #                       : 
+ #                       :
  #                       : This is an alternative to the timer based or explicit function calling
  #                       : way of invoking aircraft systems.  It has the advantage of using less
  #                       : timers and remaining modular, as each aircraft subsytem can simply
@@ -37,12 +37,13 @@
 #
 # This is the notification that is sent out to all recipients each frame.
 # The notification contains a hash of property values.
-# Frame modules can request that the hash includes key/property pairs 
+# Frame modules can request that the hash includes key/property pairs
 # by using the FrameNotificationAddProperty
 #
 # An instance of this class is be contained within the  EmesaryExecutive.
-var FrameNotification = 
+var FrameNotification =
 {
+    _CLASS: "emexec.FrameNotification",
     debug: 0,
     # The rate and the transmitter to use
     new: func(_rate, transmitter=nil)
@@ -71,11 +72,11 @@ var FrameNotification =
                 if (notification.root_node != nil) {
                     root_node = notification.root_node;
                 }
-                if (new_class.properties[notification.property] != nil 
+                if (new_class.properties[notification.property] != nil
                     and new_class.properties[notification.property] != notification.variable)
                   logprint(1,"FrameNotification: (",notification.module,") FrameNotification: already have variable ",new_class.properties[notification.property]," for ",notification.variable, " referencing property ",notification.property);
 
-                if (new_class.monitored[notification.variable] != nil 
+                if (new_class.monitored[notification.variable] != nil
                     and new_class.monitored[notification.variable].getPath() != notification.property
                     and new_class.monitored[notification.variable].getPath() != "/"~notification.property)
                   logprint(1,"FrameNotification: (",notification.module,") FrameNotification: already have variable ",notification.variable,"=",new_class.monitored[notification.variable].getPath(), " using different property ",notification.property);
@@ -106,8 +107,9 @@ var FrameNotification =
 
 #
 # request to add a property to the frame notification
-var FrameNotificationAddProperty = 
+var FrameNotificationAddProperty =
 {
+    _CLASS: "emexec.FrameNotificationAddProperty",
     new: func(module, variable, property, root_node=nil)
     {
         var new_class = emesary.Notification.new("FrameNotificationAddProperty", variable, 0);
@@ -125,6 +127,7 @@ var FrameNotificationAddProperty =
 # The way that the core measures frame rate gives invalid values after a pause so instead
 # we will measure specific to our needs.
 var PerformanceMeasurement = {
+    _CLASS: "emexec.PerformanceMeasurement",
     new : func {
         return {
             parents: [PerformanceMeasurement],
@@ -164,10 +167,11 @@ performanceMeasurement  =  PerformanceMeasurement.new();
 
 #
 # the main exeuctive class.
-# There will be one of these as emexec.ExceModule however multiple instances could be 
+# There will be one of these as emexec.ExceModule however multiple instances could be
 # created - but only by those who understand scheduling - because it is not necessary
 # to have more than one - unless we mange to enable some sort of per core threading.
 var EmesaryExecutive =  {
+    _CLASS: "emexec.EmesaryExecutive",
     new : func(_ident="EMEXEC", transmitter=nil) {
 
         # by default use global transmitter
@@ -236,7 +240,7 @@ var EmesaryExecutive =  {
 
      # ident: String (e.g F-15 HUD)
      # inputs: hash of properties to monitor
-     #         : e.g 
+     #         : e.g
      #           {
      #               AirspeedIndicatorIndicatedMach          : "instrumentation/airspeed-indicator/indicated-mach",
      #               Alpha                                   : "orientation/alpha-indicated-deg",
@@ -273,12 +277,12 @@ var EmesaryExecutive =  {
         me.frameNotification.fetchvars();
         me.frameNotification.dT = me.frameNotification.elapsed_seconds - me.frameNotification.curT;
 
-        if (me.frameNotification.dT > 1.0) 
+        if (me.frameNotification.dT > 1.0)
         me.frameNotification.curT = me.frameNotification.elapsed_seconds;
 
         me.transmitter.NotifyAll(me.frameNotification);
         me.frameNotification.FrameCount = me.frameNotification.FrameCount + 1;
-    
+
         # this permits us to go up to 1/32 rate (which could be less than 1hz)
         if (me.frameNotification.FrameCount > 32) {
             me.frameNotification.FrameCount = 0;
@@ -287,7 +291,7 @@ var EmesaryExecutive =  {
             # calculate exec update rate based on frame rate; this a quadratic function from a curve fit.
             me.frame_inc = (math.round((0.33227017+0.10041432*me.frameNotification.eframe_rate+0.01681707*me.frameNotification.eframe_rate*me.frameNotification.eframe_rate)/5)*5+5);
 
-            # limit to: 1 <= update rate <= maxRate (default 50) 
+            # limit to: 1 <= update rate <= maxRate (default 50)
             me.frame_inc = math.max(1,math.min(me.emexecMaxRate.getValue(), me.frame_inc));
             me.frame_inc = 1/me.frame_inc;
 
@@ -304,7 +308,7 @@ var EmesaryExecutive =  {
 # and each frame call log("something") to trace time
 # e.g. to create using the default log level of INFO:
 #    ot = OperationTimer.new("VSD");
-# or for log level debug 
+# or for log level debug
 #    ot = OperationTimer.new("VSD",2);
 # ...
 # ot.reset();
@@ -315,6 +319,7 @@ var EmesaryExecutive =  {
 # ot.log("finished");
 
 OperationTimer = {
+    _CLASS: "emexec.OperationTimer",
     new : func (ident="timer", level=3) {
         {
             parents: [OperationTimer],
@@ -328,9 +333,9 @@ OperationTimer = {
         logprint(me.level, sprintf("%10s: %8.3f : %s",me.ident,  me.timestamp.elapsedUSec()/me.resolution_uS, text));
     },
     reset : func {
-       me.timestamp.stamp(); 
+       me.timestamp.stamp();
     }
-};         
+};
 
 
 

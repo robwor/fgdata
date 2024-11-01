@@ -90,7 +90,9 @@
 #       set property /sim/startup/terminal-ansi-colors=0
 #
 
-# ANSI color code wrappers  (see  $ man console_codes)
+var CLASS_KEY = "_CLASS";
+
+# ANSI color code wrappers  (see  $ man console_codes), 3x foreground, 4x background
 #
 var _title       = func(s, color=nil) globals.string.color("33;42;1", s, color); # backtrace header
 var _section     = func(s, color=nil) globals.string.color("37;41;1", s, color); # backtrace frame
@@ -104,12 +106,11 @@ var _bracket     = func(s, color=nil) globals.string.color("", s, color);       
 var _brace       = func(s, color=nil) globals.string.color("", s, color);        # { }
 var _angle       = func(s, color=nil) globals.string.color("37;1", s, color);      # < >
 var _vartype     = func(s, color=nil) globals.string.color("33", s, color);      # func ghost
-var _proptype    = func(s, color=nil) globals.string.color("34;1", s, color);      # blue
-var _path        = func(s, color=nil) globals.string.color("36", s, color);      # /property/path (cyan)
-var _internal    = func(s, color=nil) globals.string.color("35", s, color);      # me parents class (magenta)
-var _parents     = func(s, color=nil) globals.string.color("33", s, color);      # me parents class (yellow)
+var _proptype    = func(s, color=nil) globals.string.color("34", s, color);      # BOOL INT LONG DOUBLE ...
+var _path        = func(s, color=nil) globals.string.color("36", s, color);      # /some/property/path
+var _internal    = func(s, color=nil) globals.string.color("35", s, color);      # me parents
+var _index       = func(s, color=nil) globals.string.color("33;40;1", s, color);      #
 var _varname     = func(s, color=nil) s;                                         # variable_name
-
 
 ##
 # Turn p into props.Node (if it isn't yet), or return nil.
@@ -124,14 +125,12 @@ var propify = func(p, create = 0) {
 	return nil;
 }
 
-
 var tree = func(n = "", graph = 1) {
 	n = propify(n);
 	if (n == nil)
 		return dump(n);
 	_tree(n, graph);
 }
-
 
 var _tree = func(n, graph = 1, prefix = "", level = 0) {
 	var path = n.getPath();
@@ -166,7 +165,6 @@ var _tree = func(n, graph = 1, prefix = "", level = 0) {
 			_tree(children[i], graph, prefix ~ ".   ", level + 1);
 }
 
-
 var attributes = func(p, verbose = 1, color=nil) {
 	var r = p.getAttribute("readable")    ? "" : "r";
 	var w = p.getAttribute("writable")    ? "" : "w";
@@ -187,20 +185,17 @@ var attributes = func(p, verbose = 1, color=nil) {
 	return _proptype(type ~ ")", color);
 }
 
-
 var _dump_prop = func(p, color=nil) {
 	_path(p.getPath(), color) ~ " = " ~ debug.string(p.getValue(), color)
                             ~  " "  ~ attributes(p, 1, color);
 }
 
-
 var _dump_var = func(v, color=nil) {
-	if (v == "me" or v == "parents")
+	if (v == "me" or v == "parents" or v == CLASS_KEY)
 		return _internal(v, color);
 	else
 		return _varname(v, color);
 }
-
 
 var _dump_string = func(str, color=nil) {
 	var s = "'";
@@ -222,7 +217,6 @@ var _dump_string = func(str, color=nil) {
 	return _string(s ~ "'", color);
 }
 
-
 # dump hash keys as variables if they are valid variable names, or as string otherwise
 var _dump_key = func(s, color=nil) {
 	if (num(s) != nil)
@@ -237,65 +231,82 @@ var _dump_key = func(s, color=nil) {
 	_dump_var(s, color);
 }
 
-
-var string = func(o, color=nil, ttl=5) {
-    if (o == globals and ttl < 5) return "<globals>"; # do not loop int globals
-    if (!ttl) return "<...>";
-    var t = typeof(o);
-	if (t == "nil") {
-		return _nil("null", color);
-
-	} elsif (isscalar(o)) {
-		return num(o) == nil ? _dump_string(o, color) : _num(o~"", color);
-
-	} elsif (isvec(o)) {
-		var s = "";
-		forindex (var i; o)
-			s ~= (i == 0 ? "" : ", ") ~ debug.string(o[i], color, ttl - 1);
-		return _bracket("[", color) ~ s ~ _bracket("]", color);
-
-	} elsif (ishash(o)) {
-		var s = "";
-        s ~= _brace("{", color);
-
-		if (contains(o, "parents") and isvec(o.parents) and size(o.parents)) {
-            # class hash
-            if (o.parents[0] == props.Node)
-                return _angle("'<", color) ~ _dump_prop(o, color) ~ _angle(">'", color);
-
-            s ~= _angle("<", color)~_internal("class ", color)
-	            ~(o.parents[0]["__class_name"] or "")~_angle(">", color);
-            if (size(o.parents) > 1) {
-                s ~= _angle("<", color) ~ _parents("parents ");
-                forindex (var i; o.parents) {
-                    if (i > 0) s ~= (o.parents[i]["__class_name"] or "");
-                    if (i < size(o.parents) - 1) s ~= " ";
-                }
-                s ~= _angle("> ", color);
+# dump hashes and classes
+# (classes and objects are just specialized hashes)
+var _dump_hash = func(hash, color, ttl) {
+    if (isghost(hash)) {
+        return ghosttype(hash);
+    }
+    var keys_ = keys(hash);
+    var s = "";
+    var classname = "";
+    var methods = [];
+    var parents_ = [];
+    forindex (var i; keys_) {
+        var key = keys_[i];
+        if (key == CLASS_KEY) {
+            classname = hash[key];
+        } elsif (key == "parents") {
+            foreach (var p; hash[key]) {
+                var name = (ishash(p) and isscalar(p[CLASS_KEY]) ? p[CLASS_KEY] : "-?-");
+                append(parents_, name);
             }
-            #s ~= "\n";
+        } elsif (isfunc(hash[key])) {
+            append(methods, key);
+        } else {
+            s ~= (i == 0 ?  "" : ",\n") ~ _indent(ttl+1)~_dump_key(key, color)~": " ~ debug.string(hash[key], color, ttl + 1);
         }
-        #else {
-            # normal hash
-            var i = 0;
-            foreach (var key; keys(o)) {
-                if (key == "parents") continue;
-                s ~= (i == 0 ? "" : ", ") ~ _dump_key(key, color) ~ ": "
-                  ~debug.string(o[key], color, ttl - 1);
-                i += 1;
-            }
-        #}
-        s ~= _brace("}", color);
-		return s;
+    }
 
-	} elsif (isghost(o)) {
-		return _angle("'<", color) ~ _nil(ghosttype(o), color) ~ _angle(">'", color);
-
-	} else {
-		return _angle("'<", color) ~ _vartype(t, color) ~ _angle(">'", color);
-	}
+    return _brace("{ ", color)
+        ~ (classname ? _internal("class: "~classname, color) ~ ",\n" : "")
+        ~ (size(parents_) ? _indent(ttl+1) ~ _internal("parents: ", color) ~ _dump_vec(parents_, color, ttl) ~ ",\n" : "")
+        ~ (size(methods) ? _indent(ttl+1) ~ _internal("methods: ", color)~_dump_vec(methods, color, ttl) ~ ",\n" : "")
+        ~ s ~ "\n"
+        ~ _indent(ttl) ~ _brace("}", color);
 }
 
+var _dump_vec = func(vec, color, ttl) {
+    var s = "";
+    forindex (var i; vec)
+        s ~= (i == 0 ? "" : ", ") ~ debug.string(vec[i], color, ttl + 1);
+    return _bracket("[", color) ~ s ~ _bracket("]", color);
+}
+
+var _indent = func(count, spacer="  ") {
+    var indent = "";
+    for (var i = 0; i < count; i += 1) {
+        indent ~= spacer;
+    }
+    return indent;
+}
+
+var __TTL_MAX=5;
+var string = func(o, color=nil, ttl=0) {
+    var s = "";
+    var t = typeof(o);
+    if (o == globals) {
+        s = "<globals>"; # do not loop int globals
+    } elsif (ttl >= __TTL_MAX) {
+        s = "<...>";
+    } elsif (t == "nil") {
+		s = _nil("nil", color);
+	} elsif (isscalar(o)) {
+		s = num(o) == nil ? _dump_string(o, color) : _num(o~"", color);
+	} elsif (isvec(o)) {
+        s = _dump_vec(o, color, ttl);
+	} elsif (isa(o, props.Node)) {
+        s = _angle("'<", color) ~ _dump_prop(o, color) ~ _angle(">'", color);
+	} elsif (isghost(o)) {
+		s = _angle("'<", color) ~ _nil(ghosttype(o), color) ~ _angle(">'", color);
+    } elsif (ishash(o)) {
+        # hint: specific classes must be checked before this generic ishash(o)
+		s = _dump_hash(o, color, ttl);
+	} else {
+		s = _angle("'<", color) ~ _vartype(t, color) ~ _angle(">'", color);
+	}
+    return s;
+}
 
 var dump = func(vars...) {
 	if (!size(vars))
@@ -303,9 +314,8 @@ var dump = func(vars...) {
 	if (size(vars) == 1)
 		return print(debug.string(vars[0]));
 	forindex (var i; vars)
-		print(globals.string.color("33;40;1", "#" ~ i) ~ " ", debug.string(vars[i]));
+		print(_index("#"~i)~" ", debug.string(vars[i]));
 }
-
 
 var local = func(frame = 0) {
 	var v = caller(frame + 1);
@@ -326,7 +336,17 @@ var funcname = func(f) {
                 return k;
         }
     }
-    return "-unknown-";
+    return "unknown-func";
+}
+
+#try to find variable name
+var varname = func(v, caller_=1) {
+    var (namespace, fn, file, line) = caller(caller_);
+    foreach (var k; keys(namespace)) {
+        if (namespace[k] == v)
+            return k;
+    }
+    return "unknown-var";
 }
 
 # Write backtrace information.
@@ -538,6 +558,7 @@ var isnan = func {
 # print(myProbe.getHits(cnt2)/myProbe.getHits()); # print hit ratio
 #
 var Probe = {
+    _CLASS: "debug.Probe",
     _instances: {},
 
     _uid: func(label, class) {
@@ -710,6 +731,7 @@ var Probe = {
 # print(myBP.getHits()); # print total number of hits
 #
 var Breakpoint = {
+    _CLASS: "debug.Breakpoint",
 
     # label:       Used in property path and as text for backtrace.
     # dump_locals: bool passed to backtrace. Dump variables in BT.
@@ -778,6 +800,7 @@ var Breakpoint = {
 # print(myBP.getHits()); # print total number of hits
 #
 var Tracer = {
+    _CLASS: "debug.Tracer",
 
     # label:       Used in property path and as text for backtrace.
     # dump_locals: bool passed to backtrace. Dump variables in BT.

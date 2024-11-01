@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 gui.widgets.ComboBox = {
+  _CLASS: "ComboBox",
+
   new: func(parent, style = nil, cfg = nil)
   {
     style = style or canvas.style;
@@ -188,7 +190,7 @@ gui.widgets.ComboBox = {
     me.menu().show();
     me.menu().setSize(math.max(me._size[0], me.menu().getSize()[0]), me.menu().getSize()[1]);
   },
-  
+
   _hideMenu: func {
     me._menu.hide();
     me.setDown(0);

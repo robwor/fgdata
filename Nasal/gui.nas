@@ -211,6 +211,7 @@ var Widget = {
 #     livery_dialog.toggle();
 #
 var Dialog = {
+    _CLASS: "gui.Dialog",
     instance: {},
     new: func(prop, path = nil, name = nil) {
         var m = { parents: [Dialog] };
@@ -315,6 +316,7 @@ var Dialog = {
 #
 #
 var OverlaySelector = {
+    _CLASS: "gui.OverlaySelector",
     new: func(title, dirs, nameprop, sortprop = nil, mpprop = nil, callback = nil) {
         if (!isvec(dirs)) {
             dirs = [dirs];
@@ -448,6 +450,7 @@ var OverlaySelector = {
 #     selector.open();
 #
 var FileSelector = {
+    _CLASS: "gui.FileSelector",
     new: func(callback, title, button, pattern = nil, dir = "", file = "", dotfiles = 0, show_files=1) {
 
 
@@ -498,6 +501,7 @@ var FileSelector = {
 # DirSelector - convenience "class" (indeed using a reconfigured FileSelector)
 #
 var DirSelector = {
+    _CLASS: "gui.DirSelector",
   new: func(callback, title, button, dir = "") {
      return FileSelector.new(callback, title, button, nil, dir, "", 0, 0);
   }

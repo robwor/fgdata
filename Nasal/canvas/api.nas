@@ -83,6 +83,8 @@ var get = func(arg)
 
 # subclass of Group representing the desktop
 var Desktop = {
+    _CLASS: "canvas.Desktop",
+
     new: func(ghost) {
         var obj = {
             parents: [Desktop, Group.new(ghost)],

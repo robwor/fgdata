@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 gui.widgets.RadioButton = {
+  _CLASS: "RadioButton",
+
   new: func(parent, style = nil, cfg = nil) {
     style = style or canvas.style;
     cfg = Config.new(cfg);
@@ -57,7 +59,7 @@ gui.widgets.RadioButton = {
     }
     return me;
   },
-  
+
   # @description Get the data of this radio button.
   # @param key Union[scalar, nil] The scalar key of the data field to return the value of, or nil to return the whole data.
   # @return Any If @param key is a scalar, the value of the field with key @param key, else the whole data as a hash.
@@ -71,7 +73,7 @@ gui.widgets.RadioButton = {
       return me._data;
     }
   },
-  
+
   # @description Clear data
   # @return canvas.gui.widgets.RadioButton This radio button to support method chaining.
   clearData: func {
@@ -174,7 +176,7 @@ gui.widgets.RadioButtonsGroup = {
     }
     return me;
   },
-  
+
   getCheckedRadio: func {
     foreach (var radio; me.radios) {
       if (radio._checked) {

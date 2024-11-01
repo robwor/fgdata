@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 gui.Overlay = {
+	_CLASS: "gui.Overlay",
+
 	# @description Constructor
 	# @param size Optional[Tuple[int, int]] Two-item vector containing width and height of the overlay
 	new: func(size, id = nil) {
@@ -16,4 +18,3 @@ gui.Overlay = {
 	_updateDecoration: func {},
 	_resizeDecoration: func {},
 };
-

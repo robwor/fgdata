@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 gui.widgets.Label = {
+  _CLASS: "Label",
+
   new: func(parent, style = nil, cfg = nil)
   {
     style = style or canvas.style;

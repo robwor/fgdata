@@ -1,4 +1,5 @@
 gui.Style = {
+  _CLASS: "gui.Style",
   new: func(name, name_icon_theme)
   {
     var root_node = props.globals.getNode("/sim/gui/canvas", 1)
@@ -26,7 +27,7 @@ gui.Style = {
         var baseNode = color.getChild("base");
 
         if (tintNode and baseNode) {
-          
+
         } elsif (shadeNode and baseNode) {
 
         } else {
@@ -82,7 +83,7 @@ gui.Style = {
   {
     return me._colors[name] or def;
   },
-  getSize: func(name, def = 1.0) 
+  getSize: func(name, def = 1.0)
   {
     return me._sizes[name] or def;
   }

@@ -2,6 +2,8 @@ var _REPL_dbg_level = LOG_DEBUG;
 #var _REPL_dbg_level = LOG_ALERT;
 
 var REPL = {
+	_CLASS: "console.REPL",
+
 	df_status: 0,
 	whitespace: [" ", "\t", "\n", "\r"],
 	end_statement: [";", ","],
@@ -201,6 +203,8 @@ foreach (var b; keys(REPL.brackets)) {
 }
 
 var CanvasPlacement = {
+	_CLASS: "console.CanvasPlacement",
+
 	instances: [],
 	current_instance: nil,
 	keys: [
@@ -527,7 +531,7 @@ var CanvasPlacement = {
 			.setDrawMode(draw_mode)
 			.setText(size(me.lines_of_text) ? ">" : ""); # FIXME: hack, canvas::Text needs a printing character
 			                                             # on the first line in order to recognize the newlines ?
-		if (me.colors.text_fill != nil)                       
+		if (me.colors.text_fill != nil)
 			me.text.setColorFill(me.colors.text_fill);
 		if (me.font_max_width != nil)
 			if (me.font_max_width < 0)
@@ -723,4 +727,3 @@ var print2 = func(i) {
 	return nil; # just to suppress output
 }
 #CanvasPlacement.new("<styled-canvas-repl>", "canvas-default");
-

@@ -14,6 +14,8 @@
 # m.show();
 
 gui.MenuItem = {
+        _CLASS: "gui.MenuItem",
+
         MenuPosition: {
                 Above: 0x0,
                 Right: 0x1,
@@ -47,7 +49,7 @@ gui.MenuItem = {
                 m.setLayoutMinimumSize([48, 24]);
                 m.setLayoutSizeHint([64, 24]);
                 m.setLayoutMaximumSize([1024, 24]);
-                
+
                 m.setText(m._text);
                 m.setIcon(m._icon);
                 m.setShortcut(m._shortcut);
@@ -65,7 +67,7 @@ gui.MenuItem = {
 
                 return me.update();
         },
-        
+
         onClicked: func(e) {
                 if (!me._menu and me._cb) {
                         call(me._cb, [e], me._cb_me, var errors = []);
@@ -166,7 +168,7 @@ gui.MenuItem = {
                 me._view.setText(me, text);
                 return me.update();
         },
-        
+
         text: func {
                 return me._text;
         },
@@ -237,6 +239,8 @@ gui.MenuItem = {
 };
 
 gui.Menu = {
+        _CLASS: "gui.Menu",
+
         new: func(id = nil) {
                 var m = gui.Popup.new([100, 60], id);
                 m.parents = [gui.Menu] ~ m.parents;
@@ -274,7 +278,7 @@ gui.Menu = {
         # @param text: str required Text to display on the menu item
         # @param cb: callable optional Function / method to call when the item is clicked - if no callback is wanted, nil can be used
         # @param cb_me: Union[hash, ghost] optional Object to use for any me references in the callback function (see `call`)
-        # @param shortcut: str String representation of the keyboard shortcut for the item 
+        # @param shortcut: str String representation of the keyboard shortcut for the item
         # @param icon: str optional Path to the icon (relative to canvas.style._dir_widgets) or nil if none should be displayed
         # @param enabled: bool optional Whether the item should be enabled (1) or disabled (0)
         # @return canvas.gui.MenuItem The item that was created
@@ -433,4 +437,3 @@ gui.Menu = {
                 return me;
         },
 };
-

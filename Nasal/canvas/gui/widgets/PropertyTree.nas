@@ -1,4 +1,5 @@
 gui.widgets.PropertyTree = {
+        _CLASS: "PropertyTree",
         AttributeMapping: {
                 "archive": "A",
                 "alias": "L",
@@ -10,7 +11,7 @@ gui.widgets.PropertyTree = {
                 "userarchive": "U",
                 "writable": "W",
         },
-        
+
         new: func(parent, style = nil, cfg = nil) {
                 cfg = Config.new(cfg);
                 var m = gui.widgets.List.new(parent, style, cfg);
@@ -31,24 +32,24 @@ gui.widgets.PropertyTree = {
                 m.updateTimer = maketimer(0, func m.update());
                 m.updateTimer.simulatedTime = 0;
                 m.updateTimer.start();
-                
+
                 return m;
         },
-        
+
         show: func {
                 call(me.parents[1].show, [], me);
                 me.updateTimer.start();
         },
-        
+
         hide: func {
                 call(me.parents[1].hide, [], me);
                 me.updateTimer.stop();
         },
-        
+
         getNode: func {
                 return me._node;
         },
-        
+
         setNode: func(node) {
                 if (isscalar(node)) {
                         me._node = props.globals.getNode(node);
@@ -65,7 +66,7 @@ gui.widgets.PropertyTree = {
 
                 return me;
         },
-        
+
         rebuildList: func {
                 me.clear();
                 if (me._node.getParent()) {
@@ -85,7 +86,7 @@ gui.widgets.PropertyTree = {
                         item.setData("node", c);
                 }
         },
-        
+
         itemClicked: func(e) {
                 if (!e.ctrlKey) {
                         return;
@@ -99,7 +100,7 @@ gui.widgets.PropertyTree = {
                         node.toggleBoolValue();
                 }
         },
-        
+
         update: func {
                 for (var i = 0; i < me.count(); i += 1) {
                         var item = me.getItem(i);
@@ -135,9 +136,8 @@ gui.widgets.PropertyTree = {
                 }
                 call(me.parents[1].update, [], me);
         },
-        
+
         del: func {
                 me.updateTimer.stop();
         },
 };
-

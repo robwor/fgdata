@@ -22,6 +22,7 @@ if (ishash(globals["std"]) and ishash(std["Vector"]))
     return;
 
 var Vector = {
+    _CLASS: "std.Vector",
 
     new: func (vector=nil, name="") {
         var m = {
@@ -35,7 +36,7 @@ var Vector = {
         }
         return m;
     },
-    
+
     # add callback for writes (insert() and append())
     # will be called as f(index, item), compare insert() below
     addCallback: func (f) {
@@ -45,7 +46,7 @@ var Vector = {
         }
         return nil;
     },
-    
+
     getName: func () {
         return me.name;
     },
@@ -145,5 +146,5 @@ var Vector = {
 
         me.pop(me.index(item));
     }
-    
+
 };

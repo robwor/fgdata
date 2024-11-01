@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 gui.Popup = {
+	_CLASS: "gui.Popup",
 	__used_ids: [],
 	# Constructor
 	#
@@ -23,18 +24,18 @@ gui.Popup = {
 		m.setInt("content-size[0]", size_[0]);
 		m.setInt("content-size[1]", size_[1]);
 		m._updateDecoration();
-		
+
 		m.setFocus();
 
 		# arg = [child, listener_node, mode, is_child_event]
 		setlistener(m._node, func m._propCallback(arg[0], arg[2]), 0, 2);
-		
+
 		return m;
 	},
 	# Destructor
 	del: func {
 		me.clearFocus();
-		
+
 		if (me["_canvas"] != nil) {
 			var placements = me._canvas._node.getChildren("placement");
 			# Do not remove canvas if other placements exist
@@ -62,7 +63,7 @@ gui.Popup = {
 			me.get("content-size[0]"),
 			me.get("content-size[1]")
 		];
-		
+
 		me._canvas = new({
 			size: [size[0], size[1]],
 			view: size,
@@ -70,19 +71,19 @@ gui.Popup = {
 				type: "window",
 				id: me.get("id")
 			},
-			
+
 			# Standard alpha blending
 			"blend-source-rgb": "src-alpha",
 			"blend-destination-rgb": "one-minus-src-alpha",
-			
+
 			# Just keep current alpha (TODO allow using rgb textures instead of rgba?)
 			"blend-source-alpha": "zero",
 			"blend-destination-alpha": "one"
 		});
-		
+
 		me._canvas._focused_widget = nil;
 		me._canvas.data("focused", me._focused);
-		
+
 		return me._canvas;
 	},
 	# Set an existing canvas to be used for this Window
@@ -90,13 +91,13 @@ gui.Popup = {
 		if (ghosttype(canvas_) != "Canvas") {
 			return debug.warn("Not a Canvas");
 		}
-		
+
 		canvas_.addPlacement({type: "window", "id": me.get("id")});
 		me['_canvas'] = canvas_;
-		
+
 		canvas_._focused_widget = nil;
 		canvas_.data("focused", me._focused);
-		
+
 		return me;
 	},
 	# Get the displayed canvas
@@ -104,14 +105,14 @@ gui.Popup = {
 		if (me['_canvas'] == nil and create) {
 			me.createCanvas();
 		}
-		
+
 		return me['_canvas'];
 	},
 	setLayout: func(l) {
 		if (me['_canvas'] == nil) {
 			me.createCanvas();
 		}
-		
+
 		me._canvas.update(); # Ensure placement is applied
 		me._ghost.setLayout(l);
 		return me;
@@ -122,7 +123,7 @@ gui.Popup = {
 			gui.focused_window.clearFocus();
 			gui.focused_window = me;
 		}
-		
+
 #		me.onFocusIn();
 		me._focused = 1;
 		me._onStateChange();
@@ -148,7 +149,7 @@ gui.Popup = {
 			var arg = arg[0];
 		}
 		var (x, y) = arg;
-		
+
 		me.setInt("tf/t[0]", x);
 		me.setInt("tf/t[1]", y);
 		return me;
@@ -158,14 +159,14 @@ gui.Popup = {
 			var arg = arg[0];
 		}
 		var (w, h) = arg;
-		
+
 		me.set("content-size[0]", w);
 		me.set("content-size[1]", h);
-		
+
 		if (me.onResize != nil) {
 			me.onResize();
 		}
-		
+
 		return me;
 	},
 	getSize: func {
@@ -178,7 +179,7 @@ gui.Popup = {
 		# on writing the z-index the window always is moved to the top of all other
 		# windows with the same z-index.
 		me.setInt("z-index", me.get("z-index", gui.STACK_INDEX["always-on-top"]));
-		
+
 		me.setFocus();
 	},
 	hide: func(parents = 0) {
@@ -218,7 +219,7 @@ gui.Popup = {
 		if (me['_canvas'] == nil) {
 			return;
 		}
-		
+
 		for(var i = 0; i < 2; i += 1) {
 			var size = me.get("content-size[" ~ i ~ "]");
 			me._canvas.set("size[" ~ i ~ "]", size);
@@ -228,7 +229,7 @@ gui.Popup = {
 # protected:
 	_onStateChange: func {
 		var event = canvas.CustomEvent.new("wm.focus-" ~ (me._focused ? "in" : "out"));
-		
+
 		if (me.getCanvas() != nil) {
 			me.getCanvas().data("focused", me._focused).dispatchEvent(event);
 		}
@@ -240,7 +241,7 @@ gui.Popup = {
 			return;
 		}
 		var name = child.getName();
-		
+
 		# support for CSS like position: absolute; with right and/or bottom margin
 		if (name == "right") {
 			me._handlePositionAbsolute(child, mode, name, 0);
@@ -315,5 +316,3 @@ gui.Popup = {
 			.rect(0, 0, me.get("size[0]"), me.get("size[1]"));
 	}
 };
-
-

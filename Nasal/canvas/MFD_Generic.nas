@@ -26,6 +26,8 @@
 
 var PFD_MenuItem =
 {
+    _CLASS: "canvas.PFD_MenuItem",
+
     new : func (menu_id, title, page, callbackfn=nil, displayfn=nil)
     {
 		var obj = {parents : [PFD_MenuItem] };
@@ -48,6 +50,8 @@ var PFD_MenuItem =
 
 var PFD_Page =
 {
+    _CLASS: "canvas.PFD_Page",
+
 	new : func (svg, title, layer_id, device)
     {
 		var obj = {parents : [PFD_Page] };
@@ -160,6 +164,8 @@ var PFD_Page =
 # Container device for pages.
 var PFD_Device =
 {
+    _CLASS: "canvas.PFD_Device",
+
 # - svg is the page elements from the svg.
 # - num_menu_buttons is the Number of menu buttons; starting from the bottom left then right, then top, then left.
 # - button prefix (e.g MI_) is the prefix of the labels in the SVG for the menu boxes.

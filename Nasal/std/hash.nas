@@ -14,6 +14,8 @@ if (ishash(globals["std"]) and ishash(std["Hash"]))
     return;
 
 Hash = {
+    _CLASS: "std.Hash",
+
     new: func(hash=nil, name="") {
         var obj = {
             parents: [me],

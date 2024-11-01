@@ -673,6 +673,7 @@ setsize(geojunctions, 7);
 
 
 var boundary = {
+  _CLASS: "earthview.boundary",
   new: func(bindex, bname) {
       var m = { parents: [ boundary ] };
       m.index = bindex;
@@ -682,6 +683,7 @@ var boundary = {
 };
 
 var atile = {
+  _CLASS: "earthview.atile",
   new: func(tname, ptind, ptname, arcind, arcname) {
       var m = { parents: [ atile ] };
       m.name = tname;

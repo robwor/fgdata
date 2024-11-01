@@ -12,10 +12,12 @@
 
 var DisplayUnit =
 {
+    _CLASS: "DisplayUnit",
+
     #-- static members
     _instances: [],
     bgcolor: [0.01, 0.01, 0.01, 1],
-    
+
     # call del() on all instances
     unload: func() {
         foreach (var instance; DisplayUnit._instances) {
@@ -23,13 +25,13 @@ var DisplayUnit =
         }
         DisplayUnit._instances = [];
     },
-    
+
     del: func() {
         if (me.window != nil) {
             me.window.del();
             me.window = nil;
         }
-        if (me.placement != nil) { 
+        if (me.placement != nil) {
             me.placement.remove();
             me.placement = nil;
         }
@@ -68,7 +70,7 @@ var DisplayUnit =
         me.root = me.du_canvas.createGroup();
         #-- optional for development: create test image
         me._test_img();
-        
+
         me.img = me.root.createChild("image", "DisplayUnit "~me.name);
         var place = { parent: me.placement_parent, node: me.placement_node };
         me.placement = me.du_canvas.addPlacement(place);
@@ -122,7 +124,7 @@ var DisplayUnit =
         me.root.createChild("path", "square-btm-right").rect(x, y, L, L)
             .setColorFill(1,1,1,1);
     },
-    
+
     # set a new source path for canvas image element
     setSource: func(path) {
         #print("DisplayUnit.setSource for "~me.du_canvas.getPath()~" ("~me.name~") to "~path);
@@ -142,7 +144,7 @@ var DisplayUnit =
             else me.root.hide();
         }, 1, 0);
     },
-    
+
     asWindow: func(window_size) {
         me.window = canvas.Window.new(window_size, "dialog");
         me.window.set('title', "EFIS " ~ me.name)
@@ -153,5 +155,5 @@ var DisplayUnit =
             me.window.lockAspectRatio(1);
         me.window.del = func() { call(canvas.Window.del, [], me); }
         return me.window
-    },    
+    },
 };

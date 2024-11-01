@@ -5,6 +5,8 @@
 
 
 gui.widgets.HorizontalRule = {
+  _CLASS: "HorizontalRule",
+
   new: func(parent, style = nil, cfg = nil)
   {
     style = style or canvas.style;
@@ -29,6 +31,8 @@ gui.widgets.HorizontalRule = {
 };
 
 gui.widgets.VerticalRule = {
+  _CLASS: "VerticalRule",
+
   new: func(parent, style = nil, cfg = nil)
   {
     style = style or canvas.style;

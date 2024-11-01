@@ -1,4 +1,6 @@
 var Tooltip = {
+  _CLASS: "canvas.Tooltip",
+
   # default delay (in seconds)
   DELAY: 4.0,
   # Constructor
@@ -129,7 +131,7 @@ var Tooltip = {
       foreach(var p; me._properties) {
         var val = '';
         if (p != nil) val = p.getValue() or 0;
-        
+
         # https://code.google.com/p/flightgear-bugs/issues/detail?id=1454
         # wrap mapping in 'call' to catch conversion errors
         var val_mapped = call(me._remapValue, [val], me, nil, var err = []);

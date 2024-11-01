@@ -1,5 +1,6 @@
-var ErrorNotification = 
+var ErrorNotification =
 {
+  _CLASS: "canvas.ErrorNotification",
     SHOW_TIME: 10.0,
     SLICE: 17,
     MARGIN: 10,
@@ -81,7 +82,7 @@ var ErrorNotification =
           .setTranslation(me.SLICE + iconWidth + me.MARGIN, me.SLICE);
 
      me._canvas.addEventListener("mousedown", func me.clicked());
-     
+
     return me._canvas;
   },
 

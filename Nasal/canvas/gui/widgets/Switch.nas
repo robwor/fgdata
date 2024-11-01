@@ -1,4 +1,6 @@
 gui.widgets.Switch = {
+        _CLASS: "Switch",
+
         new: func(parent, style = nil, cfg = nil) {
                 cfg = Config.new(cfg);
                 cfg.set("type", "switch");
@@ -6,11 +8,10 @@ gui.widgets.Switch = {
                 m._checkable = 1;
 
                 append(m.parents, gui.widgets.Switch);
-                
+
                 m.setFixedSize(48, 24);
                 return m;
         },
         setCheckable: nil,
         setText: nil,
 };
-

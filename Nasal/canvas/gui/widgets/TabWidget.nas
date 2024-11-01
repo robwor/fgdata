@@ -10,11 +10,11 @@
 # var root = myCanvas.createGroup();
 # var vbox = canvas.VBoxLayout.new();
 # myCanvas.setLayout(vbox);
-# 
+#
 # var tabs = canvas.gui.widgets.TabWidget.new(root, canvas.style, {});
 # var tabsContent = tabs.getContent();
 # vbox.addItem(tabs);
-# 
+#
 # var tab1 = canvas.VBoxLayout.new();
 # var image1 = canvas.gui.widgets.Label.new(tabsContent, canvas.style, {})
 #                 .setImage("Textures/Splash1.png")
@@ -24,7 +24,7 @@
 #                 .setText("Texture 1");
 # tab1.addItem(text1);
 # tabs.addTab("tab1", "Texture 1", tab1);
-# 
+#
 # var tab2 = canvas.VBoxLayout.new();
 # var image2 = canvas.gui.widgets.Label.new(tabsContent, canvas.style, {})
 #                 .setImage("Textures/Splash2.png")
@@ -34,7 +34,7 @@
 #                 .setText("Texture 2");
 # tab2.addItem(text2);
 # tabs.addTab("tab2", "Texture 2", tab2);
-# 
+#
 # var tab3 = canvas.VBoxLayout.new();
 # var image3 = canvas.gui.widgets.Label.new(tabsContent, canvas.style, {})
 #                 .setImage("Textures/Splash3.png")
@@ -46,6 +46,8 @@
 # tabs.addTab("tab3", "Texture 3", tab3);
 
 gui.widgets.TabWidgetTabButton = {
+	_CLASS: "TabWidgetTabButton",
+
 	new: func(parent, style = nil, cfg = nil) {
 		cfg = Config.new(cfg);
 		style = style or canvas.style;
@@ -65,7 +67,7 @@ gui.widgets.TabWidgetTabButton = {
 	},
 	setText: func(text) {
 		me._view.setText(me, text);
-		
+
 		return me;
 	},
 	setSelected: func(selected = 1) {
@@ -101,6 +103,8 @@ gui.widgets.TabWidgetTabButton = {
 };
 
 gui.widgets.TabWidget = {
+	_CLASS: "TabWidget",
+
 	new: func(parent, style = nil, cfg = nil) {
 		style = style or canvas.style;
 		cfg = Config.new(cfg);
@@ -120,38 +124,38 @@ gui.widgets.TabWidget = {
 		m._tabs = {};
 		m._tabButtons = {};
 		m._closeable_tabs = cfg.get("tabs-closeable", 0);
-		
+
 		m.setLayoutMinimumSize([50, 36]);
 		m.setLayoutSizeHint([100, 36]);
-		
+
 		return m;
 	},
-	
+
 	getContent: func {
 		return me._view.content;
 	},
-	
+
 	hasTab: func(id) {
 		return me._tabs[id] != nil;
 	},
-	
+
 	getTab: func(id) {
 		if (!me.hasTab(id)) {
 			die("tab with id '" ~ id ~ "' does not exist");
 		}
-		
+
 		return me._tabs[id];
 	},
-	
+
 	getTabs: func {
 		return me._tabs;
 	},
-	
+
 	addTab: func(id, label, widget) {
 		if (me.hasTab(id)) {
 			die("cannot add multiple tabs with the same id: " ~ id);
 		}
-		
+
 		me._tabButtons[id] = gui.widgets.TabWidgetTabButton.new(me._view.tabBar, canvas.style, {
 			"tab-closeable": me._closeable_tabs,
 		})
@@ -164,22 +168,22 @@ gui.widgets.TabWidget = {
 										me.setCurrentTab(id);
 									}
 								});
-		
+
 		me._tabBar.addItem(me._tabButtons[id]);
 		me._tabs[id] = widget;
 		me._content.addItem(widget);
 		# hack to force a doLayout for each tab
 		me.setCurrentTab(id);
 		me.setCurrentTab(keys(me._tabs)[0]);
-		
+
 		return me;
 	},
-	
+
 	removeTab: func(id) {
 		if (!me.hasTab(id)) {
 			die("tab with id '" ~ id ~ "' does not exist");
 		}
-		
+
 		me._tabs[id].setVisible(0);
 		me._content.removeItem(me._tabs[id]);
 		delete(me._tabs, id);
@@ -188,15 +192,15 @@ gui.widgets.TabWidget = {
 		if (size(keys(me._tabs)) > 0) {
 			me.setCurrentTab(keys(me._tabs)[-1]);
 		}
-		
+
 		return me;
 	},
-	
+
 	setCurrentTab: func(id) {
 		if (!me.hasTab(id)) {
 			die("tab with id '" ~ id ~ "' does not exist");
 		}
-		
+
 		if (me._currentTabId == id) {
 			return; # no need to do anything
 		}
@@ -210,10 +214,10 @@ gui.widgets.TabWidget = {
 		}
 		me._currentTabId = id;
 		me._currentTab = me._tabs[id];
-		
+
 		return me.update();
 	},
-	
+
 	setSize: func {
 		if (size(arg) == 1) {
 			var arg = arg[0];
@@ -222,7 +226,7 @@ gui.widgets.TabWidget = {
 		me._size = [x, y];
 		return me.update();
 	},
-	
+
 	# Needs to be called when the size of the content changes.
 	update: func() {
 		if(me._layout.getParent() == nil) {
@@ -236,7 +240,7 @@ gui.widgets.TabWidget = {
 		}
 		me.setLayoutSizeHint(me._size);
 		me._view.setSize(me, me._size[0], me._size[1]);
-		
+
 		me._view.update(me);
 
 		return me;

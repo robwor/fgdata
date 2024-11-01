@@ -425,7 +425,7 @@ var fly_by_view_handler = {
     }
     if (me.chase == nil or me.chase == 0)   me.chase = -25;
     me.chase = -me.chase;
-                
+
 		me.last = me.aircraft_position();
 		me.setpos(1);
 	},
@@ -548,6 +548,7 @@ var fly_by_view_handler = {
 # aircraft. Used by <manager> above.
 #
 var model_view_handler_class = {
+	_CLASS: "view.model_view_handler_class",
     new: func() {
         var m = { parents:[model_view_handler_class]};
         m.current = nil;
@@ -635,6 +636,8 @@ var model_view_handler = model_view_handler_class.new();
 # view.model_view_handler.next() etc.
 
 var pilot_view_limiter = {
+	_CLASS: "view.pilot_view_limiter",
+
 	new : func {
 		return { parents: [pilot_view_limiter] };
 	},
@@ -770,6 +773,7 @@ var normdeg = func(a) {
 # field-of-view parameter is also managed by this class.)
 #
 var ViewAxis = {
+	_CLASS: "view.ViewAxis",
 	new : func(prop) {
 		var m = { parents : [ViewAxis] };
 		m.prop = props.globals.getNode(prop, 1);

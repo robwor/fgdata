@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 gui.widgets.Slider = {
+  _CLASS: "Slider",
   ValueStyle: {
     Fixed: 0,
     Moving: 1,
@@ -79,7 +80,7 @@ gui.widgets.Slider = {
     el.addEventListener("click", func(e) {
       me._dragThumb(e);
     });
-    
+
     view._thumb.addEventListener("drag", func(e) {
       me._dragThumb(e);
       e.stopPropagation();

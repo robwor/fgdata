@@ -76,6 +76,7 @@
 
  var OutgoingMPBridge = 
    {
+    _CLASS: "emesary_mp_bridge.OutgoingMPBridge",
     SeperatorChar : "!",
     MessageEndChar : "~",
     StartMessageIndex : 11,
@@ -259,6 +260,7 @@
  # route messages to 
  var IncomingMPBridge = 
    {
+    _CLASS: "emesary_mp_bridge.IncomingMPBridge",
     trace : 0,
   new: func(_ident, _notifications_to_bridge=nil, _mpidx=19, _transmitter=nil, _propertybase="emesary/bridge")
     {

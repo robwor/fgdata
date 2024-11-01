@@ -1,4 +1,6 @@
 var DefaultStyle = {
+  _CLASS: "DefaultStyle",
+
   new: func(name, name_icon_theme)
   {
     return {

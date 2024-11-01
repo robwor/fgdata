@@ -1,4 +1,6 @@
 gui.widgets.LineEdit = {
+  _CLASS: "LineEdit",
+
   new: func(parent, style = nil, cfg = nil)
   {
     style = style or canvas.style;
@@ -6,7 +8,7 @@ gui.widgets.LineEdit = {
     var m = gui.Widget.new(gui.widgets.LineEdit, cfg);
     m._focus_policy = m.StrongFocus;
     m._setView( style.createWidget(parent, "line-edit", cfg) );
-    
+
     m.setLayoutMinimumSize([28, 16]);
     m.setLayoutSizeHint([150, 28]);
 
@@ -265,7 +267,7 @@ gui.widgets.LineEdit = {
           }
           if (start > 0) {
             me.setSelection(start - 1, end);
-          } 
+          }
         } else {
           if (me._selection_start != 0 or me._selection_end != 0) {
             me.moveCursor(me._selection_start);
@@ -285,7 +287,7 @@ gui.widgets.LineEdit = {
           }
           if (end + 1< utf8.size(me._text)) {
             me.setSelection(start, end + 1);
-          } 
+          }
         } else {
           if (me._selection_end != 0 or me._selection_start != 0) {
             me.moveCursor(me._selection_end);

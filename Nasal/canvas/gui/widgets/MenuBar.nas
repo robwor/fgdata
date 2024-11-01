@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 gui.widgets.MenuBar = {
+        _CLASS: "MenuBar",
+
         new: func(parent, style = nil, cfg = nil) {
                 style = style or canvas.style;
                 cfg = Config.new(cfg);
@@ -44,7 +46,7 @@ gui.widgets.MenuBar = {
                 if (menu == nil) {
                         die("cannot create a submenu item without submenu");
                 }
-                var item = gui.MenuItem.new(me._view._items, style, 
+                var item = gui.MenuItem.new(me._view._items, style,
                         {
                                 text: text, cb: nil, shortcut: nil, icon: nil, enabled: enabled,
                                 menu_position: gui.MenuItem.MenuPosition.Below,
@@ -161,4 +163,3 @@ gui.widgets.MenuBar = {
                 return me;
         },
 };
-

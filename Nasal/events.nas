@@ -26,11 +26,12 @@
 # For an example of how to use it this way, check Nasal/FailureMgr
 
 var EventDispatcher = (func {
-
 	var global_id = 0;
 	var getid = func { global_id += 1 };
 
 	return {
+		_CLASS: "events.EventDispatcher",
+
 		new: func {
 			var m = { parents: [EventDispatcher] };
 			m._subscribers = {};
@@ -63,6 +64,7 @@ var EventDispatcher = (func {
 # kept by the message.
 
 var LogBuffer = {
+	_CLASS: "events.LogBuffer",
 
 	new: func (max_messages = 128, echo = 0) {
 		assert(max_messages > 1, "come on, lets be serious..");

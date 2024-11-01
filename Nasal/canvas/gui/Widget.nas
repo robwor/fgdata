@@ -1,5 +1,6 @@
 gui.Widget = {
-  #
+  _CLASS: "gui.Widget",
+
   new: func(derived, cfg = nil)
   {
     cfg = Config.new(cfg);
@@ -239,4 +240,3 @@ gui.Widget.ExpandingHorizontal = 1;
 gui.Widget.ExpandingVertical = 2;
 # Expand in both directions
 gui.Widget.Expanding = gui.Widget.ExpandingHorizontal | gui.Widget.ExpandingVertical;
-

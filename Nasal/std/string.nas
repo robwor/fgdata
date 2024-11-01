@@ -14,6 +14,7 @@ if (ishash(globals["std"]) and ishash(std["String"]))
     return;
 
 var String = {
+  _CLASS: "std.String",
 # public:
   new: func(str)
   {
@@ -56,7 +57,7 @@ var String = {
         return 0;
     return 1;
   },
-  
+
   # returns index (zero based) of first occurrence of s
   # searching from pos
   find_first_of: func(s, pos = 0)

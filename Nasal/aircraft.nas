@@ -46,6 +46,8 @@ var optarg = func(args, index, default) {
 #	canopy.open();
 #
 var door = {
+	_CLASS: "aircraft.door",
+
 	new: func(node, swingtime, pos = 0) {
 		var m = { parents: [door] };
 		m.node = makeNode(node);
@@ -132,6 +134,8 @@ var door = {
 #	aircraft.light.new("sim/model/foo/strobe-bot", 1.005, pattern, switch);
 #
 var light = {
+	_CLASS: "aircraft.light",
+
 	new: func {
 		var m = { parents: [light] };
 		m.node = makeNode(arg[0]);
@@ -250,6 +254,8 @@ var light = {
 #	print(lp.filter(0));
 #
 var lowpass = {
+	_CLASS: "aircraft.lowpass",
+
 	new: func(coeff) {
 		var m = { parents: [lowpass] };
 		m.coeff = coeff >= 0 ? coeff : die("aircraft.lowpass(): coefficient must be >= 0");
@@ -285,6 +291,7 @@ var lowpass = {
 # angle again from them. This avoids unexpected jumps from 179.99 to -180 degree.
 #
 var angular_lowpass = {
+	_CLASS: "aircraft.angular_lowpass",
 	new: func(coeff) {
 		var m = { parents: [angular_lowpass] };
 		m.sin = lowpass.new(coeff);
@@ -438,6 +445,8 @@ var data = {
 #	aircraft.timer.new("/sim/time/hobbs/battery", 60).start();  # anonymous timer
 #
 var timer = {
+	_CLASS: "aircraft.timer",
+
 	new: func(prop, res = 1, save = 1) {
 		var m = { parents: [timer] };
 		m.node = makeNode(prop);
@@ -534,6 +543,8 @@ var timer = {
 #	aircraft.livery.next();
 #
 var livery = {
+	_CLASS: "aircraft.livery",
+
 	init: func(dir, nameprop = "sim/model/livery/name", sortprop = nil) {
 		me.parents = [gui.OverlaySelector.new("Select Livery", dir, nameprop,
 				sortprop, "sim/model/livery/file")];
@@ -573,6 +584,8 @@ var livery = {
 #	</nasal>
 #
 var livery_update = {
+	_CLASS: "aircraft.livery_update",
+
 	new: func(liveriesdir, interval = 10.01, callback = nil) {
 		var m = { parents: [livery_update, overlay_update.new()] };
 		m.parents[1].add(liveriesdir, "sim/model/livery/file", callback);
@@ -616,6 +629,8 @@ var livery_update = {
 #	</nasal>
 #
 var overlay_update = {
+	_CLASS: "aircraft.overlay_update",
+
 	new: func {
 		var m = { parents: [overlay_update] };
 		m.root = cmdarg();
@@ -827,12 +842,14 @@ var autotrim = {
 #      Note: in reality, tyre smoke doesn't depend on vspeed, but only on acceleration
 #      and friction.
 #
-#    rain_norm_trigger: threshold for deciding that there is enough standing water to 
+#    rain_norm_trigger: threshold for deciding that there is enough standing water to
 #                       calculate spray. This is compared against rain-norm.
 #
 var tyresmoke = {
+	_CLASS: "aircraft.tyresmoke",
+
 	new: func(number, auto = 0, diff_norm = 0.05, check_vspeed=1, rain_norm_trigger=0.2) {
-		var m = { 
+		var m = {
 		    parents: [tyresmoke],
 		    filtered_touchdown: 0
 		};
@@ -1008,6 +1025,8 @@ var tyresmoke = {
 #	var tyresmoke_system = aircraft.tyresmoke_system.new(0, 1, 2, 3, 4);
 
 var tyresmoke_system = {
+	_CLASS: "aircraft.tyresmoke_system",
+
 	new: func {
 		var m = { parents: [tyresmoke_system] };
 		# preset array to proper size
@@ -1209,6 +1228,8 @@ var HUD = {
 #	xfeed.open();
 #
 var crossfeed_valve = {
+	_CLASS: "aircraft.crossfeed_valve",
+
 	new: func(flow_rate, path) {
 		var m = { parents: [crossfeed_valve] };
 		m.valve_open = 0;

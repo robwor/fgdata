@@ -7,6 +7,8 @@
 
 
 gui.widgets.Frame = {
+  _CLASS: "Frame",
+
   new: func(parent, style = nil, cfg = nil)
   {
     style = style or canvas.style;
@@ -57,7 +59,7 @@ gui.widgets.Frame = {
   {
    # var offset = [ me._content_offset[0] - me._content_pos[0],
     #               me._content_offset[1] - me._content_pos[1] ];
- 
+
     me.getContent().setTranslation(10, 10);
     me.getContent().setSize([me._size[0] - 20, me._size[1] - 20]);
 

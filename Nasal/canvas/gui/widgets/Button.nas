@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 gui.widgets.Button = {
+  _CLASS: "Button",
+
   new: func(parent, style = nil, cfg = nil)
   {
     cfg = Config.new(cfg);

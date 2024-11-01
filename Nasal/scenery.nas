@@ -18,6 +18,8 @@ var events = nil;
 #
 # Note: Currently toggle() is the only shared event.
 var sharedDoor = {
+    _CLASS: "scenery.sharedDoor",
+
     new: func(node, swingtime, pos = 0) {
         var obj = aircraft.door.new(node, swingtime, pos);
         obj.parents    = [sharedDoor] ~ obj.parents;
