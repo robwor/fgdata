@@ -378,6 +378,9 @@ DefaultStyle.widgets.label = {
     me.setText(model, me._text.get("text"));
   },
   setColor: func(model, color) {
+    if (color == nil) {
+      color = me._style.getColor("fg_color");
+    }
     me._text.set("fill", color);
   },
   heightForWidth: func(w)

@@ -44,9 +44,11 @@ gui.widgets.Label = {
     }
   },
   setColor: func(color) {
-    var type = typeof(color);
-    me._color = canvas._getColor(color);
-    debug.dump("Label.setColor", color, type, me._color);
+    if (color == nil) {
+      me._color = nil;
+    } else {
+      me._color = canvas._getColor(color);
+    }
     if (me._view != nil) {
       me._view.setColor(me, me._color);
     }
