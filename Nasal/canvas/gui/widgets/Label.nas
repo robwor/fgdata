@@ -15,21 +15,38 @@ gui.widgets.Label = {
 
     m.setText(m._cfg.get("text", ""));
     m.setTextAlign(m._cfg.get("text-align", "left"));
-    if (var color = m._cfg.get("color")) {
-      m.setColor(color);
-    }
+    m.setFormat(m._cfg.get("format"));
+    m.setValue(m._cfg.get("value"));
+    m.setColor(m._cfg.get("color"));
+    m.setFont(m._cfg.get("font"));
 
     return m;
   },
+  setFormat: func(format) {
+    me._format = format;
+  },
+  setValue: func(value...) {
+    if (typeof(value) == "vector" and size(value) == 1) {
+      value = value[0];
+    }
+    if (value == nil or !me._format) {
+      return;
+    }
+    me._value = value;
+    me.setText(sprintf(me._format, value));
+  },
+  # @description Set font for this label
+  # @param path Optional[str] Path to font file relative to $FGDATA/Fonts, or nil to use the style's default font
+  setFont: func(path = nil) {
+    me._font = path;
+    if (me._view != nil) {
+      me._view.setFont(me, path);
+    }
+  },
   setColor: func(color) {
     var type = typeof(color);
-    if (color == nil or type == "scalar") {
-      me._color = color;
-    } elsif (type == "vector") {
-      me._color = canvas._getColor(color);
-    } else {
-      die("canvas.gui.widgets.Label.setColor: 'color' is of unsupported type '" ~ type ~ "'");
-    }
+    me._color = canvas._getColor(color);
+    debug.dump("Label.setColor", color, type, me._color);
     if (me._view != nil) {
       me._view.setColor(me, me._color);
     }
@@ -42,6 +59,7 @@ gui.widgets.Label = {
   },
   setText: func(text)
   {
+    me._text = text;
     if (me._view != nil) {
       me._view.setText(me, text);
     }
@@ -49,6 +67,7 @@ gui.widgets.Label = {
   },
   setImage: func(img)
   {
+    me._img = img;
     if (me._view != nil) {
       me._view.setImage(me, img);
     }
@@ -56,6 +75,7 @@ gui.widgets.Label = {
   },
   setBackground: func(bg)
   {
+    me._bg = bg;
     if (me._view != nil) {
       me._view.setBackground(me, bg);
     }

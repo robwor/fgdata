@@ -369,6 +369,14 @@ DefaultStyle.widgets.label = {
     me._bg.set("fill", bg);
     return me;
   },
+  setFont: func(model, path) {
+    if (path != nil) {
+      me._text.setFont(path);
+    } else {
+      me._text.setFont(me._style.getFont("default"));
+    }
+    me.setText(model, me._text.get("text"));
+  },
   setColor: func(model, color) {
     me._text.set("fill", color);
   },
