@@ -74,30 +74,38 @@ gui.widgets.PropertyTree = {
                                                         .setData("node", me._node.getParent());
                 }
                 foreach (var c; sort(me._node.getChildren(), func(a, b) cmp(a.getName(), b.getName()))) {
-                        if (size(c.getChildren())) {
+                        var item = nil;
+                        if (c.getAttribute("children")) {
                                 var index = c.getIndex();
                                 var name = c.getName() ~ (index > 0 ? "[" ~ index ~ "]" : "");
 
-                                var item = me.createItem(name ~ "/");
+                                item = me.createItem(name ~ "/");
                         } else {
-                                var item = me.createItem("");
-                                item._view._root.addEventListener("click", func(e) me.itemClicked(e));
+                                item = me.createItem("");
                         }
+                        item._view._root.addEventListener("click", func(e) me.itemClicked(e));
                         item.setData("node", c);
                 }
         },
 
         itemClicked: func(e) {
-                if (!e.ctrlKey) {
-                        return;
-                }
                 var selected = me.getSelectedItems();
                 if (!size(selected)) {
                         return;
                 }
                 var node = selected[0].getData("node");
-                if (node.getType() == "BOOL") {
-                        node.toggleBoolValue();
+                if (e.ctrlKey) {
+                        if (e.shiftKey) {
+                                screen.property_display.reset();
+                        } elsif (node.getType() == "BOOL") {
+                                node.toggleBoolValue();
+                        }
+                } elsif (e.shiftKey) {
+                        if (node.getAttribute("children")) {
+                                screen.property_display.add(node.getChildren());
+                        } else {
+                                screen.property_display.add(node);
+                        }
                 }
         },
 
