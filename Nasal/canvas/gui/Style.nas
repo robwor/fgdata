@@ -13,7 +13,8 @@ gui.Style = {
       _dir_icons: gui_path ~ "/icons/" ~ name_icon_theme,
       _node: io.read_properties(style_path ~ "/style.xml", root_node),
       _colors: {},
-      _sizes: {}
+      _sizes: {},
+      _fonts: {}
     };
 
     # parse theme colors
@@ -53,6 +54,17 @@ gui.Style = {
       } # of sizes iteration
     }
 
+    var fonts = m._node.getChild("fonts");
+    if (fonts) {
+      foreach (var fontNode; fonts.getChildren()) {
+        var pathNode = fontNode.getChild("path");
+        if (pathNode) {
+          var path = pathNode.getValue();
+          m._fonts[fontNode.getName()] = path;
+        }
+      }
+    }
+
     m._dir_decoration =
       m._path ~ "/" ~ (m._node.getValue("folders/decoration") or "decoration");
     m._dir_widgets =
@@ -86,5 +98,8 @@ gui.Style = {
   getSize: func(name, def = 1.0)
   {
     return me._sizes[name] or def;
+  },
+  getFont: func(name, def = "LiberationFonts/LiberationSans-Regular.ttf") {
+    return me._fonts[name] or def;
   }
 };

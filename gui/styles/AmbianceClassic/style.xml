@@ -418,6 +418,17 @@
 		<base-font-size type="int">14</base-font-size>
 		<list-font-size type="int">14</list-font-size>
 		<list-item-height type="int">24</list-item-height>
-
 	</sizes>
+
+	<fonts>
+		<default>
+			<path>LiberationFonts/LiberationSans-Regular.ttf</path>
+		</default>
+		<message-display>
+			<path>LiberationFonts/LiberationSans-Bold.ttf</path>
+		</message-display>
+		<property-display>
+			<path>LiberationFonts/LiberationSans-Bold.ttf</path>
+		</property-display>
+	</fonts>
 </PropertyList>
