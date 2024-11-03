@@ -272,22 +272,23 @@ var Window = {
     setInputFocus(nil);
     return me;
   },
-  setPosition: func(left=nil, top=nil, right=nil, bottom=nil, center=nil)
+  setPosition: func(left=nil, top=nil, right=nil, bottom=nil, center=-1)
   {
+    if (center == -1) {
+      center = me.get("center");
+    }
     if (typeof(left) == "vector") {
-     if (size(left) == 2) {
+      if (size(left) == 2) {
         var (left, top) = left;
-      } elsif (size(left) == 4) {
-        var (left, top, right, bottom) = left;
       } else {
-        die("canvas.Window.setPosition called with a vector as first argument, which is of unsupported length " ~ size(left));
+        die("canvas.Window.setPosition called with a vector as 'left' argument, which is of unsupported length " ~ size(left));
       }
     }
-    if (typeof(top) == "vector") {
-      if (size(top) == 2) {
-        var (right, bottom) = top;
+    if (typeof(right) == "vector") {
+      if (size(right) == 2) {
+        var (right, bottom) = right;
       } else {
-        die("canvas.Window.setPosition called with a vector as second argument, which is of unsupported length " ~ size(top));
+        die("canvas.Window.setPosition called with a vector as 'right' argument, which is of unsupported length " ~ size(top));
       }
     }
 
@@ -305,10 +306,10 @@ var Window = {
     if (bottom != nil) {
       me.setInt("bottom", bottom);
     }
-    if (center != nil) {
-      me.set("center", center);
-    } else {
+    if (center == nil) {
       me._node.removeChild("center");
+    } elsif (center != -1) {
+      me.set("center", center);
     }
     return me;
   },
@@ -316,11 +317,11 @@ var Window = {
     return [me.get("tf/t[0]"), me.get("tf/t[1]")];
   },
   getCSSPosition: func {
-    var top = me.get("tf/t[0]");
-    var left = me.get("tf/t[1]");
+    var left = me.get("tf/t[0]");
+    var top = me.get("tf/t[1]");
     var right = me.get("right");
     var bottom = me.get("bottom");
-    return [top, left, bottom, right];
+    return [left, top, right, bottom];
   },
 
   # @description Center window on screen
@@ -331,9 +332,12 @@ var Window = {
   #                                                         * 2 = Center in both directions
   # @return canvas.gui.Window This window to support method chaining
   centerOnScreen: func(direction=2) {
+    if (direction == nil or direction < 0 or direction > 2) {
+      return;
+    }
     var desktopSize = globals.MainWindow.getSize();
     var center = [(desktopSize[0] - me.getSize()[0]) / 2 - me._frame_width, (desktopSize[1] - me.getSize()[1] - me._title_bar_height) / 2];
-    var pos = me.getPosition();
+    var pos = [nil, nil];
     if (direction == 0 or direction == 2) {
       pos[0] = center[0];
     }
@@ -353,10 +357,27 @@ var Window = {
     me.set("content-size[0]", w);
     me.set("content-size[1]", h);
 
-    if( me.onResize != nil )
+    if (me.onResize != nil and isfunc(me.onResize)) {
       me.onResize();
+    }
 
-    me.setPosition(me.getCSSPosition(), me.get("center"));
+    var pos = me.getCSSPosition();
+    var center = me.get("center");
+    if (pos[2] != nil) {
+      pos[0] = nil;
+    }
+    if (pos[3] != nil) {
+      pos[1] = nil;
+    }
+    if (center == 0 or center == 2) {
+      pos[0] = nil;
+      pos[2] = nil;
+    }
+    if (center == 1 or center == 2) {
+      pos[1] = nil;
+      pos[3] = nil;
+    }
+    me.setPosition(pos[0], pos[1], pos[2], pos[3], center);
 
     return me;
   },
@@ -477,8 +498,10 @@ var Window = {
       me._handlePositionAbsolute(child, mode, name, 1);
 
     if (name == "center") {
-      if (mode == 0 or mode == 1 and (var direction = child.getValue()) != -1) {
-        me.centerOnScreen(direction);
+      if (mode == 0 or mode == 1) {
+        if ((var direction = child.getValue()) != -1) {
+          me.centerOnScreen(direction);
+        }
       }
     }
 
