@@ -3,13 +3,13 @@
 #-------------------------------------------------------------------------------
 # 
 var _getColor = func(color) {
-    if (size(color) == 1)
+    if (isvec(color) and size(color) == 1)
         var color = color[0];
 
     if (isscalar(color))
         return color;
     if (!isvec(color))
-        return debug.warn("Wrong type for color");
+        return debug.warn("Wrong type for color: " ~ typeof(color));
     if (size(color) < 3 or size(color) > 4)
         return debug.warn("Color needs 3 or 4 values (RGB or RGBA)");
 
