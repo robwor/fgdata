@@ -22,8 +22,7 @@ gui.widgets.Button = {
     m._isDefault = cfg.get("default", 0);
     m._destructive = cfg.get("destructive", 0);
 
-    if( style != nil and !m._flat )
-      m._setView( style.createWidget(parent, cfg.get("type", "button"), cfg) );
+    m._setView(style.createWidget(parent, cfg.get("type", "button"), cfg));
 
     m.setText(cfg.get("text", ""));
 

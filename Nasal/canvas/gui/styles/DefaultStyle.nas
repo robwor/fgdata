@@ -42,6 +42,10 @@ DefaultStyle.widgets.button = {
               .set("font", "LiberationFonts/LiberationSans-Regular.ttf")
               .set("character-size", 14)
               .set("alignment", "center-baseline");
+    if (cfg.get("flat")) {
+      me._border.hide();
+      me._bg.hide();
+    }
   },
   setSize: func(model, w, h)
   {
