@@ -14,23 +14,35 @@ if (ishash(globals["std"]) and ishash(std["Hash"]))
     return;
 
 Hash = {
-    _CLASS: "std.Hash",
-
     new: func(hash=nil, name="") {
         var obj = {
             parents: [me],
             name: name,
             _h: {},
-            _callback: func,
+            _callbacks: [],
         };
-        if (ishash(hash))
-            obj._h = hash;
+        if (ishash(hash)) {
+            if (isa(hash, Hash)) {
+                # perform shallow copy of the argument hash
+                obj.name = hash.name;
+                foreach (var key; keys(hash._h)) {
+                    obj._h[key] = hash._h[key];
+                }
+                foreach (var cb; hash._callbacks) {
+                    append(obj._callbacks, cb);
+                }
+            } else {
+                obj._h = hash;
+            }
+        }
         return obj;
     },
 
     set: func (key, value) {
         me._h[key] = value;
-        me._callback(key, value);
+        foreach (var cb; me._callbacks) {
+            cb(key, value);
+        }
         return me;
     },
 
@@ -80,7 +92,7 @@ Hash = {
     # callback for set()
     addCallback: func (f) {
         if (isfunc(f)) {
-            me._callback = f;
+            append(me._callbacks, f);
             return me;
         }
         return nil;
