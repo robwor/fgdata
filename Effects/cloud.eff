@@ -78,7 +78,7 @@
       </texture-unit>
       <blend>1</blend>
       <rendering-hint>transparent</rendering-hint>
-      <cull-face>back</cull-face>
+      <cull-face>off</cull-face>
       <program>
         <vertex-shader>Shaders/HDR/3dcloud.vert</vertex-shader>
         <vertex-shader>Shaders/HDR/3dcloud_common.vert</vertex-shader>

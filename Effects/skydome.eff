@@ -20,7 +20,7 @@
         <function>less</function>
         <write-mask>false</write-mask>
       </depth>
-      <cull-face>back</cull-face>
+      <cull-face>off</cull-face>
       <program>
         <vertex-shader>Shaders/HDR/skydome.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/skydome.frag</fragment-shader>
@@ -65,7 +65,7 @@
         <function>less</function>
         <write-mask>false</write-mask>
       </depth>
-      <cull-face>back</cull-face>
+      <cull-face>off</cull-face>
       <program>
         <vertex-shader>Shaders/HDR/skydome.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/skydome.frag</fragment-shader>
