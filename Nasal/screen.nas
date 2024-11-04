@@ -28,12 +28,6 @@ var sanitize = func(s, newline = 0) {
 	return r;
 }
 
-
-
-var theme_font = getprop("/sim/gui/selected-style/fonts/message-display/name") or "HELVETICA_14";
-var theme_fontsize = getprop("/sim/gui/selected-style/fonts/message-display/size")  or 13;
-
-
 # screen.window
 #------------------------------------------------------------------------------
 # Class that manages a dialog with fixed number of lines, where you can push in
@@ -66,39 +60,68 @@ var theme_fontsize = getprop("/sim/gui/selected-style/fonts/message-display/size
 #   autoscroll ... seconds that each line should be shown; can be less if
 #                  a message falls off; if 0 then don't scroll at all
 #
-var window = {
-	id : 0,
-	new : func(x = nil, y = nil, maxlines = 10, autoscroll = 10) {
-		var m = { parents: [window] };
-		#
-		# "public"
-		m.x = x;
-		m.y = y;
-		m.maxlines = maxlines;
-		m.autoscroll = autoscroll;	# display time in seconds
-		m.sticky = 0;			# reopens on old place
-		m.font = nil;
-		m.bg = [0, 0, 0, 0];		# background color
-		m.fg = [0.9, 0.4, 0.2, 1];	# default foreground color
-		m.align = "center";		# "left", "right", "center"
-		#
-		# "private"
-		m.name = "__screen_window_" ~ (window.id += 1) ~ "__";
-		m.lines = [];
-		m.skiptimer = 0;
-		m.dialog = nil;
-		m.namenode = props.Node.new({ "dialog-name": m.name });
-		m.writebuffer = [];
-		m.MAX_BUFFER_SIZE = 50;
-		setlistener("/sim/startup/xsize", func m._redraw_());
-		setlistener("/sim/startup/ysize", func m._redraw_());
+var Log = {
+	new: func(x = nil, y = nil, maxlines = 10, autoscroll = 10) {
+		var m = {
+			parents: [window],
+			_overlay: canvas.gui.Overlay.new([200, 100], "screen.window"),
+			maxlines: maxlines,
+			autoscroll: autoscroll,
+			sticky: 0,
+			bg: [0, 0, 0, 0],
+			fg: [0.9, 0.4, 0.2, 1],
+			_pos: [x, y],
+			_lines: [],
+			_skipAutoscroll: 0,
+			_align: "center",  # "left", "right", "center"
+		};
+
+		if (x == nil) {
+			m._overlay.setPosition(nil, nil, nil, nil, 0);
+		} elsif (x < 0) {
+			m._overlay.setPosition(nil, nil, abs(x));
+		} else {
+			m._overlay.setPosition(x);
+		}
+		if (y == nil) {
+			m._overlay.setPosition(nil, nil, nil, nil, 1);
+		} elsif (y < 0) {
+			m._overlay.setPosition(nil, abs(y));
+		} else {
+			m._overlay.setPosition(nil, nil, nil, y);
+		}
+		if (x == nil and y == nil) {
+			m._overlay.setPosition(nil, nil, nil, nil, 2);
+		}
+
+		m._canvas = m._overlay.createCanvas();
+		m._root = m._canvas.createGroup();
+		m._layout = canvas.VBoxLayout.new();
+		m._overlay.setLayout(m._layout);
+
+		m._canvas.set("background", sprintf("rgba(%d, %d, %d, %d)", m.bg[0], m.bg[1], m.bg[2], m.bg[3]));
+		m._canvas.set("blend-source-rgb", "src-color");
+		m._canvas.set("blend-source-alpha", "src-alpha");
+		m._overlay.hide();
+
+		m._autoscrollTimer = maketimer(m.autoscroll, func { m._autoscrollTimerCallback(); });
+		m._autoscrollTimer.simulatedTime = 1;
+
 		return m;
 	},
-	write : func(msg, r = nil, g = nil, b = nil, a = nil) {
-		if (me.namenode == nil)
-			return;
-		if (size(me.writebuffer) > me.MAX_BUFFER_SIZE)
-			return;
+	del: func {
+		me._autoscrollTimer.stop();
+		me._overlay.del();
+	},
+	setBackgroundColor: func(color) {
+		me.bg = color;
+		me._canvas.setColorBackground(canvas._getColor(color));
+		return me;
+	},
+	write: func(msg, r = nil, g = nil, b = nil, a = nil) {
+		if (!me._overlay.isVisible()) {
+			me.show();
+		}
 		if (r == nil)
 			r = me.fg[0];
 		if (g == nil)
@@ -107,96 +130,53 @@ var window = {
 			b = me.fg[2];
 		if (a == nil)
 			a = me.fg[3];
-		var lines = [];
 		foreach (var line; split("\n", string.trim(msg ~ ""))) {
-			line = sanitize(string.trim(line));
-			append(lines, [line, r, g, b, a]);
-		}
-		if (size(me.writebuffer) == 0)
-			settimer(func { me._write_(); } , 0, 1);
-		append(me.writebuffer, lines);
-	},
-	clear : func() {
-	  me.lines = [];
-	  me.writebuffer = [];
-	  me.show();
-	},
-	show : func {
-		if (me.dialog != nil)
-			me.close();
-
-		me.dialog = gui.Widget.new();
-		me.dialog.set("name", me.name);
-		if (me.x != nil)
-			me.dialog.set("x", me.x);
-		if (me.y != nil)
-			me.dialog.set("y", me.y);
-		me.dialog.set("layout", "vbox");
-		me.dialog.set("default-padding", 2);
-
-		if (me.font != nil)
-			me.dialog.setFont(me.font, me.fontsize);
-		elsif (theme_font != nil)
-			me.dialog.setFont(theme_font, theme_fontsize);
-
-		me.dialog.setColor(me.bg[0], me.bg[1], me.bg[2], me.bg[3]);
-
-		foreach (var line; me.lines) {
-			var w = me.dialog.addChild("text");
-			w.set("halign", me.align);
-			w.set("label", line[0]);
-			w.setColor(line[1], line[2], line[3], line[4]);
-		}
-
-		fgcommand("dialog-new", me.dialog.prop());
-		fgcommand("dialog-show", me.namenode);
-	},
-	close : func {
-		fgcommand("dialog-close", me.namenode);
-		if (me.dialog != nil and me.sticky) {
-			me.x = me.dialog.prop().getNode("lastx").getValue();
-			me.y = me.dialog.prop().getNode("lasty").getValue();
-		}
-	},
-	_write_ : func() {
-		if (size(me.writebuffer) == 0)
-			return;
-		foreach (var msg; me.writebuffer) {
-			foreach (var line; msg) {
-				append(me.lines, line);
-				if (size(me.lines) > me.maxlines) {
-					me.lines = subvec(me.lines, 1);
-					if (me.autoscroll)
-						me.skiptimer += 1;
-				}
-				if (me.autoscroll)
-					settimer(func me._timeout_(), me.autoscroll, 1);
+			while (me._layout.count() > me.maxlines) {
+				me._layout.takeAt(0);
 			}
+			line = sanitize(string.trim(line));
+			var label = canvas.gui.widgets.Label.new(parent: me._root, cfg: {
+				"text": line,
+				"color": canvas._getColor([r, g, b, a]),
+				"text-align": me._align,
+				"alignment": canvas.AlignTop,
+				"font": canvas.style.getFont("message-display"),
+			});
+			me._layout.addItem(label);
+			me._skipAutoscroll += 1;
 		}
-		me.writebuffer = [];
-		me.show();
+		var s = me._layout.minimumSize();
+		s[0] += 20;
+		s[1] += 20;
+		me._overlay.setSize(s);
 	},
-	_timeout_ : func {
-		if (me.skiptimer > 0) {
-			me.skiptimer -= 1;
+	clear: func {
+		me._layout.clear();
+		me.hide();
+	},
+	hide: func {
+		me._autoscrollTimer.stop();
+		me._overlay.hide();
+	},
+	show: func {
+		me.setBackgroundColor(me.bg);
+		me._autoscrollTimer.start();
+		me._overlay.show();
+	},
+	_autoscrollTimerCallback: func {
+		if (me._skipAutoscroll > 0) {
+			me._skipAutoscroll -= 1;
 			return;
 		}
-		if (size(me.lines) > 1) {
-			me.lines = subvec(me.lines, 1);
-			me.show();
+		if (me._layout.count() > 0) {
+			me._layout.takeAt(0);
 		} else {
-			me.close();
-			me.dialog = nil;
-			me.lines = [];
-		}
-	},
-	_redraw_ : func {
-		if (me.dialog != nil) {
-			me.close();
-			me.show();
+			me._overlay.hide();
 		}
 	},
 };
+# For backwards compatibility
+var window = Log;
 
 
 
@@ -236,114 +216,163 @@ var window = {
 #
 #     screen.display.new(-15, -5, 0).setfont("TIMES_24").setcolor(1, 0.9, 0).add("/sim/frame-rate");
 #
-var display = {
-	id : 0,
-	new : func(x, y, show_tags = 1) {
-		var m = { parents: [display] };
-		#
-		# "public"
-		m.x = x;
-		m.y = y;
-		m.tags = show_tags;
-		m.font =  getprop("/sim/gui/selected-style/fonts/message-display/name") or "HELVETICA_14";
-        m.fontsize =  getprop("/sim/gui/selected-style/fonts/message-display/size") or 13;
-		m.color = [1, 1, 1, 1];
-		m.tagformat = "%s";
-		m.format = "%.12g";
-		m.interval = 0.1;
-		#
-		# "private"
-		m.loopid = 0;
-		m.dialog = nil;
-		m.name = "__screen_display_" ~ (display.id += 1) ~ "__";
-		m.base = props.globals.getNode("/sim/gui/dialogs/property-display-" ~ display.id, 1);
-		m.namenode = props.Node.new({ "dialog-name": m.name });
-		setlistener("/sim/startup/xsize", func m.redraw());
-		setlistener("/sim/startup/ysize", func m.redraw());
-		m.reset();
+var PropertyDisplay = {
+	id: 0,
+	new : func(x = nil, y = nil, show_tags = 1) {
+		var m = {
+			parents: [display],
+			_overlay: canvas.gui.Overlay.new([200, 50]),
+			tags: show_tags,
+			fg: [1, 1, 1, 1],
+			bg: [0, 0, 0, 0],
+			tagformat: "%s",
+			format: "%.12g",
+			interval: 0,
+			base: props.globals.getNode("/sim/gui/dialogs/property-display-" ~ (display.id += 1), 1),
+			_pos: [x, y],
+			_lines: [],
+			entries: [],
+		};
+
+		if (x == nil) {
+			m._overlay.setPosition(nil, nil, nil, nil, 0);
+		} elsif (x < 0) {
+			m._overlay.setPosition(nil, nil, abs(x));
+		} else {
+			m._overlay.setPosition(x);
+		}
+		if (y == nil) {
+			m._overlay.setPosition(nil, nil, nil, nil, 1);
+		} elsif (y < 0) {
+			m._overlay.setPosition(nil, abs(y));
+		} else {
+			m._overlay.setPosition(nil, nil, nil, y);
+		}
+		if (x == nil and y == nil) {
+			m._overlay.setPosition(nil, nil, nil, nil, 2);
+		}
+
+		m._canvas = m._overlay.createCanvas();
+		m._root = m._canvas.createGroup();
+		m._layout = canvas.VBoxLayout.new();
+		m._overlay.setLayout(m._layout);
+
+		m._canvas.set("background", canvas._getColor(m.bg));
+		m._canvas.set("blend-source-rgb", "src-color");
+		m._canvas.set("blend-source-alpha", "src-alpha");
+		m._overlay.hide();
+
+		m._updateTimer = maketimer(m.interval, func { m.update(); });
+		m._updateTimer.simulatedTime = 0;
+
 		return m;
 	},
-	setcolor : func(r, g, b, a = 1) {
+	del: func {
+		me._updateTimer.stop();
+		me._overlay.del();
+	},
+	setBackgroundColor: func(color) {
+		me.bg = color;
+		me._canvas.setColorBackground(canvas._getColor(color));
+		return me;
+	},
+	clear: func {
+		me._layout.clear();
+		me.hide();
+	},
+	hide: func {
+		me._updateTimer.stop();
+		me._overlay.hide();
+	},
+	show : func {
+		me.setBackgroundColor(me.bg);
+		me._updateTimerCallback.start();
+		me._overlay.show();
+	},
+	setcolor: func(r, g, b, a = 1) {
 		me.color = [r, g, b, a];
 		me.redraw();
-		me;
+		return me;
 	},
-	setfont : func(font, size=13) {
+	setfont: func(font, size=14) {
 		me.font = font;
 		me.fontsize = size;
-		me.redraw();
-		me;
-	},
-	_create_ : func {
-		me.dialog = gui.Widget.new();
-		me.dialog.set("name", me.name);
-		me.dialog.set("x", me.x);
-		me.dialog.set("y", me.y);
-		me.dialog.set("layout", "vbox");
-		me.dialog.set("default-padding", 2);
-		me.dialog.setFont(me.font, me.fontsize);
-		me.dialog.setColor(0, 0, 0, 0);
-
-		foreach (var e; me.entries) {
-			var w = me.dialog.addChild("text");
-			w.set("halign", "left");
-			w.set("label", "M");    # mouse-grab sensitive area
-			w.set("property", e.target.getPath());
-			w.set("format", me.tags ? e.tag ~ " = %s" : "%s");
-			w.set("live", 1);
-			w.setColor(me.color[0], me.color[1], me.color[2], me.color[3]);
-		}
-		fgcommand("dialog-new", me.dialog.prop());
+		return me;
 	},
 	# add() opens already, so call open() explicitly only after close()!
-	open : func {
-		if (me.dialog != nil) {
-			fgcommand("dialog-show", me.namenode);
-			me._loop_(me.loopid += 1);
+	open: func {
+		me._overlay.show();
+		me._updateTimer.start();
+	},
+	close: func {
+		me._overlay.hide();
+		me._updateTimer.stop();
+	},
+	toggle: func {
+		if (!me._overlay.isVisible()) {
+			me.open()
+		} else {
+			me.close();
 		}
 	},
-	close : func {
-		if (me.dialog != nil) {
-			fgcommand("dialog-close", me.namenode);
-			me.loopid += 1;
-			me.dialog = nil;
-		}
-	},
-	toggle : func {
-		me.dialog == nil ? me.redraw() : me.close();
-	},
-	reset : func {
+	reset: func {
 		me.close();
-		me.loopid += 1;
+		me._layout.clear();
 		me.entries = [];
 	},
-	redraw : func {
-		me.close();
-		me._create_();
-		me.open();
+	redraw: func {
+		me._updateTimer.stop();
+		me._layout.clear();
+		
+		foreach (var entry; me.entries) {
+			var type = entry.node.getType();
+			var format = "%s";
+			if (type == "DOUBLE" or type == "INT") {
+				format = me.format;
+			}
+			if (me.tags) {
+				format = entry.tag ~ " = " ~ format;
+			}
+			var label = canvas.gui.widgets.Label.new(parent: me._root, cfg: {
+				"format": format,
+				"color": me.fg,
+				"text-align": "left",
+				"alignment": canvas.AlignTop,
+				"font": canvas.style.getFont("property-display"),
+			});
+			me._layout.addItem(label);
+			entry["widget"] = label;
+		}
+		
+		me._updateTimer.start();
 	},
-	add : func(p...) {
+	add: func(p...) {
 		foreach (nextprop; var n; props.nodeList(p)) {
 			var path = n.getPath();
 			foreach (var e; me.entries) {
-				if (e.node.getPath() == path)
+				if (e.node.getPath() == path) {
 					continue nextprop;
+				}
 				e.parent = e.node;
 				e.tag = sprintf(me.tagformat, me.nameof(e.node));
 			}
-			append(me.entries, { node: n, parent: n,
-					tag: sprintf(me.tagformat, me.nameof(n)),
-					target: me.base.getChild("entry", size(me.entries), 1) });
+			append(me.entries, {
+				node: n,
+				parent: n,
+				tag: sprintf(me.tagformat, me.nameof(n)),
+				widget: nil
+			});
 		}
 
 		# extend names to the left until they are unique
 		while (me.tags) {
 			var uniq = {};
 			foreach (var e; me.entries) {
-				if (contains(uniq, e.tag))
+				if (contains(uniq, e.tag)) {
 					append(uniq[e.tag], e);
-				else
+				} else {
 					uniq[e.tag] = [e];
+				}
 			}
 
 			var done = 1;
@@ -353,49 +382,59 @@ var display = {
 				done = 0;
 				foreach (var e; uniq[u]) {
 					e.parent = e.parent.getParent();
-					if (e.parent != nil)
+					if (e.parent != nil) {
 						e.tag = me.nameof(e.parent) ~ '/' ~ e.tag;
+					}
 				}
 			}
-			if (done)
+			if (done) {
 				break;
+			}
 		}
 		me.redraw();
-		me;
+		me.open();
+		
+		return me;
 	},
-	update : func {
-		foreach (var e; me.entries) {
-			var type = e.node.getType();
-			if (type == "NONE")
-				var val = "nil";
-			elsif (type == "BOOL")
-				var val = e.node.getValue() ? "true" : "false";
-			elsif (type == "STRING" or type == "UNSPECIFIED")
-				var val = "'" ~ sanitize(e.node.getValue(), 1) ~ "'";
-			else
-				var val = sprintf(me.format, e.node.getValue());
-			e.target.setValue(val);
+	update: func {
+		foreach (var entry; me.entries) {
+			var type = entry.node.getType();
+			var val = entry.node.getValue();
+			if (type == "NONE") {
+				val = "nil";
+			} elsif (type == "BOOL") {
+				val = entry.node.getBoolValue() ? "true" : "false";
+			} elsif (type == "STRING" or type == "UNSPECIFIED") {
+				val = "'" ~ sanitize(entry.node.getValue(), 1) ~ "'";
+			}
+			entry["widget"].setValue(val);
 		}
+		var s = me._layout.minimumSize();
+		s[0] += 20;
+		s[1] += 20;
+		me._overlay.setSize(s);
 	},
-	_loop_ : func(id) {
-		id != me.loopid and return;
-		me.update();
-		settimer(func me._loop_(id), me.interval);
-	},
-	nameof : func(n) {
+	nameof: func(n) {
 		var name = n.getName();
 		if (var i = n.getIndex())
 			name ~= '[' ~ i ~ ']';
 		return name;
 	},
 };
-
-
-
+# For backwards compatibility
+var display = PropertyDisplay;
 
 var listener = {};
-var log = nil;
-var property_display = nil;
+var property_display = {
+	add: func {
+		logprint("screen.property_display.add: Property display was not initialized yet !");
+	},
+};
+var log = {
+	write: func {
+		logprint("screen.log.write: Log was not initialized yet !");
+	},
+};
 var controls = nil;
 
 var search_name_in_msg = func(msg, call) {
@@ -467,100 +506,95 @@ var callsign = nil;
 var atclast = nil;
 
 _setlistener("/sim/signals/nasal-dir-initialized", func {
-	# set /sim/screen/nomap=true to prevent default message mapping
-	var nomap = getprop("/sim/screen/nomap");
-	if (nomap != nil and nomap)
-		return;
+	_setlistener("/nasal/canvas/loaded", func(n) {
+		# set /sim/screen/nomap=true to prevent default message mapping
+		var nomap = getprop("/sim/screen/nomap");
+		if (nomap != nil and nomap)
+			return;
 
-	callsign = props.globals.getNode("/sim/user/callsign", 1);
-	atc = props.globals.getNode("/sim/messages/atc", 1);
-	atclast = props.globals.getNode("/sim/messages/atc-last", 1);
-	atclast.setValue("");
+		callsign = props.globals.getNode("/sim/user/callsign", 1);
+		atc = props.globals.getNode("/sim/messages/atc", 1);
+		atclast = props.globals.getNode("/sim/messages/atc-last", 1);
+		atclast.setValue("");
 
-	# let ATC tell which runway was automatically chosen after startup/teleportation
-	settimer(func {
-		setlistener("/sim/atc/runway", func(n) { # set in src/Main/fg_init.cxx
-			var rwy = n.getValue();
-			if ((rwy == nil) or (rwy == ""))
-				return;
-			if ((var agl = getprop("/position/altitude-agl-ft")) != nil and agl > 100)
-				return;
-			screen.log.write("You are on runway " ~ rwy, 0.7, 1.0, 0.7);
-		}, 1);
-	}, 5);
+		# let ATC tell which runway was automatically chosen after startup/teleportation
+		settimer(func {
+			setlistener("/sim/atc/runway", func(n) { # set in src/Main/fg_init.cxx
+				var rwy = n.getValue();
+				if ((rwy == nil) or (rwy == ""))
+					return;
+				if ((var agl = getprop("/position/altitude-agl-ft")) != nil and agl > 100)
+					return;
+				screen.log.write("You are on runway " ~ rwy, 0.7, 1.0, 0.7);
+			}, 1);
+		}, 5);
 
-	setlistener("/gear/launchbar/state", func(n) {
-		if (n.getValue() == "Engaged")
-			setprop("/sim/messages/copilot", "Engaged!");
-	}, 0, 0);
+		setlistener("/gear/launchbar/state", func(n) {
+			if (n.getValue() == "Engaged")
+				setprop("/sim/messages/copilot", "Engaged!");
+		}, 0, 0);
 
-	# map ATC messages to the screen log and to the voice subsystem
-	var map = func(type, msg, r, g, b, cond = nil) {
-		logprint(LOG_INFO, "{", type, "} ", msg);
-		setprop("/sim/sound/voices/" ~ type, msg);
+		# map ATC messages to the screen log and to the voice subsystem
+		var map = func(type, msg, r, g, b, cond = nil) {
+			logprint(LOG_INFO, "{", type, "} ", msg);
+			setprop("/sim/sound/voices/" ~ type, msg);
 
-		if (cond == nil or cond())
-			screen.log.write(msg, r, g, b);
+			if (cond == nil or cond())
+				screen.log.write(msg, r, g, b);
 
-		# save last ATC message for user callsign, unless this was already
-		# a repetition; insert "I say again" appropriately
-		if (type == "atc") {
-			var cs = callsign.getValue();
-			if (find(", I say again: ", atc.getValue()) < 0
-					and (var pos = find(cs, msg)) >= 0) {
-				var m = substr(msg, 0, pos + size(cs));
-				msg = substr(msg, pos + size(cs));
+			# save last ATC message for user callsign, unless this was already
+			# a repetition; insert "I say again" appropriately
+			if (type == "atc") {
+				var cs = callsign.getValue();
+				if (find(", I say again: ", atc.getValue()) < 0
+						and (var pos = find(cs, msg)) >= 0) {
+					var m = substr(msg, 0, pos + size(cs));
+					msg = substr(msg, pos + size(cs));
 
-				if ((pos = find("Tower, ", msg)) >= 0) {
-					m ~= substr(msg, 0, pos + 7);
-					msg = substr(msg, pos + 7);
-				} else {
-					m ~= ", ";
+					if ((pos = find("Tower, ", msg)) >= 0) {
+						m ~= substr(msg, 0, pos + 7);
+						msg = substr(msg, pos + 7);
+					} else {
+						m ~= ", ";
+					}
+					m ~= "I say again: " ~ msg;
+					atclast.setValue(m);
+					logprint(LOG_DEBUG, "ATC_LAST_MESSAGE: ", m);
 				}
-				m ~= "I say again: " ~ msg;
-				atclast.setValue(m);
-				logprint(LOG_DEBUG, "ATC_LAST_MESSAGE: ", m);
 			}
 		}
-	}
 
-	var m = "/sim/messages/";
-	listener.atc = setlistener(m ~ "atc",
-			func(n) map("atc",      n.getValue(), 0.7, 1.0, 0.7));
-	listener.approach = setlistener(m ~ "approach",
-			func(n) map("approach", n.getValue(), 0.7, 1.0, 0.7));
-	listener.ground = setlistener(m ~ "ground",
-			func(n) map("ground",   n.getValue(), 0.7, 1.0, 0.7));
+		var m = "/sim/messages/";
+		listener.atc = setlistener(m ~ "atc",
+				func(n) map("atc",      n.getValue(), 0.7, 1.0, 0.7));
+		listener.approach = setlistener(m ~ "approach",
+				func(n) map("approach", n.getValue(), 0.7, 1.0, 0.7));
+		listener.ground = setlistener(m ~ "ground",
+				func(n) map("ground",   n.getValue(), 0.7, 1.0, 0.7));
 
-	listener.pilot = setlistener(m ~ "pilot",
-			func(n) map("pilot",    n.getValue(), 1.0, 0.8, 0.0));
-	listener.copilot = setlistener(m ~ "copilot",
-			func(n) map("copilot",  n.getValue(), 1.0, 1.0, 1.0));
-	listener.ai_plane = setlistener(m ~ "ai-plane",
-			func(n) map("ai-plane", n.getValue(), 0.9, 0.4, 0.2));
-	listener.mp_plane = setlistener(m ~ "mp-plane", msg_mp);
+		listener.pilot = setlistener(m ~ "pilot",
+				func(n) map("pilot",    n.getValue(), 1.0, 0.8, 0.0));
+		listener.copilot = setlistener(m ~ "copilot",
+				func(n) map("copilot",  n.getValue(), 1.0, 1.0, 1.0));
+		listener.ai_plane = setlistener(m ~ "ai-plane",
+				func(n) map("ai-plane", n.getValue(), 0.9, 0.4, 0.2));
+		listener.mp_plane = setlistener(m ~ "mp-plane", msg_mp);
+		#-- Init -----------------------------------------------------------------------
+		if (getprop("/sim/gui/chat-box-location") == "left") {
+		    property_display = display.new(5, -50);
+		} else {
+		    property_display = display.new(5, -50);
+		}
+
+		if (getprop("/sim/gui/chat-box-location") == "left") {
+		    log = window.new(5, -30, 10, 10);
+		    log._align = "left";
+		} else {
+		    log = window.new(nil, -30, 10, 10);
+		}
+		log.sticky = 0;  # do not turn on; makes scrolling up messages jump left and right
+	});
 });
-
-
-#-- Init -----------------------------------------------------------------------
-# property_display is used by property-browser dialog for live monitoring of props
-if (getprop("/sim/gui/chat-box-location") == "left") {
-    property_display = display.new(5, -250);
-} else {
-    property_display = display.new(5, -25);
-}
-
-setlistener("/sim/gui/current-style", func {
-    theme_font = getprop("/sim/gui/selected-style/fonts/message-display/name");
-}, 1);
-
-if (getprop("/sim/gui/chat-box-location") == "left") {
-    log = window.new(5, -30, 10, 10);
-    log.align = "left";
-} else {
-    log = window.new(nil, -30, 10, 10);
-}
-log.sticky = 0;  # do not turn on; makes scrolling up messages jump left and right
 
 var b = "/sim/screen/";
 setlistener(b ~ "black",   func(n) log.write(n.getValue(), 0,   0,   0));
@@ -571,6 +605,10 @@ setlistener(b ~ "blue",    func(n) log.write(n.getValue(), 0,   0,   0.8));
 setlistener(b ~ "yellow",  func(n) log.write(n.getValue(), 0.8, 0.8, 0));
 setlistener(b ~ "magenta", func(n) log.write(n.getValue(), 0.7, 0,   0.7));
 setlistener(b ~ "cyan",    func(n) log.write(n.getValue(), 0,   0.6, 0.6));
+
+setlistener("/sim/gui/current-style", func {
+    theme_font = getprop("/sim/gui/selected-style/fonts/message-display/name");
+}, 1);
 
 # --prop:display=sim/frame-rate         ... adds this property to the property display
 # --prop:display=position/              ... adds all properties under /position/  (ends with slash!)
