@@ -5,7 +5,7 @@
     <texture n="1">
       <image>Textures/SMAA/area_tex.dds</image>
       <type>2d</type>
-      <filter>linear-mipmap-linear</filter>
+      <filter>linear</filter>
       <mag-filter>linear</mag-filter>
       <wrap-s>clamp-to-edge</wrap-s>
       <wrap-t>clamp-to-edge</wrap-t>
@@ -14,7 +14,7 @@
     <texture n="2">
       <image>Textures/SMAA/search_tex.dds</image>
       <type>2d</type>
-      <filter>linear-mipmap-linear</filter>
+      <filter>linear</filter>
       <mag-filter>linear</mag-filter>
       <wrap-s>clamp-to-edge</wrap-s>
       <wrap-t>clamp-to-edge</wrap-t>
