@@ -20,6 +20,10 @@
         <function>less</function>
         <write-mask>false</write-mask>
       </depth>
+      <render-bin>
+        <bin-number>-10</bin-number>
+        <bin-name>RenderBin</bin-name>
+      </render-bin>
       <cull-face>off</cull-face>
       <program>
         <vertex-shader>Shaders/HDR/skydome.vert</vertex-shader>
@@ -65,6 +69,10 @@
         <function>less</function>
         <write-mask>false</write-mask>
       </depth>
+      <render-bin>
+        <bin-number>-10</bin-number>
+        <bin-name>RenderBin</bin-name>
+      </render-bin>
       <cull-face>off</cull-face>
       <program>
         <vertex-shader>Shaders/HDR/skydome.vert</vertex-shader>
