@@ -118,7 +118,6 @@ var update_pins = func () {
 var toggleTrafficPins = func (node) {
     if (node.getBoolValue()) {
         # turn on
-        print("Traffic pins on");
         var modelsNode = props.getNode('/ai/models');
         var nodes = modelsNode.getChildren('multiplayer') ~
                     modelsNode.getChildren('swift') ~
@@ -181,7 +180,6 @@ var toggleTrafficPins = func (node) {
     }
     else {
         # turn off
-        print("Traffic pins off");
         if (trafficAddListener != nil) removelistener(trafficAddListener);
         if (trafficRemoveListener != nil) removelistener(trafficRemoveListener);
         foreach (var k; keys(trafficPins)) {
