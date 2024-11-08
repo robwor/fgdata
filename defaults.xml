@@ -188,7 +188,7 @@ Started September 2000 by David Megginson, david@megginson.com
 
       <xsize type="int" preserve="y" userarchive="y">1024</xsize>
       <ysize type="int" preserve="y" userarchive="y">768</ysize>
-      <splash-screen type="bool">true</splash-screen>
+      <splash-screen type="bool">false</splash-screen>
       <splash-progress type="bool">true</splash-progress>
       <splash-title>
         <!-- -->
