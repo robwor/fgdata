@@ -21,10 +21,10 @@
     </comm>
     <comm n="1">
       <frequencies>
-        <!-- ATIS -->
-        <selected-mhz type="double">128.300</selected-mhz>
         <!-- GND -->
-        <standby-mhz type="double">121.900</standby-mhz>
+        <selected-mhz type="double">121.900</selected-mhz>
+        <!-- ATIS -->
+        <standby-mhz type="double">128.300</standby-mhz>
       </frequencies>
     </comm>
     <nav n="0">
