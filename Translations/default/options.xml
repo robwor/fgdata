@@ -12,7 +12,6 @@
 	<help-desc>Show the most relevant command line options</help-desc>
 	<verbose-desc>Show all command line options when combined with --help or -h</verbose-desc>
 	<launcher-desc>Enable/Disable GUI launcher</launcher-desc>
-	<composite-viewer-desc>Enable/Disable CompositeViewer (extra view windows)</composite-viewer-desc>
 	<version-desc>Enable/Disable display the current FlightGear version</version-desc>
 	<fg-root-desc>Specify the root data path</fg-root-desc>
 	<fg-scenery-desc n="0">Specify the scenery path(s);</fg-scenery-desc>

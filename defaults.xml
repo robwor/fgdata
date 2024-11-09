@@ -572,7 +572,6 @@ Started September 2000 by David Megginson, david@megginson.com
         </debug>
       </hdr>
 
-      <composite-viewer-enabled type="bool">true</composite-viewer-enabled>
       <database-pager>
         <threads type="int" userarchive="y">4</threads>
       </database-pager>

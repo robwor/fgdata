@@ -693,10 +693,6 @@
           <source>Set the COM2 radio frequency</source>
           <target>Imposta la frequenza radio COM2</target>
         </trans-unit>
-        <trans-unit id="options/composite-viewer-desc:0" translate="yes" approved="no">
-          <source>Enable/Disable CompositeViewer (extra view windows)</source>
-          <target />
-        </trans-unit>
         <trans-unit id="options/compositor-desc:0" translate="yes" approved="no">
           <source>Specify the path to XML file for multi-pass rendering. The path is relative to $FG_ROOT (defaults to Compositor/default.xml).</source>
           <target />

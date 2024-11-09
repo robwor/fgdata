@@ -1468,16 +1468,3 @@ setlistener( "/sim/menubar/autovisibility/enabled", func(n) {
     menubarVisibility.setBoolValue(currentMenubarVisibility);
   }
 }, 1, 0);
-
-setlistener(
-        "sim/rendering/composite-viewer-enabled",
-        func(node) {
-            var cv_enabled = node.getBoolValue();
-            menuEnable("view-clone", cv_enabled);
-            menuEnable("view-push", cv_enabled);
-            menuEnable("view-last-pair", cv_enabled);
-            menuEnable("view-last-pair-double", cv_enabled);
-        },
-        1, # init - trigger immediately.
-        0, # type - trigger only when value changed.
-        );

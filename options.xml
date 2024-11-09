@@ -233,13 +233,6 @@
    <name>features-options</name>
 
    <option>
-    <name>composite-viewer</name>
-    <optional-arg>{1|0}</optional-arg>
-    <description>composite-viewer-desc</description>
-    <brief/>
-   </option>
-
-   <option>
     <name>panel</name>
     <optional-arg>{1|0}</optional-arg>
     <description>panel-desc</description>
