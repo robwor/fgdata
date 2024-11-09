@@ -55,13 +55,13 @@
   <!-- HDR shading result -->
   <buffer include="screen-buffer.xml">
     <name>hdr-result</name>
-    <format>rgb16f</format>
+    <format>r11f-g11f-b10f</format>
   </buffer>
 
   <!-- HDR buffer after demosaicing -->
   <buffer include="screen-buffer.xml">
     <name>hdr-demosaiced</name>
-    <format>rgb16f</format>
+    <format>r11f-g11f-b10f</format>
   </buffer>
 
   <!-- Final LDR buffer -->
