@@ -45,6 +45,13 @@ float pow5(float x) {
 }
 
 /*
+ * Maps a value from one range [min1, max1] to another [min2, max2].
+ */
+float remap(float x, float min1, float max1, float min2, float max2) {
+    return min2 + (x - min1) * (max2 - min2) / (max1 - min1);
+}
+
+/*
  * Random number between 0 and 1, using interleaved gradient noise.
  * uv must not be normalized.
  */

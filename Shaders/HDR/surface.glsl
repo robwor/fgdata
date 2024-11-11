@@ -60,12 +60,12 @@ vec3 f0_from_pbr(vec3 base_color, float metallic)
  * approach of refactoring by NdotX/NdotX has been used to optimize the code.
  */
 vec3 surface_eval_analytical(
-    // Material
-    vec3 base_color, float metallic, float roughness, vec3 f0,
-    // Light
-    vec3 light_intensity, float occlusion,
-    // Vectors
-    vec3 N, vec3 L, vec3 V)
+    vec3 base_color, float metallic, float roughness, vec3 f0, // Material
+    vec3 light_intensity, float occlusion, // Light params
+    vec3 N, // Surface normal vector
+    vec3 L, // Light direction vector for specular light
+    vec3 V  // View vector
+    )
 {
     float NdotL = dot(N, L);
     // Skip fragments that are completely occluded or that are not facing the light

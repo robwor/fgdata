@@ -3,8 +3,6 @@
 uniform sampler2D lum_tex;
 uniform float exposure_compensation;
 
-const float one_over_log10 = 1.0 / log(10.0);
-
 // math.glsl
 float log10(float x);
 
@@ -21,7 +19,7 @@ float get_exposure()
 {
     float avg_lum = max(texelFetch(lum_tex, ivec2(0), 0).r, 0.001);
     float linear_exposure = key_value(avg_lum) / avg_lum;
-    float exposure = log2(max(linear_exposure, 0.0001));
+    float exposure = log2(max(linear_exposure, 1e-8));
     exposure += exposure_compensation;
     return exposure;
 }
