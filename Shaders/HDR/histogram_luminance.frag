@@ -8,7 +8,8 @@ uniform sampler2D prev_lum_tex;
 uniform float osg_DeltaFrameTime;
 
 // Higher values give faster eye adaptation times
-const float TAU = 1.1;
+const float adapt_speed_dark_to_light = 3.0;
+const float adapt_speed_light_to_dark = 1.0;
 
 // histogram.glsl
 float bin_index_to_luminance(float bin, float adapted_luminance);
@@ -37,8 +38,9 @@ void main()
     float average_lum = bin_index_to_luminance(mean, prev_lum);
 
     // Simulate smooth eye adaptation over time
-    float adapted_lum = prev_lum + (average_lum - prev_lum) *
-        (1.0 - exp(-osg_DeltaFrameTime * TAU));
+    float lum_diff = average_lum - prev_lum;
+    float tau = lum_diff > 0.0 ? adapt_speed_dark_to_light : adapt_speed_light_to_dark;
+    float adapted_lum = prev_lum + lum_diff * (1.0 - exp(-osg_DeltaFrameTime * tau));
 
     fragLuminance = adapted_lum;
 }
