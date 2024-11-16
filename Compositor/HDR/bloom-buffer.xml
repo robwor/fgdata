@@ -4,7 +4,7 @@
   <type>2d</type>
   <width>screen</width>
   <height>screen</height>
-  <format>rgb16f</format>
+  <format>r11f-g11f-b10f</format>
   <min-filter>linear</min-filter>
   <mag-filter>linear</mag-filter>
   <wrap-s>clamp-to-edge</wrap-s>
