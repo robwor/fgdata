@@ -84,7 +84,7 @@
             0.75 - 1.0: Noise blur
             0.70 - 1.0: Fading to black
         -->
-        <vision>sim/rendering/hdr/g-induced-vision-loss</vision>
+        <vision>sim/rendering/redout/g-induced-vision-loss</vision>
 
         <!--
             Negative G effects boolean

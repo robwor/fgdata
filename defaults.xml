@@ -383,6 +383,7 @@ Started September 2000 by David Megginson, david@megginson.com
         <red type="bool">false</red>
         <alpha type="double">0.0</alpha>
         <hearing-loss-volume type="double">1.0</hearing-loss-volume>
+        <g-induced-vision-loss type="float">0.0</g-induced-vision-loss>
       </redout>
       <headshake>
         <enabled type="bool" userarchive="y">false</enabled>
@@ -531,7 +532,6 @@ Started September 2000 by David Megginson, david@megginson.com
         <render-scale type="float" userarchive="y">1.0</render-scale>
         <antialiasing-technique type="int" userarchive="y">2</antialiasing-technique>
         <exposure-compensation type="float">0.0</exposure-compensation>
-        <g-induced-vision-loss type="float">0.0</g-induced-vision-loss>
         <envmap>
           <cubemap-size type="int" userarchive="y">128</cubemap-size>
           <update-continuously type="bool">false</update-continuously>
