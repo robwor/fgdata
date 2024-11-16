@@ -1476,10 +1476,6 @@
       <unit>0</unit>
       <buffer>histogram</buffer>
     </binding>
-    <binding>
-      <unit>1</unit>
-      <buffer>histogram-luminance</buffer>
-    </binding>
   </pass>
 
   <pass>

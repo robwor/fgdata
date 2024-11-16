@@ -11,11 +11,13 @@ uniform float osg_DeltaFrameTime;
 const float TAU = 1.1;
 
 // histogram.glsl
-float bin_index_to_luminance(float bin);
+float bin_index_to_luminance(float bin, float adapted_luminance);
 
 void main()
 {
     int num_bins = textureSize(histogram_tex, 0).x; // [0, 255]
+    // Get the previous adapted luminance
+    float prev_lum = max(texelFetch(prev_lum_tex, ivec2(0), 0).r, 1e-6);
 
     uint sum = 0u;
     uint total_pixels = 0u;
@@ -32,10 +34,9 @@ void main()
     float mean = float(sum) / max(float(total_pixels), 1.0) - 1.0;
 
     // Transform the bin index [1, 255] to an actual luminance value
-    float average_lum = bin_index_to_luminance(mean);
+    float average_lum = bin_index_to_luminance(mean, prev_lum);
 
     // Simulate smooth eye adaptation over time
-    float prev_lum = texelFetch(prev_lum_tex, ivec2(0), 0).r;
     float adapted_lum = prev_lum + (average_lum - prev_lum) *
         (1.0 - exp(-osg_DeltaFrameTime * TAU));
 

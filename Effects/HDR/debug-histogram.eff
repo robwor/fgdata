@@ -6,18 +6,11 @@
       <program>
         <vertex-shader>Shaders/HDR/quad_matrix.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/debug_histogram.frag</fragment-shader>
-        <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
-        <fragment-shader>Shaders/HDR/histogram.glsl</fragment-shader>
       </program>
       <uniform>
         <name>histogram_tex</name>
         <type>sampler-2d</type>
         <value type="int">0</value>
-      </uniform>
-      <uniform>
-        <name>lum_tex</name>
-        <type>sampler-2d</type>
-        <value type="int">1</value>
       </uniform>
     </pass>
   </technique>
