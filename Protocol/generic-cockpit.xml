@@ -1,0 +1,65 @@
+ <?xml version="1.0"?>
+ <PropertyList>
+ <generic>
+  <comment>
+  Originally created by Gijs de Munck
+
+  Basic data to implement home cockpit displays of primary flight/engine data.
+  </comment>
+
+    <output>
+        <line_separator>newline</line_separator>
+        <var_separator>tab</var_separator>
+ 
+        <chunk>
+           <node>/position/altitude-agl-ft</node>
+           <name>altitude</name>
+           <type>float</type>
+           <format>%03.2f</format>
+         </chunk>
+ 
+        <chunk>
+           <node>/orientation/heading-deg</node>
+           <name>heading</name>
+           <type>float</type>
+           <format>%03.3f</format>
+         </chunk>
+
+        <chunk>
+           <node>/orientation/pitch-deg</node>
+           <name>pitch</name>
+           <type>float</type>
+           <format>%03.2f</format>
+         </chunk>
+
+        <chunk>
+           <node>/orientation/roll-deg</node>
+           <name>roll</name>
+           <type>float</type>
+           <format>%03.2f</format>
+         </chunk>
+
+        <chunk>
+           <node>/velocities/vertical-speed-fps</node>
+           <name>vertical-speed</name>
+           <type>float</type>
+           <format>%03.2f</format>
+         </chunk>
+
+        <chunk>
+           <node>/velocities/airspeed-kt</node>
+           <name>airspeed</name>
+           <type>float</type>
+           <format>%03.2f</format>
+         </chunk>
+
+        <chunk>
+           <node>/engines/engine[0]/rpm</node>
+           <name>engine-rpm</name>
+           <type>float</type>
+           <format>%03.2f</format>
+         </chunk>
+ 
+    </output>
+  </generic>
+ </PropertyList>
