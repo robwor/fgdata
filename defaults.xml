@@ -572,6 +572,7 @@ Started September 2000 by David Megginson, david@megginson.com
           <show-gbuffer type="bool">false</show-gbuffer>
           <show-shadow-cascades type="bool">false</show-shadow-cascades>
           <show-histogram type="bool">false</show-histogram>
+          <histogram-linear type="bool">false</histogram-linear>
           <show-aerial-perspective type="bool">false</show-aerial-perspective>
         </debug>
       </hdr>

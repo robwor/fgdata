@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PropertyList>
   <name>Effects/HDR/debug-histogram</name>
+  <parameters>
+    <is-linear><use>/sim/rendering/hdr/debug/histogram-linear</use></is-linear>
+  </parameters>
   <technique n="1">
     <pass>
       <program>
@@ -11,6 +14,11 @@
         <name>histogram_tex</name>
         <type>sampler-2d</type>
         <value type="int">0</value>
+      </uniform>
+      <uniform>
+        <name>is_linear</name>
+        <type>bool</type>
+        <value><use>is-linear</use></value>
       </uniform>
     </pass>
   </technique>
