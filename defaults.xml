@@ -81,7 +81,7 @@ Started September 2000 by David Megginson, david@megginson.com
         <font>
           <size>0.03</size>
           <alignment>left-top</alignment>
-          <face>Fonts/Noto/NotoSans-BoldItalic.ttf</face>
+          <face>Fonts/Noto/NotoSans/NotoSans-BoldItalic.ttf</face>
         </font>
         <max-width>0.6</max-width>
         <max-line-count>3</max-line-count>
