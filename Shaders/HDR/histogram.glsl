@@ -1,5 +1,7 @@
 #version 330 core
 
+uniform vec4 fg_Viewport;
+
 const float num_bins = 254.0; // 256 - 2
 const float inv_num_bins = 1.0 / num_bins;
 
@@ -9,6 +11,11 @@ const float log_lum_range = 12.0;
 
 const float min_log_lum_offset = -log_lum_range * 0.5;
 const float inv_log_lum_range = 1.0 / log_lum_range;
+
+// Pixels included in the 60th percentile are considered to be too dark and
+// pixels outside the 90th percentile are considered too bright.
+const float dark_percentile  = 0.60;
+const float light_percentile = 0.90;
 
 /*
  * Get the log2 luminance that corresponds to the 0th bin. We do a sliding
@@ -39,4 +46,35 @@ float bin_index_to_luminance(float bin, float adapted_luminance)
 {
     float min_log_lum = get_min_log_lum(adapted_luminance);
     return exp2(((bin * inv_num_bins) * log_lum_range) + min_log_lum);
+}
+
+/*
+ * Get the total amount of valid pixels for the histogram.
+ * Basically the screen size minus the pixels in the 0th bin which don't meet
+ * the minimum radiance criteria.
+ */
+uint histogram_get_total_pixels(usampler2D histogram_tex)
+{
+    uint first_bin_pixels = texelFetch(histogram_tex, ivec2(0), 0).r;
+    return max(uint(fg_Viewport.z * fg_Viewport.w) - first_bin_pixels, 0u);
+}
+
+uint histogram_get_dark_count(uint total_pixels)
+{
+    return uint(dark_percentile * float(total_pixels));
+}
+
+uint histogram_get_light_count(uint total_pixels)
+{
+    return uint(light_percentile * float(total_pixels));
+}
+
+bool histogram_nth_bin_passes_dark_check(uint count_after_nth_bin, uint dark_count)
+{
+    return count_after_nth_bin >= dark_count;
+}
+
+bool histogram_nth_bin_passes_light_check(uint count_before_nth_bin, uint light_count)
+{
+    return count_before_nth_bin <= light_count;
 }
