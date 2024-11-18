@@ -12,7 +12,7 @@ float log10(float x);
  */
 float key_value(float L)
 {
-    return 1.0 - 2.0 / (log10(L + 1.0) + 2.0);
+    return 1.03 - 2.0 / (log10(L + 1.0) + 2.0);
 }
 
 float get_exposure()
