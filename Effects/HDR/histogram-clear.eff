@@ -5,10 +5,7 @@
     <predicate>
       <and>
         <property>/sim/rendering/hdr/histogram/compute</property>
-        <less-equal>
-          <value type="float">4.3</value>
-          <glversion/>
-        </less-equal>
+        <extension-supported>GL_ARB_compute_shader</extension-supported>
       </and>
     </predicate>
     <pass>

@@ -8,10 +8,10 @@
           <property>/sim/rendering/hdr/histogram/compute</property>
           <value type="bool">false</value>
         </equal>
-        <less>
-          <glversion/>
-          <value type="float">4.3</value>
-        </less>
+        <equal>
+          <extension-supported>GL_ARB_compute_shader</extension-supported>
+          <value type="bool">false</value>
+        </equal>
       </or>
     </predicate>
     <pass>
