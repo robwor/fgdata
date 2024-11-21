@@ -12,17 +12,15 @@ uniform vec2 fg_BufferSize;
 uniform float bloom_strength;
 uniform bool debug_ev100;
 
-const float NOISE_GRANULARITY = 0.5 / 255.0;
-
 const vec3 HIGHLIGHT_COLOR = vec3(1.0, 0.85, 0.0);
 const float HIGHLIGHT_ALPHA = 0.2;
 
+// math.glsl
+float interleaved_gradient_noise(vec2 uv);
 // color.glsl
 vec3 eotf_sRGB(vec3 linear_srgb);
 // aces.glsl
 vec3 aces_fitted(vec3 color);
-// noise.glsl
-float rand_2d(vec2 co);
 // bloom_upsample.glsl
 vec3 bloom_upsample(vec2 uv);
 // redout.glsl
@@ -106,8 +104,8 @@ void main()
     // Pick animation highlights
     color = highlight_apply(color, uv, highlight_tex);
 
-    // Dithering
-    color += mix(-NOISE_GRANULARITY, NOISE_GRANULARITY, rand_2d(texcoord));
+    // Dithering to reduce banding
+    color += (1.0 / 255.0) * interleaved_gradient_noise(gl_FragCoord.xy) - (0.5 / 255.0);
 
     fragColor = vec4(color, 1.0);
 }
