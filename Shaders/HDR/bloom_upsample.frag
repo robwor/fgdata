@@ -15,15 +15,14 @@ in vec2 texcoord;
 uniform sampler2D tex;
 uniform float filter_radius;
 
+uniform float fg_AspectRatio;
+
 void main()
 {
     // The filter does not map to pixels, has "holes" in it. Its radius also
     // varies across mip resolutions.
-    vec2 texel_size = 1.0 / vec2(textureSize(tex, 0));
-    float aspect_ratio = texel_size.y / texel_size.x;
-
     float x = filter_radius;
-    float y = filter_radius * aspect_ratio;
+    float y = filter_radius * fg_AspectRatio;
 
     // Take 9 samples around current texel:
     // a - b - c
