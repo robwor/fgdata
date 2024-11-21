@@ -243,6 +243,16 @@
     <screen-width-scale>0.03125</screen-width-scale>
     <screen-height-scale>0.03125</screen-height-scale>
   </buffer>
+  <buffer include="bloom-buffer.xml">
+    <name>bloomF</name>
+    <screen-width-scale>0.015625</screen-width-scale>
+    <screen-height-scale>0.015625</screen-height-scale>
+  </buffer>
+  <buffer include="bloom-buffer.xml">
+    <name>bloomG</name>
+    <screen-width-scale>0.0078125</screen-width-scale>
+    <screen-height-scale>0.0078125</screen-height-scale>
+  </buffer>
 
   <buffer include="screen-buffer.xml">
     <name>highlight</name>
@@ -1191,9 +1201,53 @@
       <buffer>bloomE</buffer>
     </attachment>
   </pass>
+  <pass include="bloom-downsample-rest.xml">
+    <name>bloom-downsample6</name>
+    <binding>
+      <unit>0</unit>
+      <buffer>bloomE</buffer>
+    </binding>
+    <attachment>
+      <component>color0</component>
+      <buffer>bloomF</buffer>
+    </attachment>
+  </pass>
+  <pass include="bloom-downsample-rest.xml">
+    <name>bloom-downsample7</name>
+    <binding>
+      <unit>0</unit>
+      <buffer>bloomF</buffer>
+    </binding>
+    <attachment>
+      <component>color0</component>
+      <buffer>bloomG</buffer>
+    </attachment>
+  </pass>
 
   <pass include="bloom-upsample.xml">
     <name>bloom-upsample1</name>
+    <binding>
+      <unit>0</unit>
+      <buffer>bloomG</buffer>
+    </binding>
+    <attachment>
+      <component>color0</component>
+      <buffer>bloomF</buffer>
+    </attachment>
+  </pass>
+  <pass include="bloom-upsample.xml">
+    <name>bloom-upsample2</name>
+    <binding>
+      <unit>0</unit>
+      <buffer>bloomF</buffer>
+    </binding>
+    <attachment>
+      <component>color0</component>
+      <buffer>bloomE</buffer>
+    </attachment>
+  </pass>
+  <pass include="bloom-upsample.xml">
+    <name>bloom-upsample3</name>
     <binding>
       <unit>0</unit>
       <buffer>bloomE</buffer>
@@ -1204,7 +1258,7 @@
     </attachment>
   </pass>
   <pass include="bloom-upsample.xml">
-    <name>bloom-upsample2</name>
+    <name>bloom-upsample4</name>
     <binding>
       <unit>0</unit>
       <buffer>bloomD</buffer>
@@ -1215,7 +1269,7 @@
     </attachment>
   </pass>
   <pass include="bloom-upsample.xml">
-    <name>bloom-upsample3</name>
+    <name>bloom-upsample5</name>
     <binding>
       <unit>0</unit>
       <buffer>bloomC</buffer>
@@ -1226,7 +1280,7 @@
     </attachment>
   </pass>
   <pass include="bloom-upsample.xml">
-    <name>bloom-upsample4</name>
+    <name>bloom-upsample6</name>
     <binding>
       <unit>0</unit>
       <buffer>bloomB</buffer>

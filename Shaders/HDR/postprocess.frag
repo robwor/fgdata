@@ -5,7 +5,6 @@ layout(location = 0) out vec4 fragColor;
 in vec2 texcoord;
 
 uniform sampler2D hdr_tex;
-uniform sampler2D bloom_tex;
 uniform sampler2D highlight_tex;
 
 uniform vec2 fg_BufferSize;
@@ -24,6 +23,8 @@ vec3 eotf_sRGB(vec3 linear_srgb);
 vec3 aces_fitted(vec3 color);
 // noise.glsl
 float rand_2d(vec2 co);
+// bloom_upsample.glsl
+vec3 bloom_upsample(vec2 uv);
 // redout.glsl
 vec2 redout_distort(vec2 uv);
 vec3 redout_apply(vec3 color, vec2 uv);
@@ -91,7 +92,7 @@ void main()
 
     vec3 hdr_color = texture(hdr_tex, uv).rgb;
     // Apply bloom
-    vec3 bloom = texture(bloom_tex, uv).rgb;
+    vec3 bloom = bloom_upsample(uv);
     hdr_color = mix(hdr_color, bloom, bloom_strength);
     // Tonemap
     vec3 color = aces_fitted(hdr_color);
