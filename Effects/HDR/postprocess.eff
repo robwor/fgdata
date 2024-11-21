@@ -22,6 +22,7 @@
         <fragment-shader>Shaders/HDR/color.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/noise.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/aces.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/noise.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/bloom_upsample.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/redout.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/night_vision.glsl</fragment-shader>
