@@ -17,8 +17,8 @@ var XMLDialog = {
 
         # FIXME: lookup translated dialog name, this is the
         # key string here
-        me._window.setTitle(d.name);
-        me._window.set("resize", 1);
+        me._window.setTitle(d.title);
+        me._window.set("resize", d.resizeable);
 
         var m = me;
         me._window.del = func {
@@ -145,7 +145,7 @@ var XMLObjectBase =
         return node.getBoolValue();
     },
 
-    _applyLayoutConfig: func()
+    _applyLayoutConfig: func(compatWidgetSizeHint = false)
     {
         var halign = me._configValue("halign");
         var valign = me._configValue("valign");
@@ -208,6 +208,12 @@ var XMLObjectBase =
 
                 l.setSizeHint(hint);
             }
+
+            if (compatWidgetSizeHint) {
+                # old PUI layout code uses minimum size as the hint for many simple
+                # widgets such as buttons and labels
+                l.setSizeHint(l.minimumSize());
+            }
         } else {
             # layout item is not a NasalWidget, so lacks public
             # setters for these. Could extend the API if we need to
@@ -215,6 +221,12 @@ var XMLObjectBase =
             # layouts
         }
 
+    },
+
+    visibleChanged: func() 
+    {
+        logprint(LOG_INFO, "Updating widget visiblity");
+        me._view.setVisible(me.visible);
     },
 
     view: func { return me._view; },
@@ -243,12 +255,18 @@ var XMLButton =
         });
         me._layout = me._view;
 
+        # copy initial visiblity
+        me._view.visible = me.visible;
+
         # hook up the button to our bindings
         me._view.listen("clicked", func  me.activateBindings(); );
-        me._applyLayoutConfig();
+        me._applyLayoutConfig(true);
 
         return me._view;
     }
+
+
+
 };
 
 var XMLCheckbox =
@@ -256,8 +274,12 @@ var XMLCheckbox =
     show: func(viewParent)
     {
         me._view = cwidgets.CheckBox.new(viewParent, canvas.style, {"text": me._configValue("label")});
+
+         # copy initial visiblity
+        me._view.visible = me.visible;
+
         me._layout = me._view;
-        me._applyLayoutConfig();
+        me._applyLayoutConfig(true);
         me.update();
 
         return me._view;
@@ -283,10 +305,14 @@ var XMLLabel =
     show: func(viewParent)
     {
         me._view = cwidgets.Label.new(viewParent, canvas.style, {});
+        
+        # copy initial visiblity
+        me._view.visible = me.visible;
+
         me._label = me._configValue("label");
         me._format = me._configValue("format");
         me._layout = me._view;
-        me._applyLayoutConfig();
+        me._applyLayoutConfig(true);
         me.update();
 
         return me._view;
@@ -325,6 +351,8 @@ var XMLGroup =
     show: func(viewParent)
     {
         me._view = viewParent.createChild("group");
+        # copy initial visiblity
+        me._view.visible = me.visible;
 
         # check for layout on us
         var layout = nil;
@@ -347,6 +375,7 @@ var XMLGroup =
         foreach (var c; me.children) {
             # create view for each child
             c.show(me._view);
+
             if (layout != nil) {
                 var childItem = c.layoutItem();
 
@@ -395,6 +424,10 @@ var XMLSlider =
             "step-size": me._configDouble("step", 0),
             "page-size": me._configDouble("page", 0),
         });
+
+        # copy initial visiblity
+        me._view.visible = me.visible;
+
         me._view.listen("value-changed", func(e) {
             if (me.property) {
                 me.property.setValue(e.detail.value);
@@ -575,6 +608,9 @@ var XMLComboBox =
     show: func(viewParent)
     {
         me._view = cwidgets.ComboBox.new(viewParent, canvas.style, {});
+
+        # copy initial visiblity
+        me._view.visible = me.visible;
 
         # do we support a label or is that a seperate widget?
         foreach (var valueNode; me.config.getChildren("value")) {
