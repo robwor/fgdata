@@ -71,6 +71,7 @@
       <program>
         <vertex-shader>Shaders/HDR/moon.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/moon.frag</fragment-shader>
+        <fragment-shader>Shaders/HDR/celestial_body.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/color.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/normalmap.glsl</fragment-shader>
@@ -87,6 +88,7 @@
         <type>sampler-2d</type>
         <value type="int">2</value>
       </uniform>
+      <!-- celestial_body.glsl -->
       <uniform>
         <name>transmittance_tex</name>
         <type>sampler-2d</type>

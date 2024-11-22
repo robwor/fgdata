@@ -4,7 +4,10 @@
   <name>Effects/stars</name>
 
   <parameters>
-    <max-radiance type="float">20.0</max-radiance>
+    <!-- exposure.glsl -->
+    <exposure-compensation>
+      <use>/sim/rendering/hdr/exposure-compensation</use>
+    </exposure-compensation>
   </parameters>
 
   <technique n="129">
@@ -30,14 +33,12 @@
       <program>
         <vertex-shader>Shaders/HDR/stars.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/stars.frag</fragment-shader>
+        <fragment-shader>Shaders/HDR/celestial_body.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/atmos_spectral.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
       </program>
-      <uniform>
-        <name>max_radiance</name>
-        <type>float</type>
-        <value><use>max-radiance</use></value>
-      </uniform>
+      <!-- celestial_body.glsl -->
       <uniform>
         <name>transmittance_tex</name>
         <type>sampler-2d</type>

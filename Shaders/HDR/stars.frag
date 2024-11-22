@@ -3,50 +3,51 @@
 layout(location = 0) out vec4 fragColor;
 
 in VS_OUT {
-    vec4 color;
     vec3 view_vector;
+    vec4 spectral_irradiance;
 } fs_in;
 
-uniform sampler2D transmittance_tex;
+uniform vec4 fg_Viewport;
+uniform mat4 osg_ProjectionMatrix;
 
-uniform float max_radiance;
+// math.glsl
+float sqr(float x);
+float cub(float x);
+// celestial_body.glsl
+vec3 celestial_body_eval_color_spectral(vec4 radiance, vec3 V);
 
-uniform float fg_CameraDistanceToEarthCenter;
-uniform float fg_EarthRadius;
-uniform vec3 fg_CameraViewUp;
-
-const float ATMOSPHERE_RADIUS = 6471e3;
-
-// exposure.glsl
-vec3 apply_exposure(vec3 color);
+/*
+ * Returns the solid angle subtended by a pixel.
+ *
+ * 'p' is the pixel's coordinates, where (0, 0) corresponds to the lower left
+ * corner of the screen and 's' corresponds to the top right corner.
+ * 'f' is the focal length.
+ * All parameters are in pixels, including f.
+ *
+ * This is an approximation of the exact formula found in [vixra:2001.0603]
+ * https://math.stackexchange.com/a/2700457
+ */
+float solid_angle_pixel_aprox(vec2 p, vec2 s, float f)
+{
+    float inv_f = 1.0 / max(f, 1e-3);
+    float A = sqr(inv_f);
+    vec3 X = vec3((p - s * 0.5) * inv_f, 1.0);
+    return A / cub(length(X));
+}
 
 void main()
 {
-    vec3 color = fs_in.color.rgb * fs_in.color.a * max_radiance;
+    vec3 V = normalize(-fs_in.view_vector);
 
-    vec3 V = normalize(fs_in.view_vector);
+    // Since the star is always a single pixel (they are rendered as GL_POINTS),
+    // the solid angle it subtends varies with FOV and its screen position.
 
-    // Apply aerial perspective
-    float normalized_altitude =
-        (fg_CameraDistanceToEarthCenter - fg_EarthRadius)
-        / (ATMOSPHERE_RADIUS - fg_EarthRadius);
-    float cos_theta = dot(-V, fg_CameraViewUp);
+    // Focal length is the first element of the projection matrix multiplied by
+    // half the image plane width.
+    float f = osg_ProjectionMatrix[0][0] * fg_Viewport.z * 0.5;
+    float omega = solid_angle_pixel_aprox(gl_FragCoord.xy, fg_Viewport.zw, f);
 
-    vec2 uv = vec2(cos_theta * 0.5 + 0.5, clamp(normalized_altitude, 0.0, 1.0));
-    vec4 transmittance = texture(transmittance_tex, uv);
+    vec4 spectral_radiance = fs_in.spectral_irradiance / max(omega, 1e-8);
 
-    // The proper thing would be to have spectral data for the stars' radiance.
-    // This could be approximated by taking the star's temperature and using
-    // Plank's law to obtain the spectral radiance for our 4 wavelengths.
-    // That's too complicated for now, so instead we just average the four
-    // spectral samples from the atmospheric transmittance.
-    color *= dot(transmittance, vec4(0.25));
-
-    // Pre-expose
-    color = apply_exposure(color);
-
-    // Final color = transmittance * star radiance + sky inscattering
-    // In this frag shader we output the multiplication part, and the sky
-    // in-scattering is added by doing additive blending on top of the skydome.
-    fragColor = vec4(color, 1.0);
+    fragColor = vec4(celestial_body_eval_color_spectral(spectral_radiance, V), 1.0);
 }

@@ -9,9 +9,6 @@
     </exposure-compensation>
   </parameters>
 
-  <technique n="109">
-    <scheme>hdr-geometry</scheme>
-  </technique>
   <technique n="129">
     <scheme>hdr-forward</scheme>
     <pass>
@@ -36,11 +33,6 @@
         <name>is_envmap</name>
         <type>bool</type>
         <value type="bool">false</value>
-      </uniform>
-      <uniform>
-        <name>transmittance_tex</name>
-        <type>sampler-2d</type>
-        <value type="int">12</value>
       </uniform>
       <uniform>
         <name>sky_view_tex</name>
@@ -85,11 +77,6 @@
         <name>is_envmap</name>
         <type>bool</type>
         <value type="bool">true</value>
-      </uniform>
-      <uniform>
-        <name>transmittance_tex</name>
-        <type>sampler-2d</type>
-        <value type="int">12</value>
       </uniform>
       <uniform>
         <name>sky_view_tex</name>

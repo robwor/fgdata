@@ -39,7 +39,7 @@ vec4 compute_inscattering(in vec3 ray_origin,
                           in sampler2D transmittance_lut,
                           out vec4 transmittance);
 // atmos_spectral.glsl
-vec4 get_sun_spectral_irradiance();
+vec4 get_sun_outerspace_spectral_irradiance();
 vec3 linear_srgb_from_spectral_samples(vec4 L);
 
 void main()
@@ -69,7 +69,7 @@ void main()
                                   transmittance);
     // In-scattering
     fragColor.rgb = linear_srgb_from_spectral_samples(
-        L * get_sun_spectral_irradiance());
+        L * get_sun_outerspace_spectral_irradiance());
     // Transmittance
     fragColor.a = dot(transmittance, vec4(0.25));
 }

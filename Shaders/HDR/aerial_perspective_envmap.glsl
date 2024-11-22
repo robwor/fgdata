@@ -18,7 +18,7 @@ vec4 compute_inscattering(in vec3 ray_origin,
                           in sampler2D transmittance_lut,
                           out vec4 transmittance);
 // atmos_spectral.glsl
-vec4 get_sun_spectral_irradiance();
+vec4 get_sun_outerspace_spectral_irradiance();
 vec3 linear_srgb_from_spectral_samples(vec4 L);
 
 vec4 get_aerial_perspective(vec3 pos)
@@ -40,7 +40,8 @@ vec4 get_aerial_perspective(vec3 pos)
                                   transmittance);
 
     vec4 ap;
-    ap.rgb = linear_srgb_from_spectral_samples(L * get_sun_spectral_irradiance());
+    ap.rgb = linear_srgb_from_spectral_samples(
+        L * get_sun_outerspace_spectral_irradiance());
     ap.a = dot(transmittance, vec4(0.25));
     return ap;
 }
