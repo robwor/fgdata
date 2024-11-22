@@ -5,6 +5,7 @@ layout(location = 0) out vec4 fragColor;
 in vec2 texcoord;
 
 uniform sampler2D transmittance_lut;
+uniform sampler2D ms_lut;
 
 uniform float fg_SunZenithCosTheta;
 uniform float fg_CameraDistanceToEarthCenter;
@@ -22,6 +23,7 @@ vec4 compute_inscattering(in vec3 ray_origin,
                           in vec3 sun_dir,
                           in int steps,
                           in sampler2D transmittance_lut,
+                          in sampler2D ms_lut,
                           out vec4 transmittance);
 
 void main()
@@ -49,10 +51,11 @@ void main()
     vec4 transmittance;
     vec4 L = compute_inscattering(ray_origin,
                                   ray_dir,
-                                  1e7,
+                                  1e9,
                                   sun_dir,
                                   SKY_STEPS,
                                   transmittance_lut,
+                                  ms_lut,
                                   transmittance);
     fragColor = L;
 }

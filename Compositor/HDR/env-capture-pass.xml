@@ -24,4 +24,8 @@
     <unit>14</unit>
     <buffer>prev-luminance</buffer>
   </binding>
+    <binding>
+    <unit>15</unit>
+    <buffer>multiple-scattering</buffer>
+  </binding>
 </PropertyList>

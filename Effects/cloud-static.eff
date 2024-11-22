@@ -113,6 +113,11 @@ This means that they are normal 3D models loaded from disk.
         <type>sampler-2d</type>
         <value type="int">12</value>
       </uniform>
+      <uniform>
+        <name>ms_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">15</value>
+      </uniform>
       <!-- exposure.glsl -->
       <uniform>
         <name>lum_tex</name>

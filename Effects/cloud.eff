@@ -202,6 +202,11 @@
         <type>sampler-2d</type>
         <value type="int">12</value>
       </uniform>
+      <uniform>
+        <name>ms_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">15</value>
+      </uniform>
       <!-- atmos.glsl -->
       <uniform>
         <name>aerosol_absorption_cross_section</name>

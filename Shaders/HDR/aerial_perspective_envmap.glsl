@@ -1,6 +1,7 @@
 #version 330 core
 
 uniform sampler2D transmittance_tex;
+uniform sampler2D ms_tex;
 
 uniform vec3 fg_CameraPositionCart;
 uniform vec3 fg_SunDirectionWorld;
@@ -16,6 +17,7 @@ vec4 compute_inscattering(in vec3 ray_origin,
                           in vec3 sun_dir,
                           in int steps,
                           in sampler2D transmittance_lut,
+                          in sampler2D ms_lut,
                           out vec4 transmittance);
 // atmos_spectral.glsl
 vec4 get_sun_outerspace_spectral_irradiance();
@@ -37,6 +39,7 @@ vec4 get_aerial_perspective(vec3 pos)
                                   fg_SunDirectionWorld,
                                   AERIAL_PERSPECTIVE_ENVMAP_STEPS,
                                   transmittance_tex,
+                                  ms_tex,
                                   transmittance);
 
     vec4 ap;

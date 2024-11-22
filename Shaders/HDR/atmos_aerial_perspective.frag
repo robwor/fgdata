@@ -16,6 +16,7 @@ layout(location = 0) out vec4 fragColor;
 in vec2 texcoord;
 
 uniform sampler2D transmittance_lut;
+uniform sampler2D ms_lut;
 
 uniform mat4 fg_ViewMatrixInverse;
 uniform vec3 fg_CameraPositionCart;
@@ -37,6 +38,7 @@ vec4 compute_inscattering(in vec3 ray_origin,
                           in vec3 sun_dir,
                           in int steps,
                           in sampler2D transmittance_lut,
+                          in sampler2D ms_lut,
                           out vec4 transmittance);
 // atmos_spectral.glsl
 vec4 get_sun_outerspace_spectral_irradiance();
@@ -66,6 +68,7 @@ void main()
                                   fg_SunDirectionWorld,
                                   AERIAL_PERSPECTIVE_STEPS,
                                   transmittance_lut,
+                                  ms_lut,
                                   transmittance);
     // In-scattering
     fragColor.rgb = linear_srgb_from_spectral_samples(

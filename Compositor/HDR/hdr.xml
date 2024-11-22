@@ -83,6 +83,17 @@
     <wrap-t>clamp-to-edge</wrap-t>
   </buffer>
   <buffer>
+    <name>multiple-scattering</name>
+    <type>2d</type>
+    <width>32</width>
+    <height>32</height>
+    <format>rgba16f</format>
+    <min-filter>linear</min-filter>
+    <mag-filter>linear</mag-filter>
+    <wrap-s>clamp-to-edge</wrap-s>
+    <wrap-t>clamp-to-edge</wrap-t>
+  </buffer>
+  <buffer>
     <name>sky-view</name>
     <type>2d</type>
     <width>256</width>
@@ -335,12 +346,29 @@
     </attachment>
   </pass>
   <pass>
+    <name>atmos-multiple-scattering</name>
+    <type>quad</type>
+    <effect>Effects/HDR/atmos-multiple-scattering</effect>
+    <binding>
+      <unit>0</unit>
+      <buffer>transmittance</buffer>
+    </binding>
+    <attachment>
+      <component>color0</component>
+      <buffer>multiple-scattering</buffer>
+    </attachment>
+  </pass>
+  <pass>
     <name>atmos-sky-view</name>
     <type>quad</type>
     <effect>Effects/HDR/atmos-sky-view</effect>
     <binding>
       <unit>0</unit>
       <buffer>transmittance</buffer>
+    </binding>
+    <binding>
+      <unit>1</unit>
+      <buffer>multiple-scattering</buffer>
     </binding>
     <attachment>
       <component>color0</component>
@@ -354,6 +382,10 @@
     <binding>
       <unit>0</unit>
       <buffer>transmittance</buffer>
+    </binding>
+    <binding>
+      <unit>1</unit>
+      <buffer>multiple-scattering</buffer>
     </binding>
     <attachment>
       <component>color0</component>

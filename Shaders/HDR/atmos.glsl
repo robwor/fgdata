@@ -10,6 +10,8 @@
 
 #version 330 core
 
+#pragma import_defines(COMPUTE_MULTIPLE_SCATTERING)
+
 uniform vec4 aerosol_absorption_cross_section;
 uniform vec4 aerosol_scattering_cross_section;
 uniform float aerosol_base_density;
@@ -57,6 +59,7 @@ float M_PI();
 float M_2PI();
 float M_1_PI();
 float M_1_4PI();
+float saturate(float x);
 float sqr(float x);
 
 //------------------------------------------------------------------------------
@@ -76,6 +79,17 @@ float get_atmosphere_radius()
  * from the precomputed transmittance LUT.
  */
 vec4 transmittance_from_lut(sampler2D lut, float cos_theta, float normalized_altitude)
+{
+    float u = clamp(cos_theta * 0.5 + 0.5, 0.0, 1.0);
+    float v = clamp(normalized_altitude, 0.0, 1.0);
+    return texture(lut, vec2(u, v));
+}
+
+/*
+ * Helper function to obtain the multiple scattering from the precomputed
+ * multiple scattering LUT.
+ */
+vec4 ms_from_lut(sampler2D lut, float cos_theta, float normalized_altitude)
 {
     float u = clamp(cos_theta * 0.5 + 0.5, 0.0, 1.0);
     float v = clamp(normalized_altitude, 0.0, 1.0);
@@ -113,37 +127,6 @@ float aerosol_phase_function(float cos_theta)
 {
     float den = 1.0 + HENYEY_ASYMMETRY2 + 2.0 * HENYEY_ASYMMETRY * cos_theta;
     return M_1_4PI() * (1.0 - HENYEY_ASYMMETRY2) / (den * sqrt(den));
-}
-
-/*
- * Get the approximated multiple scattering contribution for a given point
- * within the atmosphere.
- */
-vec4 get_multiple_scattering(sampler2D transmittance_lut,
-                             float cos_theta,
-                             float normalized_height,
-                             float d)
-{
-    // Solid angle subtended by the planet from a point at d distance
-    // from the planet center.
-    float omega = M_2PI() * (1.0 - sqrt(sqr(d) - sqr(get_earth_radius())) / d);
-    omega = max(0.0, omega);
-
-    vec4 T_to_ground = transmittance_from_lut(transmittance_lut, cos_theta, 0.0);
-
-    vec4 T_ground_to_sample =
-        transmittance_from_lut(transmittance_lut, 1.0, 0.0) /
-        transmittance_from_lut(transmittance_lut, 1.0, normalized_height);
-
-    // 2nd order scattering from the ground
-    vec4 L_ground = M_1_4PI() * omega * (ground_albedo * M_1_PI())
-        * T_to_ground * T_ground_to_sample * max(0.0, cos_theta);
-
-    // Fit of Earth's multiple scattering coming from other points in the atmosphere
-    vec4 L_ms = 0.02 * vec4(0.217, 0.347, 0.594, 1.0)
-        * (1.0 / (1.0 + 5.0 * exp(-17.92 * cos_theta)));
-
-    return L_ms + L_ground;
 }
 
 /*
@@ -234,7 +217,8 @@ void get_atmosphere_collision_coefficients(in float h,
  *    at the Kármán line (100 km above sea level).
  * 3. Any object within the atmosphere.
  */
-float get_ray_end(vec3 ray_origin, vec3 ray_dir, float t_max)
+float get_ray_end(in vec3 ray_origin, in vec3 ray_dir, in float t_max,
+                  out float t_ground, out float t_atmos)
 {
     float ray_altitude = length(ray_origin);
     // If the ray origin is underground, put the ground a bit below it
@@ -246,8 +230,8 @@ float get_ray_end(vec3 ray_origin, vec3 ray_dir, float t_max)
         return -1.0;
     }
 
-    float t_atmos  = ray_sphere_intersection(ray_origin, ray_dir, get_atmosphere_radius());
-    float t_ground = ray_sphere_intersection(ray_origin, ray_dir, earth_radius);
+    t_atmos  = ray_sphere_intersection(ray_origin, ray_dir, get_atmosphere_radius());
+    t_ground = ray_sphere_intersection(ray_origin, ray_dir, earth_radius);
     float t_d = 0.0;
     if (t_ground < 0.0) {
         if (t_atmos < 0.0) {
@@ -271,6 +255,10 @@ float get_ray_end(vec3 ray_origin, vec3 ray_dir, float t_max)
  * the 4 wavelengths at the top of this file. To obtain an RGB triplet, the
  * spectral radiance must be multiplied by the spectral irradiance of the Sun
  * and converted to sRGB.
+ *
+ * This function can optionally return the integrated approximated multiple
+ * scattering contribution along the ray when COMPUTE_MULTIPLE_SCATTERING is
+ * defined.
  */
 vec4 compute_inscattering(in vec3 ray_origin,
                           in vec3 ray_dir,
@@ -278,9 +266,15 @@ vec4 compute_inscattering(in vec3 ray_origin,
                           in vec3 sun_dir,
                           in int steps,
                           in sampler2D transmittance_lut,
+#ifndef COMPUTE_MULTIPLE_SCATTERING
+                          in sampler2D ms_lut,
+#else
+                          out vec4 f_ms,
+#endif
                           out vec4 transmittance)
 {
-    float t_d = get_ray_end(ray_origin, ray_dir, t_max);
+    float t_ground, t_atmos;
+    float t_d = get_ray_end(ray_origin, ray_dir, t_max, t_ground, t_atmos);
     if (t_d < 1e-3) {
         // No intersection with the atmosphere or the ray origin and end points
         // are too close too each other. In both cases there is no inscattering.
@@ -295,6 +289,9 @@ vec4 compute_inscattering(in vec3 ray_origin,
 
     vec4 L_inscattering = vec4(0.0);
     transmittance = vec4(1.0);
+#ifdef COMPUTE_MULTIPLE_SCATTERING
+    f_ms = vec4(0.0);
+#endif
 
     for (int i = 0; i < steps; ++i) {
         float t = (float(i) + 0.5) * dt;
@@ -318,26 +315,49 @@ vec4 compute_inscattering(in vec3 ray_origin,
             fog_scattering,
             extinction);
 
+        vec4 step_transmittance = exp(-dt * extinction);
+
         vec4 transmittance_to_sun = transmittance_from_lut(
             transmittance_lut, sample_cos_theta, normalized_altitude);
 
-        vec4 ms = get_multiple_scattering(
-            transmittance_lut, sample_cos_theta, normalized_altitude,
-            distance_to_earth_center);
+        vec4 ms = vec4(0.0);
+#ifndef COMPUTE_MULTIPLE_SCATTERING
+        ms = ms_from_lut(ms_lut, sample_cos_theta, normalized_altitude);
+#else
+        vec4 MS = molecular_scattering + aerosol_scattering + fog_scattering;
+        vec4 MS_int = (MS - MS * step_transmittance) / max(extinction, 1e-7);
+        f_ms += transmittance * MS_int;
+#endif
 
         vec4 S =
             molecular_scattering                  * (molecular_phase * transmittance_to_sun + ms) +
             (aerosol_scattering + fog_scattering) * (aerosol_phase   * transmittance_to_sun + ms);
-
-        vec4 step_transmittance = exp(-dt * extinction);
 
         // Energy-conserving analytical integration
         // "Physically Based Sky, Atmosphere and Cloud Rendering in Frostbite"
         // by Sébastien Hillaire
         vec4 S_int = (S - S * step_transmittance) / max(extinction, 1e-7);
         L_inscattering += transmittance * S_int;
+
         transmittance *= step_transmittance;
     }
+
+#ifdef COMPUTE_MULTIPLE_SCATTERING
+    // Account for bounced light off the Earth
+    if (t_ground > 0.0) {
+        vec3 x_ground = ray_origin + ray_dir * t_ground;
+        vec3 zenith_dir = normalize(x_ground);
+        float cos_theta = dot(zenith_dir, sun_dir);
+
+        vec4 transmittance_to_sun = transmittance_from_lut(
+            transmittance_lut, cos_theta, 0.0);
+
+        float NdotL = saturate(cos_theta);
+
+        L_inscattering += transmittance_to_sun * transmittance * NdotL
+            * ground_albedo * M_1_PI();
+    }
+#endif
 
     return L_inscattering;
 }
