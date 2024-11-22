@@ -128,13 +128,50 @@
         <label>MMMMMMMMMM</label>
         <format>FlightGear Version: %s</format>
         <property>/sim/version/flightgear</property>
+        <visible>
+          <equals>
+              <property>/sim/version/build-type</property>
+              <value>Release</value>
+          </equals>
+        </visible>
       </text>
       
       <text>
         <halign>left</halign>
         <label>MMMMMMMMMM</label>
+        <format>FlightGear Nightly: %s</format>
+        <property>/sim/version/build-date</property>
+        <visible>
+          <equals>
+              <property>/sim/version/build-type</property>
+              <value>Nightly</value>
+          </equals>
+        </visible>
+      </text>
+
+      <text>
+        <halign>left</halign>
+        <label>MMMMMMMMMM</label>
+        <format>FlightGear Development Build</format>
+        <visible>
+          <equals>
+              <property>/sim/version/build-type</property>
+              <value>Dev</value>
+          </equals>
+        </visible>
+      </text>
+
+      <text>
+        <halign>left</halign>
+        <label>MMMMMMMMMM</label>
         <format>SimGear Version: %s</format>
         <property>/sim/version/simgear</property>
+        <visible>
+          <equals>
+              <property>/sim/version/build-type</property>
+              <value>Release</value>
+          </equals>
+        </visible>
       </text>
 
       <text>
@@ -147,15 +184,8 @@
       <text>
         <halign>left</halign>
         <label>MMMMMMMMMMMMMMMMMM</label>
-        <format>Build Id: %s</format>
-        <property>/sim/version/build-id</property>
-      </text>
-      
-      <text>
-        <halign>left</halign>
-        <label>MMMMMM</label>
-        <format>Build Number: %d</format>
-        <property>/sim/version/build-number</property>
+        <format>Build Date: %s</format>
+        <property>/sim/version/build-date</property>
       </text>
       
       <text>
@@ -218,13 +248,6 @@
         <format>Max Texture Size: %s</format>
         <property>/sim/rendering/max-texture-size</property>
       </text>
-
-      <text>
-        <halign>left</halign>
-        <label>MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</label>
-        <format>Depth Buffer Bits: %s</format>
-        <property>/sim/rendering/depth-buffer-bits</property>
-      </text>
     </group>
   </group>
   
@@ -267,16 +290,14 @@
         "/sim/version/flightgear",
         "/sim/version/simgear",
         "/sim/version/openscenegraph",
-        "/sim/version/build-id",
-        "/sim/version/build-number",
+        "/sim/version/build-date",
         "/sim/version/build-type",
         "/sim/version/revision",
         "/sim/rendering/gl-vendor",
         "/sim/rendering/gl-renderer",
         "/sim/rendering/gl-version",
         "/sim/rendering/gl-shading-language-version",
-        "/sim/rendering/max-texture-size",
-        "/sim/rendering/depth-buffer-bits",
+        "/sim/rendering/max-texture-size"
         ];
    var data = "";
    clipboard.setText(data);
