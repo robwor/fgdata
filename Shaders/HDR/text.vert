@@ -18,7 +18,7 @@ uniform mat3 osg_NormalMatrix;
 uniform mat4 fg_TextureMatrix;
 
 // aerial_perspective.glsl
-vec4 get_aerial_perspective(vec2 coord, float depth);
+vec4 get_aerial_perspective(vec2 coord, vec3 P);
 // logarithmic_depth.glsl
 float logdepth_prepare_vs_depth(float z);
 
@@ -31,5 +31,5 @@ void main()
     vs_out.view_vector = (osg_ModelViewMatrix * pos).xyz;
 
     vec2 coord = (gl_Position.xy / gl_Position.w) * 0.5 + 0.5;
-    vs_out.ap_color = get_aerial_perspective(coord, length(vs_out.view_vector));
+    vs_out.ap_color = get_aerial_perspective(coord, vs_out.view_vector);
 }

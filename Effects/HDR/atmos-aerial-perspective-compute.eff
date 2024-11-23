@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PropertyList>
-  <name>Effects/HDR/atmos-aerial-perspective</name>
+  <name>Effects/HDR/atmos-aerial-perspective-compute</name>
   <parameters>
     <!-- atmos.glsl -->
     <aerosol-absorption-cross-section type="vec4d">
@@ -47,25 +47,36 @@
     </ground-albedo>
   </parameters>
   <technique n="1">
+    <predicate>
+      <and>
+        <property>/sim/rendering/hdr/compute</property>
+        <extension-supported>GL_ARB_compute_shader</extension-supported>
+      </and>
+    </predicate>
     <pass>
       <program>
-        <vertex-shader>Shaders/HDR/quad.vert</vertex-shader>
-        <fragment-shader>Shaders/HDR/atmos_aerial_perspective.frag</fragment-shader>
-        <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
-        <fragment-shader>Shaders/HDR/logarithmic_depth.glsl</fragment-shader>
-        <fragment-shader>Shaders/HDR/pos_from_depth.glsl</fragment-shader>
-        <fragment-shader>Shaders/HDR/atmos.glsl</fragment-shader>
-        <fragment-shader>Shaders/HDR/atmos_spectral.glsl</fragment-shader>
+        <compute-shader>Shaders/HDR/atmos_aerial_perspective.comp</compute-shader>
+        <compute-shader>Shaders/HDR/math.glsl</compute-shader>
+        <compute-shader>Shaders/HDR/logarithmic_depth.glsl</compute-shader>
+        <compute-shader>Shaders/HDR/pos_from_depth.glsl</compute-shader>
+        <compute-shader>Shaders/HDR/atmos.glsl</compute-shader>
+        <compute-shader>Shaders/HDR/atmos_spectral.glsl</compute-shader>
+        <compute-shader>Shaders/HDR/aerial_perspective.glsl</compute-shader>
       </program>
       <uniform>
-        <name>transmittance_lut</name>
+        <name>transmittance_tex</name>
         <type>sampler-2d</type>
         <value type="int">0</value>
       </uniform>
       <uniform>
-        <name>ms_lut</name>
+        <name>ms_tex</name>
         <type>sampler-2d</type>
         <value type="int">1</value>
+      </uniform>
+      <uniform>
+        <name>aerial_perspective_img</name>
+        <type>image-3d</type>
+        <value type="int">0</value>
       </uniform>
       <!-- atmos.glsl -->
       <uniform>

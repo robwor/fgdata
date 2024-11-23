@@ -12,13 +12,13 @@
       <program>
         <vertex-shader>Shaders/HDR/quad_matrix.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/debug_aerial_perspective.frag</fragment-shader>
-        <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
       </program>
       <!-- aerial_perspective.glsl -->
       <uniform>
         <name>aerial_perspective_tex</name>
-        <type>sampler-2d</type>
+        <type>sampler-3d</type>
         <value type="int">11</value>
       </uniform>
       <!-- exposure.glsl -->

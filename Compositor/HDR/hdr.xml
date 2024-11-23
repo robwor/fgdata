@@ -106,14 +106,16 @@
   </buffer>
   <buffer>
     <name>aerial-perspective</name>
-    <type>2d</type>
-    <width>1024</width>
+    <type>3d</type>
+    <width>64</width>
     <height>64</height>
+    <depth>32</depth>
     <format>rgba16f</format>
     <min-filter>linear</min-filter>
     <mag-filter>linear</mag-filter>
     <wrap-s>clamp-to-edge</wrap-s>
     <wrap-t>clamp-to-edge</wrap-t>
+    <wrap-r>clamp-to-edge</wrap-r>
   </buffer>
 
   <!-- Environment BRDF LUT -->
@@ -375,10 +377,24 @@
       <buffer>sky-view</buffer>
     </attachment>
   </pass>
+  <!-- Compute version -->
   <pass>
-    <name>atmos-aerial-perspective</name>
-    <type>quad</type>
-    <effect>Effects/HDR/atmos-aerial-perspective</effect>
+    <name>atmos-aerial-perspective-compute</name>
+    <type>compute</type>
+    <condition>
+      <property>/sim/rendering/hdr/compute</property>
+    </condition>
+    <workgroup-size>
+      <x>8</x>
+      <y>8</y>
+      <z>8</z>
+    </workgroup-size>
+    <global-size>
+      <x>64</x>
+      <y>64</y>
+      <z>32</z>
+    </global-size>
+    <effect>Effects/HDR/atmos-aerial-perspective-compute</effect>
     <binding>
       <unit>0</unit>
       <buffer>transmittance</buffer>
@@ -387,10 +403,12 @@
       <unit>1</unit>
       <buffer>multiple-scattering</buffer>
     </binding>
-    <attachment>
-      <component>color0</component>
+    <image-binding>
+      <unit>0</unit>
       <buffer>aerial-perspective</buffer>
-    </attachment>
+      <access>write-only</access>
+      <format>rgba16f</format>
+    </image-binding>
   </pass>
 
   <!--
@@ -1579,12 +1597,12 @@
       <height>0.2</height>
     </geometry>
     <binding>
-      <unit>1</unit>
-      <buffer>histogram-luminance</buffer>
-    </binding>
-    <binding>
       <unit>11</unit>
       <buffer>aerial-perspective</buffer>
+    </binding>
+    <binding>
+      <unit>14</unit>
+      <buffer>histogram-luminance</buffer>
     </binding>
   </pass>
 </PropertyList>

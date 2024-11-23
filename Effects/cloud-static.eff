@@ -104,7 +104,7 @@ This means that they are normal 3D models loaded from disk.
       <!-- aerial_perspective.glsl -->
       <uniform>
         <name>aerial_perspective_tex</name>
-        <type>sampler-2d</type>
+        <type>sampler-3d</type>
         <value type="int">11</value>
       </uniform>
       <!-- sun.glsl -->

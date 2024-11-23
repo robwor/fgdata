@@ -1,44 +1,62 @@
 #version 330 core
 
-uniform sampler2D aerial_perspective_tex;
+uniform sampler3D aerial_perspective_tex;
 
-const float AP_SLICE_COUNT = 32.0;
-const float AP_MAX_DEPTH = 128000.0;
-const float AP_SLICE_WIDTH_PIXELS = 32.0;
-const float AP_SLICE_SIZE = 1.0 / AP_SLICE_COUNT;
-const float AP_TEXEL_WIDTH = 1.0 / (AP_SLICE_COUNT * AP_SLICE_WIDTH_PIXELS);
+const vec2 ap_slice_size = vec2(64.0, 64.0);
+const vec2 ap_inv_slice_size = 1.0 / ap_slice_size;
+const float ap_slice_count = 32.0;
+const float ap_inv_slice_count = 1.0 / ap_slice_count;
+const float ap_m_per_slice = 4000.0;
+const float ap_inv_m_per_slice = 1.0 / ap_m_per_slice;
 
-vec4 sample_aerial_perspective_slice(sampler2D lut, vec2 coord, float slice)
+vec2 ap_get_uv_for_voxel(uvec2 voxel)
 {
-    // Sample at the pixel center
-    float offset = slice * AP_SLICE_SIZE + AP_TEXEL_WIDTH * 0.5;
-    float x = coord.x * (AP_SLICE_SIZE - AP_TEXEL_WIDTH) + offset;
-    return texture(lut, vec2(x, coord.y));
+    return (vec2(voxel) + 0.5) * ap_inv_slice_size;
 }
 
-vec4 sample_aerial_perspective(sampler2D lut, vec2 coord, float depth)
+float ap_slice_to_depth(float slice)
 {
-    vec4 color;
-    float w = sqrt(clamp(depth / AP_MAX_DEPTH, 0.0, 1.0));
-    float x = w * AP_SLICE_COUNT;
-    if (x <= 1.0) {
-        // Handle special case of fragments behind the first slice
-        color = mix(vec4(0.0, 0.0, 0.0, 1.0),
-                    sample_aerial_perspective_slice(lut, coord, 0),
-                    x);
+    return slice * ap_m_per_slice;
+}
+
+float ap_depth_to_slice(float depth)
+{
+    return depth * ap_inv_m_per_slice;
+}
+
+float ap_apply_squared_distribution(float slice)
+{
+    slice *= ap_inv_slice_count;
+    slice *= slice;
+    slice *= ap_slice_count;
+    return slice;
+}
+
+float ap_undo_squared_distribution(float slice)
+{
+    slice *= ap_inv_slice_count;
+    slice = sqrt(slice);
+    slice *= ap_slice_count;
+    return slice;
+}
+
+vec4 get_aerial_perspective(vec2 coord, vec3 P)
+{
+    float depth = abs(P.z);
+    float slice = ap_depth_to_slice(depth);
+    slice = ap_undo_squared_distribution(slice);
+
+    vec4 ap;
+    if (slice < 1.0) {
+        ap = mix(
+            vec4(0.0, 0.0, 0.0, 1.0),
+            texture(aerial_perspective_tex, vec3(coord, 0.0)),
+            slice);
     } else {
-        // Manually interpolate between slices
-        x -= 1.0;
-        color = mix(sample_aerial_perspective_slice(lut, coord, floor(x)),
-                    sample_aerial_perspective_slice(lut, coord, ceil(x)),
-                    fract(x));
+        float w = (slice - 1.0) / (ap_slice_count - 1.0);
+        ap = texture(aerial_perspective_tex, vec3(coord, w));
     }
-    return color;
-}
-
-vec4 get_aerial_perspective(vec2 coord, float depth)
-{
-    return sample_aerial_perspective(aerial_perspective_tex, coord, depth);
+    return ap;
 }
 
 vec3 mix_aerial_perspective(vec3 color, vec4 ap)
@@ -46,7 +64,7 @@ vec3 mix_aerial_perspective(vec3 color, vec4 ap)
     return color * ap.a + ap.rgb;
 }
 
-vec3 add_aerial_perspective(vec3 color, vec2 coord, float depth)
+vec3 add_aerial_perspective(vec3 color, vec2 coord, vec3 P)
 {
-    return mix_aerial_perspective(color, get_aerial_perspective(coord, depth));
+    return mix_aerial_perspective(color, get_aerial_perspective(coord, P));
 }
