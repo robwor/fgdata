@@ -35,8 +35,55 @@
     </sea-color>
   </parameters>
 
+  <technique n="108">
+    <scheme>hdr-geometry</scheme>
+    <pass>
+      <depth>
+        <enabled>true</enabled>
+        <function>less</function>
+        <write-mask>true</write-mask>
+      </depth>
+
+      <blend>0</blend>
+      <rendering-hint>opaque</rendering-hint>
+      <cull-face>back</cull-face>
+
+      <!-- texture unit 0 direct from VPBBuilder.cxx -->
+      <!-- texture unit 1 direct from VPBBuilder.cxx -->
+
+      <program>
+        <vertex-shader>Shaders/HDR/ws30.vert</vertex-shader>
+        <tesscontrol-shader>Shaders/HDR/ws30.tesc</tesscontrol-shader>
+        <tessevaluation-shader>Shaders/HDR/ws30.tese</tessevaluation-shader>
+        <tessevaluation-shader>Shaders/HDR/logarithmic_depth.glsl</tessevaluation-shader>
+        <tessevaluation-shader>Shaders/HDR/noise.glsl</tessevaluation-shader>
+        <fragment-shader>Shaders/HDR/ws30.frag</fragment-shader>
+        <fragment-shader>Shaders/HDR/logarithmic_depth.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/color.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/noise.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/normalmap.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/gbuffer_pack.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/normal_encoding.glsl</fragment-shader>
+      </program>
+
+      <!-- Samplers -->
+      <uniform>
+        <name>landclass</name>
+        <type>sampler-2d</type>
+        <value type="int">0</value>
+      </uniform>
+      <uniform>
+        <name>textureArray</name>
+        <type>sampler-2d</type>
+        <value type="int">1</value>
+      </uniform>
+    </pass>
+  </technique>
+
   <technique n="109">
     <scheme>hdr-geometry</scheme>
+    <predicate><value type="bool">false</value></predicate>
     <pass>
       <depth>
         <enabled>true</enabled>
@@ -63,9 +110,9 @@
       <!-- texture unit 7 direct from VPBBuilder.cxx -->
 
       <program>
-        <vertex-shader>Shaders/HDR/ws30.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/ws30_old.vert</vertex-shader>
         <vertex-shader>Shaders/HDR/logarithmic_depth.glsl</vertex-shader>
-        <fragment-shader>Shaders/HDR/ws30.frag</fragment-shader>
+        <fragment-shader>Shaders/HDR/ws30_old.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/ws30_util.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/ws30_water.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/logarithmic_depth.glsl</fragment-shader>
