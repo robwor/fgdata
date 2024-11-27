@@ -1,4 +1,4 @@
-#version 130
+$FG_GLSL_VERSION
 // WS30 terrain - Landclass search functions used by fragment shaders
 
 //////////////////////////////////////////////////////////////////

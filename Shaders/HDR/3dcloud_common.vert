@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 layout(location = 0) in vec4 pos;
 layout(location = 2) in vec4 vertex_color;

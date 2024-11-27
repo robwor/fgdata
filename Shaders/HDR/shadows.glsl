@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 uniform sampler2DShadow shadow_tex;
 uniform sampler2D depth_tex; // For Screen Space Shadows

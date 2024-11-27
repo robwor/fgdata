@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 uniform float alpha;
 uniform bool red;

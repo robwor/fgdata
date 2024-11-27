@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 /*
  * Thrust flame shader
  * Original ALS (Atmospheric Light Scattering) shader by Thorsten Renk.

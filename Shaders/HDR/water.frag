@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 layout(location = 0) out vec4 out_gbuffer0;
 layout(location = 1) out vec4 out_gbuffer1;

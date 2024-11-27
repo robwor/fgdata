@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 in vec2 texcoord;
 in vec4 cloud_color;

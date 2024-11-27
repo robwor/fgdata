@@ -1,9 +1,8 @@
+$FG_GLSL_VERSION
 /*
  * Normal vector encoding and decoding using octahedron normal encoding.
  * https://knarkowicz.wordpress.com/2014/04/16/octahedron-normal-vector-encoding/
  */
-
-#version 330 core
 
 vec2 msign(vec2 v)
 {

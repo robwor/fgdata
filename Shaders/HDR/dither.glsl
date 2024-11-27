@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 /*
  * Dither according to a checkerboard pattern.

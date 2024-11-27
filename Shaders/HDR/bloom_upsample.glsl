@@ -1,3 +1,4 @@
+$FG_GLSL_VERSION
 /*
  * Bloom - upsampling function
  * "Next Generation Post Processing in Call of Duty Advanced Warfare"
@@ -5,8 +6,6 @@
  * Based on the implementation by Alexander Christensen
  * https://learnopengl.com/Guest-Articles/2022/Phys.-Based-Bloom
  */
-
-#version 330 core
 
 uniform sampler2D prev_bloom_tex;
 uniform float filter_radius;

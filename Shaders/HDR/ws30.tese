@@ -1,4 +1,4 @@
-#version 410 core
+$FG_GLSL_VERSION
 
 layout (quads, fractional_odd_spacing, ccw) in;
 

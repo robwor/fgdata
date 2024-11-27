@@ -1,3 +1,4 @@
+$FG_GLSL_VERSION
 /*
  * Logarithmic depth buffer utility functions
  *
@@ -15,7 +16,6 @@
  * https://outerra.blogspot.com/2013/07/logarithmic-depth-buffer-optimizations.html
  * https://io7m.github.io/r2/documentation/p2s24.xhtml
  */
-#version 330 core
 
 uniform float fg_Fcoef;
 uniform vec2 fg_NearFar;

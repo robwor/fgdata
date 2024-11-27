@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 /*
  * Wingflex shader
  * Original non-organic deformation by Bea Wolf, organic deformation by Thorsten Renk.

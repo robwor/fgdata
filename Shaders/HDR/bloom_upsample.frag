@@ -1,3 +1,4 @@
+$FG_GLSL_VERSION
 /*
  * Bloom - upsampling step
  * "Next Generation Post Processing in Call of Duty Advanced Warfare"
@@ -5,8 +6,6 @@
  * Based on the implementation by Alexander Christensen
  * https://learnopengl.com/Guest-Articles/2022/Phys.-Based-Bloom
  */
-
-#version 330 core
 
 layout(location = 0) out vec3 fragColor;
 

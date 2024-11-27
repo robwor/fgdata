@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 #pragma import_defines(USE_WINGFLEX_DEFORMATION USE_CHUTE_DEFORMATION)
 

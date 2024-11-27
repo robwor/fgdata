@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 in VS_OUT {
     float flogz;

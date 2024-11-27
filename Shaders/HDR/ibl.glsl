@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 uniform sampler2D dfg_tex;
 uniform samplerCube prefiltered_envmap_tex;

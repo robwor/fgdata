@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 uniform sampler3D fg_Clusters;
 uniform sampler2D fg_ClusteredIndices;

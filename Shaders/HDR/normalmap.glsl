@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 /*
  * Create a cotangent frame without a pre-computed tangent basis.

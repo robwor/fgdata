@@ -1,3 +1,4 @@
+$FG_GLSL_VERSION
 /*
  * This is a library of noise functions, taking a coordinate vector and
  * a wavelength as input and returning a number [0:1] as output.
@@ -16,8 +17,6 @@
  *
  * Thorsten Renk 2014
  */
-
-#version 330 core
 
 float rand_1d(float n)
 {

@@ -1,3 +1,4 @@
+$FG_GLSL_VERSION
 /*
  * An implementation of GTAO (Ground Truth Ambient Occlusion)
  * Based on 'Practical Real-Time Strategies for Accurate Indirect Occlusion' by
@@ -6,8 +7,6 @@
  * https://blog.selfshadow.com/publications/s2016-shading-course/activision/s2016_pbs_activision_occlusion.pdf
  * Most of the shader is based on Algorithm 1 of the paper.
  */
-
-#version 330 core
 
 layout(location = 0) out float fragColor;
 

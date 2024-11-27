@@ -1,9 +1,8 @@
+$FG_GLSL_VERSION
 /*
  * Mostly based on 'Moving Frostbite to Physically Based Rendering'
  * https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
  */
-
-#version 330 core
 
 layout(location = 0) out vec3 fragColor0;
 layout(location = 1) out vec3 fragColor1;

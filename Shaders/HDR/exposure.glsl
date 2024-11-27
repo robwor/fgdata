@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 uniform sampler2D lum_tex;
 uniform float exposure_compensation;

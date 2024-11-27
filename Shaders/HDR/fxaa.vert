@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 out vec2 texcoord;
 out vec4 pos_pos;

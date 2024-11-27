@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 layout(location = 0) out vec3 fragColor0;
 layout(location = 1) out vec3 fragColor1;

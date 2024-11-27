@@ -1,4 +1,4 @@
-#version 410 core
+$FG_GLSL_VERSION
 
 in TES_OUT {
     float flogz;

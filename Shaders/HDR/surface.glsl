@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 const float DIELECTRIC_SPECULAR = 0.04;
 

@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 out vec3 cubemap_coord0;
 out vec3 cubemap_coord1;

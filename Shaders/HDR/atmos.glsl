@@ -1,3 +1,4 @@
+$FG_GLSL_VERSION
 /*
  * Common atmosphere rendering functions
  *
@@ -7,8 +8,6 @@
  * All 4-component vectors in this file represent values sampled for the
  * following wavelengths: 630, 560, 490, 430 nm
  */
-
-#version 330 core
 
 #pragma import_defines(COMPUTE_MULTIPLE_SCATTERING)
 

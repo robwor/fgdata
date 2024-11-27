@@ -1,4 +1,4 @@
-#version 410 core
+$FG_GLSL_VERSION
 
 #pragma import_defines(BACKDROP_COLOR, SHADOW, OUTLINE)
 #pragma import_defines(SIGNED_DISTANCE_FIELD, TEXTURE_DIMENSION, GLYPH_DIMENSION)

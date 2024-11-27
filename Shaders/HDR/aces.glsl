@@ -1,3 +1,4 @@
+$FG_GLSL_VERSION
 /*
  * ACES tone mapping
  * From 'Baking Lab' by MJP and David Neubelt
@@ -5,8 +6,6 @@
  * https://github.com/TheRealMJP/BakingLab/blob/master/BakingLab/ACES.hlsl
  * Licensed under the MIT license
  */
-
-#version 330 core
 
 // sRGB => XYZ => D65_2_D60 => AP1 => RRT_SAT
 const mat3 ACESInputMat = mat3(

@@ -1,4 +1,4 @@
-#version 410 core
+$FG_GLSL_VERSION
 /*
  * Render the aerial perspective LUT, similar to
  * "A Scalable and Production Ready Sky and Atmosphere Rendering Technique"

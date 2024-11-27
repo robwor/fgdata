@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 uniform mat4 fg_ViewMatrixInverse;
 uniform vec2 fg_FOVScale;

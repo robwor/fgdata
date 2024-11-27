@@ -1,4 +1,4 @@
-#version 410 core
+$FG_GLSL_VERSION
 
 out VS_OUT {
     vec2 texcoord;

@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 /*
  * The multiple scattering approximation is an implementation of
  * "A Scalable and Production Ready Sky and Atmosphere Rendering Technique"

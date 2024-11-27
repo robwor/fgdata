@@ -1,4 +1,4 @@
-#version 410 core
+$FG_GLSL_VERSION
 
 layout(location = 0) in vec4 pos;
 layout(location = 3) in vec4 multitexcoord0;

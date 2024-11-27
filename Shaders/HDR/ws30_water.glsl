@@ -1,4 +1,4 @@
-#version 330 core
+$FG_GLSL_VERSION
 
 uniform sampler2DArray textureArray;
 uniform vec3 sea_color;

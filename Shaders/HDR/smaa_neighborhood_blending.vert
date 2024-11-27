@@ -1,3 +1,4 @@
+$FG_GLSL_VERSION
 /**
  * Adaptation of SMAA (Enhanced Subpixel Morphological Antialiasing)
  * for FlightGear.
@@ -32,8 +33,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-#version 330 core
 
 out vec2 texcoord;
 out vec4 v_offset;
