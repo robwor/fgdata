@@ -381,9 +381,6 @@
   <pass>
     <name>atmos-aerial-perspective-compute</name>
     <type>compute</type>
-    <condition>
-      <property>/sim/rendering/hdr/compute</property>
-    </condition>
     <workgroup-size>
       <x>8</x>
       <y>8</y>
@@ -414,9 +411,6 @@
   <pass>
     <name>atmos-aerial-perspective-layered</name>
     <type>quad</type>
-    <condition>
-      <not><property>/sim/rendering/hdr/compute</property></not>
-    </condition>
     <effect>Effects/HDR/atmos-aerial-perspective-layered</effect>
     <binding>
       <unit>0</unit>
