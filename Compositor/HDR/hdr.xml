@@ -410,6 +410,28 @@
       <format>rgba16f</format>
     </image-binding>
   </pass>
+  <!-- Layered rendering version (no compute required) -->
+  <pass>
+    <name>atmos-aerial-perspective-layered</name>
+    <type>quad</type>
+    <condition>
+      <not><property>/sim/rendering/hdr/compute</property></not>
+    </condition>
+    <effect>Effects/HDR/atmos-aerial-perspective-layered</effect>
+    <binding>
+      <unit>0</unit>
+      <buffer>transmittance</buffer>
+    </binding>
+    <binding>
+      <unit>1</unit>
+      <buffer>multiple-scattering</buffer>
+    </binding>
+    <attachment>
+      <component>color0</component>
+      <buffer>aerial-perspective</buffer>
+      <face>controlled-by-geometry-shader</face>
+    </attachment>
+  </pass>
 
   <!--
       Environment capture passes
