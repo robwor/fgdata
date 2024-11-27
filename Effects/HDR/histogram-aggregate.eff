@@ -5,7 +5,7 @@
     <predicate>
       <or>
         <equal>
-          <property>/sim/rendering/hdr/histogram/compute</property>
+          <property>/sim/rendering/hdr/compute</property>
           <value type="bool">false</value>
         </equal>
         <equal>

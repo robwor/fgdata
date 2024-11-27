@@ -4,7 +4,7 @@
   <technique n="1">
     <predicate>
       <and>
-        <property>/sim/rendering/hdr/histogram/compute</property>
+        <property>/sim/rendering/hdr/compute</property>
         <extension-supported>GL_ARB_compute_shader</extension-supported>
       </and>
     </predicate>
