@@ -565,9 +565,6 @@ Started September 2000 by David Megginson, david@megginson.com
         <night-vision>
           <enabled type="bool">false</enabled>
         </night-vision>
-        <histogram>
-          <compute type="bool">true</compute>
-        </histogram>
         <debug>
           <display-ev100 type="bool">false</display-ev100>
           <show-gbuffer type="bool">false</show-gbuffer>
