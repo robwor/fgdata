@@ -212,41 +212,33 @@
       <border>10</border>
       <halign>center</halign>
       <default-padding>2</default-padding>
-    
-  
+
       <text>
         <halign>left</halign>
         <label>MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</label>
         <format>OpenGL Vendor: %s</format>
-        <property>/sim/rendering/gl-vendor</property>
+        <property>/sim/rendering/gl-info/gl-vendor</property>
       </text>
 
       <text>
         <halign>left</halign>
         <label>MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</label>
         <format>OpenGL Renderer: %s</format>
-        <property>/sim/rendering/gl-renderer</property>
+        <property>/sim/rendering/gl-info/gl-renderer</property>
       </text>
 
       <text>
         <halign>left</halign>
         <label>MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</label>
         <format>OpenGL Version: %s</format>
-        <property>/sim/rendering/gl-version</property>
+        <property>/sim/rendering/gl-info/gl-version</property>
       </text>
    
       <text>
         <halign>left</halign>
         <label>MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</label>
         <format>GLSL Version: %s</format>
-        <property>/sim/rendering/gl-shading-language-version</property>
-      </text>
-
-      <text>
-        <halign>left</halign>
-        <label>MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</label>
-        <format>Max Texture Size: %s</format>
-        <property>/sim/rendering/max-texture-size</property>
+        <property>/sim/rendering/gl-info/gl-shading-language-version</property>
       </text>
     </group>
   </group>
@@ -293,11 +285,10 @@
         "/sim/version/build-date",
         "/sim/version/build-type",
         "/sim/version/revision",
-        "/sim/rendering/gl-vendor",
-        "/sim/rendering/gl-renderer",
-        "/sim/rendering/gl-version",
-        "/sim/rendering/gl-shading-language-version",
-        "/sim/rendering/max-texture-size"
+        "/sim/rendering/gl-info/gl-vendor",
+        "/sim/rendering/gl-info/gl-renderer",
+        "/sim/rendering/gl-info/gl-version",
+        "/sim/rendering/gl-info/gl-shading-language-version"
         ];
    var data = "";
    clipboard.setText(data);
