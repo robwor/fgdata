@@ -18,8 +18,12 @@ uniform vec4 fg_dimensionsArray[128];
 uniform vec4 fg_textureLookup1[128];
 uniform vec4 fg_textureLookup2[128];
 
-// XXX: This should be passed as an uniform and depend on the landclass
-const vec4 noise_amplitudes = vec4(0.2, 0.1, 0.05, 0.02);
+// PBR parameters
+uniform vec4 fg_materialPBRParams[128];
+uniform vec4 fg_materialPBREmission[128];
+
+// Noise Amplitude parameters
+uniform vec4 fg_bumpmapAmplitude[128];
 
 // math.glsl
 float pow4(float x);
@@ -48,6 +52,8 @@ float detail_fade(float scale, float angle, float steepness_factor, float dist)
 
 void main()
 {
+    int lc = int(texture(landclass, fs_in.texcoord).g * 255.0 + 0.5);
+
     float frag_dist = length(fs_in.view_vector);
 
     vec3 N = normalize(fs_in.vertex_normal);
@@ -63,7 +69,7 @@ void main()
         noise_2d(fs_in.p2d_ls, 1.0) * detail_fade(1.0, view_angle, steepness_factor, frag_dist),
         noise_2d(fs_in.p2d_ls, 0.5) * detail_fade(0.5, view_angle, steepness_factor, frag_dist),
         noise_2d(fs_in.p2d_ls, 0.2) * detail_fade(0.2, view_angle, steepness_factor, frag_dist));
-    noise_vec *= noise_amplitudes;
+    noise_vec *= fg_bumpmapAmplitude[lc];
 
     float displacement = noise_vec.x + noise_vec.y + noise_vec.z + noise_vec.w;
     N = perturb_normal_from_height(N, fs_in.view_vector, displacement);
@@ -71,7 +77,6 @@ void main()
     // TODO: Add the landclass search functions
     // The Landclass for this particular fragment.  This can be used to
     // index into the atlas textures.
-    int lc = int(texture(landclass, fs_in.texcoord).g * 255.0 + 0.5);
     uint tex1 = uint(fg_textureLookup1[lc].r * 255.0 + 0.5);
 
     // Different textures have different dimensions.
@@ -81,6 +86,9 @@ void main()
 
     vec3 texel = eotf_inverse_sRGB(texture(textureArray, vec3(st, tex1)).rgb);
 
-    gbuffer_pack_pbr_opaque(N, texel, 0.0, 0.95, 1.0, vec3(0.0));
+    vec3 HDRParams = fg_materialPBRParams[lc].xyz;
+    vec3 emission = fg_materialPBREmission[lc].xyz;
+
+    gbuffer_pack_pbr_opaque(N, texel, HDRParams[0], HDRParams[1], HDRParams[2], emission);
     gl_FragDepth = logdepth_encode(fs_in.flogz);
 }

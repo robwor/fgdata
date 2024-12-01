@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+  <?xml version="1.0"?>
 <PropertyList>
   <name>Global Summer</name>
 
@@ -39,6 +39,10 @@
   <texture>Terrain/forest1c.png</texture>
   <xsize>2000</xsize>
   <ysize>2000</ysize>
+  <bumpmap-amplitude>0.2 0.2 0.1 0.05</bumpmap-amplitude>
+  <pbr>
+    <roughness>1.0</roughness>
+  </pbr>
   <light-coverage>10000000.0</light-coverage>
   <wood-coverage>4000.0</wood-coverage>
   <tree-texture>Trees/coniferous.png</tree-texture>
@@ -60,6 +64,10 @@
   <texture>Terrain/deciduous4.png</texture>
   <xsize>2000</xsize>
   <ysize>2000</ysize>
+  <bumpmap-amplitude>0.2 0.2 0.1 0.05</bumpmap-amplitude>
+  <pbr>
+    <roughness>1.0</roughness>
+  </pbr>
   <light-coverage>10000000.0</light-coverage>
   <wood-coverage>4000.0</wood-coverage>
   <tree-texture>Trees/deciduous.png</tree-texture>
@@ -80,6 +88,10 @@
   <texture>Terrain/mixedforest3.png</texture>
   <xsize>2000</xsize>
   <ysize>2000</ysize>
+  <bumpmap-amplitude>0.2 0.2 0.1 0.05</bumpmap-amplitude>
+  <pbr>
+    <roughness>1.0</roughness>
+  </pbr>
   <light-coverage>5000000.0</light-coverage>
   <wood-coverage>4000.0</wood-coverage>
   <tree-texture>Trees/mixed.png</tree-texture>
@@ -97,6 +109,10 @@
   <texture>Terrain/evergreen.png</texture>
   <xsize>1000</xsize>
   <ysize>1000</ysize>
+  <bumpmap-amplitude>0.2 0.2 0.1 0.05</bumpmap-amplitude>
+  <pbr>
+    <roughness>1.0</roughness>
+  </pbr>
   <light-coverage>10000000.0</light-coverage>
   <wood-coverage>4000.0</wood-coverage>
   <tree-texture>Trees/coniferous.png</tree-texture>
@@ -113,6 +129,10 @@
   <texture>Terrain/dec_evergreen.png</texture>
   <xsize>1000</xsize>
   <ysize>1000</ysize>
+  <bumpmap-amplitude>0.2 0.2 0.1 0.05</bumpmap-amplitude>
+  <pbr>
+    <roughness>1.0</roughness>
+  </pbr>
   <light-coverage>10000000.0</light-coverage>
   <wood-coverage>4000.0</wood-coverage>
   <tree-texture>Trees/coniferous.png</tree-texture>
@@ -130,6 +150,10 @@
   <texture>Terrain/sand6.png</texture>
   <xsize>2000</xsize>
   <ysize>2000</ysize>
+  <bumpmap-amplitude>0.0 0.0 0.1 0.05</bumpmap-amplitude>
+  <pbr>
+    <roughness>0.95</roughness>
+  </pbr>
   <light-coverage>10000000.0</light-coverage>
   <shininess>2.5</shininess>
   <rolling-friction>0.1</rolling-friction>
@@ -152,18 +176,11 @@
 -->
   <xsize>2000</xsize>
   <ysize>2000</ysize>
-  <diffuse>
-   <r>0.86</r>
-   <g>0.86</g>
-   <b>0.86</b>
-   <a>1.0</a>
-  </diffuse>
-  <specular>
-   <r>0.1</r>
-   <g>0.1</g>
-   <b>0.1</b>
-   <a>1.0</a>
-  </specular>
+  <height-amplitude>5.0 2.0 1.0 0.5</height-amplitude>
+  <bumpmap-amplitude>0.2 0.2 0.1 0.05</bumpmap-amplitude>
+  <pbr>
+    <roughness>1.0</roughness>
+  </pbr>
   <shininess>1.2</shininess>
   <light-coverage>20000000.0</light-coverage>
   <wood-coverage>12000.0</wood-coverage>
@@ -192,12 +209,15 @@
   <xsize>1000</xsize>
   <ysize>1000</ysize>
   <light-coverage>100000.0</light-coverage>
-  <emissive>
-   <r>0.05</r>
-   <g>0.05</g>
-   <b>0.02</b>
-   <a>1.0</a>
-  </emissive>
+  <pbr>
+    <roughness>0.95</roughness>
+    <emissive>
+    <r>0.05</r>
+    <g>0.05</g>
+    <b>0.02</b>
+    <a>1.0</a>
+    </emissive>
+  </pbr>
   <object-group include="Materials/base/urban-buildings.xml"/>
   <building-coverage>2500.0</building-coverage>
   <building-small-ratio>0.4</building-small-ratio>
@@ -224,13 +244,17 @@
 	<object-mask>Terrain/city2.mask.png</object-mask>
   <xsize>1000</xsize>
   <ysize>1000</ysize>
+  <noise-amplitude>0.0 0.2 0.1 0.05</noise-amplitude>
+  <pbr>
+    <roughness>0.95</roughness>
+    <emissive>
+    <r>0.05</r>
+    <g>0.05</g>
+    <b>0.02</b>
+    <a>1.0</a>
+    </emissive>
+  </pbr>
   <light-coverage>100000.0</light-coverage>
-  <emissive>
-   <r>0.05</r>
-   <g>0.05</g>
-   <b>0.02</b>
-   <a>1.0</a>
-  </emissive>
 	<object-group include="Materials/base/industrial-buildings.xml"/>
 </material>
 
@@ -242,12 +266,15 @@
   <xsize>1024</xsize>
   <ysize>1024</ysize>
   <light-coverage>100000.0</light-coverage>
-  <emissive>
-   <r>0.05</r>
-   <g>0.05</g>
-   <b>0.02</b>
-   <a>1.0</a>
-  </emissive>
+  <pbr>
+    <roughness>0.95</roughness>
+    <emissive>
+    <r>0.05</r>
+    <g>0.05</g>
+    <b>0.02</b>
+    <a>1.0</a>
+    </emissive>
+  </pbr>
   <object-group include="Materials/base/town-buildings.xml"/>
   <building-coverage>2500.0</building-coverage>
   <building-small-ratio>0.9</building-small-ratio>
@@ -287,25 +314,6 @@
   </parameters>
   <xsize>400</xsize>
   <ysize>400</ysize>
-  <ambient>
-   <r>0.0</r>
-   <g>0.0</g>
-   <b>0.0</b>
-   <a>1.0</a>
-  </ambient>
-  <diffuse>
-   <r>0.5</r>
-   <g>0.5</g>
-   <b>0.5</b>
-   <a>1.0</a>
-  </diffuse>
-  <specular>
-   <r>0.3</r>
-   <g>0.3</g>
-   <b>0.3</b>
-   <a>1.0</a>
-  </specular>
-  <shininess>1.2</shininess>
   <solid><property>/environment/surface/ice-cover</property></solid>
   <rolling-friction>1.5</rolling-friction>
   <bumpiness>0.6</bumpiness>
@@ -381,19 +389,6 @@
   <xsize>2000</xsize>
   <ysize>2000</ysize>
   <light-coverage>4000000.0</light-coverage>
-  <diffuse>
-   <r>0.93</r>
-   <g>0.95</g>
-   <b>0.93</b>
-   <a>1.0</a>
-  </diffuse>
-  <specular>
-   <r>0.1</r>
-   <g>0.12</g>
-   <b>0.1</b>
-   <a>1.0</a>
-  </specular>
-  <shininess>1.2</shininess>
   <solid>1</solid>
   <friction-factor>0.7</friction-factor>
   <rolling-friction>0.1</rolling-friction>
@@ -410,20 +405,12 @@
   <texture>Terrain/herbtundra3.png</texture>
   <xsize>2000</xsize>
   <ysize>2000</ysize>
+  <height-amplitude>5.0 2.0 1.0 0.5</height-amplitude>
+  <bumpmap-amplitude>0.2 0.2 0.1 0.05</bumpmap-amplitude>
+  <pbr>
+    <roughness>0.98</roughness>
+  </pbr>
   <light-coverage>4000000.0</light-coverage>
-  <diffuse>
-   <r>0.93</r>
-   <g>0.95</g>
-   <b>0.93</b>
-   <a>1.0</a>
-  </diffuse>
-  <specular>
-   <r>0.1</r>
-   <g>0.12</g>
-   <b>0.1</b>
-   <a>1.0</a>
-  </specular>
-  <shininess>1.2</shininess>
   <solid>1</solid>
   <friction-factor>0.8</friction-factor>
   <rolling-friction>0.1</rolling-friction>
@@ -453,19 +440,6 @@
   <xsize>125</xsize>
   <ysize>125</ysize>
   <light-coverage>4000000.0</light-coverage>
-  <diffuse>
-   <r>0.93</r>
-   <g>0.95</g>
-   <b>0.93</b>
-   <a>1.0</a>
-  </diffuse>
-  <specular>
-   <r>0.1</r>
-   <g>0.12</g>
-   <b>0.1</b>
-   <a>1.0</a>
-  </specular>
-  <shininess>1.2</shininess>
   <solid>1</solid>
   <friction-factor>0.7</friction-factor>
   <rolling-friction>0.1</rolling-friction>
@@ -589,19 +563,6 @@
   <xsize>2000</xsize>
   <ysize>2000</ysize>
   <light-coverage>2000000.0</light-coverage>
-  <diffuse>
-   <r>0.93</r>
-   <g>0.95</g>
-   <b>0.93</b>
-   <a>1.0</a>
-  </diffuse>
-  <specular>
-   <r>0.1</r>
-   <g>0.12</g>
-   <b>0.1</b>
-   <a>1.0</a>
-  </specular>
-  <shininess>1.2</shininess>
   <solid>1</solid>
   <friction-factor>0.7</friction-factor>
   <rolling-friction>0.1</rolling-friction>
@@ -620,20 +581,10 @@
   <object-mask>Terrain/golfcourse1.mask.png</object-mask>
   <xsize>800</xsize>
   <ysize>800</ysize>
+  <pbr>
+    <roughness>0.96</roughness>
+  </pbr>
   <light-coverage>2000000.0</light-coverage>
-  <diffuse>
-   <r>0.93</r>
-   <g>0.95</g>
-   <b>0.93</b>
-   <a>1.0</a>
-  </diffuse>
-  <specular>
-   <r>0.1</r>
-   <g>0.12</g>
-   <b>0.1</b>
-   <a>1.0</a>
-  </specular>
-  <shininess>1.2</shininess>
   <solid>1</solid>
   <friction-factor>0.7</friction-factor>
   <rolling-friction>0.1</rolling-friction>
@@ -655,6 +606,9 @@
 	<object-mask>Terrain/cropwood.mask.png</object-mask>
   <xsize>2000</xsize>
   <ysize>2000</ysize>
+  <pbr>
+    <roughness>1.0</roughness>
+  </pbr>
   <light-coverage>2000000.0</light-coverage>
   <solid>1</solid>
   <friction-factor>0.4</friction-factor>

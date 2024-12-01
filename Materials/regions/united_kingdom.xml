@@ -34,19 +34,11 @@
     <texture>Terrain/shrub3.png</texture>
     <xsize>2000</xsize>
     <ysize>2000</ysize>
-    <diffuse>
-      <r>0.86</r>
-      <g>0.86</g>
-      <b>0.86</b>
-      <a>1.0</a>
-    </diffuse>
-    <specular>
-      <r>0.1</r>
-      <g>0.1</g>
-      <b>0.1</b>
-      <a>1.0</a>
-    </specular>
-    <shininess>1.2</shininess>
+    <height-amplitude>5.0 2.0 1.0 0.5</height-amplitude>
+    <bumpmap-amplitude>0.2 0.2 0.1 0.05</bumpmap-amplitude>
+    <pbr>
+      <roughness>0.98</roughness>
+    </pbr>
     <light-coverage>20000000.0</light-coverage>
     <wood-coverage>12000.0</wood-coverage>
     <tree-texture>Trees/mixed-shrub.png</tree-texture>
@@ -70,6 +62,10 @@
     <texture>Terrain/deciduous-hires.png</texture>
     <xsize>2000</xsize>
     <ysize>2000</ysize>
+    <bumpmap-amplitude>0.2 0.2 0.1 0.05</bumpmap-amplitude>
+    <pbr>
+      <roughness>0.98</roughness>
+    </pbr>
     <light-coverage>10000000.0</light-coverage>
     <wood-coverage>4000.0</wood-coverage>
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
@@ -99,6 +95,10 @@
     <texture>Terrain/marsh4a.png</texture>
     <xsize>2000</xsize>
     <ysize>2000</ysize>
+    <bumpmap-amplitude>0.0 0.2 0.1 0.05</bumpmap-amplitude>
+    <pbr>
+      <roughness>0.98</roughness>
+    </pbr>
     <light-coverage>10000000.0</light-coverage>
     <friction-factor>0.8</friction-factor>
     <rolling-friction>0.3</rolling-friction>
@@ -124,6 +124,10 @@
 		<object-mask>Terrain/countryside4.green.mask.png</object-mask>-->
     <xsize>1800</xsize>
     <ysize>1800</ysize>
+    <bumpmap-amplitude>0.0 0.0 0.1 0.05</bumpmap-amplitude>
+    <pbr>
+      <roughness>0.98</roughness>
+    </pbr>
     <solid>1</solid>
     <friction-factor>0.9</friction-factor>
     <rolling-friction>0.1</rolling-friction>
@@ -161,6 +165,10 @@
     <object-mask>Terrain/countryside4.green.mask.png</object-mask>
     <xsize>2000</xsize>
     <ysize>2000</ysize>
+    <bumpmap-amplitude>0.0 0.0 0.1 0.05</bumpmap-amplitude>
+    <pbr>
+      <roughness>0.98</roughness>
+    </pbr>
     <light-coverage>2000000.0</light-coverage>
     <solid>1</solid>
     <friction-factor>0.9</friction-factor>
@@ -191,20 +199,11 @@
     <object-mask>Terrain/cropgrass-hires.mask.png</object-mask>
     <xsize>2000</xsize>
     <ysize>2000</ysize>
+    <bumpmap-amplitude>0.0 0.0 0.1 0.05</bumpmap-amplitude>
+    <pbr>
+      <roughness>0.98</roughness>
+    </pbr>
     <light-coverage>2000000.0</light-coverage>
-    <diffuse>
-      <r>0.93</r>
-      <g>0.95</g>
-      <b>0.93</b>
-      <a>1.0</a>
-    </diffuse>
-    <specular>
-      <r>0.1</r>
-      <g>0.12</g>
-      <b>0.1</b>
-      <a>1.0</a>
-    </specular>
-    <shininess>1.2</shininess>
     <solid>1</solid>
     <friction-factor>0.7</friction-factor>
     <rolling-friction>0.1</rolling-friction>
@@ -233,19 +232,6 @@
     <xsize>2000</xsize>
     <ysize>2000</ysize>
     <light-coverage>2000000.0</light-coverage>
-    <diffuse>
-      <r>0.93</r>
-      <g>0.95</g>
-      <b>0.93</b>
-      <a>1.0</a>
-    </diffuse>
-    <specular>
-      <r>0.1</r>
-      <g>0.12</g>
-      <b>0.1</b>
-      <a>1.0</a>
-    </specular>
-    <shininess>1.2</shininess>
     <solid>1</solid>
     <friction-factor>0.7</friction-factor>
     <rolling-friction>0.1</rolling-friction>
@@ -306,13 +292,16 @@
     <object-mask>Terrain/town-europe.mask.png</object-mask>
     <xsize>1024</xsize>
     <ysize>1024</ysize>
+    <pbr>
+      <roughness>0.95</roughness>
+      <emissive>
+        <r>0.05</r>
+        <g>0.05</g>
+        <b>0.02</b>
+        <a>1.0</a>
+      </emissive>
+    </pbr>
     <light-coverage>100000.0</light-coverage>
-    <emissive>
-      <r>0.05</r>
-      <g>0.05</g>
-      <b>0.02</b>
-      <a>1.0</a>
-    </emissive>
     <object-group include="Materials/base/urban-buildings.xml"/>
     <building-coverage>500.0</building-coverage>
     <building-small-ratio>0.4</building-small-ratio>
@@ -339,12 +328,14 @@
     <xsize>1024</xsize>
     <ysize>1024</ysize>
     <light-coverage>100000.0</light-coverage>
-    <emissive>
-      <r>0.05</r>
-      <g>0.05</g>
-      <b>0.02</b>
-      <a>1.0</a>
-    </emissive>
+    <pbr>
+      <emissive>
+        <r>0.05</r>
+        <g>0.05</g>
+        <b>0.02</b>
+        <a>1.0</a>
+      </emissive>
+    </pbr>
     <object-group include="Materials/base/town-buildings.xml"/>
     <building-coverage>500.0</building-coverage>
     <building-small-ratio>0.9</building-small-ratio>
@@ -401,6 +392,10 @@
     <texture>Terrain/mud.png</texture>
     <xsize>2000</xsize>
     <ysize>2000</ysize>
+    <bumpmap-amplitude>0.0 0.0 0.1 0.05</bumpmap-amplitude>
+    <pbr>
+      <roughness>0.98</roughness>
+    </pbr>
     <light-coverage>10000000.0</light-coverage>
     <shininess>2.5</shininess>
     <rolling-friction>0.1</rolling-friction>

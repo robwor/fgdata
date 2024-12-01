@@ -86,17 +86,23 @@ line-feature-tex-x1   : x1 texture coordinate for WS3.0 line features
 line-feature-offset-m : vertical offset of line feature from underlying mesh in meters.
                         May be used to ensure roads go over rivers.  Defaults to 1m.
 
-ambient : The ambient light colour for the material, specified as separate
-        r, g, b, a components (default: all color components 0.2, alpha 1.0).
+pbr : The Physical Based Rendering properties for the material.  Contains the following tags:
 
-diffuse : The diffuse light colour for the material, specified as separate
-        r, g, b, a components (default: all color components 0.8, alpha 1.0).
+        metallic: The metallicness of the material 0.0 - 1.0  (default:0)
+        roughness: The roughness of the surface 0.0 - 1.0 (default: 0.98)
+        occlusion: Level of occlusion of the surface 0.0 - 1.0  (default: 1.0)
+        emissive : The emissive light colour for the material, specified as separate
+                r, g, b, a components (default: all color components 0.0, alpha 1.0).
 
-specular : The specular light colour for the material, specified as separate
-        r, g, b, a components (default: all color components 0.0, alpha 1.0).
+height-amplitude : A 4 element vector providing weights to a random noise function to create
+        a height map.  This noise is at 50, 20, 10 and 5m scale respectively.  So a value
+        of <height-amplitude>5.0 0.0 0.0 0.0</height-amplitude> will have some height variation
+        of up to 5 meters at a 50m scale, but no height variation below that.
 
-emissive : The emissive light colour for the material, specified as separate
-        r, g, b, a components (default: all color components 0.0, alpha 1.0).
+bumpmap-amplitude : A 4 element vector providing weights to a random noise function to create
+        a bumpmap for normals.  This noise is at 2, 1, 0.5 and 0.2m scale respectively.  So a value
+        of <bumpmap-amplitude>0.0 0.0 0.0 1.0</bumpmap-amplitude> will generate a bump-map at 20cm
+        apparent scale.
 
 solid : Whether the surface is solid from an FDM perspective. If it is not
         solid, it is assumed that the material models a fluid (water) surface.

@@ -68,10 +68,6 @@ uniform bool fg_photoScenery;
 // Material parameters, from material definitions and effect defaults, for each landclass.
 // xsize and ysize
 uniform vec4 fg_dimensionsArray[128];
-// XXX: HDR does not use traditional materials
-uniform vec4 fg_ambientArray[128];
-uniform vec4 fg_diffuseArray[128];
-uniform vec4 fg_specularArray[128];
 // Indices of textures in the ground texture array for different
 // texture slots (grain, gradient, dot, mix, detail) for each landclass
 uniform vec4 fg_textureLookup1[128];
@@ -79,7 +75,6 @@ uniform vec4 fg_textureLookup2[128];
 // Each element of a vec4 contains a different materials parameter.
 uniform vec4 fg_materialParams1[128];
 uniform vec4 fg_materialParams2[128];
-uniform vec4 fg_materialParams3[128];
 // Index into the material definition for shorelines
 uniform int fg_shoreAtlasIndex;
 // END Passed from VPBTechnique

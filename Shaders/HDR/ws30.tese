@@ -23,9 +23,10 @@ uniform mat4 osg_ModelViewMatrix;
 uniform mat4 osg_ModelViewProjectionMatrix;
 uniform mat3 osg_NormalMatrix;
 uniform mat4 fg_zUpTransform;
+uniform sampler2D landclass;
 
-// XXX: This should be passed as an uniform and depend on the landclass
-const vec4 noise_amplitudes = vec4(5.0, 2.0, 1.0, 0.5) * 3.0;
+// Noise Amplitude parameters
+uniform vec4 fg_heightAmplitude[128];
 
 // noise.glsl
 float noise_2d(vec2 coord, float wavelength);
@@ -95,7 +96,7 @@ vec2 texcoord_at_uv(vec2 uv)
     return bilinear_interp_2d(t00, t01, t10, t11, uv);
 }
 
-float apply_noise(float h, vec2 p)
+float apply_noise(float h, vec2 p, vec4 noise_amplitudes)
 {
     vec4 noise_vec = vec4(noise_2d(p, 50.0),
                           noise_2d(p, 20.0),
@@ -106,7 +107,7 @@ float apply_noise(float h, vec2 p)
     return h + noise_vec.x + noise_vec.y + noise_vec.z + noise_vec.w;
 }
 
-float height_at_uv(vec2 uv, vec2 p)
+float height_at_uv(vec2 uv, vec2 p, vec4 noise_amplitudes)
 {
     vec4 u_basis = catmull_rom_interp_basis(uv.x);
     vec4 v_basis = catmull_rom_interp_basis(uv.y);
@@ -116,7 +117,7 @@ float height_at_uv(vec2 uv, vec2 p)
     hu.z = catmull_rom_interp(patch_heights[2], u_basis);
     hu.w = catmull_rom_interp(patch_heights[3], u_basis);
     float h = catmull_rom_interp(hu, v_basis);
-    return apply_noise(h, p);
+    return apply_noise(h, p, noise_amplitudes);
 }
 
 void main()
@@ -126,6 +127,8 @@ void main()
     vec2 uv_dy = vec2(gl_TessCoord.xy + vec2(0.0, 0.001));
 
     vec2 texcoord = texcoord_at_uv(uv);
+    int lc = int(texture(landclass, texcoord).g * 255.0 + 0.5);
+    vec4 noise_amplitudes = fg_heightAmplitude[lc];
 
     vec2 p2d_ls    = local_point_at_uv(uv);
     vec2 p2d_ls_dx = local_point_at_uv(uv_dx);
@@ -135,9 +138,9 @@ void main()
     vec2 p2d_ws_dx = world_point_at_uv(uv_dx);
     vec2 p2d_ws_dy = world_point_at_uv(uv_dy);
 
-    float h    = height_at_uv(uv,    p2d_ws);
-    float h_dx = height_at_uv(uv_dx, p2d_ws_dx);
-    float h_dy = height_at_uv(uv_dy, p2d_ws_dy);
+    float h    = height_at_uv(uv,    p2d_ws   , noise_amplitudes);
+    float h_dx = height_at_uv(uv_dx, p2d_ws_dx, noise_amplitudes);
+    float h_dy = height_at_uv(uv_dy, p2d_ws_dy, noise_amplitudes);
 
     vec3 p    = vec3(p2d_ls,    h);
     vec3 p_dx = vec3(p2d_ls_dx, h_dx);
