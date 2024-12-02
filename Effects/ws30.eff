@@ -37,6 +37,7 @@
 
   <technique n="108">
     <scheme>hdr-geometry</scheme>
+    <predicate><property>/sim/rendering/shaders/tesselation</property></predicate>
     <pass>
       <depth>
         <enabled>true</enabled>
@@ -83,7 +84,6 @@
 
   <technique n="109">
     <scheme>hdr-geometry</scheme>
-    <predicate><value type="bool">false</value></predicate>
     <pass>
       <depth>
         <enabled>true</enabled>
