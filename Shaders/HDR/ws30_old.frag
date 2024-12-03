@@ -254,7 +254,7 @@ void main()
     ws30_get_landclass_id(tile_coord, dxdy_gc, lc, lc_n, num_unique_neighbors, mfact);
     ws30_apply_scaling(lc, fs_in.ground_texcoord, dxdy_gc, dxdy, st);
 
-    if (fg_photoScenery) {
+    if (false /*fg_photoScenery*/) {
         // The photoscenery orthophotos are stored in the landclass texture
         // and use normalised tile coordinates
         texel = texture(landclass, vec2(tile_coord.s, 1.0 - tile_coord.t));
