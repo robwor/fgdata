@@ -89,6 +89,32 @@ vec3 smooth_interp(vec3 a)
 #endif
 }
 
+vec2 smooth_interp_derivative(vec2 a)
+{
+#if NOISE_SMOOTH_INTERP_METHOD == 0 // Cubic Hermite
+    return 6.0 * a * (1.0 - a);
+#elif NOISE_SMOOTH_INTERP_METHOD == 1 // Quintic Hermite
+    return 30.0 * a * a * (a * (a - 2.0) + 1.0);
+#elif NOISE_SMOOTH_INTERP_METHOD == 2 // Cosine
+    return (NOISE_PI * sin(a * NOISE_PI)) * 0.5;
+#else // Linear
+    return a;
+#endif
+}
+
+vec3 smooth_interp_derivative(vec3 a)
+{
+#if NOISE_SMOOTH_INTERP_METHOD == 0 // Cubic Hermite
+    return 6.0 * a * (1.0 - a);
+#elif NOISE_SMOOTH_INTERP_METHOD == 1 // Quintic Hermite
+    return 30.0 * a * a * (a * (a - 2.0) + 1.0);
+#elif NOISE_SMOOTH_INTERP_METHOD == 2 // Cosine
+    return (NOISE_PI * sin(a * NOISE_PI)) * 0.5;
+#else // Linear
+    return a;
+#endif
+}
+
 float bilinear_interp(float p00, float p01, float p10, float p11, vec2 u)
 {
     vec2 px = mix(vec2(p00, p01), vec2(p10, p11), u.x);
@@ -117,6 +143,25 @@ float noise_2d(vec2 x)
     float g01 = rand_2d(i + vec2(0.0, 1.0));
     float g11 = rand_2d(i + vec2(1.0, 1.0));
     return bilinear_interp(g00, g01, g10, g11, u);
+}
+
+// 2D value noise with derivatives
+vec3 noised_2d(vec2 x)
+{
+    vec2 i = floor(x);
+    vec2 f = fract(x);
+    vec2 u = smooth_interp(f);
+    vec2 du = smooth_interp_derivative(f);
+    float g00 = rand_2d(i + vec2(0.0, 0.0));
+    float g10 = rand_2d(i + vec2(1.0, 0.0));
+    float g01 = rand_2d(i + vec2(0.0, 1.0));
+    float g11 = rand_2d(i + vec2(1.0, 1.0));
+    vec2 gx = mix(vec2(g00, g01), vec2(g10, g11), u.x);
+    vec2 gy = mix(vec2(g00, g10), vec2(g01, g11), u.y);
+    float dndx = (gy.y - gy.x) * du.x;
+    float dndy = (gx.y - gx.x) * du.y;
+    float n = mix(gx.x, gx.y, u.y); // Can also be mix(gy.x, gy.y, u.x)
+    return vec3(n, dndx, dndy);
 }
 
 // 3D value noise

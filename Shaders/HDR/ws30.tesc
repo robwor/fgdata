@@ -14,6 +14,7 @@ out TCS_OUT {
 } tcs_out[];
 
 patch out mat4 patch_heights;
+patch out vec2 patch_size_inv;
 
 uniform mat4 osg_ModelViewMatrix;
 uniform mat4 fg_zUpTransform;
@@ -54,22 +55,22 @@ float edge_tess_level_from_distance_to_eye(float d0, float d1)
 void main()
 {
     switch (gl_InvocationID) {
-    case 0:
+    case 0: // p00
         tcs_out[gl_InvocationID].p2d_ls = gl_in[5].gl_Position.xy;
         tcs_out[gl_InvocationID].p2d_ws = tcs_in[5].p2d_ws;
         tcs_out[gl_InvocationID].texcoord = tcs_in[5].texcoord;
         break;
-    case 1:
+    case 1: // p01
         tcs_out[gl_InvocationID].p2d_ls = gl_in[9].gl_Position.xy;
         tcs_out[gl_InvocationID].p2d_ws = tcs_in[9].p2d_ws;
         tcs_out[gl_InvocationID].texcoord = tcs_in[9].texcoord;
         break;
-    case 2:
+    case 2: // p10
         tcs_out[gl_InvocationID].p2d_ls = gl_in[6].gl_Position.xy;
         tcs_out[gl_InvocationID].p2d_ws = tcs_in[6].p2d_ws;
         tcs_out[gl_InvocationID].texcoord = tcs_in[6].texcoord;
         break;
-    case 3:
+    case 3: // p11
         tcs_out[gl_InvocationID].p2d_ls = gl_in[10].gl_Position.xy;
         tcs_out[gl_InvocationID].p2d_ws = tcs_in[10].p2d_ws;
         tcs_out[gl_InvocationID].texcoord = tcs_in[10].texcoord;
@@ -94,6 +95,9 @@ void main()
                              gl_in[13].gl_Position.z,
                              gl_in[14].gl_Position.z,
                              gl_in[15].gl_Position.z);
+
+        patch_size_inv = 1.0 / vec2(distance(gl_in[6].gl_Position.xy, gl_in[5].gl_Position.xy),
+                                    distance(gl_in[9].gl_Position.xy, gl_in[5].gl_Position.xy));
 
         // The tessellation level cannot be simply based on the distance to the
         // patch, or there would be discontinuities in the patch boundaries.
