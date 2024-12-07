@@ -15,6 +15,7 @@ out TES_OUT {
     float flogz;
     vec2 texcoord;
     vec2 p2d_ls;
+    vec2 p2d_ws;
     vec3 view_vector;
     vec3 vertex_normal;
     float steepness;
@@ -174,6 +175,7 @@ void main()
     tes_out.flogz = logdepth_prepare_vs_depth(gl_Position.w);
     tes_out.texcoord = texcoord;
     tes_out.p2d_ls = p2d_ls;
+    tes_out.p2d_ws = p2d_ws;
     tes_out.view_vector = vec3(osg_ModelViewMatrix * inverse(fg_zUpTransform) * vec4(p, 1.0));
     tes_out.vertex_normal = osg_NormalMatrix * vec3(inverse(fg_zUpTransform) * vec4(n, 0.0));
     tes_out.steepness = steepness;

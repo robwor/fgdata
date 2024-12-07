@@ -4,6 +4,7 @@ in TES_OUT {
     float flogz;
     vec2 texcoord;
     vec2 p2d_ls;
+    vec2 p2d_ws;
     vec3 view_vector;
     vec3 vertex_normal;
     float steepness;

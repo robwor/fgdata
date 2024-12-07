@@ -2,6 +2,7 @@ $FG_GLSL_VERSION
 
 layout(location = 0) in vec4 pos;
 layout(location = 3) in vec4 multitexcoord0;
+layout(location = 4) in vec4 multitexcoord1;
 
 out VS_OUT {
     vec2 p2d_ws;
@@ -17,6 +18,6 @@ void main()
     // XXX: We need a 2D world position here to have a continuous noise function
     // Unfortunately our coordinates are too big so the noise quality suffers.
     // Maybe a 1x1 degree tile is good enough?
-    vs_out.p2d_ws = gl_Position.xy;
+    vs_out.p2d_ws = multitexcoord1.xy;
     vs_out.texcoord = multitexcoord0.xy;
 }
