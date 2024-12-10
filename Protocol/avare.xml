@@ -4,7 +4,7 @@
 <![CDATA[
   Usage:
 
-  fgfs --generic=socket,out,2,192.168.1.255,49002,udp,avare
+  fgfs --generic=socket,broadcast,2,192.168.1.255,49002,udp,avare
 ]]>
 </comment>
 <generic>

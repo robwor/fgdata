@@ -11,8 +11,8 @@ The general form of the command line option is as follows:
     --protocol=medium,direction,hz,medium_options,...
 
     protocol = { native, nmea, garmin, fgfs, rul, pve, ray, etc. }
-    medium = { serial, socket, broadcast, file, etc. }
-    direction = { in, out, bi }
+    medium = { serial, socket, file, etc. }
+    direction = { in, out, bi, broadcast}
     hz = number of times to process channel per second (floating
          point values are ok.
 
@@ -29,7 +29,6 @@ Generic Communication:
     params can be:
     serial port communication:    serial,dir,hz,device,baud,protocol
     socket communication:         socket,dir,hz,machine,port,style,protocol
-                                  broadcast,out,hz,network,port,protocol
     i/o to a file:                file,dir,hz,filename,protocol
 
     See README.protocol for how to define a generic protocol.
@@ -57,16 +56,14 @@ Socket Communication:
     Example protocols include {generic, native-ctrls, native-fdm, native, etc}
 
     --<protocol>=socket,dir,hz,address,port,style,other-paramaters
-    --<protocol>=broadcast,out,hz,address,port,other-paramaters
 
-    method = "socket" sends or receives data through a connected socket.
-             "broadcast" sends data to a network using its broadcast IP address.
-    dir = "in" for a server, "out" for a client. Broadcasts are always out.
+    method = "socket" sends or receives data through either a connected socket, or an unconnected broadcast socket.
+    dir = "in" for a server, "out" for a client, "broadcast" to do a network broadcast as a client.
     hz = network operations per second. Floating point values are OK.
     address = machine name, ip address, or broadcast address if client,
               (may leave empty if server)
     port = port, leave empty to let system choose
-    style = "tcp" or "udp". Not listed for broadcasts which are always UDP datagrams.
+    style = "tcp" or "udp". Broadcasts are always "udp".
     other-parameters = other paramters required by the specific protocol.
 
     example 1: to slave one copy of fgfs to another machine named "fgfs2".
@@ -92,13 +89,14 @@ Socket Communication:
  
     or more simply just broadcast so both fgfs2 and fgfs3 receive the same packet:
  
-    fgfs1:  --native=broadcast,out,30,fgfs2,5500
+    fgfs1:  --native=socket,broadcast,30,192.168.0.255,5500,udp
     fgfs2:  --native=socket,in,30,,5500,udp –fdm=external
     fgfs3:  --native=socket,in,30,,5500,udp –fdm=external
  
-    Example 2. send data to one or more ForeFlight EFBs on wireless network 192.168.20.0/24
+    Example 2. send data to one or more ForeFlight EFBs (or other EFBs that use the ForeFlight protocol)
+    on wireless network 192.168.20.0/24
  
-    --generic=broadcast,out,1,192.168.20.255,49002,foreflight-xgps
+    --generic=socket,broadcast,1,192.168.20.255,49002,udp,foreflight-xgps
 
     This instructs fgfs to broadcast a packet defined by the protocol description
     foreflight-xgps.xml in the system's Protocol directory once a second to the

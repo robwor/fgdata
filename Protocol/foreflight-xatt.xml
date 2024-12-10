@@ -4,9 +4,8 @@
   <comment>
     Attitude information for ForeFlight or Garmin Pilot.
 
-    Broadcast (or send to specific IP) via UDP on port 49002 at 4-10 Hz:
-
-    --generic=socket,out,10,255.255.255.255,49002,udp,foreflight-xatt
+    Example: Broadcast via UDP on the WiFi network 192.168.0.0/24 port 49002 at 4-10 Hz:
+    --generic=socket,broadcast,10,192.168.0.255,49002,udp,foreflight-xatt
 
     See https://www.foreflight.com/support/network-gps/
  </comment>
