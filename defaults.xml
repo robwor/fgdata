@@ -220,6 +220,7 @@ Started September 2000 by David Megginson, david@megginson.com
       </photoscenery>
       <filtering type="int">8</filtering>
       <shaders>
+        <tessellation type="bool" userarchive="y">false</tessellation>
         <clouds type="float" userarchive="y">0.0</clouds>
         <landmass type="float" userarchive="y">1.0</landmass>
         <model type="float" userarchive="y">3.0</model>

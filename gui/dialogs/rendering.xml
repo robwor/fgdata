@@ -194,6 +194,17 @@
 				</binding>
 			</checkbox>
 
+			<checkbox>
+				<halign>left</halign>
+				<label>Tessellation</label>
+				<name>tessellation</name>
+				<property>/sim/rendering/shaders/tessellation</property>
+				<binding>
+					<command>dialog-apply</command>
+					<object-name>tessellation</object-name>
+				</binding>
+			</checkbox>
+
 			<group>
 				<layout>hbox</layout>
 				<halign>left</halign>
