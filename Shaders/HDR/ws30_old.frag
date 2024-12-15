@@ -79,7 +79,6 @@ uniform vec4 fg_materialParams2[128];
 uniform int fg_shoreAtlasIndex;
 // END Passed from VPBTechnique
 
-uniform mat4 fg_zUpTransform;
 uniform vec3 fg_modelOffset;
 uniform float osg_SimulationTime;
 
@@ -154,7 +153,7 @@ void main()
     // distance to fragment
     float dist = length(fs_in.rel_pos);
     // altitude of fragment above sea level
-    float msl_altitude = fs_in.rel_pos.z + eye_alt;
+    float msl_altitude = fs_in.rel_pos.z;
 
     vec4 texel;
     vec4 snow_texel;

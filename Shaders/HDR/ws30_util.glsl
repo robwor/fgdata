@@ -219,7 +219,6 @@ uniform bool fg_photoScenery;
 uniform vec4 fg_dimensionsArray[128];
 uniform vec4 fg_textureLookup1[128];
 uniform vec4 fg_textureLookup2[128];
-uniform mat4 fg_zUpTransform;
 uniform vec3 fg_modelOffset;
 
 // These should be sent as uniforms

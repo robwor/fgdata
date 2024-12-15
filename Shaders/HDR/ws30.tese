@@ -24,7 +24,6 @@ out TES_OUT {
 uniform mat4 osg_ModelViewMatrix;
 uniform mat4 osg_ModelViewProjectionMatrix;
 uniform mat3 osg_NormalMatrix;
-uniform mat4 fg_zUpTransform;
 uniform sampler2D landclass;
 
 // Noise Amplitude parameters
@@ -170,13 +169,12 @@ void main()
 
     float steepness = dot(vec3(0.0, 0.0, 1.0), n);
 
-    // TODO: Get rid of the Z-Up transforms
-    gl_Position = osg_ModelViewProjectionMatrix * inverse(fg_zUpTransform) * vec4(p, 1.0);
+    gl_Position = osg_ModelViewProjectionMatrix * vec4(p, 1.0);
     tes_out.flogz = logdepth_prepare_vs_depth(gl_Position.w);
     tes_out.texcoord = texcoord;
     tes_out.p2d_ls = p2d_ls;
     tes_out.p2d_ws = p2d_ws;
-    tes_out.view_vector = vec3(osg_ModelViewMatrix * inverse(fg_zUpTransform) * vec4(p, 1.0));
-    tes_out.vertex_normal = osg_NormalMatrix * vec3(inverse(fg_zUpTransform) * vec4(n, 0.0));
+    tes_out.view_vector = vec3(osg_ModelViewMatrix * vec4(p, 1.0));
+    tes_out.vertex_normal = osg_NormalMatrix * n;
     tes_out.steepness = steepness;
 }

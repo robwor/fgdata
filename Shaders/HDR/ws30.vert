@@ -10,14 +10,10 @@ out VS_OUT {
 } vs_out;
 
 uniform vec3 fg_modelOffset;
-uniform mat4 fg_zUpTransform;
 
 void main()
 {
-    gl_Position = fg_zUpTransform * pos;
-    // XXX: We need a 2D world position here to have a continuous noise function
-    // Unfortunately our coordinates are too big so the noise quality suffers.
-    // Maybe a 1x1 degree tile is good enough?
+    gl_Position = pos;
     vs_out.p2d_ws = multitexcoord1.xy;
     vs_out.texcoord = multitexcoord0.xy;
 }

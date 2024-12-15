@@ -17,7 +17,6 @@ patch out mat4 patch_heights;
 patch out vec2 patch_size_inv;
 
 uniform mat4 osg_ModelViewMatrix;
-uniform mat4 fg_zUpTransform;
 
 // Maximum and minimum tessellation levels
 const float min_tess_level = 1.0;
@@ -104,11 +103,10 @@ void main()
         // Instead, we compute the outer tessellation levels based on the distance
         // of each edge to the camera.
 
-        // TODO: Get rid of the Z-Up transform
-        vec3 p00_vs = vec3(osg_ModelViewMatrix * inverse(fg_zUpTransform) * gl_in[5].gl_Position);
-        vec3 p01_vs = vec3(osg_ModelViewMatrix * inverse(fg_zUpTransform) * gl_in[9].gl_Position);
-        vec3 p10_vs = vec3(osg_ModelViewMatrix * inverse(fg_zUpTransform) * gl_in[6].gl_Position);
-        vec3 p11_vs = vec3(osg_ModelViewMatrix * inverse(fg_zUpTransform) * gl_in[10].gl_Position);
+        vec3 p00_vs = vec3(osg_ModelViewMatrix * gl_in[5].gl_Position);
+        vec3 p01_vs = vec3(osg_ModelViewMatrix * gl_in[9].gl_Position);
+        vec3 p10_vs = vec3(osg_ModelViewMatrix * gl_in[6].gl_Position);
+        vec3 p11_vs = vec3(osg_ModelViewMatrix * gl_in[10].gl_Position);
 
         float d00 = normalized_distance_to_eye(p00_vs);
         float d01 = normalized_distance_to_eye(p01_vs);
