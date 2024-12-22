@@ -2,9 +2,8 @@ $FG_GLSL_VERSION
 
 layout(location = 0) in vec4 pos;
 layout(location = 1) in vec3 normal;
-layout(location = 2) in vec4 vertex_color;
 layout(location = 3) in vec4 multitexcoord0;
-layout(location = 12) in float fogcoord;
+layout(location = 6) in vec3 instancePosition; // (x,y,z)
 
 out VS_OUT {
     float flogz;
@@ -31,52 +30,56 @@ uniform mat4 osg_ModelViewProjectionMatrix;
 
 // noise.glsl
 float voronoi_noise_2d(vec2 coord, float wavelength, float xrand, float yrand);
+float rand_1d(float x);
+
 // logarithmic_depth.glsl
 float logdepth_prepare_vs_depth(float z);
 
 void main()
 {
+    // Throughout this code we use the instancePosition as a seed for random/noise
+    // values, as it is specific to this instance of the tree.
+
     float num_varieties = normal.z;
-    float tex_fract = floor(fract(multitexcoord0.x) * num_varieties) / num_varieties;
+    float tex_fract = floor(rand_1d(instancePosition.x) * num_varieties) / num_varieties;
 
     if (tex_fract < float(num_deciduous_trees) / float(num_varieties)) {
-        vs_out.autumn_flag = 0.5 + fract(vertex_color.x);
+        vs_out.autumn_flag = 0.5 + fract(instancePosition.x);
     } else {
         vs_out.autumn_flag = 0.0;
     }
 
     tex_fract += floor(multitexcoord0.x) / num_varieties;
 
-    // Determine the rotation for the tree. The Fog Coordinate provides rotation
-    // information to rotate one of the quands by 90 degrees. We then apply an
-    // additional position seed so that trees aren't all oriented N/S
-    float sr = sin(fogcoord + vertex_color.x);
-    float cr = cos(fogcoord + vertex_color.x);
+    // Determine a random rotation for the tree.
+    float sr = sin(instancePosition.x);
+    float cr = cos(instancePosition.x);
     vs_out.texcoord = vec2(tex_fract, multitexcoord0.y);
     // Determine the y texture coordinate based on whether it's summer, winter, snowy.
-    vs_out.texcoord.y = vs_out.texcoord.y + 0.25 * step(snow_level, vertex_color.z) + 0.5 * season;
+    vs_out.texcoord.y = vs_out.texcoord.y + 0.25 * step(snow_level, instancePosition.z) + 0.5 * season;
 
     // scaling
-    vec3 position = pos.xyz * normal.xxy;
+    float scale = (rand_1d(instancePosition.x) + rand_1d(instancePosition.y))/2.0f + 0.5f;
+    vec3 position = pos.xyz * normal.xxy * scale;
 
     // Rotation of the generic quad to specific one for the tree.
     position.xy = vec2(dot(position.xy, vec2(cr, sr)), dot(position.xy, vec2(-sr, cr)));
 
     // Shear by wind. Note that this only applies to the top vertices
-    float vertex_color_sum = vertex_color.x + vertex_color.y + vertex_color.z;
+    float instancePosition_sum = instancePosition.x + instancePosition.y + instancePosition.z;
     float wind_offset = position.z * (
-        sin(osg_SimulationTime * 1.8 + vertex_color_sum * 0.01) + 1.0) * 0.0025;
+        sin(osg_SimulationTime * 1.8 + instancePosition_sum * 0.01) + 1.0) * 0.0025;
     position.x = position.x + wind_offset * WindN;
     position.y = position.y + wind_offset * WindE;
 
     // Scale by random domains
     if (use_forest_effect) {
         float voronoi = 0.5 + 1.0 * voronoi_noise_2d(
-            vertex_color.xy, forest_effect_size, forest_effect_shape, forest_effect_shape);
+            instancePosition.xy, forest_effect_size, forest_effect_shape, forest_effect_shape);
         position.xyz *= voronoi;
     }
 
-    position = position + vertex_color.xyz;
+    position = position + instancePosition.xyz;
     gl_Position = osg_ModelViewProjectionMatrix * vec4(position, 1.0);
     vs_out.flogz = logdepth_prepare_vs_depth(gl_Position.w);
 
@@ -85,7 +88,7 @@ void main()
     // Vertex position in view space
     vs_out.vs_pos = vec3(osg_ModelViewMatrix * vec4(position, 1.0));
     // Tree position center in view space
-    vs_out.vs_tree_pos = vec3(osg_ModelViewMatrix * vec4(vertex_color.xyz, 1.0));
+    vs_out.vs_tree_pos = vec3(osg_ModelViewMatrix * vec4(instancePosition.xyz, 1.0));
     // Tree radius
-    vs_out.scale = normal.x;
+    vs_out.scale = normal.x * scale;
 }

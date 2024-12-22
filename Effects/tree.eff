@@ -50,6 +50,10 @@
         <fragment-shader>Shaders/HDR/normal_encoding.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/color.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/dither.glsl</fragment-shader>
+        <attribute>
+          <name>instancePosition</name>
+          <index>6</index>
+        </attribute>
       </program>
       <uniform>
         <name>color_tex</name>
