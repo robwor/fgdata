@@ -34,41 +34,41 @@ create-test-data:
 # all the files from FGData which we bunlde with the application / image
 # installers. Keep this small since this impacts file mirrors, code-signing, 
 # etc.
-create-bundled-data:
-  stage: deploy
-  variables:
-    AI_DIR: $BUNDLED_DATA_DIR/AI
-  script:
-    - mkdir $BUNDLED_DATA_DIR
-    - cp version *.xml $BUNDLED_DATA_DIR
+# create-bundled-data:
+#   stage: deploy
+#   variables:
+#     AI_DIR: $BUNDLED_DATA_DIR/AI
+#   script:
+#     - mkdir $BUNDLED_DATA_DIR
+#     - cp version *.xml $BUNDLED_DATA_DIR
 
-  # AI is a pain
-    - mkdir -p $AI_DIR/Aircraft
-    - cp AI/Aircraft/*.xml $AI_DIR/Aircraft/
-    - cp AI/*.xml $AI_DIR
+#   # AI is a pain
+#     - mkdir -p $AI_DIR/Aircraft
+#     - cp AI/Aircraft/*.xml $AI_DIR/Aircraft/
+#     - cp AI/*.xml $AI_DIR
     
-    # skip traffic, it's huge
-    #- cp -r AI/Traffic $AI_DIR
+#     # skip traffic, it's huge
+#     #- cp -r AI/Traffic $AI_DIR
 
-    # do we need the yellow glider?
+#     # do we need the yellow glider?
 
-  # all the straightforward dirs
-    - cp -r Environment Nasal Timezone Navaids Airports Input ATC 
-        Fonts Phi Protocol Shaders gui Translations 
-        Video Astro Compositor Effects Geodata Huds Lighting MP
-        Materials
-        $BUNDLED_DATA_DIR
+#   # all the straightforward dirs
+#     - cp -r Environment Nasal Timezone Navaids Airports Input ATC 
+#         Fonts Phi Protocol Shaders gui Translations 
+#         Video Astro Compositor Effects Geodata Huds Lighting MP
+#         Materials
+#         $BUNDLED_DATA_DIR
 
-  # anything in Aircraft?
+#   # anything in Aircraft?
 
-  # ToDo: if we have a base version, then find all files which are changed
-  # since that tag in Git, 
-  # this is going to use 'git diff --name-only --diff-filter=AMR' and
-  # then copying all the resulting files over to $BUNDLED_DATA_DIR
+#   # ToDo: if we have a base version, then find all files which are changed
+#   # since that tag in Git, 
+#   # this is going to use 'git diff --name-only --diff-filter=AMR' and
+#   # then copying all the resulting files over to $BUNDLED_DATA_DIR
 
-  artifacts:
-    paths:
-      - $BUNDLED_DATA_DIR
+#   artifacts:
+#     paths:
+#       - $BUNDLED_DATA_DIR
 
 # disabled for now, too large
 
