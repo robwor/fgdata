@@ -1,17 +1,26 @@
 Time Zone Database: public domain
 https://www.iana.org/time-zones
+-------------------------------------
 
 Get the latest timezone data file and unpack it in a dedicated directory.
 Extract the file and run (ignore the errors):
   mkdir zones
-  for n in *; do zic -d zones $n;
+  for n in *; do zic -d zones $n; done
   rm zones/*
   cp -Rp zones/* $FGDATA/Timezone
 
 
+Creating the timezone16.bin database:
+-------------------------------------
+Clone ZoneDetect from https://github.com/BertoldVdb/ZoneDetect
+  cd database/builder
+  ./makedb.sh
+  cp out/timezone16.bin $FGDATA/Timezone
+
 
 ZoneDetect:  BSD-3-Clause License 
 https://github.com/BertoldVdb/ZoneDetect
+-------------------------------------
 
 This is a C library that allows you to find an area a point belongs to using a 
 database file. A typical example would be looking up the country or timezone 
