@@ -686,6 +686,7 @@ var _createCompatObjectLookupHash = {
     "vrule": XMLVRule,
     "combo": XMLComboBox,
     "list": XMLList,
+    "text": XMLLabel,
 };
 
 # this is the callback function invoked by C++ to build Nasal peers
