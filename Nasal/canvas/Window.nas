@@ -562,7 +562,7 @@ var Window = {
       var w = 19;
       var h = 19;
 
-      var button_close = WindowButton.new(title_bar, "close")
+      var button_close = gui.widgets.WindowButton.new(parent: title_bar, cfg: {"name": "close"})
                                      .move(x, y);
       button_close.listen("clicked", func me.onClose());
 
