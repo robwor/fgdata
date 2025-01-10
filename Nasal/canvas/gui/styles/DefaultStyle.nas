@@ -113,6 +113,32 @@ DefaultStyle.widgets.button = {
   }
 };
 
+DefaultStyle.widgets["window-button"] = {
+  new: func(parent, cfg) {
+    me._root = parent.createChild("group", "window-button");
+    me._icon = me._root.createChild("image", "icon");
+  },
+  setSize: func(model, w, h) {
+    me._icon.setSize(w, h);
+  },
+  setText: func(model, text) {},
+  update: func(model) {
+    var file = style._dir_decoration ~ "/" ~ model._cfg.get("name");
+    var window_focus = model._windowFocus();
+    file ~= window_focus ? "_focused" : "_unfocused";
+
+    if (model._down) {
+      file ~= "_pressed";
+    } else if (model._hover) {
+      file ~= "_prelight";
+    } else if (window_focus) {
+      file ~= "_normal";
+    }
+
+    me._icon.set("src", file ~ ".png");
+  }
+};
+
 # A checkbox
 DefaultStyle.widgets.checkbox = {
   new: func(parent, cfg)

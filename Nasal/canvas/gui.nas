@@ -41,6 +41,7 @@ loadGUIFile("styles/DefaultStyle.nas");
 # widgets
 loadWidget("Button");
 loadWidget("CheckBox");
+loadWidget("ComboBox");
 loadWidget("Dial");
 loadWidget("Label");
 loadWidget("LineEdit");
@@ -48,13 +49,13 @@ loadWidget("List");
 loadWidget("MenuBar");
 loadWidget("PropertyTree");
 loadWidget("PropertyWidgets");
-loadWidget("ScrollArea");
 loadWidget("RadioButton");
 loadWidget("Rule");
+loadWidget("ScrollArea");
 loadWidget("Slider");
 loadWidget("Switch");
 loadWidget("TabWidget");
-loadWidget("ComboBox");
+loadWidget("WindowButton");
 
 # standard dialogs
 loadDialog("InputDialog");
@@ -63,36 +64,6 @@ loadDialog("WidgetsFactoryDialog");
 loadDialog("PropertyTreeBrowser");
 
 var style = DefaultStyle.new("AmbianceClassic", "Humanity");
-var WindowButton = {
-  _CLASS: "canvas.WindowButton",
-
-  new: func(parent, name)
-  {
-    var m = {
-      parents: [WindowButton, gui.widgets.Button.new(parent, nil, {"flat": 1})],
-      _name: name
-    };
-    m._focus_policy = m.NoFocus;
-    m._setView({_root: parent.createChild("image", "WindowButton-" ~ name)});
-    return m;
-  },
-# protected:
-  _onStateChange: func
-  {
-    var file = style._dir_decoration ~ "/" ~ me._name;
-    var window_focus = me._windowFocus();
-    file ~= window_focus ? "_focused" : "_unfocused";
-
-    if( me._down )
-      file ~= "_pressed";
-    else if( me._hover )
-      file ~= "_prelight";
-    else if( window_focus )
-      file ~= "_normal";
-
-    me._view._root.set("src", file ~ ".png");
-  }
-};
 
 # Clear focus on click outside any window
 getDesktop().addEventListener("mousedown", func {
