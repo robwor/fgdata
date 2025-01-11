@@ -530,7 +530,7 @@ Started September 2000 by David Megginson, david@megginson.com
       </pilot-model>
 
       <hdr>
-        <compute type="bool">true</compute>
+        <compute type="bool">false</compute>
         <render-scale type="float" userarchive="y">1.0</render-scale>
         <antialiasing-technique type="int" userarchive="y">2</antialiasing-technique>
         <exposure-compensation type="float">0.0</exposure-compensation>
