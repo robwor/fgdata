@@ -25,6 +25,7 @@ var Window = {
       _frame_width: 4,
       _title_bar_height: 25,
       _title: nil,
+      _window_buttons_layout: nil,
     };
 
     m.setInt("content-size[0]", size[0]);
@@ -556,26 +557,36 @@ var Window = {
       me._frame.set("fill", "none");
       me._frame.set("stroke-width", me._frame_width);
 
-      # close icon
-      var x = 10;
-      var y = 3;
-      var w = 19;
-      var h = 19;
+      me._window_buttons_layout = canvas.HBoxLayout.new();
+      me._window_buttons_layout.setCanvas(canvas_deco);
+      me._window_buttons_layout.setSpacing(20);
+      me._window_buttons_layout.setContentsMargin(3);
+      var window_buttons_info = globals.gui.WindowManager.getWindowButtonsLayoutInfo();
 
-      var button_close = gui.widgets.WindowButton.new(parent: title_bar, cfg: {"name": "close"})
-                                     .move(x, y);
-      button_close.listen("clicked", func me.onClose());
+      var setupWindowButtons = func(info, alignment) {
+        foreach (var button_name; info) {
+          var button = gui.widgets.WindowButton.new(parent: title_bar, cfg: {
+            "name": button_name,
+            "alignment": alignment,
+          });
+          button.setFixedSize(20, 20);
+          button.listen("clicked", globals.gui.WindowManager.getWindowButtonCallback(button_name, me));
+          me._window_buttons_layout.addItem(button);
+        }
+      };
+      setupWindowButtons(window_buttons_info[0], canvas.AlignLeft);
+      me._title = gui.widgets.PropertyLabel.new(
+        parent: title_bar,
+        cfg: {
+          "node": me._node.getNode("title", 1),
+          "alignment": canvas.AlignHCenter,
+          "text-align": "center",
+          "expanding": gui.Widget.ExpandingHorizontal,
+        }
+      );
+      me._window_buttons_layout.addItem(me._title);
+      setupWindowButtons(window_buttons_info[1], canvas.AlignRight);
 
-      # title
-      var title = me.get("title", "Canvas Dialog");
-      me._title = title_bar.createChild("text", "title")
-          .setText(title)
-          .setAlignment("left-center")
-          .set("character-size", 14)
-          .setFont("LiberationFonts/LiberationSans-Bold.ttf")
-          .setTranslation(int(x + 1.5 * w + 0.5), int(y + 0.5 * h + 0.5));
-
-      me._node.getNode("title", 1).alias(me._title._node.getPath() ~ "/text");
       title_bar.addEventListener("drag", func(e) me.move(e.deltaX, e.deltaY));
 
       me._resizeDecoration();
@@ -604,6 +615,11 @@ var Window = {
           .reset()
           .moveTo(border_radius - 2, 2)
           .lineTo(me.get("size[0]") - border_radius + 2, 2);
+
+      if (me._window_buttons_layout != nil) {
+        var hsize = me.get("size[0]");
+        me._window_buttons_layout.setGeometry([10, 0, hsize - 20, me._title_bar_height]);
+      }
     }
   }
 }; #Window
