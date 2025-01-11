@@ -18,6 +18,7 @@ gui.widgets.RadioButton = {
 
     m._setView( style.createWidget(parent, cfg.get("type", "radio-button"), cfg) );
 
+    m.setChecked(m._cfg.get("checked", 0));
     var radioButtonGroup = cfg.get("radio-button-group");
     var parentRadio = cfg.get("parent-radio", nil);
     var radioButtonGroupClass = cfg.get("radio-button-group-class");
@@ -33,7 +34,6 @@ gui.widgets.RadioButton = {
     m.radioGroup.addRadio(m);
 
     m.setText(m._cfg.get("text", ""));
-    m.setChecked(m._cfg.get("checked", 0));
 
     return m;
   },
@@ -99,15 +99,19 @@ gui.widgets.RadioButton = {
     if (me._checked == checked) {
       return me;
     }
-    me._checked = checked;
 
     me._setRadioGroupSiblingsUnchecked();
+    me._setChecked(checked);
     me._trigger("toggled", {checked: checked});
     if (checked) {
     	me._trigger("checked");
     } else {
     	me._trigger("unchecked");
     }
+  },
+  
+  _setChecked: func(checked = 1) {
+    me._checked = checked;
     me._onStateChange();
     return me;
   },
@@ -157,15 +161,23 @@ gui.widgets.RadioButtonsGroup = {
   addRadio: func(r)
   {
     r.listen("toggled", func me._onRadioToggled());
+    if (size(me.radios) == 0) {
+      r.setChecked();
+    }
     append(me.radios, r);
   },
 
   removeRadio: func(r)
   {
-    # XXX should we update some other item to be checked ?
     if (contains(me.radios, r)) {
       var index = find(r, me.radios);
+      radios[index].del();
       me.radios = subvec(me.radios, 0, index) ~ subvec(me.radios, index + 1);
+      if (index < size(me.radios)) {
+        me.radios[index].setChecked();
+      } elsif (size(me.radios) > 0) {
+        me.radios[-1].setChecked();
+      }
     }
   },
 
@@ -191,7 +203,7 @@ gui.widgets.RadioButtonsGroup = {
   {
     foreach (var r; me.radios) {
       if (r != active) {
-        r.setChecked(0);
+        r._setChecked(0);
       }
     }
     return me;
