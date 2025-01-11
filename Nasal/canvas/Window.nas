@@ -618,7 +618,7 @@ var Window = {
 
       if (me._window_buttons_layout != nil) {
         var hsize = me.get("size[0]");
-        me._window_buttons_layout.setGeometry([10, 0, hsize - 20, me._title_bar_height]);
+        me._window_buttons_layout.setGeometry([0, 0, hsize, me._title_bar_height]);
       }
     }
   }
