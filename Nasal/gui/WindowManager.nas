@@ -9,7 +9,7 @@ var WindowManager = {
 	#	Two-item tuple: contains one vector for the left and one for the right side of the titlebar,
 	#	each containing the names of the window buttons to appear on that side.
 	getWindowButtonsLayoutInfo: func() {
-		return [[], ["close"]]
+		return [["close"], ["close"]]
 	},
 	
 	# @description Get a callback that performs the required action
