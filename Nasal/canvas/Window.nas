@@ -23,6 +23,7 @@ var Window = {
       _focused: 0,
       _widgets: [],
       _frame_width: 4,
+      _layout: nil,
       _title_bar_height: 25,
       _title: nil,
       _window_buttons_layout: nil,
@@ -54,6 +55,7 @@ var Window = {
     if (me["_title"] != nil)
         me._title.del();
     me.clearFocus();
+    me._layout = nil;
 
     if( me["_canvas"] != nil )
     {
@@ -149,6 +151,9 @@ var Window = {
 
     me._canvas.update(); # Ensure placement is applied
     me._ghost.setLayout(l);
+    me._layout = l;
+    me._onStateChange();
+
     return me;
   },
   #
@@ -356,11 +361,11 @@ var Window = {
     if( me['_canvas'] == nil )
       return;
 
+    var size = me.getSize();
     for(var i = 0; i < 2; i += 1)
     {
-      var size = me.get("content-size[" ~ i ~ "]");
-      me._canvas.set("size[" ~ i ~ "]", size);
-      me._canvas.set("view[" ~ i ~ "]", size);
+      me._canvas.set("size[" ~ i ~ "]", size[i]);
+      me._canvas.set("view[" ~ i ~ "]", size[i]);
     }
   },
   lockAspectRatio: func (lock=1) {
@@ -392,6 +397,13 @@ var Window = {
       me.getCanvas()
         .data("focused", me._focused)
         .dispatchEvent(event);
+
+#    if (me._layout != nil) {
+#      var (w, h) = me.getSize();
+#      var (minW, minH) = me._layout.minimumSize();
+#      var (newW, newH) = [math.max(w, minW), math.max(h, minH)];
+#      me.setSize(newW, newH);
+#    }
   },
 # private:
   #mode 0 = value changed, +-1 add/remove node
