@@ -176,6 +176,9 @@ gui.widgets.TabWidget = {
 		me.setCurrentTab(id);
 		me.setCurrentTab(keys(me._tabs)[0]);
 
+		me.setLayoutMinimumSize(me._layout.minimumSize());
+		me.setLayoutSizeHint(me._layout.sizeHint());
+
 		return me;
 	},
 
@@ -192,6 +195,9 @@ gui.widgets.TabWidget = {
 		if (size(keys(me._tabs)) > 0) {
 			me.setCurrentTab(keys(me._tabs)[-1]);
 		}
+
+		me.setLayoutMinimumSize(me._layout.minimumSize());
+		me.setLayoutSizeHint(me._layout.sizeHint());
 
 		return me;
 	},
