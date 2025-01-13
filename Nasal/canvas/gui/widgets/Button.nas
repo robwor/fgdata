@@ -51,6 +51,9 @@ gui.widgets.Button = {
     me._onStateChange();
     return me;
   },
+  checked: func {
+    return me._down;
+  },
   setDown: func(down = 1)
   {
     if( me._checkable or me._down == down )
