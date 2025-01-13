@@ -12,7 +12,7 @@ gui.widgets.ComboBox = {
     m._focus_policy = m.StrongFocus;
 #    m._flat = cfg.get("flat", 0);
     m._menu = gui.Menu.new();
-    m._setView( style.createWidget(parent, cfg.get("type", "combo-box"), cfg) );
+    m._setView(style.createWidget(parent, cfg.get("type", "combo-box"), cfg));
     m._items = [];
     m._currentIndex = nil;
     m._style = style; # cache reference to style for creating items
@@ -44,10 +44,11 @@ gui.widgets.ComboBox = {
     }
 
     if (var index = cfg.get("selected-index")) {
-      m.setCurrentByIndex(index);
-    }
-    if (var value = cfg.get("selected-value")) {
-      m.setCurrentByValue(value);
+      m.setSelectedByIndex(index);
+    } elsif (var value = cfg.get("selected-value")) {
+      m.setSelectedByValue(value);
+    } else {
+      m.setSelectedByIndex(nil);
     }
 
     return m;
@@ -55,8 +56,9 @@ gui.widgets.ComboBox = {
 
   setText: func(text)
   {
-    if( me._view != nil )
+    if (me._view != nil) {
       me._view.setText(me, text);
+    }
     return me;
   },
 
@@ -72,7 +74,7 @@ gui.widgets.ComboBox = {
 
   addMenuItem: func(text, value) {
     logprint(LOG_WARN, "canvas.gui.Widgets.ComboBox.addMenuItem is deprecated, please use createItem instead");
-    me.createItem(text, value)
+    return me.createItem(text, value);
   },
 
 # convenience helper to add simple items
@@ -82,44 +84,52 @@ gui.widgets.ComboBox = {
     var item = me.menu().createItem(text, func { m._itemCallback(index);}, {});
     item.menuValue = value;
     append(me._items, item);
-    if (me._currentIndex == nil) {
-      # select first item added, if we were previously empty
-      me.setSelectedByIndex(0);
-    }
+    return item;
   },
 
 # helper to set the current item by passing in
 # a value of an item
   setSelectedByValue: func(value) {
-    if (!size(me._items) or me._currentIndex == nil or me._items[me._currentIndex].menuValue == value) {
-      return;
+    if (!size(me._items) or (me._currentIndex != nil and me._items[me._currentIndex].menuValue == value)) {
+      return me;
+    }
+    if (value == nil) {
+      return me.setSelectedByIndex(nil);
     }
 
     var index = 0;
     foreach(var i; me._items) {
       if (i.menuValue == value) {
-        me.setSelectedByIndex(index);
-        return;
+        return me.setSelectedByIndex(index);
       }
-
-      index+=1;
+      index += 1;
     }
 
-    logprint(DEV_WARN, "Canvas.Gui ComboBox: no such value in menu: " ~ value);
+    logprint(DEV_WARN, "Canvas.Gui ComboBox: no such value in menu: " ~ debug.string(value));
+    return me;
   },
 
   setSelectedByIndex: func(index) {
-    if (me._currentIndex == index)
+    if (me._currentIndex == index) {
       return;
+    }
+    me._currentIndex = index;
+
+    if (index == nil) {
+      me._view.setText(nil);
+      me._trigger("selected-item-changed", {"index": nil, "text": nil, "value": nil});
+      return me;
+    }
 
     if (index >= size(me._items) or index < 0) {
-      logprint(DEV_WARN, "Canvas.Gui ComboBox: invalid index " ~ index ~ " passed to setCurrentByIndex");
-      return;
+      logprint(DEV_WARN, "Canvas.Gui ComboBox: invalid index " ~ index ~ " passed to setSelectedByIndex");
+      return me;
     }
 
     me._currentIndex = index;
     me._view.setText(me, me._items[index].text());
     me._trigger("selected-item-changed", {"index": index, "text": me._items[index].text(), "value": me._items[index].menuValue});
+    return me;
   },
 
   findByValue: func(value) {
