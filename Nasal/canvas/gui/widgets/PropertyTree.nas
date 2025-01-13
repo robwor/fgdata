@@ -18,6 +18,7 @@ gui.widgets.PropertyTree = {
                 m.parents = [gui.widgets.PropertyTree] ~ m.parents;
                 m.showAttrs = 0;
                 m._node = cfg.get("node", props.globals);
+                m._old_children_count = 0;
                 m.rebuildList();
                 m.listen("selection-changed", func {
                         var selected = m.getSelectedItems();
@@ -73,7 +74,14 @@ gui.widgets.PropertyTree = {
                         var item = me.createItem("../")
                                                         .setData("node", me._node.getParent());
                 }
-                foreach (var c; sort(me._node.getChildren(), func(a, b) cmp(a.getName(), b.getName()))) {
+                var children = sort(
+                        me._node.getChildren(), 
+                        func(a, b) { cmp(
+                                sprintf("%s[%010d]", a.getName(), a.getIndex()),
+                                sprintf("%s[%010d]", b.getName(), b.getIndex())
+                        ); }
+                );
+                foreach (var c; children) {
                         var item = nil;
                         if (c.getAttribute("children")) {
                                 var index = c.getIndex();
@@ -86,6 +94,7 @@ gui.widgets.PropertyTree = {
                         item._view._root.addEventListener("click", func(e) me.itemClicked(e));
                         item.setData("node", c);
                 }
+                me._old_children_count = me._node.getAttribute("children");
         },
 
         itemClicked: func(e) {
@@ -110,36 +119,60 @@ gui.widgets.PropertyTree = {
         },
 
         update: func {
+                if (me._old_children_count != me._node.getAttribute("children")) {
+                        me.rebuildList();
+                }
+                var nameCountMapping = {};
+                for (var i = 0; i < me.count(); i += 1) {
+                        var node = me.getItem(i).getData("node");
+                        var name = node.getName();
+                        if (!contains(nameCountMapping, name)) {
+                                nameCountMapping[name] = 1;
+                        } else {
+                                nameCountMapping[name] += 1;
+                        }
+                }
                 for (var i = 0; i < me.count(); i += 1) {
                         var item = me.getItem(i);
+                        # ignore "go up" entry
+                        if (item.getText() == "../") {
+                                continue;
+                        }
+
                         var node = item.getData("node");
-                        if (size(node.getChildren()) == 0) {
-                                var type = node.getType();
-                                var index = node.getIndex();
-                                var name = node.getName() ~ (index > 0 ? "[" ~ index ~ "]" : "");
-                                var value = nil;
-                                if (type == "BOOL") {
-                                        value = node.getBoolValue() ? "true" : "false";
-                                } elsif (type == "STRING" or type == "UNSPECIFIED") {
-                                        value = "'" ~ string.replace(node.getValue(), "\n", "\\n") ~ "'";
-                                } elsif (type != "ALIAS" and type != "NONE") {
-                                        value = node.getValue() ~ "";
+                        var type = string.lc(node.getType());
+                        var index = node.getIndex();
+                        var numChildren = node.getAttribute("children");
+                        var attrString = "";
+                        if (me.showAttrs) {
+                                attrString ~= " (";
+                                if (type != "none") {
+                                        attrString ~= type ~ " ";
                                 }
-                                if (value != nil) {
-                                        var attrString = "";
-                                        if (me.showAttrs) {
-                                                attrString ~= " ";
-                                                foreach (var attr; sort(keys(me.AttributeMapping), func(a, b) cmp(a, b))) {
-                                                        if (node.getAttribute(attr)) {
-                                                                attrString ~= me.AttributeMapping[attr];
-                                                        }
-                                                }
-                                                attrString ~= " " ~ node.getAttribute("listeners");
+                                foreach (var attr; sort(keys(me.AttributeMapping), func(a, b) cmp(a, b))) {
+                                        if (node.getAttribute(attr)) {
+                                                attrString ~= me.AttributeMapping[attr];
                                         }
-                                        item.setText(node.getName() ~ " = " ~ value ~ " (" ~ string.lc(node.getType()) ~ attrString ~ ")");
-                                } else {
-                                       item.setText(node.getName());
                                 }
+                                attrString ~= " " ~ node.getAttribute("listeners");
+                                attrString ~= ")"
+                        } elsif (type != "none") {
+                                attrString = " (" ~ type ~ ")"; 
+                        }
+
+                        var name = node.getDisplayName((nameCountMapping[node.getName()] > 1)) ~ (numChildren ? "/" : "");
+                        var value = nil;
+                        if (type == "bool") {
+                                value = node.getBoolValue() ? "true" : "false";
+                        } elsif (type == "string" or type == "unspecified") {
+                                value = "'" ~ string.replace(node.getValue(), "\n", "\\n") ~ "'";
+                        } elsif (type != "alias" and type != "none") {
+                                value = node.getValue() ~ "";
+                        }
+                        if (value != nil) {
+                                item.setText(name ~ " = " ~ value ~ attrString);
+                        } else {
+                               item.setText(name ~ attrString);
                         }
                 }
                 call(me.parents[1].update, [], me);
