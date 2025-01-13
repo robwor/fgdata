@@ -8,7 +8,7 @@ var ErrorNotification =
   new: func
   {
     var m = {
-      parents: [ErrorNotification, PropertyElement.new(["/sim/gui/canvas", "window"], nil)],
+      parents: [ErrorNotification, PropertyElement.new(["/canvas/desktop", "window"], nil)],
       _title: "",
     };
 

@@ -9,7 +9,7 @@ var Tooltip = {
   new: func(size, id = nil)
   {
     var m = {
-      parents: [Tooltip, PropertyElement.new(["/sim/gui/canvas", "window"], id)],
+      parents: [Tooltip, PropertyElement.new(["/canvas/desktop", "window"], id)],
       _listeners: [],
       _properties: [],
       _mapping: "",

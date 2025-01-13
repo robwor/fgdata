@@ -266,7 +266,7 @@ gui.Popup = {
 		} elsif (mode == 1) {
 			me["_listener_" ~ name] = [
 				setlistener(
-					"/sim/gui/canvas/size[" ~ index ~ "]",
+					"/canvas/desktop/size[" ~ index ~ "]",
 					func me._updatePos(index, name)
 				),
 				setlistener(
@@ -283,7 +283,7 @@ gui.Popup = {
 	_updatePos: func(index, name) {
 		me.setInt(
 			"tf/t[" ~ index ~ "]",
-			getprop("/sim/gui/canvas/size[" ~ index ~ "]") - me.get(name) - me.get("content-size[" ~ index ~ "]")
+			getprop("/canvas/desktop/size[" ~ index ~ "]") - me.get(name) - me.get("content-size[" ~ index ~ "]")
 		);
 	},
 	getCanvasDecoration: func() {

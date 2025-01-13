@@ -450,7 +450,7 @@ var Window = {
       me["_listener_" ~ name] = [
         setlistener
         (
-          "/sim/gui/canvas/size[" ~ index ~ "]",
+          "/canvas/desktop/size[" ~ index ~ "]",
           func me._updatePos(index, name)
         ),
         setlistener
@@ -468,7 +468,7 @@ var Window = {
     me.setInt
     (
       "tf/t[" ~ index ~ "]",
-      getprop("/sim/gui/canvas/size[" ~ index ~ "]")
+      getprop("/canvas/desktop/size[" ~ index ~ "]")
       - me.get(name)
       - me.get("content-size[" ~ index ~ "]")
     );

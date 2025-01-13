@@ -2,7 +2,7 @@ gui.Style = {
   _CLASS: "gui.Style",
   new: func(name, name_icon_theme)
   {
-    var root_node = props.globals.getNode("/sim/gui/canvas", 1)
+    var root_node = props.globals.getNode("/canvas/desktop", 1)
                                  .addChild("style");
     var gui_path = getprop("/sim/fg-root") ~ "/gui";
     var style_path = gui_path ~ "/styles/" ~ name;
