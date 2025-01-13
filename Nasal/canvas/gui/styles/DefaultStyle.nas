@@ -230,10 +230,10 @@ DefaultStyle.widgets.switch = {
 
         update:  func(model) {
                 var bg_color = "switch_bg_color";
-                if (model._down) {
-                        bg_color ~= "_checked";
-                } elsif (!model._enabled) {
+                if (!model._enabled) {
                         bg_color ~= "_disabled";
+                } elsif (model._down) {
+                        bg_color ~= "_checked";
                 }
                 me._bg.set("fill", me._style.getColor(bg_color));
                 me._bg.set("stroke", me._style.getColor("switch_bg_border_color"));
