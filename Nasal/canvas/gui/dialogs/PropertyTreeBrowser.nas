@@ -42,14 +42,23 @@ var PropertyTreeBrowser = {
                         m.window.setTitle(m.getWindowTitle(m.propertyTree.getNode()));
                         var selected = m.propertyTree.getSelectedItems();
                         if (!size(selected)) {
+                                m.valueEntry.setEnabled(0);
+                                m.valueSwitch.setEnabled(0);
+                                m.valueButton.setEnabled(0);
                                 return;
+                        } else {
+                                m.valueEntry.setEnabled(1);
+                                m.valueSwitch.setEnabled(1);
+                                m.valueButton.setEnabled(1);
                         }
                         var node = selected[0].getData("node");
                         if (size(node.getChildren()) == 0) {
                                 var value = nil;
                                 var type = node.getType();
                                 if (type == "BOOL") {
-                                        value = node.getBoolValue() ? "true" : "false";
+                                	m.valueEntry.hide();
+                                	m.valueSwitch.show();
+                                        m.valueSwitch.setChecked(node.getBoolValue());
                                         m.window.setTitle("Hint: hold Ctrl while clicking to toggle bool value");
                                         m.resetTitleTimer.restart(5);
                                 } elsif (type == "STRING") {
@@ -59,7 +68,11 @@ var PropertyTreeBrowser = {
                                 } elsif (type != "ALIAS") {
                                         value = node.getValue() ~ "";
                                 }
-                                m.valueEntry.setText(value);
+                                if (type != "BOOL") {
+                                        m.valueSwitch.hide();
+                                        m.valueEntry.show();
+                                        m.valueEntry.setText(value);
+                               }
                         } else {
                                 m.window.setTitle(m.getWindowTitle(m.propertyTree.getNode()));
                                 m.valueEntry.clear();
@@ -77,9 +90,18 @@ var PropertyTreeBrowser = {
                 
                 m.valueLayout = HBoxLayout.new();
                 m.layout.addItem(m.valueLayout);
-                m.valueEntry = gui.widgets.LineEdit.new(m.root, canvas.style, {});
+                m.valueEntry = gui.widgets.LineEdit.new(parent: m.root, cfg: {"enabled": 0});
                 m.valueLayout.addItem(m.valueEntry);
-                m.valueButton = gui.widgets.Button.new(m.root, canvas.style, {})
+                m.valueSwitch = gui.widgets.Switch.new(parent: m.root, cfg: {
+                        "alignment": canvas.AlignLeft,
+                        "enabled": 0,
+                });
+                m.valueSwitch.hide();
+                m.valueLayout.addItem(m.valueSwitch);
+                m.valueButton = gui.widgets.Button.new(m.root, canvas.style, {
+                        "alignment": canvas.AlignRight,
+                        "enabled": 0,
+                })
                                                 .setText("Set")
                                                 .setFixedSize(50, 28)
                                                 .listen("clicked", func {
@@ -88,7 +110,11 @@ var PropertyTreeBrowser = {
                                                                 return;
                                                         }
                                                         var node = selected[0].getData("node");
-                                                        node.setValue(m.valueEntry.text());
+                                                        if (node.getType() == "BOOL") {
+                                                                node.setValue(m.valueSwitch.checked());
+                                                        } else {
+                                                                node.setValue(m.valueEntry.text());
+                                                        }
                                                 });
                 m.valueLayout.addItem(m.valueButton);
                 
