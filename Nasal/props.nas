@@ -44,6 +44,15 @@ var Node = {
     equals         : func(n) _equals(me._g, [isa(n, Node) ? n._g : n]),
     clearValue     : func _alias(me._g, [_globals()]) and me.unalias(),
 
+    getDisplayName : func(force_index = 0) {
+        var (name, index) = (me.getName(), me.getIndex());
+        if (force_index or index > 0) {
+            return sprintf("%s[%d]", name, index);
+        } else {
+            return name;
+        }
+    },
+
     getPath : func {
         var (name, index, parent) = (me.getName(), me.getIndex(), me.getParent());
         if(index != 0)    { name ~= "[" ~ index ~ "]"; }
