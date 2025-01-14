@@ -26,6 +26,7 @@
         <fragment-shader>Shaders/HDR/bloom_upsample.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/redout.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/night_vision.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/highlights.glsl</fragment-shader>
       </program>
       <uniform>
         <name>hdr_tex</name>

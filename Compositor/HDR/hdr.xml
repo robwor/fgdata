@@ -1370,6 +1370,7 @@
     <!-- Only render objects with PICK_BIT=1 -->
     <cull-mask>0x40</cull-mask>
     <clear-mask>color</clear-mask>
+    <clear-color>0.0 0.0 0.0 0.0</clear-color>
     <attachment>
       <component>color0</component>
       <buffer>highlight</buffer>

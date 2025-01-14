@@ -5,15 +5,11 @@ layout(location = 0) out vec4 fragColor;
 in vec2 texcoord;
 
 uniform sampler2D hdr_tex;
-uniform sampler2D highlight_tex;
 
 uniform vec2 fg_BufferSize;
 
 uniform float bloom_strength;
 uniform bool debug_ev100;
-
-const vec3 HIGHLIGHT_COLOR = vec3(1.0, 0.85, 0.0);
-const float HIGHLIGHT_ALPHA = 0.2;
 
 // math.glsl
 float interleaved_gradient_noise(vec2 uv);
@@ -28,6 +24,8 @@ vec2 redout_distort(vec2 uv);
 vec3 redout_apply(vec3 color, vec2 uv);
 // night-vision.glsl
 vec3 night_vision_apply(vec3 color, vec2 uv);
+// highlights.glsl
+vec3 highlight_apply(vec3 color, vec2 uv);
 
 vec3 get_debug_color(float value)
 {
@@ -54,30 +52,6 @@ vec3 get_ev100_color(vec3 hdr)
     return get_debug_color(norm);
 }
 
-float edge_detection(float x, vec2 uv, sampler2D tex)
-{
-    vec2 texel_size = 1.0 / vec2(textureSize(tex, 0));
-    float sum = 0.0;
-    sum += textureOffset(tex, uv, ivec2(-1, -1)).r;
-    sum += textureOffset(tex, uv, ivec2( 0, -1)).r;
-    sum += textureOffset(tex, uv, ivec2( 1, -1)).r;
-
-    sum += textureOffset(tex, uv, ivec2(-1,  0)).r;
-    sum += textureOffset(tex, uv, ivec2( 1,  0)).r;
-
-    sum += textureOffset(tex, uv, ivec2(-1,  1)).r;
-    sum += textureOffset(tex, uv, ivec2( 0,  1)).r;
-    sum += textureOffset(tex, uv, ivec2( 1,  1)).r;
-    return min(1.0, sum) - x;
-}
-
-vec3 highlight_apply(vec3 color, vec2 uv, sampler2D tex)
-{
-    float x = texture(tex, uv).r;
-    float edge = edge_detection(x, uv, tex);
-    return mix(color, HIGHLIGHT_COLOR, min(1.0, x * HIGHLIGHT_ALPHA + edge));
-}
-
 void main()
 {
     if (debug_ev100) {
@@ -102,7 +76,7 @@ void main()
     color = eotf_sRGB(color);
 
     // Pick animation highlights
-    color = highlight_apply(color, uv, highlight_tex);
+    color = highlight_apply(color, uv);
 
     // Dithering to reduce banding
     color += (1.0 / 255.0) * interleaved_gradient_noise(gl_FragCoord.xy) - (0.5 / 255.0);
