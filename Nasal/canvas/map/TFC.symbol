@@ -43,7 +43,6 @@ var draw = func {
 	if (me.text_tcas == nil) {
 		me.text_tcas = me.element.createChild("text")
 			.setDrawMode( canvas.Text.TEXT )
-			.setText(sprintf("%+02.0f",altDiff/100))
 			.setFont("LiberationFonts/LiberationSans-Regular.ttf")
 			.setColor(1,1,1)
 			.setFontSize(20)
@@ -56,6 +55,7 @@ var draw = func {
 		me.text_tcas.setTranslation(0,-40);
 	else
 		me.text_tcas.setTranslation(0,40);
+	me.text_tcas.setText(sprintf("%+02.0f",altDiff/100));
 	var arrow_type = (vspeed >= 500);
 	if (arrow_type != me.arrow_type) {
 		(old_type, me.arrow_type) = (me.arrow_type, arrow_type);

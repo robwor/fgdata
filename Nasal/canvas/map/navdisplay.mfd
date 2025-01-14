@@ -46,6 +46,7 @@ NDSourceDriver.new = func {
 	};
 	m.get_lat= func getprop("/position/latitude-deg");
 	m.get_lon= func getprop("/position/longitude-deg");
+	m.get_alt= func getprop("/position/altitude-ft");
 	m.get_spd= func getprop("/instrumentation/airspeed-indicator/true-speed-kt");
 	m.get_gnd_spd= func getprop("/velocities/groundspeed-kt");
 	m.get_vspd= func getprop("/velocities/vertical-speed-fps");
@@ -169,6 +170,7 @@ var NavDisplay = {
 			get_trk_mag: func source.getNode('orientation/track-magnetic-deg').getValue(),
 			get_lat: func source.getNode('position/latitude-deg').getValue(),
 			get_lon: func source.getNode('position/longitude-deg').getValue(),
+			get_alt: func source.getNode('position/altitude-ft').getValue(),
 			get_spd: func source.getNode('velocities/true-airspeed-kt').getValue(),
 			get_gnd_spd: func source.getNode('velocities/groundspeed-kt').getValue(),
 		};
@@ -314,7 +316,7 @@ var NavDisplay = {
 		var get_current_position = func {
 			delete(caller(0)[0], "me"); # remove local me, inherit outer one
 			return [
-				me.aircraft_source.get_lat(), me.aircraft_source.get_lon()
+				me.aircraft_source.get_lat(), me.aircraft_source.get_lon(), me.aircraft_source.get_alt()
 			];
 		}
 
@@ -459,6 +461,7 @@ var NavDisplay = {
 		# Variables:
 		var userLat = me.aircraft_source.get_lat();
 		var userLon = me.aircraft_source.get_lon();
+		var userAlt = me.aircraft_source.get_alt();
 		var userGndSpd = me.aircraft_source.get_gnd_spd();
 		var userVSpd = me.aircraft_source.get_vspd();
 		var dispLCD = me.get_switch('toggle_display_type') == "LCD";
@@ -530,6 +533,7 @@ var NavDisplay = {
 		} else {
 			pos.lat = userLat;
 			pos.lon = userLon;
+			pos.alt = userAlt;
 		}
 		if(me.in_mode('toggle_display_mode', ['PLAN'])) {
 			pos.hdg = 0;
@@ -540,7 +544,7 @@ var NavDisplay = {
 		}
 		if(me.options != nil and (var pos_callback = me.options['position_callback']) != nil)
 			pos_callback(me, pos);
-		call(me.map.setPos, [pos.lat, pos.lon], me.map, pos);
+		call(me.map.setPos, [pos.lat, pos.lon, nil, nil, pos.alt], me.map, pos);
 		if(pos.range != oldRange){
 			foreach(l; me.range_dependant_layers){
 				l.update();

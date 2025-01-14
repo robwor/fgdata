@@ -14,8 +14,8 @@ SymbolLayer.add(name, {
 	df_style: {
 	},
 	df_options: { # default configuration options
-		floor_ft:   120000, # Display target from this height below the aircraft
-		ceiling_ft: 120000, # Display targets up to this height above the aircraft
+		floor_ft:   9900, # Display target from this height below the aircraft
+		ceiling_ft: 9900, # Display targets up to this height above the aircraft
 		display_id: 1,      # Display aircraft ID
 	},
 });
@@ -74,7 +74,7 @@ var get_alt_diff = func(model) {
 	var model_alt = model.get_alt();
 	var alt = me.map.getAlt();
 	if (alt == nil or model_alt == nil) return 0;
-	return alt - model_alt;
+	return model_alt - alt;
 };
 
 ##
