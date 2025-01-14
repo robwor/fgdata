@@ -405,6 +405,7 @@
       <buffer>aerial-perspective</buffer>
       <access>write-only</access>
       <format>rgba16f</format>
+      <layered>true</layered>
     </image-binding>
   </pass>
   <!-- Layered rendering version (no compute required) -->
