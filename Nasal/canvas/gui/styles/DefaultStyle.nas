@@ -19,7 +19,28 @@ var DefaultStyle = {
 
     var w = {
       parents: [factory],
-      _style: me
+      _style: me,
+      _createElement: func(name, type) {
+        var mem = '_' ~ name;
+        if (me[mem] == nil) {
+          me[ mem ] = me._root.createChild(type, "label-" ~ name);
+
+          if (type == "text") {
+             me[mem].set("font", "LiberationFonts/LiberationSans-Regular.ttf")
+                      .set("character-size", 14)
+                      .set("alignment", "left-center");
+          }
+        }
+        return me[mem];
+      },
+      _deleteElement: func(name) {
+        name = '_' ~ name;
+        if (me[name] != nil) {
+          me[name].del();
+          me[name] = nil;
+        }
+        return me;
+      }
     };
     call(factory.new, [parent, cfg], w);
     return w;
@@ -428,33 +449,6 @@ DefaultStyle.widgets.label = {
       me._text.set("fill", me._style.getColor(color_name));
     }
   },
-# protected:
-  _createElement: func(name, type)
-  {
-    var mem = '_' ~ name;
-    if( me[ mem ] == nil )
-    {
-      me[ mem ] = me._root.createChild(type, "label-" ~ name);
-
-      if( type == "text" )
-      {
-         me[ mem ].set("font", "LiberationFonts/LiberationSans-Regular.ttf")
-                  .set("character-size", 14)
-                  .set("alignment", "left-center");
-      }
-    }
-    return me[ mem ];
-  },
-  _deleteElement: func(name)
-  {
-    name = '_' ~ name;
-    if( me[ name ] != nil )
-    {
-      me[ name ].del();
-      me[ name ] = nil;
-    }
-    return me;
-  }
 };
 
 # A one line text input field
@@ -899,13 +893,13 @@ DefaultStyle.widgets.rule = {
     var shadowColor = me._style.getColor("fg_color_shadow");
 
     me._bg2 = me._root.createChild("path")
-						.set("fill", bgColor)
-						.set("stroke", bgColor)
-						.set("stroke-width", 1);
+            .set("fill", bgColor)
+            .set("stroke", bgColor)
+            .set("stroke-width", 1);
     me._shadow2 = me._root.createChild("path")
-						.set("fill", shadowColor)
-						.set("stroke", shadowColor)
-						.set("stroke-width", 1);
+            .set("fill", shadowColor)
+            .set("stroke", shadowColor)
+            .set("stroke-width", 1);
 
     model.setLayoutMinimumSize([40, 28]);
     # TODO mark as expanding?
@@ -915,7 +909,6 @@ DefaultStyle.widgets.rule = {
   },
   update: func(model)
   {
-
     # different color if disabled?
     if( me['_text'] != nil )
     {
@@ -923,33 +916,6 @@ DefaultStyle.widgets.rule = {
       me._text.set("fill", me._style.getColor(color_name));
     }
   },
-# protected:
-  _createElement: func(name, type)
-  {
-    var mem = '_' ~ name;
-    if( me[ mem ] == nil )
-    {
-      me[ mem ] = me._root.createChild(type, "rule-" ~ name);
-
-      if( type == "text" )
-      {
-         me[ mem ].set("font", "LiberationFonts/LiberationSans-Regular.ttf")
-                  .set("character-size", 14)
-                  .set("alignment", "left-center");
-      }
-    }
-    return me[ mem ];
-  },
-  _deleteElement: func(name)
-  {
-    name = '_' ~ name;
-    if( me[ name ] != nil )
-    {
-      me[ name ].del();
-      me[ name ] = nil;
-    }
-    return me;
-  }
 };
 
 # a frame (sometimes called a group box), with optional label
@@ -958,7 +924,7 @@ DefaultStyle.widgets.frame = {
   new: func(parent, cfg)
   {
     me._root = parent.createChild("group", "frame-box");
-    me._createElement("bg", "image")
+    me._bg = me._root.createChild("bg", "image")
        .set("slice", "8 8");
     me.content = me._root.createChild("group", "frame-content");
 
@@ -977,34 +943,6 @@ DefaultStyle.widgets.frame = {
     
     me._bg.setSize(model._size[0], model._size[1]);
   },
-  # protected:
-  _createElement: func(name, type)
-  {
-    var mem = '_' ~ name;
-    if( me[ mem ] == nil )
-    {
-      me[ mem ] = me._root.createChild(type, "frame-" ~ name);
-
-      if( type == "text" )
-      {
-         me[ mem ].set("font", "LiberationFonts/LiberationSans-Regular.ttf")
-                  .set("character-size", 14)
-                  .set("alignment", "left-center");
-      }
-    }
-    return me[ mem ];
-  },
-  _deleteElement: func(name)
-  {
-    name = '_' ~ name;
-    if( me[ name ] != nil )
-    {
-      me[ name ].del();
-      me[ name ] = nil;
-    }
-    return me;
-  }
-
 };
 
 # a horizontal or vertical slider, for selecting /
@@ -1013,17 +951,17 @@ DefaultStyle.widgets.slider = {
   new: func(parent, cfg)
   {
     me._root = parent.createChild("group", "slider");
-    me._createElement("bg", "image")
+    me._bg = me._root.createChild("bg", "image")
        .set("slice", "2 6");
 
-    me._createElement("fill", "image")
+    me._fill = me._root.createChild("fill", "image")
        .set("slice", "2 6");
 
     me._ticks = me._root.createChild("path")
             .set("stroke-width", me._style.getSize("slider-ticks-width", 1));
 
     me._fillHeight = me._fill.imageSize()[1];
-    me._createElement("thumb", "image");
+    me._thumb = me._root.createChild("thumb", "image");
     me._thumbSize = me._thumb.imageSize();
 
     me._value = me._root.createChild("text")
@@ -1193,34 +1131,6 @@ DefaultStyle.widgets.slider = {
                        .vert(me._style.getSize("slider-tick-length", 8));
     }
   },
-
-   # protected:
-  _createElement: func(name, type)
-  {
-    var mem = '_' ~ name;
-    if( me[ mem ] == nil )
-    {
-      me[ mem ] = me._root.createChild(type, "slider-" ~ name);
-
-      if( type == "text" )
-      {
-         me[ mem ].set("font", "LiberationFonts/LiberationSans-Regular.ttf")
-                  .set("character-size", me._style.getSize("slider-value-font-size", me._style.getSize("base-font-size")))
-                  .set("alignment", "left-center");
-      }
-    }
-    return me[ mem ];
-  },
-  _deleteElement: func(name)
-  {
-    name = '_' ~ name;
-    if( me[ name ] != nil )
-    {
-      me[ name ].del();
-      me[ name ] = nil;
-    }
-    return me;
-  }
 };
 
 DefaultStyle.widgets.dial = {
@@ -1481,9 +1391,9 @@ DefaultStyle.widgets["menu-item"] = {
 	},
 	
 	setShortcut: func(model, shortcut) {
-    if (shortcut != nil) {
-  		me._shortcut.setText(shortcut);
-    }
+		if (shortcut != nil) {
+			me._shortcut.setText(shortcut);
+		}
 		return me._updateLayoutSizes(model);
 	},
 	
@@ -1658,13 +1568,13 @@ DefaultStyle.widgets["list-item"] = {
 	
 	setSize: func(model, w, h) {
 		me._bg.reset().rect(0, 0, w, me._itemHeight);
-    var m = me._style.getSize("margin");
+		var m = me._style.getSize("margin");
 		me._label.setTranslation(m, int(h / 2) + m);
 		return me;
 	},
 	
 	_updateLayoutSizes: func(model) {
-    var m = me._style.getSize("margin");
+		var m = me._style.getSize("margin");
 		var min_width = m + me._label.maxWidth() + m;
 		model.setLayoutMinimumSize([min_width, me._itemHeight]);
 		model.setLayoutSizeHint([min_width, me._itemHeight]);
