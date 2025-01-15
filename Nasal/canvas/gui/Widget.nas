@@ -52,8 +52,16 @@ gui.Widget = {
       me.setSizeHint([me.sizeHint()[0], me._MAX_SIZE]);
     }
   },
-  setFixedSize: func(x, y)
+  setFixedSize: func
   {
+    var (x, y) = (nil, nil);
+    if (size(arg) == 2) {
+      (x, y) = arg;
+    } elsif (size(arg) == 1 and isvec(arg[0]) and size(arg[0]) == 2) {
+      (x, y) = arg[0];
+    } else {
+      die("setFixedSize must be passed two numbers or one vector containing two numbers");
+    }
     me._expanding = me.ExpandingDisabled;
     me.setMinimumSize([x, y]);
     me.setSizeHint([x, y]);
