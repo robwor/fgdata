@@ -9,8 +9,7 @@ gui.widgets.LineEdit = {
     m._focus_policy = m.StrongFocus;
     m._setView( style.createWidget(parent, "line-edit", cfg) );
 
-    m.setLayoutMinimumSize([28, 16]);
-    m.setLayoutSizeHint([150, 28]);
+    m._view._updateLayoutSizes(m);
 
     m._text = "";
     m._placeholder = "";
