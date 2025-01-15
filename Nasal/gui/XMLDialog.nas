@@ -199,20 +199,25 @@ var XMLObjectBase =
             var prefHeight = me._configValue("pref-height");
             if (prefWidth or prefHeight) {
                 var hint = l.sizeHint();
+                var maxSize = l.maximumSize();
                 if (prefWidth) {
                     hint[0] = prefWidth;
+                    maxSize[0] = prefWidth;
                 }
                 if (prefHeight) {
                     hint[1] = prefHeight;
+                    maxSize[1] = prefHeight;
                 }
 
-                l.setSizeHint(hint);
+                l.setLayoutSizeHint(hint);
+                l.setLayoutMinimumSize(hint);
+                l.setLayoutMaximumSize(maxSize);
             }
 
             if (compatWidgetSizeHint) {
                 # old PUI layout code uses minimum size as the hint for many simple
                 # widgets such as buttons and labels
-                l.setSizeHint(l.minimumSize());
+                l.setLayoutSizeHint(l.minimumSize());
             }
         } else {
             # layout item is not a NasalWidget, so lacks public
@@ -539,6 +544,8 @@ var XMLEmpty =
         me._view = canvas.createChild("empty", "group");
         me._layout = canvas.Spacer.new();
         me._applyLayoutConfig();
+        me._layout.setLayoutSizeHint([canvas.gui.Widget._MAX_SIZE, canvas.gui.Widget._MAX_SIZE]);
+        me._layout.setLayoutMaximumSize([canvas.gui.Widget._MAX_SIZE, canvas.gui.Widget._MAX_SIZE]);
         me.update();
 
         return me._view;
