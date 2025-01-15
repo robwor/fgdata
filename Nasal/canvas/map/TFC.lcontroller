@@ -111,8 +111,9 @@ var searchCmd_default = func {
 
 		var tm = TrafficModel.new(t, nil, me.layer);
 
-		if ((min_alt < tm.get_alt()) and
-		    (tm.get_alt() < max_alt) and
+		if (((tm.get_threat_lvl() or -1) > -1) and
+			(min_alt < tm.get_alt()) and
+			(tm.get_alt() < max_alt) and
 			   me.map.controller.in_range(lat, lon)  ) {
 			append(result, tm);
 		}
