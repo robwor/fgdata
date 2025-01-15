@@ -57,8 +57,8 @@ DefaultStyle.widgets.button = {
   {
     me._label.setText(text);
 
-    var min_width = text ? math.max(80, me._label.maxWidth() + 16) : 16;
-    model.setLayoutMinimumSize([min_width, 16]);
+    var min_width = text ? math.max(80, me._label.maxWidth() + 16) : 28;
+    model.setLayoutMinimumSize([min_width, 28]);
     model.setLayoutSizeHint([min_width, 28]);
 
     return me;
@@ -170,9 +170,9 @@ DefaultStyle.widgets.checkbox = {
   {
     me._label.setText(text);
 
-    var min_width = me._label.maxWidth() + 3 + 24;
-    model.setLayoutMinimumSize([min_width, 18]);
-    model.setLayoutSizeHint([min_width, 24]);
+    var min_width = me._label.maxWidth() + 3 + 28;
+    model.setLayoutMinimumSize([min_width, 28]);
+    model.setLayoutSizeHint([min_width, 28]);
 
     return me;
   },
@@ -271,8 +271,8 @@ DefaultStyle.widgets["radio-button"] = {
     me._label.setText(text);
 
     var min_width = text ? (me._label.maxWidth() + 3 + 24) : 0;
-    model.setLayoutMinimumSize([min_width, 24]);
-    model.setLayoutSizeHint([min_width, 24]);
+    model.setLayoutMinimumSize([min_width, 28]);
+    model.setLayoutSizeHint([min_width, 28]);
 
     return me;
   },
@@ -369,8 +369,8 @@ DefaultStyle.widgets.label = {
     }
 
     model.setHeightForWidthFunc(hfw_func);
-    model.setLayoutMinimumSize([min_width, 14]);
-    model.setLayoutSizeHint([width_hint, 24]);
+    model.setLayoutMinimumSize([min_width, 28]);
+    model.setLayoutSizeHint([width_hint, 28]);
 
     return me.update(model);
   },
@@ -536,6 +536,10 @@ DefaultStyle.widgets["line-edit"] = {
   {
     me._placeholder.setText(placeholder);
     model._onStateChange();
+  },
+  _updateLayoutSizes: func(model) {
+    model.setLayoutMinimumSize([100, 28]);
+    model.setLayoutSizeHint([model._MAX_SIZE, 28]);
   },
   update: func(model)
   {
@@ -724,8 +728,8 @@ DefaultStyle.widgets["tab-widget-tab-button"] = {
 		me._label.setText(text);
 
 		var min_width = math.max(80, me._label.maxWidth() + 12 + (model._tab_closeable ? 24 + 12 : 0));
-		model.setLayoutMinimumSize([min_width, 36]);
-		model.setLayoutSizeHint([min_width, 36]);
+		model.setLayoutMinimumSize([min_width, 28]);
+		model.setLayoutSizeHint([min_width, 28]);
 
 		return me;
 	},
@@ -903,9 +907,9 @@ DefaultStyle.widgets.rule = {
 						.set("stroke", shadowColor)
 						.set("stroke-width", 1);
 
-    model.setLayoutMinimumSize([40, 14]);
+    model.setLayoutMinimumSize([40, 28]);
     # TODO mark as expanding?
-    model.setLayoutSizeHint([width_hint, 24]);
+    model.setLayoutSizeHint([width_hint, 28]);
 
     return me.update(model);
   },
@@ -1038,9 +1042,9 @@ DefaultStyle.widgets.slider = {
     if (model._ticksPosition != model.TicksPosition.None and model._valueDisplayPosition != model._ticksPosition) {
       h += me._style.getSize("slider-fill-ticks-margin", 3) + me._style.getSize("slider-tick-length", 10);
     } 
+    h = math.max(h, 28);
     model.setLayoutMinimumSize([50, h]);
     model.setLayoutSizeHint([(model._maxValue -  model._minValue) / (model._stepSize or 1), h]);
-    model.setLayoutMaximumSize([model._MAX_SIZE, h]);
   },
 
   setNormValue: func(model, normValue)
@@ -1255,7 +1259,7 @@ DefaultStyle.widgets.dial = {
     }
     var minW = borderHandleMargin * 2 + valueSize[0] + handleSize * 2;
     var minH = borderHandleMargin * 2 + valueSize[1] + handleSize * 2;
-    var length = math.max(minW, minH);
+    var length = math.max(minW, minH, 28);
     if (model._showTicks) {
       length += me._style.getSize("dial-knob-ticks-margin", 2) + me._style.getSize("dial-ticks-length", 10);
     }
@@ -1465,8 +1469,8 @@ DefaultStyle.widgets["menu-item"] = {
 				min_width += 12;
 			}
 		}
-		model.setLayoutMinimumSize([min_width, 24]);
-		model.setLayoutSizeHint([min_width, 24]);
+		model.setLayoutMinimumSize([min_width, 28]);
+		model.setLayoutSizeHint([min_width, 28]);
 		
 		return me;
 	},
@@ -1527,7 +1531,7 @@ DefaultStyle.widgets["menu-bar"] = {
 	},
 	
 	setSize: func(model, w, h) {
-		me._bg.reset().rect(0, 0, w, 24);
+		me._bg.reset().rect(0, 0, w, 28);
 		me._items.setTranslation(0, 0);
 		return me;
 	},
@@ -1582,8 +1586,8 @@ DefaultStyle.widgets["combo-box"] = {
   {
     me._label.setText(text);
     var inset = me._style.getSize("text-inset");
-    var min_width = math.max(80, me._label.maxWidth() + inset + me._arrowIcon.imageSize()[0]);
-    model.setLayoutMinimumSize([min_width, 16]);
+    var min_width = math.max(80, inset + me._label.maxWidth() + inset + me._arrowIcon.imageSize()[0] + inset);
+    model.setLayoutMinimumSize([min_width, 28]);
     model.setLayoutSizeHint([min_width, 28]);
 
     return me;
@@ -1664,7 +1668,6 @@ DefaultStyle.widgets["list-item"] = {
 		var min_width = m + me._label.maxWidth() + m;
 		model.setLayoutMinimumSize([min_width, me._itemHeight]);
 		model.setLayoutSizeHint([min_width, me._itemHeight]);
-		model.setLayoutMaximumSize([model._MAX_SIZE, me._itemHeight]);
 		
 		return me;
 	},
@@ -1702,10 +1705,5 @@ DefaultStyle.widgets.list = {
 		
 		return me;
 	},
-
-  _updateLayoutSizes: func(model) {
-      model.setLayoutMinimumSize([me._itemHeight * 2, me._itemHeight]);
-      model.setLayoutMaximumSize([model._MAX_SIZE, me._itemHeight]);
-  }
 };
 
