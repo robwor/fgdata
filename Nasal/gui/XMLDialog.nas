@@ -283,6 +283,52 @@ var XMLCheckbox =
          # copy initial visiblity
         me._view.visible = me.visible;
 
+        me._view.listen("toggled", func(e) {
+            if (me.property) {
+                me.property.setValue(e.detail.checked);
+            }
+            me.activateBindings();
+        });
+
+        me._layout = me._view;
+        me._applyLayoutConfig(true);
+        me.update();
+
+        return me._view;
+    },
+
+    update: func()
+    {
+        me.valueChanged();
+    },
+
+    valueChanged: func()
+    {
+        if (me.view == nil) {
+            return;
+        }
+
+        me._view.setChecked(me.value);
+    },
+};
+
+
+var XMLRadioButton =
+{
+    show: func(viewParent)
+    {
+        me._view = cwidgets.RadioButton.new(viewParent, canvas.style, {"text": me._configValue("label")});
+
+         # copy initial visiblity
+        me._view.visible = me.visible;
+
+        me._view.listen("toggled", func(e) {
+            if (me.property) {
+                me.property.setValue(e.detail.checked);
+            }
+            me.activateBindings();
+        });
+
         me._layout = me._view;
         me._applyLayoutConfig(true);
         me.update();
@@ -377,9 +423,19 @@ var XMLGroup =
             me._applyLayoutConfig();
         }
 
+        var firstRadioButton = nil;
         foreach (var c; me.children) {
             # create view for each child
             c.show(me._view);
+            if (c.type == "radio") {
+                var radioButton = c.layoutItem(); 
+                if (!firstRadioButton) {
+                    firstRadioButton = radioButton;
+                } else {
+                    radioButton.radioGroup = firstRadioButton.getRadioButtonsGroup();
+                    firstRadioButton.getRadioButtonsGroup().addRadioButton(radioButton);
+                }
+            }
 
             if (layout != nil) {
                 var childItem = c.layoutItem();
@@ -694,6 +750,7 @@ var _createCompatObjectLookupHash = {
     "combo": XMLComboBox,
     "list": XMLList,
     "text": XMLLabel,
+    "radio": XMLRadioButton,
 };
 
 # this is the callback function invoked by C++ to build Nasal peers
