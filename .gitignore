@@ -1,5 +1,14 @@
+# Swap and temporary files
 *~
 *.swp
 *.bak
+
+# Ignore all hidden directories
 .*
+
+# Except for .gitignore and .gitlab
+!.gitignore
+!.gitlab/**
+
+# FlightGear-specific files
 Atlas/
