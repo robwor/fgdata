@@ -291,7 +291,7 @@ DefaultStyle.widgets["radio-button"] = {
   setText: func(model, text) {
     me._label.setText(text);
 
-    var min_width = text ? (me._label.maxWidth() + 3 + 24) : 0;
+    var min_width = 3 + 18 + 3 + (text ? me._label.maxWidth() : 0);
     model.setLayoutMinimumSize([min_width, 28]);
     model.setLayoutSizeHint([min_width, 28]);
 
