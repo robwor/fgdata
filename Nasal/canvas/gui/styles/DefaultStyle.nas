@@ -951,17 +951,17 @@ DefaultStyle.widgets.slider = {
   new: func(parent, cfg)
   {
     me._root = parent.createChild("group", "slider");
-    me._bg = me._root.createChild("bg", "image")
+    me._bg = me._root.createChild("image", "bg")
        .set("slice", "2 6");
 
-    me._fill = me._root.createChild("fill", "image")
+    me._fill = me._root.createChild("image", "fill")
        .set("slice", "2 6");
 
     me._ticks = me._root.createChild("path")
             .set("stroke-width", me._style.getSize("slider-ticks-width", 1));
 
     me._fillHeight = me._fill.imageSize()[1];
-    me._thumb = me._root.createChild("thumb", "image");
+    me._thumb = me._root.createChild("image", "thumb");
     me._thumbSize = me._thumb.imageSize();
 
     me._value = me._root.createChild("text")
