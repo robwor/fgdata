@@ -423,17 +423,17 @@ var XMLGroup =
             me._applyLayoutConfig();
         }
 
-        var firstRadioButton = nil;
+        var radioButtonsGroup = nil;
         foreach (var c; me.children) {
             # create view for each child
             c.show(me._view);
             if (c.type == "radio") {
                 var radioButton = c.layoutItem(); 
-                if (!firstRadioButton) {
-                    firstRadioButton = radioButton;
+                if (!radioButtonsGroup) {
+                    radioButtonsGroup = radioButton.getRadioButtonsGroup();
                 } else {
-                    radioButton.radioGroup = firstRadioButton.getRadioButtonsGroup();
-                    firstRadioButton.getRadioButtonsGroup().addRadioButton(radioButton);
+                    radioButton.radioGroup = radioButtonsGroup;
+                    radioButtonsGroup.addRadioButton(radioButton);
                 }
             }
 
