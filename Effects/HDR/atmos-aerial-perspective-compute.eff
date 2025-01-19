@@ -65,6 +65,7 @@
         <compute-shader>Shaders/HDR/atmos.glsl</compute-shader>
         <compute-shader>Shaders/HDR/atmos_spectral.glsl</compute-shader>
         <compute-shader>Shaders/HDR/aerial_perspective.glsl</compute-shader>
+        <compute-shader>Shaders/HDR/mvr_multipass.glsl</compute-shader>
       </program>
       <uniform>
         <name>transmittance_tex</name>

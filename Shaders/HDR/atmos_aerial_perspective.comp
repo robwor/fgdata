@@ -9,11 +9,14 @@
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 8) in;
 
+#pragma import_defines(FG_MVR_CELLS)
+
 uniform sampler2D transmittance_tex;
 uniform sampler2D ms_tex;
 layout(rgba16f) uniform image3D aerial_perspective_img;
 
-uniform mat4 fg_ViewMatrixInverse;
+FG_VIEW_GLOBAL
+uniform mat4 fg_ViewMatrixInverse[FG_NUM_VIEWS];
 uniform vec3 fg_CameraPositionCart;
 uniform vec3 fg_SunDirectionWorld;
 
@@ -33,15 +36,19 @@ vec4 compute_inscattering(in vec3 ray_origin,
 vec4 get_sun_outerspace_spectral_irradiance();
 vec3 linear_srgb_from_spectral_samples(vec4 L);
 // aerial_perspective.glsl
+uvec3 ap_get_voxel_view_offset();
 vec2 ap_get_uv_for_voxel(uvec2 voxel);
 float ap_slice_to_depth(float slice);
 float ap_apply_squared_distribution(float slice);
+// mvr_multipass.glsl
+vec2 mvr_raw_texcoord_transform_fb(vec2 raw_texcoord);
 
 void main()
 {
-    vec2 uv = ap_get_uv_for_voxel(gl_GlobalInvocationID.xy);
+    vec2 raw_uv = ap_get_uv_for_voxel(gl_GlobalInvocationID.xy);
+    vec2 uv = mvr_raw_texcoord_transform_fb(raw_uv);
     vec3 ray_dir_vs = normalize(get_view_space_from_depth(uv, 1.0));
-    vec3 ray_dir = vec4(fg_ViewMatrixInverse * vec4(ray_dir_vs, 0.0)).xyz;
+    vec3 ray_dir = vec4(fg_ViewMatrixInverse[FG_VIEW_ID] * vec4(ray_dir_vs, 0.0)).xyz;
 
     vec3 ray_origin = fg_CameraPositionCart;
 
@@ -80,7 +87,8 @@ void main()
         L * get_sun_outerspace_spectral_irradiance());
     float average_transmittance = dot(transmittance, vec4(0.25));
 
+    uvec3 buf_voxel = ap_get_voxel_view_offset() + gl_GlobalInvocationID;
     imageStore(aerial_perspective_img,
-               ivec3(gl_GlobalInvocationID.xyz),
+               ivec3(buf_voxel),
                vec4(L_rgb, average_transmittance));
 }

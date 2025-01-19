@@ -106,7 +106,7 @@
   </buffer>
   <buffer>
     <name>aerial-perspective</name>
-    <type>3d</type>
+    <type>3d-mvr</type>
     <width>64</width>
     <height>64</height>
     <depth>32</depth>
@@ -397,6 +397,7 @@
   <pass>
     <name>atmos-aerial-perspective-compute</name>
     <type>compute</type>
+    <multiview>multipass</multiview>
     <workgroup-size>
       <x>8</x>
       <y>8</y>

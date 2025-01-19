@@ -1,5 +1,10 @@
 $FG_GLSL_VERSION
 
+#pragma import_defines(FG_MVR_CELLS)
+
+// for FG_VIEW_ID
+FG_VIEW_GLOBAL
+
 uniform sampler3D aerial_perspective_tex;
 
 const vec2 ap_slice_size = vec2(64.0, 64.0);
@@ -8,6 +13,14 @@ const float ap_slice_count = 32.0;
 const float ap_inv_slice_count = 1.0 / ap_slice_count;
 const float ap_m_per_slice = 4000.0;
 const float ap_inv_m_per_slice = 1.0 / ap_m_per_slice;
+
+uvec3 ap_get_voxel_view_offset()
+{
+    uvec3 ret = uvec3(0);
+    if (FG_MVR_CELLS > 1)
+        ret.x += FG_VIEW_ID*64;
+    return ret;
+}
 
 vec2 ap_get_uv_for_voxel(uvec2 voxel)
 {
