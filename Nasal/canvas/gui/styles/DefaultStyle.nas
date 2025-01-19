@@ -1114,6 +1114,9 @@ DefaultStyle.widgets.slider = {
   },
 
   _drawTicks: func(model) {
+    if (model._ticksPosition == model.TicksPosition.None) {
+      return;
+    }
     me._ticks.reset();
     var range = model._maxValue - model._minValue;
     if (range <= 0 or model._tickStep <= 0) {

@@ -31,7 +31,7 @@ gui.widgets.Slider = {
     m._value = cfg.get("value", 50);
     m._stepSize = cfg.get("step-size", 1);
     m._pageSize = cfg.get("page-size", 10);
-    m._tickStep = cfg.get("tick-step", 10);
+    m._tickStep = cfg.get("tick-step", math.ceil((m._maxValue - m._minValue) / 20));
 
     m._ticksPosition = cfg.get("ticks-position", m.TicksPosition.None);
     m._valueDisplayStyle = cfg.get("value-style", m.ValueStyle.Moving);
@@ -45,6 +45,9 @@ gui.widgets.Slider = {
 
   setValue: func(val)
   {
+    if (!isnum(val)) {
+      return me;
+    }
     value = math.clamp(val, me._minValue, me._maxValue);
     if (me._view != nil) {
       me._view.setNormValue(me, me._normValue());
