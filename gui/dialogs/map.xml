@@ -34,8 +34,6 @@ command interface /autopilot/route-manager/input:
                 var n = props.Node.new({ "dialog-name": "map" });
                 if (updateDialog)
                 {
-                    fgcommand("dialog-close", n);
-                    fgcommand("dialog-show", n);
                 }
             }
             setTransparency(0);
