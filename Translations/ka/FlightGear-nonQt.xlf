@@ -86,10 +86,6 @@
         <source xml:space="preserve">Display Tutorial Marker</source>
         <target xml:space="preserve">სახელმძღვანელოს ნიშნის ჩვენება</target>
       </trans-unit>
-      <trans-unit id="menu/doc-browser:0" approved="yes">
-        <source xml:space="preserve">Documentation Browser</source>
-        <target xml:space="preserve">დოკუმენტაციაში ძებნა</target>
-      </trans-unit>
       <trans-unit id="menu/dump-scene-graph:0" approved="yes">
         <source xml:space="preserve">Dump Scene Graph</source>
         <target xml:space="preserve">სცენის გრაფიკის დამპი</target>

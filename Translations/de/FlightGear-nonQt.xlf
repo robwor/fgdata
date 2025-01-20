@@ -87,10 +87,6 @@
           <source>Display Tutorial Marker</source>
           <target>Tutorial-Markierung anzeigen</target>
         </trans-unit>
-        <trans-unit id="menu/doc-browser:0" translate="yes" approved="yes">
-          <source>Documentation Browser</source>
-          <target>Erweiterte Dokumentation</target>
-        </trans-unit>
         <trans-unit id="menu/dump-scene-graph:0" translate="yes" approved="yes">
           <source>Dump Scene Graph</source>
           <target>Scene Graph ausgeben</target>

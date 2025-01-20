@@ -87,10 +87,6 @@
           <source>Display Tutorial Marker</source>
           <target>Eğitici İşaretçiyi Görüntüle</target>
         </trans-unit>
-        <trans-unit id="menu/doc-browser:0" translate="yes" approved="yes">
-          <source>Documentation Browser</source>
-          <target>Belge Tarayıcı</target>
-        </trans-unit>
         <trans-unit id="menu/dump-scene-graph:0" translate="yes" approved="yes">
           <source>Dump Scene Graph</source>
           <target>Döküm Sahne Grafiği</target>

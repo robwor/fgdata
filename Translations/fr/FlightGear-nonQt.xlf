@@ -86,10 +86,6 @@
         <source xml:space="preserve">Display Tutorial Marker</source>
         <target xml:space="preserve">Afficher le marqueur de tutoriel</target>
       </trans-unit>
-      <trans-unit id="menu/doc-browser:0" approved="yes">
-        <source xml:space="preserve">Documentation Browser</source>
-        <target xml:space="preserve">Naviguer dans la documentation</target>
-      </trans-unit>
       <trans-unit id="menu/dump-scene-graph:0" approved="yes">
         <source xml:space="preserve">Dump Scene Graph</source>
         <target xml:space="preserve">Faire un cliché du graphe de scène</target>

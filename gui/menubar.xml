@@ -1010,14 +1010,6 @@
 		</item>
 
 		<item>
-			<name>doc-browser</name>
-			<binding>
-				<command>dialog-show</command>
-				<dialog-name>doc-browser</dialog-name>
-			</binding>
-		</item>
-
-		<item>
 			<key>?</key>
 			<name>aircraft-keys</name>
 			<binding>

@@ -87,10 +87,6 @@
           <source>Display Tutorial Marker</source>
           <target />
         </trans-unit>
-        <trans-unit id="menu/doc-browser:0" translate="yes" approved="no">
-          <source>Documentation Browser</source>
-          <target>Prehliadač dokumentácie</target>
-        </trans-unit>
         <trans-unit id="menu/dump-scene-graph:0" translate="yes" approved="no">
           <source>Dump Scene Graph</source>
           <target />
