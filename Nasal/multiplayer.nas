@@ -217,7 +217,7 @@ var PilotsListDialog = {
             lockPositionAndSize: 0,
         };
 
-        m.window = canvas.Window.new([500, 100], "dialog")
+        m.window = canvas.Window.new([550, 100], "dialog")
                         .setTitle("Multiplayer aircraft")
                         .set("resize", 1);
         m.window.onClose = func m.del();
@@ -336,7 +336,7 @@ var PilotsListDialog = {
         	"text": "Close",
         	"alignment": canvas.AlignRight,
         })
-                        .listen("toggled", func(e) {
+                        .listen("clicked", func(e) {
                             PilotsListDialog._instance.del();
                         });
         me.controlsLayout.addItem(me.closeButton);
