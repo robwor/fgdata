@@ -9,7 +9,7 @@
         </trans-unit>
         <trans-unit id="menu/adjust-lod:0" translate="yes" approved="yes">
           <source>Adjust LOD Ranges</source>
-          <target>Poziom szczegolow (LOD)</target>
+          <target>Poziom szczegółów (LOD)</target>
         </trans-unit>
         <trans-unit id="menu/ai:0" translate="yes" approved="yes">
           <source>AI</source>
@@ -21,7 +21,7 @@
         </trans-unit>
         <trans-unit id="menu/aircraft-center:0" translate="yes" approved="yes">
           <source>Aircraft Center (Experimental)</source>
-          <target>Centrum statkow powietrznych (Eksperymentalne)</target>
+          <target>Centrum statków powietrznych (Eksperymentalne)</target>
         </trans-unit>
         <trans-unit id="menu/aircraft-checklists:0" translate="yes" approved="yes">
           <source>Aircraft Checklists</source>
@@ -37,7 +37,7 @@
         </trans-unit>
         <trans-unit id="menu/atc-in-range:0" translate="yes" approved="yes">
           <source>ATC Services in Range</source>
-          <target>ATC w zasiegu</target>
+          <target>ATC w zasięgu</target>
         </trans-unit>
         <trans-unit id="menu/autopilot:0" translate="yes" approved="yes">
           <source>Autopilot</source>
@@ -73,7 +73,7 @@
         </trans-unit>
         <trans-unit id="menu/cycle-gui:0" translate="yes" approved="yes">
           <source>Cycle GUI Style</source>
-          <target>Przelacz styl interfejsu</target>
+          <target>Przełącz styl interfejsu</target>
         </trans-unit>
         <trans-unit id="menu/debug:0" translate="yes" approved="yes">
           <source>Debug</source>
@@ -85,11 +85,11 @@
         </trans-unit>
         <trans-unit id="menu/display-marker:0" translate="yes" approved="yes">
           <source>Display Tutorial Marker</source>
-          <target>Wyswietl wskaznik samouczka</target>
+          <target>Wyświetl wskaźnik samouczka</target>
         </trans-unit>
         <trans-unit id="menu/dump-scene-graph:0" translate="yes" approved="yes">
           <source>Dump Scene Graph</source>
-          <target>Zrzuc graf sceny</target>
+          <target>Zrzuć graf sceny</target>
         </trans-unit>
         <trans-unit id="menu/earthview:0" translate="yes" approved="yes">
           <source>Earthview Orbital Rendering</source>
@@ -97,23 +97,23 @@
         </trans-unit>
         <trans-unit id="menu/environment:0" translate="yes" approved="yes">
           <source>Environment</source>
-          <target>Srodowisko</target>
+          <target>Środowisko</target>
         </trans-unit>
         <trans-unit id="menu/environment-settings:0" translate="yes" approved="yes">
           <source>Environment Settings</source>
-          <target>Ustawienia srodowiska</target>
+          <target>Ustawienia środowiska</target>
         </trans-unit>
         <trans-unit id="menu/equipment:0" translate="yes" approved="yes">
           <source>Equipment</source>
-          <target>Wyposazenie</target>
+          <target>Wyposażenie</target>
         </trans-unit>
         <trans-unit id="menu/error-reports:0" translate="yes" approved="yes">
           <source>View Errors</source>
-          <target>Zobacz bledy</target>
+          <target>Zobacz błędy</target>
         </trans-unit>
         <trans-unit id="menu/exit:0" translate="yes" approved="yes">
           <source>Quit</source>
-          <target>Zakoncz</target>
+          <target>Zakończ</target>
         </trans-unit>
         <trans-unit id="menu/failure-submenu:0" translate="yes" approved="yes">
           <source>--- Failures ---</source>
@@ -141,7 +141,7 @@
         </trans-unit>
         <trans-unit id="menu/fuel-and-payload:0" translate="yes" approved="yes">
           <source>Fuel and Payload</source>
-          <target>Paliwo i ladunek</target>
+          <target>Paliwo i ładunek</target>
         </trans-unit>
         <trans-unit id="menu/global-weather:0" translate="yes" approved="yes">
           <source>Weather</source>
@@ -161,11 +161,11 @@
         </trans-unit>
         <trans-unit id="menu/help-browser:0" translate="yes" approved="yes">
           <source>Help (opens in browser)</source>
-          <target>Pomoc (w przegladarce)</target>
+          <target>Pomoc (w przeglądarce)</target>
         </trans-unit>
         <trans-unit id="menu/highlighting:0" translate="yes" approved="yes">
           <source>Highlighting</source>
-          <target>Podswietlanie</target>
+          <target>Podświetlanie</target>
         </trans-unit>
         <trans-unit id="menu/immatriculation:0" translate="yes" approved="yes">
           <source>Immatriculation</source>
@@ -173,19 +173,19 @@
         </trans-unit>
         <trans-unit id="menu/input-systems:0" translate="yes" approved="yes">
           <source>Input Devices</source>
-          <target>Urzadzenia wejsciowe</target>
+          <target>Urządzenia wejściowe</target>
         </trans-unit>
         <trans-unit id="menu/instrument-failures:0" translate="yes" approved="yes">
           <source>Instrument Failures</source>
-          <target>Awarie przyrzadow</target>
+          <target>Awarie przyrządów</target>
         </trans-unit>
         <trans-unit id="menu/instrument-settings:0" translate="yes" approved="yes">
           <source>Instrument Settings</source>
-          <target>Ustawienia przyrzadow</target>
+          <target>Ustawienia przyrządów</target>
         </trans-unit>
         <trans-unit id="menu/jetway:0" translate="yes" approved="yes">
           <source>Jetway Settings</source>
-          <target>Ustawienia rekawa</target>
+          <target>Ustawienia rękawa</target>
         </trans-unit>
         <trans-unit id="menu/joystick-config:0" translate="yes" approved="yes">
           <source>Joystick Configuration</source>
@@ -197,15 +197,15 @@
         </trans-unit>
         <trans-unit id="menu/lag-adjust:0" translate="yes" approved="yes">
           <source>Lag Settings</source>
-          <target>Ustawienia opoznien</target>
+          <target>Ustawienia opóźnień</target>
         </trans-unit>
         <trans-unit id="menu/light-switches:0" translate="yes" approved="yes">
           <source>Light Switches</source>
-          <target>Swiatla</target>
+          <target>Światła</target>
         </trans-unit>
         <trans-unit id="menu/load-tape:0" translate="yes" approved="yes">
           <source>Load Flight Recorder Tape</source>
-          <target>Wczytaj tasme rejestratora lotu</target>
+          <target>Wczytaj taśmę rejestratora lotu</target>
         </trans-unit>
         <trans-unit id="menu/local_weather:0" translate="yes" approved="yes">
           <source>Local Weather (Test)</source>
@@ -226,8 +226,8 @@
         </trans-unit>
         <trans-unit id="menu/map-browser:0" translate="yes" approved="yes">
           <source>Map (opens in browser)</source>
-          <target>Mapa (w przegladarce)</target>
-          <note from="translator">"w przegladarce" a nie "otwiera przegladarkę" bo w menu Pomoc też mamy "w przegladarce" - ujednolicenie no i jest krócej</note>
+          <target>Mapa (w przeglądarce)</target>
+          <note from="translator">"w przeglądarce" a nie "otwiera przeglądarkę" bo w menu Pomoc też mamy "w przegladarce" - ujednolicenie no i jest krócej</note>
         </trans-unit>
         <trans-unit id="menu/map-canvas:0" translate="yes" approved="yes">
           <source>Map (Canvas)</source>
@@ -243,7 +243,7 @@
         </trans-unit>
         <trans-unit id="menu/mp-carrier:0" translate="yes" approved="yes">
           <source>MPCarrier Selection</source>
-          <target>Wybor lotniskowca multiplayer</target>
+          <target>Wybór lotniskowca multiplayer</target>
         </trans-unit>
         <trans-unit id="menu/mp-chat:0" translate="yes" approved="yes">
           <source>Chat Dialog</source>
@@ -255,7 +255,7 @@
         </trans-unit>
         <trans-unit id="menu/mp-list:0" translate="yes" approved="yes">
           <source>Pilot List</source>
-          <target>Lista pilotow</target>
+          <target>Lista pilotów</target>
         </trans-unit>
         <trans-unit id="menu/mp-settings:0" translate="yes" approved="yes">
           <source>Multiplayer Settings</source>
@@ -275,15 +275,15 @@
         </trans-unit>
         <trans-unit id="menu/next-waypoint:0" translate="yes" approved="yes">
           <source>Next Waypoint</source>
-          <target>Nastepny punkt nawigacyjny</target>
+          <target>Następny punkt nawigacyjny</target>
         </trans-unit>
         <trans-unit id="menu/performance-monitor:0" translate="yes" approved="yes">
           <source>Monitor System Performance</source>
-          <target>Monitor wydajnosci systemu</target>
+          <target>Monitor wydajności systemu</target>
         </trans-unit>
         <trans-unit id="menu/pilot-offset:0" translate="yes" approved="yes">
           <source>Adjust View Position</source>
-          <target>Dostosuj pozycje widoku</target>
+          <target>Dostosuj pozycję widoku</target>
         </trans-unit>
         <trans-unit id="menu/position-in-air:0" translate="yes" approved="yes">
           <source>Position Aircraft In Air</source>
@@ -303,7 +303,7 @@
         </trans-unit>
         <trans-unit id="menu/property-browser:0" translate="yes" approved="yes">
           <source>Browse Internal Properties</source>
-          <target>Przegladaj wewnetrzne wlasciwosci</target>
+          <target>Przeglądaj wewnętrzne właściwości</target>
         </trans-unit>
         <trans-unit id="menu/pushback:0" translate="yes" approved="yes">
           <source>Pushback</source>
@@ -323,39 +323,39 @@
         </trans-unit>
         <trans-unit id="menu/reload-autopilot:0" translate="yes" approved="yes">
           <source>Reload Autopilot</source>
-          <target>Przeladuj autopilota</target>
+          <target>Przeładuj autopilota</target>
         </trans-unit>
         <trans-unit id="menu/reload-gui:0" translate="yes" approved="yes">
           <source>Reload GUI</source>
-          <target>Przeladuj interfejs uzytkownika</target>
+          <target>Przeładuj interfejs użytkownika</target>
         </trans-unit>
         <trans-unit id="menu/reload-hud:0" translate="yes" approved="yes">
           <source>Reload HUD</source>
-          <target>Przeladuj HUD</target>
+          <target>Przeładuj HUD</target>
         </trans-unit>
         <trans-unit id="menu/reload-input:0" translate="yes" approved="yes">
           <source>Reload Input</source>
-          <target>Przeladuj system wejscia</target>
+          <target>Przeładuj system wejścia</target>
         </trans-unit>
         <trans-unit id="menu/reload-materials:0" translate="yes" approved="yes">
           <source>Reload Materials</source>
-          <target>Przeladuj materialy</target>
+          <target>Przeładuj materiały</target>
         </trans-unit>
         <trans-unit id="menu/reload-model:0" translate="yes" approved="yes">
           <source>Reload Aircraft Model</source>
-          <target>Przeladuj model statku powietrznego</target>
+          <target>Przeładuj model statku powietrznego</target>
         </trans-unit>
         <trans-unit id="menu/reload-network:0" translate="yes" approved="yes">
           <source>Reload Network</source>
-          <target>Przeladuj siec</target>
+          <target>Przeładuj sieć</target>
         </trans-unit>
         <trans-unit id="menu/reload-panel:0" translate="yes" approved="yes">
           <source>Reload Panel</source>
-          <target>Przeladuj panel</target>
+          <target>Przeładuj panel</target>
         </trans-unit>
         <trans-unit id="menu/reload-scenery:0" translate="yes" approved="yes">
           <source>Reload Scenery</source>
-          <target>Przeladuj scenerie</target>
+          <target>Przeładuj scenerię</target>
         </trans-unit>
         <trans-unit id="menu/rembrandt-buffers-choice:0" translate="yes" approved="yes">
           <source>Select Rendering Buffers</source>
@@ -363,7 +363,7 @@
         </trans-unit>
         <trans-unit id="menu/rendering-buffers:0" translate="yes" approved="yes">
           <source>Hide/Show Rendering Buffers</source>
-          <target>Ukryj/Pokaz bufory renderowania</target>
+          <target>Ukryj/Pokaż bufory renderowania</target>
         </trans-unit>
         <trans-unit id="menu/rendering-options:0" translate="yes" approved="yes">
           <source>Rendering Options</source>
@@ -371,7 +371,7 @@
         </trans-unit>
         <trans-unit id="menu/replay:0" translate="yes" approved="yes">
           <source>Instant Replay</source>
-          <target>Powtorka</target>
+          <target>Powtórka</target>
         </trans-unit>
         <trans-unit id="menu/reset:0" translate="yes" approved="yes">
           <source>Reset</source>
@@ -383,7 +383,7 @@
         </trans-unit>
         <trans-unit id="menu/save-tape:0" translate="yes" approved="yes">
           <source>Save Flight Recorder Tape</source>
-          <target>Zapisz tasme rejestratora lotu</target>
+          <target>Zapisz taśmę rejestratora lotu</target>
         </trans-unit>
         <trans-unit id="menu/scenario:0" translate="yes" approved="yes">
           <source>Traffic and Scenario Settings</source>
@@ -391,7 +391,7 @@
         </trans-unit>
         <trans-unit id="menu/scenery-sources:0" translate="yes" approved="yes">
           <source>Scenery Sources</source>
-          <target>Zrodla scenerii</target>
+          <target>Źródła scenerii</target>
         </trans-unit>
         <trans-unit id="menu/select-livery:0" translate="yes" approved="yes">
           <source>Select Livery</source>
@@ -399,7 +399,7 @@
         </trans-unit>
         <trans-unit id="menu/show-hide-yokes:0" translate="yes" approved="yes">
           <source>Show/hide yokes</source>
-          <target>Pokaz/ukryj wolanty</target>
+          <target>Pokaż/ukryj wolanty</target>
         </trans-unit>
         <trans-unit id="menu/snap-shot:0" translate="yes" approved="yes">
           <source>Screenshot</source>
@@ -407,15 +407,15 @@
         </trans-unit>
         <trans-unit id="menu/snap-shot-dir:0" translate="yes" approved="yes">
           <source>Screenshot Directory</source>
-          <target>Folder zrzutow ekranu</target>
+          <target>Folder zrzutów ekranu</target>
         </trans-unit>
         <trans-unit id="menu/sound-config:0" translate="yes" approved="yes">
           <source>Sound Configuration</source>
-          <target>Ustawienia dzwieku</target>
+          <target>Ustawienia dźwięku</target>
         </trans-unit>
         <trans-unit id="menu/statistics-display:0" translate="yes" approved="yes">
           <source>Cycle On-Screen Statistics</source>
-          <target>Przelacz statystyki ekranowe</target>
+          <target>Przełącz statystyki ekranowe</target>
         </trans-unit>
         <trans-unit id="menu/stereoscopic-options:0" translate="yes" approved="yes">
           <source>Stereoscopic View Options</source>
@@ -427,15 +427,15 @@
         </trans-unit>
         <trans-unit id="menu/swift_connection:0" translate="yes" approved="yes">
           <source>Swift Connection</source>
-          <target>Polaczenie swift</target>
+          <target>Połączenie swift</target>
         </trans-unit>
         <trans-unit id="menu/system-failures:0" translate="yes" approved="yes">
           <source>System Failures</source>
-          <target>Awarie systemow</target>
+          <target>Awarie systemów</target>
         </trans-unit>
         <trans-unit id="menu/tanker:0" translate="yes" approved="yes">
           <source>Tanker Controls</source>
-          <target>Ustawienia latajacej cysterny</target>
+          <target>Ustawienia latającej cysterny</target>
         </trans-unit>
         <trans-unit id="menu/terrasync:0" translate="yes" approved="yes">
           <source>Scenery Download</source>
@@ -443,7 +443,7 @@
         </trans-unit>
         <trans-unit id="menu/tiller-steering:0" translate="yes" approved="yes">
           <source>Tiller Steering</source>
-          <target>Sterownica kola przedniego</target>
+          <target>Sterownica koła przedniego</target>
         </trans-unit>
         <trans-unit id="menu/time-mode:0" translate="yes" approved="yes">
           <source>Time Mode</source>
@@ -455,15 +455,15 @@
         </trans-unit>
         <trans-unit id="menu/toggle-fullscreen:0" translate="yes" approved="yes">
           <source>Toggle Fullscreen</source>
-          <target>Przelacz pelny ekran</target>
+          <target>Przełącz pełny ekran</target>
         </trans-unit>
         <trans-unit id="menu/toggle-glide-slope:0" translate="yes" approved="yes">
           <source>Toggle Glide Slope Tunnel</source>
-          <target>Wl/Wyl znaczniki sciezki podejscia</target>
+          <target>Wł/Wył znaczniki ścieżki podejścia</target>
         </trans-unit>
         <trans-unit id="menu/tower-position:0" translate="yes" approved="yes">
           <source>Tower Position</source>
-          <target>Lokalizacja wiezy</target>
+          <target>Lokalizacja wieży</target>
         </trans-unit>
         <trans-unit id="menu/tutorial-start:0" translate="yes" approved="yes">
           <source>Tutorials</source>
@@ -479,15 +479,15 @@
         </trans-unit>
         <trans-unit id="menu/view-clone:0" translate="yes" approved="yes">
           <source>Add Clone View</source>
-          <target>Okno z biezacym widokiem</target>
+          <target>Okno z bieżącym widokiem</target>
         </trans-unit>
         <trans-unit id="menu/view-last-pair:0" translate="yes" approved="yes">
           <source>Add Pair View</source>
-          <target>Okno sparowanych widokow</target>
+          <target>Okno sparowanych widoków</target>
         </trans-unit>
         <trans-unit id="menu/view-last-pair-double:0" translate="yes" approved="yes">
           <source>Add Pair Foreground View</source>
-          <target>Okno sparowanych widokow z pierwszym planem</target>
+          <target>Okno sparowanych widoków z pierwszym planem</target>
         </trans-unit>
         <trans-unit id="menu/view-options:0" translate="yes" approved="yes">
           <source>View Options</source>
@@ -495,7 +495,7 @@
         </trans-unit>
         <trans-unit id="menu/view-push:0" translate="yes" approved="yes">
           <source>Push Pair View</source>
-          <target>Dodaj biezacy widok do sparowania</target>
+          <target>Dodaj bieżący widok do sparowania</target>
         </trans-unit>
         <trans-unit id="menu/volcanoes:0" translate="yes" approved="yes">
           <source>Volcanoes</source>
@@ -515,27 +515,27 @@
         </trans-unit>
         <trans-unit id="menu/walker-equipment:0" translate="yes" approved="yes">
           <source>Select Equipment</source>
-          <target>Wyposazenie</target>
+          <target>Wyposażenie</target>
         </trans-unit>
         <trans-unit id="menu/walker-theme:0" translate="yes" approved="yes">
           <source>Select Theme</source>
-          <target>Wyglad</target>
+          <target>Wygląd</target>
         </trans-unit>
         <trans-unit id="menu/walker-toggle-outside:0" translate="yes" approved="yes">
           <source>Toggle Walker out/in</source>
-          <target>Wsiadz/wysiadz</target>
+          <target>Wsiądź/wysiądź</target>
         </trans-unit>
         <trans-unit id="menu/wildfire-settings:0" translate="yes" approved="yes">
           <source>Wildfire Settings</source>
-          <target>Ustawienia pozarow</target>
+          <target>Ustawienia pożarów</target>
         </trans-unit>
         <trans-unit id="menu/wingman:0" translate="yes" approved="yes">
           <source>Wingman Controls</source>
-          <target>Ustawienia skrzydlowego</target>
+          <target>Ustawienia skrzydłowego</target>
         </trans-unit>
         <trans-unit id="menu/write-video-config:0" translate="yes" approved="yes">
           <source>Save Video Configuration</source>
-          <target>Zapisz konfiguracje wideo</target>
+          <target>Zapisz konfigurację wideo</target>
         </trans-unit>
       </group>
       <group restype="x-trolltech-linguist-context" resname="options">
@@ -621,11 +621,11 @@
         </trans-unit>
         <trans-unit id="options/atcsim-desc:0" translate="yes" approved="yes">
           <source>Open connection using the ATC sim protocol (atc610x)</source>
-          <target>Owtórz połączenie używając protokołu ATC (atc610x).</target>
+          <target>Otwórz połączenie używając protokołu ATC (atc610x).</target>
         </trans-unit>
         <trans-unit id="options/atlas-desc:0" translate="yes" approved="yes">
           <source>Open connection using the Atlas protocol</source>
-          <target>Owtórz połączenie używając protokołu Atlas.</target>
+          <target>Otwórz połączenie używając protokołu Atlas.</target>
         </trans-unit>
         <trans-unit id="options/audio-options:0" translate="yes" approved="yes">
           <source>Audio Options</source>
@@ -713,7 +713,7 @@
         </trans-unit>
         <trans-unit id="options/dme-desc:0" translate="yes" approved="yes">
           <source>Slave the DME to one of the NAV radios, or set its internal frequency.</source>
-          <target>Powiąż DME z jednym z radiali NAV, lub ustaw jego wewnętrzną czestotliwość.</target>
+          <target>Powiąż DME z jednym z radiali NAV, lub ustaw jego wewnętrzną częstotliwość.</target>
         </trans-unit>
         <trans-unit id="options/download-dir-desc:0" translate="yes" approved="yes">
           <source>Base directory to use for aircraft and scenery downloads (the TerraSync scenery directory may be specifically set with --terrasync-dir)</source>
@@ -745,7 +745,7 @@
         </trans-unit>
         <trans-unit id="options/fg-aircraft-desc:0" translate="yes" approved="yes">
           <source>Specify additional aircraft directory path(s) (alternatively, you can use --aircraft-dir to target a specific aircraft in a given directory)</source>
-          <target>Określ dodatkowe ścieżki katalogów ze statkami powietrznymi (alternatywnie, możesz uzyć --aircraft-dir aby wskazać określony katalog danego statku powietrznego).</target>
+          <target>Określ dodatkowe ścieżki katalogów ze statkami powietrznymi (alternatywnie, możesz użyć --aircraft-dir aby wskazać określony katalog danego statku powietrznego).</target>
         </trans-unit>
         <trans-unit id="options/fg-root-desc:0" translate="yes" approved="yes">
           <source>Specify the root data path</source>
@@ -753,7 +753,7 @@
         </trans-unit>
         <trans-unit id="options/fg-scenery-desc:0" translate="yes" approved="yes">
           <source>Specify the scenery path(s);</source>
-          <target>Określ ściezkę(i) do scenerii.</target>
+          <target>Określ ścieżkę(i) do scenerii.</target>
         </trans-unit>
         <trans-unit id="options/fg-scenery-desc:1" translate="yes" approved="yes">
           <source>Defaults to $FG_ROOT/Scenery</source>
@@ -801,7 +801,7 @@
         </trans-unit>
         <trans-unit id="options/freeze-desc:0" translate="yes" approved="yes">
           <source>Enable/Disable start in a frozen state</source>
-          <target>Włącz/wyłącz rozpoczęcie w stanie zapauzowanym.</target>
+          <target>Włącz/wyłącz rozpoczęcie w stanie pauzy.</target>
         </trans-unit>
         <trans-unit id="options/fuel-freeze-desc:0" translate="yes" approved="yes">
           <source>Enable/Disable fuel consumption freeze</source>
@@ -885,7 +885,7 @@
         </trans-unit>
         <trans-unit id="options/igc-desc:0" translate="yes" approved="yes">
           <source>Open connection using the International Gliding Commission protocol</source>
-          <target>Owtórz połączenie używając protokołu Międzynarodowej Komisji Szybowcowej (International Gliding Commission).</target>
+          <target>Otwórz połączenie używając protokołu Międzynarodowej Komisji Szybowcowej (International Gliding Commission).</target>
         </trans-unit>
         <trans-unit id="options/ignore-autosave-desc:0" translate="yes" approved="yes">
           <source>Enable/Disable ignoring the autosave file, i.e. the settings saved in this file will not be loaded during startup, nor will the settings be saved to this file when closing the simulator</source>
@@ -989,7 +989,7 @@
         </trans-unit>
         <trans-unit id="options/materials-file-desc:0" translate="yes" approved="yes">
           <source>Specify the materials file used to render the scenery (default: Materials/regions/materials.xml)</source>
-          <target>Określ plik materiałów uźywanych do wyświetlania scenerii (domyślnie: Materials/regions/materials.xml).</target>
+          <target>Określ plik materiałów używanych do wyświetlania scenerii (domyślnie: Materials/regions/materials.xml).</target>
         </trans-unit>
         <trans-unit id="options/max-fps-desc:0" translate="yes" approved="yes">
           <source>Maximum frame rate in Hz.</source>
@@ -997,7 +997,7 @@
         </trans-unit>
         <trans-unit id="options/metar-desc:0" translate="yes" approved="yes">
           <source>Pass a METAR string to set up static weather (this implies --disable-real-weather-fetch)</source>
-          <target>Określ włąsną depeszę METAR, z której zostanie ustawiona statyczna pogoda (powoduje włączenie opcji --disable-real-weather-fetch).</target>
+          <target>Określ własną depeszę METAR, z której zostanie ustawiona statyczna pogoda (powoduje włączenie opcji --disable-real-weather-fetch).</target>
         </trans-unit>
         <trans-unit id="options/min-aircraft-status:0" translate="yes" approved="yes">
           <source>Allows you to define a minimum status level (=development status) for all listed aircraft</source>
@@ -1017,7 +1017,7 @@
         </trans-unit>
         <trans-unit id="options/multiplay-desc:0" translate="yes" approved="yes">
           <source>Specify multipilot communication settings;</source>
-          <target>Określ ustawienia połączenia w tybie wieloosobowym;</target>
+          <target>Określ ustawienia połączenia w trybie wieloosobowym;</target>
         </trans-unit>
         <trans-unit id="options/multiplayer-options:0" translate="yes" approved="yes">
           <source>MultiPlayer Options</source>
@@ -1233,7 +1233,7 @@
         </trans-unit>
         <trans-unit id="options/specular-highlight-desc:0" translate="yes" approved="yes">
           <source>Enable/Disable specular reflections on textured objects</source>
-          <target>Włącz/wyłącz odbicia lustrzane na oteksturowanych obiektach.</target>
+          <target>Włącz/wyłącz odbicia lustrzane na teksturowanych obiektach.</target>
         </trans-unit>
         <trans-unit id="options/speed-desc:0" translate="yes" approved="yes">
           <source>Run the FDM 'n' times faster than real time</source>
@@ -1245,7 +1245,7 @@
         </trans-unit>
         <trans-unit id="options/start-date-desc:0" translate="yes" approved="yes">
           <source>Specify a starting date/time with respect to</source>
-          <target>Określ datę/czas startu ze wzgędu na</target>
+          <target>Określ datę/czas startu ze względu na</target>
         </trans-unit>
         <trans-unit id="options/state-desc:0" translate="yes" approved="yes">
           <source>Specify the initial state of the aircraft to the given value</source>
@@ -1361,7 +1361,7 @@
         </trans-unit>
         <trans-unit id="options/vNorth-desc:0" translate="yes" approved="yes">
           <source>Specify velocity along a South-North axis</source>
-          <target>Określ prędkośc wzdłuż osi południe-północ.</target>
+          <target>Określ prędkość wzdłuż osi południe-północ.</target>
         </trans-unit>
         <trans-unit id="options/vc-desc:0" translate="yes" approved="yes">
           <source>Specify initial airspeed</source>
@@ -1439,47 +1439,47 @@
         </trans-unit>
         <trans-unit id="sys/error-3D-model-load:0" translate="yes" approved="yes">
           <source>Error loading 3D model</source>
-          <target>Blad wczytywania modelu 3D</target>
+          <target>Błąd wczytywania modelu 3D</target>
         </trans-unit>
         <trans-unit id="sys/error-aircraft-systems:0" translate="yes" approved="yes">
           <source>Errors occured loading aircraft systems (fuel, electrical, hydrualics)</source>
-          <target>Wystapily bledy podczas wczytywania systemow statku powietrznego (paliwo, elektryka, hydraulika)</target>
+          <target>Wystąpiły błędy podczas wczytywania systemów statku powietrznego (paliwo, elektryka, hydraulika)</target>
         </trans-unit>
         <trans-unit id="sys/error-audio-fx-load:0" translate="yes" approved="yes">
           <source>Audio FX description contains errors</source>
-          <target>Opis efektow dzwiekowych zawiera bledy</target>
+          <target>Opis efektów dźwiękowych zawiera błędy</target>
         </trans-unit>
         <trans-unit id="sys/error-btg-load:0" translate="yes" approved="yes">
           <source>Errors loading terrain (BTG)</source>
-          <target>Bledy wczytywania terenu (BTG)</target>
+          <target>Błędy wczytywania terenu (BTG)</target>
         </trans-unit>
         <trans-unit id="sys/error-category-addon:0" translate="yes" approved="yes">
           <source>The add-on '%VALUE%' contains errors. Please report this to the add-on developers.</source>
-          <target>Dodatek "%VALUE%" zawiera bledy. Prosimy o zgloszenie tego programistom dodatku.</target>
+          <target>Dodatek "%VALUE%" zawiera błędy. Prosimy o zgłoszenie tego programistom dodatku.</target>
         </trans-unit>
         <trans-unit id="sys/error-category-aircraft:0" translate="yes" approved="yes">
           <source>This aircraft (%VALUE%) contains errors. This may include visual issues, or the aircraft might not fly at all. Check for an updated version of the aircraft from its developers.</source>
-          <target>Ten statek powietrzny (%VALUE%) zawiera bledy. Moze to dotyczyc problemow wizualnych lub statek powietrzny moze w ogole nie latac. Sprawdz zaktualizowana wersje statku powietrznego od jego tworcow.</target>
+          <target>Ten statek powietrzny (%VALUE%) zawiera błędy. Może to dotyczyć problemów wizualnych lub statek powietrzny może w ogóle nie latać. Sprawdź zaktualizowaną wersję statku powietrznego od jego tworców.</target>
         </trans-unit>
         <trans-unit id="sys/error-category-aircraft-from-hangar:0" translate="yes" approved="yes">
           <source>The selected aircraft (%VALUE%) contains errors. This may cause visual issues, or the aircraft might not fly at all. Please report the information below to the aircraft hangar's maintainers.</source>
-          <target>Wybrany statek powietrzny (%VALUE%) zawiera bledy. Moze to powodowac problemy wizualne lub statek powietrzny moze w ogole nie latac. Prosimy o zgloszenie ponizszych informacji do opiekunow statku powietrznego w hangarze.</target>
+          <target>Wybrany statek powietrzny (%VALUE%) zawiera błędy. Może to powodować problemy wizualne lub statek powietrzny może w ogóle nie latać. Prosimy o zgłoszenie poniższych informacji do opiekunów statku powietrznego w hangarze.</target>
         </trans-unit>
         <trans-unit id="sys/error-category-custom-scenery:0" translate="yes" approved="yes">
           <source>The custom scenery at '%VALUE%' contains errors. Parts may be missing, or the scenery may not load at all. Check for an updated version of the scenery.</source>
-          <target>Niestandardowa sceneria w "%VALUE%" zawiera bledy. Moze to spowodowac, ze sceneria sie nie wczyta, czesciowo lub w calosci. Sprawdz czy nie ma aktualizacji tej scenerii.</target>
+          <target>Niestandardowa sceneria w "%VALUE%" zawiera błędy. Może to spowodować, że sceneria się nie wczyta, częściowo lub w całości. Sprawdź czy nie ma aktualizacji tej scenerii.</target>
         </trans-unit>
         <trans-unit id="sys/error-category-fgdata:0" translate="yes" approved="yes">
           <source>Errors were found loading the core simulator files (FGData). This usually indicates a problem with the installation, or your local disk.</source>
-          <target>Znaleziono bledy podczas wczytywania podstawowych plikow symulatora (FGData). Zwykle oznacza to problem z instalacja lub dyskiem lokalnym.</target>
+          <target>Znaleziono błędy podczas wczytywania podstawowych plików symulatora (FGData). Zwykle oznacza to problem z instalacją lub dyskiem lokalnym.</target>
         </trans-unit>
         <trans-unit id="sys/error-category-input-device:0" translate="yes" approved="yes">
           <source>The joystick (input device) '%VALUE%' couldn't be loaded correctly. This usually means its configuration file is incorrect.</source>
-          <target>Nie mozna poprawnie wczytac joysticka (urzadzenia wejsciowego) "%VALUE%". Zwykle oznacza to, ze jego plik konfiguracyjny jest niepoprawny.</target>
+          <target>Nie można poprawnie wczytać joysticka (urządzenia wejściowego) "%VALUE%". Zwykle oznacza to, że jego plik konfiguracyjny jest niepoprawny.</target>
         </trans-unit>
         <trans-unit id="sys/error-category-multiplayer:0" translate="yes" approved="yes">
           <source>Loading a model for another pilot (via multi-player) failed. The other pilot will appear as a default model. (You can disable these errors from the multiplayer settings dialog)</source>
-          <target>Wczytywanie modelu innego pilota (w trybie wieloosobowym) nie powiodlo sie. Drugi pilot pojawi sie jako model domyslny (mozesz wylaczyc te bledy w oknie ustawien multiplayer).</target>
+          <target>Wczytywanie modelu innego pilota (w trybie wieloosobowym) nie powiodlo sie. Drugi pilot pojawi się jako model domyslny (mozesz wylaczyc te błędy w oknie ustawien multiplayer).</target>
         </trans-unit>
         <trans-unit id="sys/error-category-out-of-memory:0" translate="yes" approved="yes">
           <source>Allocating memory failed. Some resources will not be loaded. Adjust your settings to reduce view distance or number of objects loaded.</source>
@@ -1487,35 +1487,35 @@
         </trans-unit>
         <trans-unit id="sys/error-category-scenario:0" translate="yes" approved="yes">
           <source>The scenario '%VALUE%' contains errors, and may not work correctly.</source>
-          <target>Scenariusz "%VALUE%" zawiera bledy i moze nie dzialac poprawnie.</target>
+          <target>Scenariusz "%VALUE%" zawiera błędy i może nie dzialac poprawnie.</target>
         </trans-unit>
         <trans-unit id="sys/error-category-shaders:0" translate="yes" approved="yes">
           <source>Problems occurred loading visual effects (shaders). This can cause objects to be invisible or appear incorrect. It can sometimes be fixed by changing rendering settings inside FlightGear, or occasionally, by updating the drivers for your graphics card.</source>
-          <target>Wystapily problemy z wczytaniem efektow wizualnych (shaderow). Moze to spowodowac, ze obiekty beda niewidoczne lub beda wygladac nieprawidlowo. Czasami pomaga zmiana ustawien renderowania we FlightGear lub aktualizacja sterownikow karty graficznej.</target>
+          <target>Wystąpiły problemy z wczytaniem efektów wizualnych (shaderow). Może to spowodować, że obiekty będą niewidoczne lub będą wyglądać nieprawidłowo. Czasami pomaga zmiana ustawień renderowania we FlightGear lub aktualizacja sterowników karty graficznej.</target>
         </trans-unit>
         <trans-unit id="sys/error-category-terrasync:0" translate="yes" approved="yes">
           <source>Scenery downloaded via TerraSync is not loading correctly. The usually indicates a problem with your network connection or local disk.</source>
-          <target>Sceneria pobrana przez TerraSync nie wczytuje sie poprawnie. Zwykle oznacza to problem z polaczeniem sieciowym lub dyskiem lokalnym.</target>
+          <target>Sceneria pobrana przez TerraSync nie wczytuje się poprawnie. Zwykle oznacza to problem z połączeniem sieciowym lub dyskiem lokalnym.</target>
         </trans-unit>
         <trans-unit id="sys/error-category-traffic:0" translate="yes" approved="yes">
           <source>Problems occured loading simulated aircaft traffic: some traffic may not appear.</source>
-          <target>Wystapily problemy podczas wczytywania sztucznego ruchu lotniczego: czesc samolotow moze sie nie pojawiac.</target>
+          <target>Wystąpiły problemy podczas wczytywania sztucznego ruchu lotniczego: część samolotów może się nie pojawiać.</target>
         </trans-unit>
         <trans-unit id="sys/error-category-unknown:0" translate="yes" approved="yes">
           <source>Errors occurred in an unknown part of FlightGear. Please report this bug to the FlightGear development team.</source>
-          <target>Wystapily bledy w nieznanej czesci FlightGear. Prosze zglosic ten blad do zespolu programistow FlightGeara.</target>
+          <target>Wystąpiły błędy w nieznanej części FlightGear. Proszę zgłosić ten błąd do zespołu programistów FlightGeara.</target>
         </trans-unit>
         <trans-unit id="sys/error-dialog-load:0" translate="yes" approved="yes">
           <source>Errors loading user-interface</source>
-          <target>Bledy podczas wczytywania interfejsu uzytkownika</target>
+          <target>Błędy podczas wczytywania interfejsu uźytkownika</target>
         </trans-unit>
         <trans-unit id="sys/error-input-device-config:0" translate="yes" approved="yes">
           <source>Errors loading input device configuration</source>
-          <target>Bledy podczas wczytywania konfiguracji urzadzenia wejsciowego</target>
+          <target>Błędy podczas wczytywania konfiguracji urządzenia wejściowego</target>
         </trans-unit>
         <trans-unit id="sys/error-loading-texture:0" translate="yes" approved="yes">
           <source>Texture failed to load</source>
-          <target>Nie udalo sie wczytac tekstury</target>
+          <target>Nie udało się wczytać tekstury</target>
         </trans-unit>
         <trans-unit id="sys/error-missing-shader:0" translate="yes" approved="yes">
           <source>Shader / Effect problems</source>
@@ -1523,35 +1523,35 @@
         </trans-unit>
         <trans-unit id="sys/error-next-steps:0" translate="yes" approved="yes">
           <source>This dialog is work-in-progress. The information included above may not be fully correct, so please check the detailed information below and give feedback if something seems wrong. Please include all the information below, as well as the message above.</source>
-          <target>To okno dialogowe jest w trakcie projektowania. Informacje zawarte powyzej moga nie byc w pełni poprawne, wiec sprawdz szczegolowe informacje ponizej i przekaz opinie, jesli cos wydaje sie nie tak. Podaj wszystkie informacje ponizej, a takze powyzszą wiadomosc.</target>
+          <target>To okno dialogowe jest w trakcie projektowania. Informacje zawarte powyżej mogą nie być w pełni poprawne, więc sprawdź szczegółowe informacje poniżej i przekaż opinie, jeśli coś wydaje się nie tak. Podaj wszystkie informacje poniżej, a także powyższą wiadomość.</target>
         </trans-unit>
         <trans-unit id="sys/error-scenery-load:0" translate="yes" approved="yes">
           <source>Errors loading scenery</source>
-          <target>Bledy podczas wczytywania scenerii</target>
+          <target>Błędy podczas wczytywania scenerii</target>
         </trans-unit>
         <trans-unit id="sys/error-terraysnc:0" translate="yes" approved="yes">
           <source>Errors downloading scenery from TerraSync</source>
-          <target>Bledy podczas pobierania scenerii z TerraSync</target>
+          <target>Błędy podczas pobierania scenerii z TerraSync</target>
         </trans-unit>
         <trans-unit id="sys/error-type-bad-data:0" translate="yes" approved="yes">
           <source>File or resource is invalid or corrupted</source>
-          <target>Plik lub zasob jest nieprawidlowy lub uszkodzony</target>
+          <target>Plik lub zasób jest nieprawidłowy lub uszkodzony</target>
         </trans-unit>
         <trans-unit id="sys/error-type-bad-header:0" translate="yes" approved="yes">
           <source>File or resource header is incorrect</source>
-          <target>Naglowek pliku lub zasobu jest nieprawidlowy</target>
+          <target>Nagłówek pliku lub zasobu jest nieprawidłowy</target>
         </trans-unit>
         <trans-unit id="sys/error-type-io:0" translate="yes" approved="yes">
           <source>Unable to read/write files correctly (check permissions and disk space)</source>
-          <target>Nie mozna poprawnie odczytac/zapisac plikow (sprawdz uprawnienia i miejsce na dysku)</target>
+          <target>Nie można poprawnie odczytać/zapisać plików (sprawdź uprawnienia i miejsce na dysku)</target>
         </trans-unit>
         <trans-unit id="sys/error-type-misconfigured:0" translate="yes" approved="yes">
           <source>The resource contains a configuration problem</source>
-          <target>Zasob zawiera problem z konfiguracja</target>
+          <target>Zasób zawiera problem z konfiguracją</target>
         </trans-unit>
         <trans-unit id="sys/error-type-network:0" translate="yes" approved="yes">
           <source>Network connection failure</source>
-          <target>Awaria polaczenia sieciowego</target>
+          <target>Awaria połączenia sieciowego</target>
         </trans-unit>
         <trans-unit id="sys/error-type-not-found:0" translate="yes" approved="yes">
           <source>The file or resource was not found</source>
@@ -1559,19 +1559,19 @@
         </trans-unit>
         <trans-unit id="sys/error-type-out-of-memory:0" translate="yes" approved="yes">
           <source>Unable to allocate sufficient memory</source>
-          <target>Nie mozna przydzielic wystarczajacej ilosci pamieci</target>
+          <target>Nie można przydzielić wystarczającej ilości pamięci</target>
         </trans-unit>
         <trans-unit id="sys/error-type-unknown:0" translate="yes" approved="yes">
           <source>Unknown error</source>
-          <target>Nieznany blad</target>
+          <target>Nieznany błąd</target>
         </trans-unit>
         <trans-unit id="sys/error-xml-load-command:0" translate="yes" approved="yes">
           <source>Scripted loading of XML failed</source>
-          <target>Oskryptowane wczytywanie XML nie powiodlo się</target>
+          <target>Oskryptowane wczytywanie XML-a nie powiodlo się</target>
         </trans-unit>
         <trans-unit id="sys/error-xml-model-load:0" translate="yes" approved="yes">
           <source>Errors loading model XML</source>
-          <target>Bledy podczas ladowania modelu XML</target>
+          <target>Błędy podczas wczytywania modelu XML</target>
         </trans-unit>
         <trans-unit id="sys/finalize-position:0" translate="yes" approved="yes">
           <source>finalizing position</source>
@@ -1603,7 +1603,7 @@
         </trans-unit>
         <trans-unit id="sys/loading-aircraft:0" translate="yes" approved="yes">
           <source>loading aircraft</source>
-          <target>wczytywanie stateku powietrznego</target>
+          <target>wczytywanie statku powietrznego</target>
         </trans-unit>
         <trans-unit id="sys/loading-aircraft-list:0" translate="yes" approved="yes">
           <source>loading aircraft list</source>
@@ -1631,7 +1631,7 @@
         </trans-unit>
         <trans-unit id="sys/navdata-navaids:0" translate="yes" approved="yes">
           <source>loading navigation aid data</source>
-          <target>wczytywanie danych pomocy nawigacyjnej</target>
+          <target>wczytywanie danych pomocy nawigacyjnych</target>
         </trans-unit>
         <trans-unit id="sys/navdata-pois:0" translate="yes" approved="yes">
           <source>loading points of interest</source>
@@ -1647,11 +1647,11 @@
         </trans-unit>
         <trans-unit id="sys/settings-migration-text:0" translate="yes" approved="yes">
           <source>Saved settings were migrated from a previous version of FlightGear. If you encounter any problems when using the system, try restoring the default settings, before reporting a problem. Saved settings can affect the appearance, performance and features of the simulator.</source>
-          <target>Ustawienia zostaną przemigrowane z poprzedniej wersji FlightGear. Jeśli napotkasz na jakiekolwiek problemy używając aplikacji, spróbuj przywrócić domyślne ustawienia przed zaraportowaniem problemu. Zapisane ustawienia mogą mieć wpływ na wygląd, wydajność i funkcje symulatora.</target>
+          <target>Ustawienia zostaną przeniesione z poprzedniej wersji FlightGeara. Jeśli napotkasz na jakiekolwiek problemy, spróbuj przywrócić domyślne ustawienia sprzed zaraportowania problemu. Zapisane ustawienia mogą mieć wpływ na wygląd, wydajność i funkcje symulatora.</target>
         </trans-unit>
         <trans-unit id="sys/settings-migration-title:0" translate="yes" approved="yes">
           <source>Settings migrated</source>
-          <target>Ustawienia przemigrowane</target>
+          <target>Ustawienia przeniesione</target>
         </trans-unit>
         <trans-unit id="sys/units-kbytes:0" translate="yes" approved="yes">
           <source>KB</source>
@@ -1733,7 +1733,7 @@
         </trans-unit>
         <trans-unit id="tips/tip:14" translate="yes" approved="yes">
           <source>Select Multiplayer → Multiplayer Settings to join the shared flight environment</source>
-          <target>Wybierz Multiplayer → Ustawienia multiplayer aby dołączyć do środowiska wspólnych lotów</target>
+          <target>Wybierz Multiplayer → Ustawienia multiplayer aby dołączyć do wspólnych lotów</target>
         </trans-unit>
         <trans-unit id="tips/tip:15" translate="yes" approved="yes">
           <source>Can't get the engine started? - see Help → Aircraft Checklists</source>
@@ -1745,7 +1745,7 @@
         </trans-unit>
         <trans-unit id="tips/tip:17" translate="yes" approved="yes">
           <source>Press / to explore the internals of the simulator</source>
-          <target>Naciśnij przycisk / aby przeglądać wewnętrzne ustawienia symulatora</target>
+          <target>Naciśnij / aby przeglądać wewnętrzne ustawienia symulatora</target>
         </trans-unit>
         <trans-unit id="tips/tip:18" translate="yes" approved="yes">
           <source>Press Tab to move the viewpoint with your mouse and use the scroll wheel to zoom</source>
@@ -1795,19 +1795,19 @@
         </trans-unit>
         <trans-unit id="weather-scenarios/core-high-pressure-region-desc:0" translate="yes" approved="yes">
           <source>The center of a high pressure region, characterized by descending air and hence only weak cloud development with high visibility.</source>
-          <target>Centrum regionu wysokiego ciśnienia, charakteryzującego się opadającym powietrzem, a zatem słabym rozwojem chmur oraz daleką widocznością.</target>
+          <target>Centralny obszar wysokiego ciśnienia, cechujący się opadającym powietrzem, a zatem słabym rozwojem chmur oraz daleką widocznością.</target>
         </trans-unit>
         <trans-unit id="weather-scenarios/core-high-pressure-region-name:0" translate="yes" approved="yes">
           <source>Core high pressure region</source>
-          <target>Rdzeń regionu wysokiego ciśnienia</target>
+          <target>Centralny obszar wysokiego ciśnienia</target>
         </trans-unit>
         <trans-unit id="weather-scenarios/core-low-pressure-region-desc:0" translate="yes" approved="yes">
           <source>The core of a low pressure region, characterized by overcast clouds, bad visibility on the ground and significant rainfall.</source>
-          <target>Rdzeń regionu niskiego ciśnienia, charakteryzującego się całkowitym zachmurzeniem, słabą widocznością na ziemi i znacznymi opadami deszczu.</target>
+          <target>Centralny obszar niskiego ciśnienia, cechujący się całkowitym zachmurzeniem, słabą widocznością na ziemi i znacznymi opadami deszczu.</target>
         </trans-unit>
         <trans-unit id="weather-scenarios/core-low-pressure-region-name:0" translate="yes" approved="yes">
           <source>Core low pressure region</source>
-          <target>Rdzeń regionu niskiego ciśnienia</target>
+          <target>Centralny obszar niskiego ciśnienia</target>
         </trans-unit>
         <trans-unit id="weather-scenarios/early-morning-fog-desc:0" translate="yes" approved="yes">
           <source>Fog developed this autumn's morning. Expect good visibility above the layer. However - getting through it can be a challenge. Stay alive for a 500' climb and you'll see the sun!</source>
@@ -1827,11 +1827,11 @@
         </trans-unit>
         <trans-unit id="weather-scenarios/high-pressure-region-desc:0" translate="yes" approved="yes">
           <source>A high pressure region, characterized by moderate to strong Cumulus development in the afternoon and fairly good visibility conditions.</source>
-          <target>Region wysokiego ciśnienia, charakteryzujący się umiarkowanym tworzeniem chmur typu cumulus, aż do silnego ich rozwoju po południu, oraz dość dobrą widocznością.</target>
+          <target>Obszar wysokiego ciśnienia, cechujący się rozwojem chmur typu cumulus, od umiarkowanego po silny po południu oraz dość dobrą widzialnością</target>
         </trans-unit>
         <trans-unit id="weather-scenarios/high-pressure-region-name:0" translate="yes" approved="yes">
           <source>High pressure region</source>
-          <target>Region wysokiego ciśnienia</target>
+          <target>Obszar wysokiego ciśnienia</target>
         </trans-unit>
         <trans-unit id="weather-scenarios/isa-desc:0" translate="yes" approved="yes">
           <source>A standard atmosphere model for testing and calibrating aircraft performance and design.</source>
@@ -1851,11 +1851,11 @@
         </trans-unit>
         <trans-unit id="weather-scenarios/low-pressure-region-desc:0" translate="yes" approved="yes">
           <source>A low pressure region, characterized by rising air, widespread formation of stratiform clouds and beginning rain.</source>
-          <target>Region niskiego ciśnienia, charakteryzujący się podnoszącym się powietrzem, powszechnym tworzeniem się chmur warstwowych (stratus) i początkowym deszczem.</target>
+          <target>Obszar niskiego ciśnienia, cechujący się podnoszącym się powietrzem, powszechnym tworzeniem się chmur warstwowych (stratus) i początkowym deszczem.</target>
         </trans-unit>
         <trans-unit id="weather-scenarios/low-pressure-region-name:0" translate="yes" approved="yes">
           <source>Low pressure region</source>
-          <target>Region niskiego ciśnienia</target>
+          <target>Obszar niskiego ciśnienia</target>
         </trans-unit>
         <trans-unit id="weather-scenarios/manual-input-desc:0" translate="yes" approved="yes">
           <source>Enter your favorite METAR weather. A valid METAR syntax is required.</source>
@@ -1891,7 +1891,7 @@
         </trans-unit>
         <trans-unit id="weather-scenarios/warm-sector-desc:0" translate="yes" approved="yes">
           <source>A warm sector, characterized by high moisture in the air and haze extending up to high altitudes, but otherwise largely convective cloud development.</source>
-          <target>Ciepły sektor, charakteryzujący się wysoką wilgotnością powietrza i zamgleniem sięgającym dużych wysokości, poza tym w dużej mierze konwekcyjnym rozwojem chmur.</target>
+          <target>Ciepły sektor, cechujący się wysoką wilgotnością powietrza i zamgleniem sięgającym dużych wysokości, przy czym rozwój chmur jest głównie konwekcyjny.</target>
         </trans-unit>
         <trans-unit id="weather-scenarios/warm-sector-name:0" translate="yes" approved="yes">
           <source>Warm sector</source>

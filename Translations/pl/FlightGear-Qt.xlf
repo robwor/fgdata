@@ -175,7 +175,7 @@
 &lt;li&gt;&lt;a %3&gt;key commands reference&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a %4&gt;our wiki&lt;/a&gt; (which includes FAQs)&lt;/li&gt;
 &lt;/ul&gt;&lt;/p&gt;</source>
-        <target xml:space="preserve">&lt;p&gt;FlightGear jest oprogramowaniem o otwartym kodzie źrodłowym, rozwijanym całkowicie przez wolontariuszy. Wsparcie jest dostarczane przez nasze wspaniałe środowisko użytkowników. Najlepszym miejscem aby zadać pytanie i otrzymać wsparcie jest &lt;a %1&gt;nasze forum&lt;/a&gt;.&lt;/p&gt;
+        <target xml:space="preserve">&lt;p&gt;FlightGear jest oprogramowaniem o otwartym kodzie źródłowym, rozwijanym całkowicie przez wolontariuszy. Wsparcie jest dostarczane przez nasze wspaniałe środowisko użytkowników. Najlepszym miejscem aby zadać pytanie i otrzymać wsparcie jest &lt;a %1&gt;nasze forum&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Jeśli rozpoczynasz przygodę z symulatorem, proszę skorzystaj z naszych samouczków: są dostępne z menu &apos;Pomoc&apos; w symulatorze. Zalecamy rozpocząć loty z samolotem Cessna 172, aby nauczyć się jak wzbić się w powietrze.&lt;/p&gt;
 &lt;p&gt;Inne pomocne źródła:&lt;ul&gt;&lt;li&gt;&lt;a %2&gt;oficjalna instrukcja użytkownika&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a %3&gt;lista skrótów klawiszowych&lt;/a&gt;&lt;/li&gt;
@@ -2323,14 +2323,14 @@ Lokalna ścieżka: %2</target>
       </trans-unit>
       <trans-unit id="_msg421" approved="yes">
         <source xml:space="preserve">Another copy of FlightGear is creating the navigation database. Waiting for it to finish.</source>
-        <target xml:space="preserve">Inna kopia FlightGear tworzy właśnie bazę nawigacyjną. Czekam na jej zakończenie.</target>
+        <target xml:space="preserve">Inna kopia FlightGeara tworzy właśnie bazę nawigacyjną. Czekam na jej zakończenie.</target>
         <context-group purpose="location"><context context-type="linenumber">114</context></context-group>
       </trans-unit>
     </group>
     <group restype="x-trolltech-linguist-context" resname="LockFileDialog">
       <trans-unit id="_msg422" approved="yes">
         <source xml:space="preserve">Multiple copies of FlightGear running</source>
-        <target xml:space="preserve">Wiele kopii FlightGear jest uruchomione</target>
+        <target xml:space="preserve">Jest uruchomionych wiele kopii FlightGeara</target>
         <context-group purpose="location"><context context-type="linenumber">735</context></context-group>
       </trans-unit>
       <trans-unit id="_msg423" approved="yes">
