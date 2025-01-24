@@ -11,6 +11,7 @@ in VS_OUT {
 } fs_in;
 
 uniform sampler2D color_tex;
+uniform sampler2D normal_map;
 
 uniform float cseason;
 
@@ -70,11 +71,13 @@ void main()
 
     vec3 color = eotf_inverse_sRGB(texel.rgb);
 
-    vec3 ray_dir = normalize(fs_in.vs_pos);
+    vec3 nmap = texture(normal_map, fs_in.texcoord).xyz;
+    if (!gl_FrontFacing) {
+        // Backfacing quads are not bump-mapped correctly and need adjustment
+        nmap = normalize(vec3(1.0 - nmap.x, 1.0 - nmap.y, nmap.z));
+    }
 
-    vec4 intersect = ray_cylinder_intersect(
-        vec3(0.0), ray_dir, fs_in.vs_tree_pos, fs_in.vs_up, fs_in.scale);
-    vec3 N = intersect.yzw;
+    vec3 N = normalize(nmap + normalize(-fs_in.vs_tree_pos));
 
     gbuffer_pack_pbr_dither(N, color, 0.0, 1.0, 1.0, vec3(0.0), texel.a);
     gl_FragDepth = logdepth_encode(fs_in.flogz);

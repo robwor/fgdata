@@ -389,7 +389,7 @@
     <ysize>2000</ysize>
     <solid>1</solid>
     <tree-texture>Trees/mixed-alt.png</tree-texture>
-    <tree-varieties>8</tree-varieties>
+    <tree-varieties>4</tree-varieties>
     <tree-height-m>2.0</tree-height-m>
     <tree-width-m>2.0</tree-width-m>
     <light-coverage>40000000.0</light-coverage>

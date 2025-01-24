@@ -144,10 +144,13 @@ tree-texture : A texture to use for the trees. Typically this will contain aroun
          * winter texture
          * winter snow texture
 
-         Each tree must have space at the top. For a 512x512 texture sheet, this
-         should be 8 pixels.  Otherwise subsequent rendering results in "top hats"
-         above trees in the distance where the trunk of the tree above in the
-         textures sheet bleeds downwards when the mipmaps are generated.
+                Each tree must have space at the top. For a 512x512 texture sheet, this
+                should be 8 pixels.  Otherwise subsequent rendering results in "top hats"
+                above trees in the distance where the trunk of the tree above in the
+                textures sheet bleeds downwards when the mipmaps are generated.
+
+tree-normal-map : A texture to use for a normal map. As above.  Defaults to tree-texture with 
+                  ".png" replaced with "-normal.png"
 
 tree-varieties : The number of different trees defined in the tree-texture
          horizontally. (default: 1)

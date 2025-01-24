@@ -5,7 +5,10 @@
 
   <parameters>
     <texture n="0">
-      <!-- texture[0]/image written by TreeBin.cxx -->
+      <!-- texture[0]/image written by TreeBin.cxx - base colour -->
+    </texture>
+    <texture n="1">
+      <!-- texture[1]/image written by TreeBin.cxx - normal map -->
     </texture>
     <num_deciduous_trees>0</num_deciduous_trees>
     <use_forest_effect>true</use_forest_effect>
@@ -37,6 +40,14 @@
         <wrap-s>clamp-to-edge</wrap-s>
         <wrap-t>clamp-to-edge</wrap-t>
       </texture-unit>
+      <texture-unit>
+        <unit>1</unit>
+        <type>2d</type>
+        <image><use>texture[1]/image</use></image>
+        <filter>linear-mipmap-linear</filter>
+        <wrap-s>clamp-to-edge</wrap-s>
+        <wrap-t>clamp-to-edge</wrap-t>
+      </texture-unit>
       <blend>0</blend>
       <rendering-hint>opaque</rendering-hint>
       <cull-face>off</cull-face>
@@ -59,6 +70,11 @@
         <name>color_tex</name>
         <type>sampler-2d</type>
         <value type="int">0</value>
+      </uniform>
+      <uniform>
+        <name>normal_map</name>
+        <type>sampler-2d</type>
+        <value type="int">1</value>
       </uniform>
       <uniform>
         <name>snow_level</name>
