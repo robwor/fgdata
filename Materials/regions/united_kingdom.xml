@@ -71,7 +71,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>25.0</tree-height-m>
-    <tree-width-m>15.0</tree-width-m>
     <rolling-friction>1</rolling-friction>
     <bumpiness>0.85</bumpiness>
   </material>
@@ -139,7 +138,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
-    <tree-width-m>10.0</tree-width-m>
   </material>
 
   <material>
@@ -180,7 +178,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
-    <tree-width-m>10.0</tree-width-m>
   </material>
 
   <material>
@@ -214,7 +211,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
-    <tree-width-m>10.0</tree-width-m>
   </material>
 
   <material>
@@ -259,7 +255,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
-    <tree-width-m>10.0</tree-width-m>
   </material>
 
   <material>
@@ -281,7 +276,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
-    <tree-width-m>10.0</tree-width-m>
   </material>
 
 
@@ -317,7 +311,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
-    <tree-width-m>10.0</tree-width-m>
   </material>
 
   <material>
@@ -348,7 +341,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
-    <tree-width-m>10.0</tree-width-m>
   </material>
 
   <material>

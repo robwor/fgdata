@@ -73,7 +73,6 @@
   <tree-texture>Trees/deciduous.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>25.0</tree-height-m>
-  <tree-width-m>15.0</tree-width-m>
   <rolling-friction>1</rolling-friction>
   <bumpiness>0.85</bumpiness>
 </material>
@@ -97,7 +96,6 @@
   <tree-texture>Trees/mixed.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>25.0</tree-height-m>
-  <tree-width-m>15.0</tree-width-m>
   <rolling-friction>1</rolling-friction>
   <bumpiness>0.95</bumpiness>
 </material>
@@ -231,7 +229,6 @@
   <tree-texture>Trees/mixed.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>25.0</tree-height-m>
-  <tree-width-m>15.0</tree-width-m>
 </material>
 
 <material>
@@ -285,7 +282,6 @@
   <tree-texture>Trees/mixed.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>25.0</tree-height-m>
-  <tree-width-m>15.0</tree-width-m>
 </material>
 
 <material include="Materials/base/water.xml">
@@ -471,7 +467,6 @@
   <tree-texture>Trees/mixed.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>20.0</tree-height-m>
-  <tree-width-m>12.0</tree-width-m>
 </material>
 
 <material>
@@ -501,7 +496,6 @@
   <tree-texture>Trees/mixed.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>20.0</tree-height-m>
-  <tree-width-m>12.0</tree-width-m>
 </material>
 
 <material>
@@ -529,7 +523,6 @@
   <tree-texture>Trees/mixed.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>20.0</tree-height-m>
-  <tree-width-m>12.0</tree-width-m>
 </material>
 
 <material>
@@ -549,7 +542,6 @@
   <tree-texture>Trees/mixed.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>20.0</tree-height-m>
-  <tree-width-m>12.0</tree-width-m>
 </material>
 
 <material>
@@ -572,7 +564,6 @@
   <tree-texture>Trees/mixed.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>20.0</tree-height-m>
-  <tree-width-m>12.0</tree-width-m>
 </material>
 
 <material>
@@ -594,7 +585,6 @@
   <tree-texture>Trees/mixed.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>20.0</tree-height-m>
-  <tree-width-m>12.0</tree-width-m>
 </material>
 
 <material>
@@ -619,7 +609,6 @@
   <tree-texture>Trees/mixed.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>20.0</tree-height-m>
-  <tree-width-m>12.0</tree-width-m>
 </material>
 
 </PropertyList>

@@ -391,7 +391,6 @@
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>2.0</tree-height-m>
-    <tree-width-m>2.0</tree-width-m>
     <light-coverage>40000000.0</light-coverage>
     <friction-factor>0.8</friction-factor>
     <rolling-friction>0.3</rolling-friction>

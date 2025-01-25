@@ -353,7 +353,6 @@
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>20.0</tree-height-m>
-    <tree-width-m>12.0</tree-width-m>
   </material>
   
   <material>

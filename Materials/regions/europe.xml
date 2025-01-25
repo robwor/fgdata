@@ -110,7 +110,6 @@
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>20.0</tree-height-m>
-    <tree-width-m>12.0</tree-width-m>
   </material>
 
    <material>
@@ -173,7 +172,6 @@
   <tree-texture>Trees/deciduous-alt.png</tree-texture>
   <tree-varieties>4</tree-varieties>
   <tree-height-m>20.0</tree-height-m>
-  <tree-width-m>12.0</tree-width-m>
 </material>
 
   <material>
@@ -213,7 +211,6 @@
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>20.0</tree-height-m>
-    <tree-width-m>12.0</tree-width-m>
   </material>
 
   <material>
@@ -250,7 +247,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
-    <tree-width-m>10.0</tree-width-m>
     <parameters>
       <edge-hardness>0.8</edge-hardness>
     </parameters>
@@ -301,7 +297,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
-    <tree-width-m>10.0</tree-width-m>
   </material>
 
   <material>
@@ -335,7 +330,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
-    <tree-width-m>10.0</tree-width-m>
     <parameters>
       <edge-hardness>0.9</edge-hardness>
     </parameters>
@@ -418,7 +412,6 @@
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>20.0</tree-height-m>
-    <tree-width-m>12.0</tree-width-m>
     <parameters>
       <edge-hardness>0.1</edge-hardness>
     </parameters>
@@ -447,7 +440,6 @@
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>20.0</tree-height-m>
-    <tree-width-m>12.0</tree-width-m>
     <parameters>
       <edge-hardness>0.1</edge-hardness>
     </parameters>
@@ -477,7 +469,6 @@
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>20.0</tree-height-m>
-    <tree-width-m>12.0</tree-width-m>
   </material>
 
     <material>
@@ -506,7 +497,6 @@
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>25.0</tree-height-m>
-    <tree-width-m>15.0</tree-width-m>
     <rolling-friction>1</rolling-friction>
     <bumpiness>0.85</bumpiness>
   </material>
@@ -542,7 +532,6 @@
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>25.0</tree-height-m>
-    <tree-width-m>15.0</tree-width-m>
     <rolling-friction>1</rolling-friction>
     <bumpiness>0.95</bumpiness>
   </material>  
@@ -575,7 +564,7 @@
     <light-coverage>10000000.0</light-coverage>
     <wood-coverage>4000.0</wood-coverage>
     <tree-texture>Trees/coniferous-alt.png</tree-texture>
-    <tree-varieties>4</tree-varieties>
+    <tree-varieties>8</tree-varieties>
     <tree-height-m>25.0</tree-height-m>
     <tree-width-m>18.0</tree-width-m>
     <rolling-friction>1</rolling-friction>
@@ -624,7 +613,6 @@
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>20.0</tree-height-m>
-    <tree-width-m>12.0</tree-width-m>
   </material>   
 
 </PropertyList>

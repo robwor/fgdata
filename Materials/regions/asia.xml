@@ -50,7 +50,6 @@
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>20.0</tree-height-m>
-    <tree-width-m>12.0</tree-width-m>
   </material>
   
   <material>
@@ -82,7 +81,6 @@
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
     <tree-height-m>20.0</tree-height-m>
-    <tree-width-m>12.0</tree-width-m>
   </material>
 
   <material>
@@ -118,8 +116,7 @@
     <wood-coverage>50000.0</wood-coverage>
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
-    <tree-height-m>20.0</tree-height-m>
-    <tree-width-m>12.0</tree-width-m>    
+    <tree-height-m>20.0</tree-height-m>    
 
   </material>  
 
@@ -188,8 +185,7 @@
     <wood-coverage>10000.0</wood-coverage>
     <tree-texture>Trees/mixed-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
-    <tree-height-m>20.0</tree-height-m>
-    <tree-width-m>12.0</tree-width-m>    
+    <tree-height-m>20.0</tree-height-m>    
   </material>  
 
 </PropertyList>

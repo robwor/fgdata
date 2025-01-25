@@ -159,7 +159,8 @@ tree-height-m : The average height of the trees. Actual tree height will
          vary by +/- 50%. (default: 0)
 
 tree-width-m : The average width of the tree cover. Actual tree width will
-         vary by +/- 50%. (default 0)
+         vary by +/- 50%. The default is <tree-height> * 4 / <tree-varieties> i.e. 
+         the tree will render the texture proportionally in x and y.
 
 tree-max-density-angle-deg : The slope angle at which trees begin to thin out
          as the slope is too steep to support the full coverage. Shallower
