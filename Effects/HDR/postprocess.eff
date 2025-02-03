@@ -4,8 +4,6 @@
   <parameters>
     <bloom-strength><use>/sim/rendering/hdr/bloom/strength</use></bloom-strength>
     <debug-ev100><use>/sim/rendering/hdr/debug/display-ev100</use></debug-ev100>
-    <!-- bloom_upsample.glsl -->
-    <filter-radius><use>/sim/rendering/hdr/bloom/filter-radius</use></filter-radius>
     <!-- redout.glsl -->
     <alpha><use>/sim/rendering/redout/alpha</use></alpha>
     <red><use>/sim/rendering/redout/red</use></red>
@@ -23,7 +21,7 @@
         <fragment-shader>Shaders/HDR/noise.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/aces.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/noise.glsl</fragment-shader>
-        <fragment-shader>Shaders/HDR/bloom_upsample.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/bloom.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/redout.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/night_vision.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/highlights.glsl</fragment-shader>
@@ -32,6 +30,11 @@
         <name>hdr_tex</name>
         <type>sampler-2d</type>
         <value type="int">0</value>
+      </uniform>
+      <uniform>
+        <name>bloom_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">1</value>
       </uniform>
       <uniform>
         <name>highlight_tex</name>
@@ -47,17 +50,6 @@
         <name>debug_ev100</name>
         <type>bool</type>
         <value><use>debug-ev100</use></value>
-      </uniform>
-      <!-- bloom_upsample.glsl -->
-      <uniform>
-        <name>prev_bloom_tex</name>
-        <type>sampler-2d</type>
-        <value type="int">1</value>
-      </uniform>
-      <uniform>
-        <name>filter_radius</name>
-        <type>float</type>
-        <value><use>filter-radius</use></value>
       </uniform>
       <!-- redout.glsl -->
       <uniform>

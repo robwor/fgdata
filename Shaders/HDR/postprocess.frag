@@ -5,6 +5,7 @@ layout(location = 0) out vec4 fragColor;
 in vec2 texcoord;
 
 uniform sampler2D hdr_tex;
+uniform sampler2D bloom_tex;
 
 uniform vec2 fg_BufferSize;
 
@@ -17,8 +18,8 @@ float interleaved_gradient_noise(vec2 uv);
 vec3 eotf_sRGB(vec3 linear_srgb);
 // aces.glsl
 vec3 aces_fitted(vec3 color);
-// bloom_upsample.glsl
-vec3 bloom_upsample(vec2 uv);
+// bloom.glsl
+vec3 bloom_apply(vec3 color, vec2 uv, sampler2D tex, float strength);
 // redout.glsl
 vec2 redout_distort(vec2 uv);
 vec3 redout_apply(vec3 color, vec2 uv);
@@ -64,8 +65,7 @@ void main()
 
     vec3 hdr_color = texture(hdr_tex, uv).rgb;
     // Apply bloom
-    vec3 bloom = bloom_upsample(uv);
-    hdr_color = mix(hdr_color, bloom, bloom_strength);
+    hdr_color = bloom_apply(hdr_color, uv, bloom_tex, bloom_strength);
     // Tonemap
     vec3 color = aces_fitted(hdr_color);
     // Apply night vision filter
