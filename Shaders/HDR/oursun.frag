@@ -13,7 +13,7 @@ uniform vec3 fg_SunDirection;
 float sqr(float x);
 float saturate(float x);
 // atmos_spectral.glsl
-vec4 get_sun_outerspace_spectral_radiance();
+vec4 get_sun_outerspace_spectral_irradiance();
 // celestial_body.glsl
 vec3 celestial_body_eval_color_spectral(vec4 radiance, vec3 V);
 
@@ -41,7 +41,7 @@ void main()
     }
 
     vec3 V = normalize(-fs_in.view_vector);
-    vec4 sun_radiance = get_sun_outerspace_spectral_radiance();
+    vec4 sun_radiance = get_sun_outerspace_spectral_irradiance() * 500.0;
 
     // Darkening factor
     sun_radiance *= get_sun_darkening_factor(center_to_edge);
