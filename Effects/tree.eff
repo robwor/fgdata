@@ -72,7 +72,7 @@
         <value type="int">0</value>
       </uniform>
       <uniform>
-        <name>normal_map</name>
+        <name>normal_tex</name>
         <type>sampler-2d</type>
         <value type="int">1</value>
       </uniform>
