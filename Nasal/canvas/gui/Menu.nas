@@ -69,6 +69,9 @@ gui.MenuItem = {
         },
 
         onClicked: func(e) {
+                if (!me._enabled) {
+                        return;
+                }
                 if (!me._menu and me._cb) {
                         call(me._cb, [e], me._cb_me, var errors = []);
                         if (size(errors)) {
