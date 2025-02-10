@@ -15,49 +15,49 @@
            <node>/position/altitude-agl-ft</node>
            <name>altitude</name>
            <type>floatingpoint</type>
-           <format>%03.2f</format>
+           <format>altitude=%f</format>
          </chunk>
  
         <chunk>
            <node>/orientation/heading-deg</node>
            <name>heading</name>
            <type>floatingpoint</type>
-           <format>%03.3f</format>
+           <format>heading=%f</format>
          </chunk>
 
         <chunk>
            <node>/orientation/pitch-deg</node>
            <name>pitch</name>
            <type>floatingpoint</type>
-           <format>%03.2f</format>
+           <format>pitch=%f</format>
          </chunk>
 
         <chunk>
            <node>/orientation/roll-deg</node>
            <name>roll</name>
            <type>floatingpoint</type>
-           <format>%03.2f</format>
+           <format>roll=%f</format>
          </chunk>
 
         <chunk>
            <node>/velocities/vertical-speed-fps</node>
            <name>vertical-speed</name>
            <type>floatingpoint</type>
-           <format>%03.2f</format>
+           <format>vertical-speed=%f</format>
          </chunk>
 
         <chunk>
            <node>/velocities/airspeed-kt</node>
            <name>airspeed</name>
            <type>floatingpoint</type>
-           <format>%03.2f</format>
+           <format>airspeed=%f</format>
          </chunk>
 
         <chunk>
            <node>/engines/engine[0]/rpm</node>
            <name>engine-rpm</name>
            <type>floatingpoint</type>
-           <format>%03.2f</format>
+           <format>engine-rpm=%f</format>
          </chunk>
  
     </output>
