@@ -80,6 +80,15 @@ light-edge-intensity-cd : Intensity of edge lighting in candela. Default 100.
 light-edge-angle-horizontal-deg : Horizontal extent of light. Default 360.
 light-edge-angle-vertical-deg : Vertical extent of light. Default 360.
 light-edge-color/r ... : Light colour, with r,g,b,a properties.  Default 1.0, resulting in white light
+light-edge-offset      : Whether edge lights should be offset (true) or in pairs (false)
+light-edge-left        : Whether there are edge lights on the left side of the road based on direction
+                         of travel.  Typically used to generate lights only on the off-side of motorways. Default true.
+light-edge-right        : Whether there are edge lights on the right side of the road based on direction
+                         of travel.  Typically used to  generate lights only on the off-side of motorwayds. Default true.
+
+light-model : Path to a gltf model that will be instanced to use for the street lamps.  
+              Origin should be at the light source, with the light oriented so X-axis is towards the edge
+              of the road.
 
 line-feature-tex-x0   : x0 texture coordinate for WS3.0 line features
 line-feature-tex-x1   : x1 texture coordinate for WS3.0 line features
