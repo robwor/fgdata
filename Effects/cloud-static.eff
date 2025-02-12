@@ -160,7 +160,10 @@ This means that they are normal 3D models loaded from disk.
         <vertex-shader>Shaders/HDR/atmos_spectral.glsl</vertex-shader>
         <fragment-shader>Shaders/HDR/3dcloud_envmap.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/3dcloud_common.frag</fragment-shader>
+        <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/atmos.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/aerial_perspective_envmap.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/atmos_spectral.glsl</fragment-shader>
       </program>
       <uniform>
         <name>base_tex</name>
