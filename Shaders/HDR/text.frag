@@ -12,7 +12,8 @@ in VS_OUT {
 
 uniform sampler2D glyph_tex;
 
-uniform mat4 osg_ViewMatrixInverse;
+FG_VIEW_GLOBAL
+uniform mat4 fg_ViewMatrixInverse[FG_NUM_VIEWS];
 
 // XXX: We should be able to modify these through material animations
 const vec3  TEXT_BASE_COLOR = vec3(1.0);
@@ -48,7 +49,7 @@ void main()
                                          TEXT_EMISSION,
                                          fs_in.view_vector, N, V,
                                          fs_in.ap_color,
-                                         osg_ViewMatrixInverse);
+                                         fg_ViewMatrixInverse[FG_VIEW_ID]);
 
     fragColor = vec4(color, alpha);
     gl_FragDepth = logdepth_encode(fs_in.flogz);

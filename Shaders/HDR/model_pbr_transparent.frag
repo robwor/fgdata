@@ -21,7 +21,8 @@ uniform float roughness_factor;
 uniform vec3 emissive_factor;
 uniform float alpha_cutoff;
 
-uniform mat4 osg_ViewMatrixInverse;
+FG_VIEW_GLOBAL
+uniform mat4 fg_ViewMatrixInverse[FG_NUM_VIEWS];
 
 // color.glsl
 vec3 eotf_inverse_sRGB(vec3 srgb);
@@ -67,7 +68,7 @@ void main()
                                          emissive,
                                          fs_in.view_vector, N, V,
                                          fs_in.ap_color,
-                                         osg_ViewMatrixInverse);
+                                         fg_ViewMatrixInverse[FG_VIEW_ID]);
 
     fragColor = vec4(color, base_color.a);
     gl_FragDepth = logdepth_encode(fs_in.flogz);
