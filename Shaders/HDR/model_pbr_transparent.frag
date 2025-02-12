@@ -22,8 +22,6 @@ uniform vec3 emissive_factor;
 uniform float alpha_cutoff;
 
 uniform mat4 osg_ViewMatrixInverse;
-uniform mat4 osg_ProjectionMatrix;
-uniform vec4 fg_Viewport;
 
 // color.glsl
 vec3 eotf_inverse_sRGB(vec3 srgb);

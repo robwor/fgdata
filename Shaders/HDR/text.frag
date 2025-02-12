@@ -13,7 +13,6 @@ in VS_OUT {
 uniform sampler2D glyph_tex;
 
 uniform mat4 osg_ViewMatrixInverse;
-uniform vec4 fg_Viewport;
 
 // XXX: We should be able to modify these through material animations
 const vec3  TEXT_BASE_COLOR = vec3(1.0);
@@ -41,7 +40,6 @@ void main()
 
     vec3 N = normalize(fs_in.vertex_normal);
     vec3 V = normalize(-fs_in.view_vector);
-    vec2 uv = (gl_FragCoord.xy - fg_Viewport.xy) / fg_Viewport.zw;
 
     vec3 color = eval_lights_transparent(TEXT_BASE_COLOR,
                                          TEXT_METALLIC,

@@ -17,7 +17,6 @@ uniform float pbr_metallic;
 uniform float pbr_roughness;
 
 uniform mat4 osg_ViewMatrixInverse;
-uniform vec4 fg_Viewport;
 
 // color.glsl
 vec3 eotf_inverse_sRGB(vec3 srgb);
