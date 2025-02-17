@@ -2,7 +2,19 @@
 
 <PropertyList>
 
+  <default-translation>
+    <atc>Translations/default/atc.no_translate.xml</atc>
+    <menu>Translations/default/menu.xml</menu>
+    <options>Translations/default/options.xml</options>
+    <sys>Translations/default/sys.xml</sys>
+    <tips>Translations/default/tips.xml</tips>
+    <weather-scenarios>Translations/default/weather-scenarios.xml</weather-scenarios>
+  </default-translation>
+
   <locale n="0">
+    <!-- The id is used for finding which formula applies to a given
+         locale for the sake of choosing between plural forms. -->
+    <language-id type="string">en</language-id>
     <lang type="string">en</lang>
     <lang type="string">en_AU</lang>
     <lang type="string">en_CA</lang>
@@ -10,114 +22,128 @@
     <lang type="string">en_US</lang>
     <lang type="string">POSIX</lang>
     <lang type="string">C</lang>
-    <lang type="string">default</lang>
 
     <core>
-      <strings>
-        <atc>Translations/default/atc.no_translate.xml</atc>
-        <menu>Translations/default/menu.xml</menu>
-        <options>Translations/default/options.xml</options>
-        <sys>Translations/default/sys.xml</sys>
-        <tips>Translations/default/tips.xml</tips>
-        <weather-scenarios>Translations/default/weather-scenarios.xml</weather-scenarios>
-      </strings>
+      <xliff type="string">Translations/en_US/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
   <locale>
+    <language-id type="string">es</language-id>
     <lang type="string">es</lang>
     <lang type="string">es_AR</lang>
     <lang type="string">es_MX</lang>
     <lang type="string">es_ES</lang>
+
     <core>
       <xliff type="string">Translations/es/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
   <locale>
+    <language-id type="string">de</language-id>
     <lang type="string">de</lang>
     <lang type="string">de_AT</lang>
     <lang type="string">de_CH</lang>
     <lang type="string">de_DE</lang>
+
     <core>
       <xliff type="string">Translations/de/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
   <locale>
+    <language-id type="string">fr</language-id>
     <lang type="string">fr</lang>
     <lang type="string">fr_BE</lang>
     <lang type="string">fr_CA</lang>
     <lang type="string">fr_CH</lang>
     <lang type="string">fr_FR</lang>
+
     <core>
       <xliff type="string">Translations/fr/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
   <locale>
+    <language-id type="string">it</language-id>
     <lang type="string">it</lang>
     <lang type="string">italian</lang>
     <lang type="string">it_CH</lang>
     <lang type="string">it_IT</lang>
+
     <core>
       <xliff type="string">Translations/it/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
   <locale>
+    <language-id type="string">ka</language-id>
     <lang type="string">ka</lang>
     <lang type="string">ka_GE</lang>
+
     <core>
       <xliff type="string">Translations/ka/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
   <locale>
+    <language-id type="string">nl</language-id>
     <lang type="string">nl</lang>
     <lang type="string">nl_BE</lang>
     <lang type="string">nl_NL</lang>
+
     <core>
       <xliff type="string">Translations/nl/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
   <locale>
+    <language-id type="string">pl</language-id>
     <lang type="string">pl</lang>
     <lang type="string">pl_PL</lang>
+
     <core>
       <xliff type="string">Translations/pl/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
   <locale>
+    <language-id type="string">ru</language-id>
     <lang type="string">ru</lang>
     <lang type="string">ru_RU</lang>
+
     <core>
       <xliff type="string">Translations/ru/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
   <locale>
+    <language-id type="string">zh_CN</language-id>
     <lang type="string">zh</lang>
     <lang type="string">zh_CN</lang>
+
     <core>
       <xliff type="string">Translations/zh_CN/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
   <locale>
+    <language-id type="string">pt</language-id>
     <lang type="string">pt</lang>
     <lang type="string">pt_BR</lang>
     <lang type="string">pt_PT</lang>
+
     <core>
       <xliff type="string">Translations/pt/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
   <locale>
+    <language-id type="string">tr</language-id>
     <lang type="string">tr</lang>
     <lang type="string">tr_TR</lang>
+
     <core>
       <xliff type="string">Translations/tr/FlightGear-nonQt.xlf</xliff>
     </core>
