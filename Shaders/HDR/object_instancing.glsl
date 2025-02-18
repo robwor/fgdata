@@ -1,3 +1,5 @@
+$FG_GLSL_VERSION
+
 // Yaw
 void rotation_matrix_H(in float sinRz, in float cosRz, out mat3 rotmat)
 {
@@ -29,12 +31,15 @@ void scale_matrix(in float scale, out mat3 scalemat)
                     0.0  , 0.0  , scale);
 }
 
-/* apply_instance_transforms
-* Takes the position, normal of an vertex, and position/rotation/scale of
-* one instance, and transforms the original position and normal of the
-* vertex to match it's instanced version.
-*/
-void apply_instance_transforms(inout vec3 position, inout vec3 normal, in vec3 instance_position, in vec4 instance_rotation_and_scale)
+/*
+ * Takes the position, normal of an vertex, and position/rotation/scale of
+ * one instance, and transforms the original position and normal of the
+ * vertex to match it's instanced version.
+ */
+void apply_instance_transforms(inout vec3 position,
+                               inout vec3 normal,
+                               in vec3 instance_position,
+                               in vec4 instance_rotation_and_scale)
 {
     // Handle rotation and scaling
     mat3 ScaleMat;
@@ -63,8 +68,8 @@ void apply_instance_transforms(inout vec3 position, inout vec3 normal, in vec3 i
     position = RotMatH * RotMatP * RotMatR * ScaleMat * position;
 
     // Offset model to correct location w.r.t instancing center
-    position = position + instance_position.xyz;
+    position += instance_position;
 
     // Transform normal using rotation matrices
-    normal = gl_NormalMatrix * (RotMatH * RotMatP * RotMatR * gl_Normal);
+    normal = RotMatH * RotMatP * RotMatR * normal;
 }

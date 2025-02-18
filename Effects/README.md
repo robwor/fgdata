@@ -3,8 +3,9 @@ In active use:
 - cloud.eff
 - cloud-static.eff
 - lfeat.eff
-- model-pbr-chute.eff
 - model-pbr.eff
+- model-pbr-chute.eff
+- model-pbr-instancing.eff
 - model-pbr-transparent.eff
 - model-pbr-wingflex.eff
 - moon.eff
@@ -35,8 +36,6 @@ Pending port to HDR/PBR/WS30:
 - galaxy.eff
 - glass.eff
 - marker-pin.eff
-- object-instancing-colored.eff
-- object-instancing.eff
 - planet-aurora.eff
 - procedural-light.eff
 - rain-layer.eff
