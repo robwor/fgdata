@@ -981,8 +981,16 @@ DefaultStyle.widgets.slider = {
       h += me._style.getSize("slider-fill-ticks-margin", 3) + me._style.getSize("slider-tick-length", 10);
     } 
     h = math.max(h, 28);
-    model.setLayoutMinimumSize([50, h]);
-    model.setLayoutSizeHint([(model._maxValue -  model._minValue) / (model._stepSize or 1), h]);
+
+    # value of 80 here is based off PUI slider min width in old layout.cxx
+    var minSz = [85, h];
+    model.setLayoutMinimumSize(minSz);
+
+    # calculate preferred size 
+    var preferredWidth = (model._maxValue -  model._minValue) / (model._stepSize or 1);
+    preferredWidth = math.max(preferredWidth, minSz[0]);
+
+    model.setLayoutSizeHint([preferredWidth, h]);
   },
 
   setNormValue: func(model, normValue)
