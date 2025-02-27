@@ -648,13 +648,19 @@ var weaponSelect = func(d) {
 var ptt = func(b){
     if (b and b != getprop("/controls/radios/comm-radio-selected"))
       setprop("/controls/radios/comm-radio-selected", b);
-    setprop("/controls/radios/comm-ptt", b);
+    if (b > 0) { # activate comm-ptt only for operable radios
+      if (getprop(sprintf("%s%d%s", '/instrumentation/comm[', (b-1), ']/operable')))
+        setprop("/controls/radios/comm-ptt", b);
+    } else { # deactivate comm-ptt
+        setprop("/controls/radios/comm-ptt", b);
+    }
 }
 
 _setlistener("/instrumentation/comm[0]/ptt", func {
     var v=getprop("/instrumentation/comm[0]/ptt");
+    var o=getprop("/instrumentation/comm[0]/operable");
     setprop("/controls/radios/comm-radio-selected", 1);
-    if (v)
+    if (v and (o == true))
       setprop("/controls/radios/comm-ptt", 1);
     else
       setprop("/controls/radios/comm-ptt", 0);
@@ -662,8 +668,9 @@ _setlistener("/instrumentation/comm[0]/ptt", func {
 
 _setlistener("/instrumentation/comm[1]/ptt", func {
     var v=getprop("/instrumentation/comm[1]/ptt");
+    var o=getprop("/instrumentation/comm[1]/operable");
     setprop("/controls/radios/comm-radio-selected", 2);
-    if (v)
+    if (v and (o == true))
       setprop("/controls/radios/comm-ptt", 2);
     else
       setprop("/controls/radios/comm-ptt", 0);
