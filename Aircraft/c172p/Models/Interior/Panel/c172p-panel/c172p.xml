@@ -1993,8 +1993,13 @@
     <animation>
         <type>rotate</type>
         <object-name>ParkingBrake</object-name>
-        <property alias="/params/controls/parking-lever"/>
-        <factor>90</factor>
+        <expression>
+            <table>
+                <property alias="/params/controls/parking-lever"/>
+                <entry> <ind>0.85</ind> <dep>0.0</dep> </entry>
+                <entry> <ind>1.0</ind> <dep>90</dep> </entry>
+            </table>
+        </expression>
         <axis>
             <x>1.0</x>
             <y>0.0</y>
@@ -2028,7 +2033,7 @@
             <repeatable>false</repeatable>
             <binding>
                 <command>property-toggle</command>
-                <property>controls/engines/current-engine/carb-heat</property>
+                <property alias="/params/controls/carb-heat"/>
             </binding>
         </action>
         <hovered>
@@ -2037,7 +2042,7 @@
                 <tooltip-id>carburetor-heat</tooltip-id>
                 <label>Carburetor: %s</label>
                 <mapping>nasal</mapping>
-                <property>controls/engines/current-engine/carb-heat</property>
+                <property alias="/params/controls/carb-heat"/>
                 <script>
                     var modes = ['COLD', 'HEATED'];
                     return modes[arg[0]];
@@ -2181,9 +2186,23 @@
         </center>
         <action>
             <binding>
+                <condition>
+                    <not><property>/devices/status/keyboard/alt</property></not>
+                </condition>
                 <command>property-adjust</command>
                 <property>controls/flight/elevator-trim</property>
                 <factor>0.001</factor>
+                <min>-1</min>
+                <max>1</max>
+                <wrap>0</wrap>
+            </binding>
+            <binding>
+                <condition>
+                    <property>/devices/status/keyboard/alt</property>
+                </condition>
+                <command>property-adjust</command>
+                <property>controls/flight/elevator-trim</property>
+                <factor>0.0001</factor>
                 <min>-1</min>
                 <max>1</max>
                 <wrap>0</wrap>
@@ -2215,6 +2234,7 @@
         </center>
     </animation>
 
+    <!-- Rudder trim is limited in ground-effects.xml in order to also limit custom keybinds -->
     <animation>
         <type>knob</type>
         <object-name>RudderTrimKnob</object-name>
@@ -2234,11 +2254,21 @@
         </axis>
         <action>
             <binding>
+                <condition>
+                    <not><property>/devices/status/keyboard/alt</property></not>
+                </condition>
                 <command>property-adjust</command>
                 <property>controls/flight/rudder-trim</property>
                 <factor>0.002</factor>
-                <min>-.18</min>
-                <max>.18</max>
+                <wrap>false</wrap>
+            </binding>
+            <binding>
+                <condition>
+                    <property>/devices/status/keyboard/alt</property>
+                </condition>
+                <command>property-adjust</command>
+                <property>controls/flight/rudder-trim</property>
+                <factor>0.001</factor>
                 <wrap>false</wrap>
             </binding>
         </action>

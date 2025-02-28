@@ -53,8 +53,12 @@ This tutorial will take you through starting the Cessna 172p.
             <property>/controls/switches/magnetos</property>
             <value>0</value>
         </set>
-        <set>
-            <property>/controls/engines/current-engine/throttle</property>
+       <set>
+			<property>/controls/engines/engine[0]/throttle</property>
+            <value>0.0</value>
+        </set>
+		<set>
+			<property>/controls/engines/engine[1]/throttle</property>
             <value>0.0</value>
         </set>
         <set>
@@ -246,13 +250,13 @@ This tutorial will take you through starting the Cessna 172p.
             <message>Set the parking brake.</message>
             <condition>
                 <not>
-                    <property>sim/model/c172p/brake-parking</property>
+                    <property>/controls/gear/brake-parking</property>
                 </not>
             </condition>
         </error>
         <exit>
             <condition>
-                <property>sim/model/c172p/brake-parking</property>
+                <property>/controls/gear/brake-parking</property>
             </condition>
         </exit>
     </step>
@@ -407,7 +411,7 @@ This tutorial will take you through starting the Cessna 172p.
         <exit>
             <condition>
                 <and>
-                    <property>/controls/circuit-breakers/aircond</property>
+                    <!--property>/controls/circuit-breakers/aircond</property-->
                     <property>/controls/circuit-breakers/autopilot</property>
                     <property>/controls/circuit-breakers/bcnlt</property>
                     <property>/controls/circuit-breakers/flaps</property>

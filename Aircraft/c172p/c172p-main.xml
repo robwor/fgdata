@@ -18,6 +18,46 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
 
 <PropertyList include="Aircraft/Generic/Human/Include/walker-include.xml">
 
+    <!-- Descriptive information
+        not used for simulation, but for GUI;
+        see: http://wiki.flightgear.org/Aircraft-set.xml#Performance_and_Flight-planning
+    -->
+    <aircraft>
+        <icao>
+            <wake-turbulence-category>L</wake-turbulence-category> <!-- see: https://www.skybrary.aero/index.php/C182 -->
+            <type type="string">C172</type> 
+            <equipment type="string">SDFY</equipment>  <!-- ICAO equipment string (see: https://en.wikipedia.org/wiki/Equipment_codes) -->
+            <surveillance type="string">C</surveillance>  <!-- ICAO surveillance string;  mode-A/C transponder (see again: https://en.wikipedia.org/wiki/Equipment_codes) -->
+        </icao>
+        <performance>
+            <!-- from the POH -->
+            <minimum>
+                <takeoff-length-ft type="int">650</takeoff-length-ft>  <!-- POH p. 5-15; 2200lbs at sea level -->
+                <landing-length-ft type="int">510</landing-length-ft>  <!-- POH p. 5-25 -->
+            </minimum>
+            <climb /> <!-- POH 5-16 -->
+                <!-- potential for climb data in the future 
+                <airspeed-knots type="int">76</airspeed-knots>
+                <vertical-speed-fpm type="int">745</vertical-speed-fpm>
+            </climb>-->
+            <cruise>
+                <airspeed-knots type="int">140</airspeed-knots> <!-- max. struct cruise speed -->
+                <altitude-ft type="int">6000</altitude-ft>
+            </cruise>
+            <descent /> <!-- potential for descent data in the future  
+                <airspeed-knots type="int">120</airspeed-knots> 
+                <vertical-speed-fpm type="int">-500</vertical-speed-fpm>
+            </descent>-->
+            <approach>
+                <airspeed-knots type="int">60</airspeed-knots> <!-- from Checklist, normal flaps-up approach -->
+            </approach>
+            <maximum>
+                <altitude-ft type="int">14000</altitude-ft> <!-- service ceiling -->
+                <airspeed-knots type="int">158</airspeed-knots> <!-- VNe airframe structural limit -->
+            </maximum>
+        </performance >
+    </aircraft>
+
     <sim include="c172p-views.xml">
         <description>Cessna 172P Skyhawk (1982)</description>
 
@@ -43,11 +83,11 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             <tag>fixed-gear</tag>
         </tags>
 
-        <author>Original by David Megginson, gsagostinho (Gilberto Agostinho), wlbragg (Wayne Bragg), Juanvvc (Juan Vera del Campo), onox, thevirtualfer, Dany93 (Daniel Dubreuil), legoboyvdlp (Jonathan Redpath), dg-505 (Jonathan Schellhase), tigert (Tuomas Kuosmanen), AndersG (Anders Gidenstam), wkitty42 (Waldo Kitty), algefaen, Horacio, D-ECHO, Jarl Arntzen (jarlarntzen), Benedikt Hallinger, Sascha Reißner, Josh Davidson</author>
+        <author>Original by David Megginson, gsagostinho (Gilberto Agostinho), wlbragg (Wayne Bragg), Juanvvc (Juan Vera del Campo), onox, thevirtualfer, Dany93 (Daniel Dubreuil), legoboyvdlp (Jonathan Redpath), dg-505 (Jonathan Schellhase), tigert (Tuomas Kuosmanen), AndersG (Anders Gidenstam), wkitty42 (Waldo Kitty), algefaen, Horacio, D-ECHO, jarlarntzen (Jarl Arntzen), benih (Benedikt Hallinger), Sascha Reißner, Josh Davidson</author>
 
         <status>advanced production</status>
-        <aircraft-version>2020.5-git</aircraft-version>
-        <minimum-fg-version>2020.4.0</minimum-fg-version>
+        <aircraft-version>2024.1</aircraft-version>
+        <minimum-fg-version>2020.4</minimum-fg-version>
         <rating>
             <FDM type="int">5</FDM>
             <systems type="int">5</systems>
@@ -67,7 +107,7 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
         </panel>
 
         <model>
-            <path archive="y">Aircraft/c172p/Models/c172-common.xml</path>
+            <path archive="y">Aircraft/c172p/Models/c172p.xml</path>
             <fallback-model-index type="int">1</fallback-model-index>
 
             <!-- Default livery -->
@@ -83,6 +123,7 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
                 <cockpit>
                     <control-lock-placed type="bool">false</control-lock-placed>
                     <control-lock-visible type="bool">false</control-lock-visible>
+                    <view-deviation-card type="bool">false</view-deviation-card>
                 </cockpit>
 
                 <!-- Registration number -->
@@ -209,6 +250,9 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
                     <chock type="bool">false</chock>
 
                     <!-- tiedowns attached to the wings used to secure plane -->
+                    <tiedownL type="bool">false</tiedownL>
+                    <tiedownR type="bool">false</tiedownR>
+                    <tiedownT type="bool">false</tiedownT>
                     <tiedownL-visible type="bool">false</tiedownL-visible>
                     <tiedownR-visible type="bool">false</tiedownR-visible>
                     <tiedownT-visible type="bool">false</tiedownT-visible>
@@ -235,6 +279,7 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             </c172p>
 
             <hide-yoke type="bool">false</hide-yoke>
+            <hide-yoke-alpha-cmd>0.25</hide-yoke-alpha-cmd>
 
             <crew>
                 <pilot n="0">
@@ -268,6 +313,50 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             <open-pfuel-sump type="bool">false</open-pfuel-sump>
             <open-sfuel-sump type="bool">false</open-sfuel-sump>
 
+            <icing>
+                <iceable>
+                    <name>Wing</name>
+                    <sensitivity type="double">1.0</sensitivity>
+                    <output-property>/fdm/jsbsim/ice/wing</output-property>
+                </iceable>
+                <iceable>
+                    <name>Stabilizer</name>
+                    <sensitivity type="double">1.0</sensitivity>
+                    <output-property>/fdm/jsbsim/ice/stabilizer</output-property>
+                </iceable>
+                <iceable>
+                    <name>Elevator</name>
+                    <sensitivity type="double">1.0</sensitivity>
+                    <output-property>/fdm/jsbsim/ice/elevator</output-property>
+                </iceable>
+                <iceable>
+                    <name>Propeller</name>
+                    <sensitivity type="double">0.5</sensitivity>
+                    <output-property>/fdm/jsbsim/ice/propeller</output-property>
+                </iceable>
+                <iceable>
+                    <name>Windshield</name>
+                    <sensitivity type="double">0.5</sensitivity>
+                    <output-property>/fdm/jsbsim/ice/windshield</output-property>
+                </iceable>
+                <iceable>
+                    <name>Fuselage</name>
+                    <sensitivity type="double">0.3</sensitivity>
+                    <output-property>/fdm/jsbsim/ice/fuselage</output-property>
+                </iceable>
+                <iceable>
+                    <name>Pitot tube</name>
+                    <sensitivity type="double">1</sensitivity>
+                    <salvage-control>/systems/pitot/salvage</salvage-control>
+                    <output-property>/systems/pitot/icing</output-property>
+                </iceable>
+                <iceable>
+                    <name>Static</name>
+                    <sensitivity type="double">0.3</sensitivity>
+                    <output-property>/systems/static[0]/icing</output-property>
+                </iceable>
+            </icing>
+
         </model>
 
         <!-- Walker settings -->
@@ -283,9 +372,9 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             <path>/sim/model/c172p/securing/pitot-cover-visible</path>
             <path>/sim/model/c172p/securing/cowl-plugs-visible</path>
             <path>/sim/model/c172p/securing/chock</path>
-            <path>/sim/model/c172p/securing/tiedownL-visible</path>
-            <path>/sim/model/c172p/securing/tiedownR-visible</path>
-            <path>/sim/model/c172p/securing/tiedownT-visible</path>
+            <path>/sim/model/c172p/securing/tiedownL</path>
+            <path>/sim/model/c172p/securing/tiedownR</path>
+            <path>/sim/model/c172p/securing/tiedownT</path>
             <path>/controls/gear/brake-parking</path>
             <path>/sim/model/c172p/enable-fog-frost</path>
             <path>/sim/model/c172p/digitalclock-visible</path>
@@ -303,6 +392,7 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             <path>/fdm/jsbsim/running</path>
             <path>/consumables/fuel/contamination_allowed</path>
             <path>/instrumentation/save-switches-state</path>
+            <path>/instrumentation/audio-panel/fgcom-integration</path>
             <path>/consumables/fuel/tank[0]/level-norm</path>
             <path>/consumables/fuel/tank[1]/level-norm</path>
             <path>/consumables/fuel/tank[2]/level-norm</path>
@@ -311,7 +401,9 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             <path>/systems/electrical/battery-charge-percent</path>
             <path>/sim/model/c172p/save-state</path>
             <path>/engines/active-engine/complex-engine-procedures</path>
+            <path>/engines/active-engine/starter-management</path>
             <path>/sim/model/immat</path>
+            <path>/sim/model/hide-yoke-alpha-cmd</path>
             <path>/controls/mooring/automatic</path>
             <path>/sim/current-view/user/x-offset-m</path>
             <path>/sim/current-view/user/y-offset-m</path>
@@ -320,6 +412,7 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             <path>/sim/current-view/user/default-field-of-view-deg</path>
             <path>/sim/model/c172p/ruddertrim-visible</path>
             <path>/fdm/jsbsim/fuel/tank</path>
+            <path>/fdm/jsbsim/fcs/stick-force-per-g</path>
         </aircraft-data>
 
         <current-view>
@@ -723,6 +816,8 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             <cabin-heat-set type="double">0.0</cabin-heat-set>
             <cabin-air-set type="double">0.0</cabin-air-set>
             <overlay-glare type="double">2.7</overlay-glare>
+            <glass-angle type="bool">true</glass-angle>
+            <scheme type="int">1</scheme>
         </aircraft-effects>
         <surface>
             <snow-thickness-multiplier type="float">150</snow-thickness-multiplier>
@@ -730,7 +825,10 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
     </environment>
 
     <instrumentation>
-        <kma20 include="Aircraft/Instruments-3d/kma20/kma20init.xml"/>
+        <kma20 include="Aircraft/Instruments-3d/kma20/kma20init.xml">
+            <serviceable type="bool" archive="y">1</serviceable>
+            <operable type="bool" archive="y">1</operable>
+        </kma20>
         <attitude-indicator>
             <config>
                 <tumble-flag archive="y" type="bool">true</tumble-flag>
@@ -800,6 +898,10 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
         <airspeed-indicator>
             <serviceable type="bool">true</serviceable>
         </airspeed-indicator>
+        <vertical-speed-indicator>
+            <indicated-speed-fpm type="double">0</indicated-speed-fpm>
+            <indicated-speed-mps type="double">0</indicated-speed-mps>
+        </vertical-speed-indicator>
         <save-switches-state type="bool">false</save-switches-state>
     </instrumentation>
 
@@ -818,7 +920,6 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             <oil-lacking type="double">0.0</oil-lacking>
             <oil_consumption_allowed type="bool">false</oil_consumption_allowed>
             <oil-powergain-factor type="double">1</oil-powergain-factor>
-            <winter-kit-installed type="bool">false</winter-kit-installed>
             <oil-temperature-env-diff type="double">0</oil-temperature-env-diff>
             <oil-compensated-temperature-degf type="double">60</oil-compensated-temperature-degf>
             <external-heat>
@@ -834,6 +935,11 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             <auto-start type="bool">false</auto-start>
             <complex-engine-procedures type="bool">false</complex-engine-procedures>
             <damage_allowed>false</damage_allowed>
+            <winter-kit-installed type="int">0</winter-kit-installed>
+            <starter-management type="bool">false</starter-management>
+            <starter>
+                <serviceable type="bool">true</serviceable>
+            </starter>
         </active-engine>
 
         <!-- Following properties are part of a static list of properties
@@ -941,6 +1047,7 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             <file>Aircraft/Generic/updateloop.nas</file>
         </updateloop>
         <c172p>
+			<!--file>Nasal/display-props.nas</file-->
             <file>Nasal/c172p.nas</file>
             <file>Nasal/liveries.nas</file>
             <file>Nasal/immat.nas</file>
@@ -954,13 +1061,17 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             <file>Nasal/interior-lighting.nas</file>
             <file>Nasal/particle-effects-manager.nas</file>
             <file>Nasal/save.nas</file>
-            <file>Nasal/dialogs.nas</file>
             <file>Nasal/state-manager.nas</file>
             <!-- Damage Mod -->
             <file>Nasal/physics.nas</file>
             <file>Nasal/tiedowns.nas</file>
             <file>Nasal/views.nas</file>
         </c172p>
+        <icing>
+              <file>Nasal/icing.nas</file>
+              <file>Nasal/pitot-icing.nas</file>
+              <file>Nasal/static-icing.nas</file>
+        </icing>
         <kr87>
             <file>Nasal/kr87.nas</file>
         </kr87>
@@ -1166,6 +1277,7 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
             </aero>
             <fcs>
                 <yaw-trim-cockpit type="double">0.0</yaw-trim-cockpit>
+                <stick-force-per-g type="bool">false</stick-force-per-g>
             </fcs>
             <float>
                 <water-dissipation type="bool">false</water-dissipation>
@@ -1194,8 +1306,12 @@ http://forum.flightgear.org/viewtopic.php?f=4&t=25157
                 <gear-select type="float">0.0</gear-select>
                 <gear-advisory type="float">0.0</gear-advisory>
                 <beacon-norm type="float">0.0</beacon-norm>
+                <pitot-heat type="float">0.0</pitot-heat>
             </outputs>
             <save-battery-charge type="bool">false</save-battery-charge>
+            <avionics-fan>
+                <serviceable type="bool">true</serviceable>
+            </avionics-fan>
         </electrical>
         <mooring>
             <boat-id></boat-id>

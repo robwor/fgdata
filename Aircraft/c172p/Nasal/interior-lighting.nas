@@ -1,4 +1,5 @@
-# Copyright (C) 2015  wlbragg, onox
+# Copyright (C) 2015 onox
+# Wayne Bragg/c172p-detailed 2015
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,18 +13,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-# ALS flashlight
-	var toggle_flashlight = func {
-	if (getprop("/sim/rendering/shaders/skydome")) {
-		var old_value = getprop("/sim/rendering/als-secondary-lights/use-flashlight");
-		var new_value = math.mod(old_value + 1, 3);
-		setprop("/sim/rendering/als-secondary-lights/use-flashlight", new_value);
-	}
-	else {
-		gui.popupTip("Enable ALS for ALS Flashlight", 4);
-	}
-};
 
 # Dome lights
 var toggle_domelight = func {
