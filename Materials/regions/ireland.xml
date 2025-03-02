@@ -68,7 +68,7 @@
     <object-group include="Materials/base/farm-buildings.xml"/>
     <wood-coverage>2000.0</wood-coverage>
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
-    <tree-varieties>8</tree-varieties>
+    <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
     <tree-width-m>10.0</tree-width-m>
   </material>
@@ -192,7 +192,7 @@
     <object-group include="Materials/base/farm-buildings.xml"/>
     <wood-coverage>1000.0</wood-coverage>
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
-    <tree-varieties>8</tree-varieties>
+    <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
     <tree-width-m>10.0</tree-width-m>
   </material>

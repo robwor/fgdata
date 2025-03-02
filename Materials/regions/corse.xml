@@ -117,7 +117,7 @@
     <light-coverage>10000000.0</light-coverage>
     <wood-coverage>4000.0</wood-coverage>
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
-    <tree-varieties>8</tree-varieties>
+    <tree-varieties>4</tree-varieties>
     <tree-height-m>25.0</tree-height-m>
     <tree-width-m>15.0</tree-width-m>
     <rolling-friction>1</rolling-friction>
@@ -157,7 +157,7 @@
     <light-coverage>20000000.0</light-coverage>
     <wood-coverage>16000.0</wood-coverage>
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
-    <tree-varieties>8</tree-varieties>
+    <tree-varieties>4</tree-varieties>
     <tree-height-m>20.0</tree-height-m>
     <tree-width-m>12.0</tree-width-m>
     <rolling-friction>0.6</rolling-friction>

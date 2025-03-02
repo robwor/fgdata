@@ -39,7 +39,7 @@
     <building-medium-max-floors>4</building-medium-max-floors>
     <wood-coverage>8000.0</wood-coverage>
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
-    <tree-varieties>8</tree-varieties>
+    <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
     <tree-width-m>10.0</tree-width-m>
   </material>
@@ -73,7 +73,7 @@
     <building-lightmap>Textures/buildings-lightmap.png</building-lightmap>
     <wood-coverage>1000.0</wood-coverage>
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
-    <tree-varieties>8</tree-varieties>
+    <tree-varieties>4</tree-varieties>
     <tree-height-m>15.0</tree-height-m>
     <tree-width-m>10.0</tree-width-m>
   </material>
