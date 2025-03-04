@@ -126,13 +126,13 @@ var NavigationMap =
 
     pg.addMenuItem(1, "PROFILE", pg);
     pg.addMenuItem(2, "TOPO", pg,
-      func(dev, pg, mi) { pg.mfd.NavigationMap.MFDMap.toggleLayer("STAMEN"); device.updateMenus(); }, # callback
-      func(svg, mi) { pg.mfd.NavigationMap.display_toggle(device, svg, mi, "STAMEN"); }
+      func(dev, pg, mi) { pg.mfd.NavigationMap.MFDMap.toggleLayer("OSM"); device.updateMenus(); }, # callback
+      func(svg, mi) { pg.mfd.NavigationMap.display_toggle(device, svg, mi, "OSM"); }
     );
 
     pg.addMenuItem(3, "TERRAIN", pg,
-      func(dev, pg, mi) { pg.mfd.NavigationMap.MFDMap.toggleLayer("STAMEN_terrain"); device.updateMenus(); }, # callback
-      func(svg, mi) { pg.mfd.NavigationMap.display_toggle(device, svg, mi, "STAMEN_terrain"); }
+      func(dev, pg, mi) { pg.mfd.NavigationMap.MFDMap.toggleLayer("OSM"); device.updateMenus(); }, # callback
+      func(svg, mi) { pg.mfd.NavigationMap.display_toggle(device, svg, mi, "OSM"); }
     );
 
     pg.addMenuItem(4, "AIRWAYS", pg, func(dev, pg, mi) { pg.mfd.NavigationMap.MFDMap.incrAIRWAYS(dev, mi); } );

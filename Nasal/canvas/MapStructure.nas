@@ -83,7 +83,7 @@ var MapStructure_selfTest = func() {
 		TestMap.addLayer(factory: canvas.SymbolLayer, type_arg: type.name,
 					visible: type.vis, priority: type.zindex,
 		);
-		foreach(var type; [ r('OSM'), r('STAMEN') ]) {
+		foreach(var type; [ r('OSM') ]) {
 				TestMap.addLayer(factory: canvas.OverlayLayer, type_arg: type.name,
 												 visible: type.vis, priority: type.zindex,
 												 style: Styles.get(type.name),

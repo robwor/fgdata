@@ -174,13 +174,13 @@ var PFDInstruments =
     );
 
     pg.addMenuItem(4, "TOPO", pg,
-      func(dev, pg, mi) { pg.insetMap.toggleLayer("STAMEN"); device.updateMenus(); }, # callback
-      func(svg, mi) { pg.display_toggle(device, svg, mi, "STAMEN"); }
+      func(dev, pg, mi) { pg.insetMap.toggleLayer("OSM"); device.updateMenus(); }, # callback
+      func(svg, mi) { pg.display_toggle(device, svg, mi, "OSM"); }
     );
 
     pg.addMenuItem(5, "TERRAIN", pg,
-      func(dev, pg, mi) { pg.insetMap.toggleLayer("STAMEN_terrain"); device.updateMenus(); }, # callback
-      func(svg, mi) { pg.display_toggle(device, svg, mi, "STAMEN_terrain"); }
+      func(dev, pg, mi) { pg.insetMap.toggleLayer("OSM"); device.updateMenus(); }, # callback
+      func(svg, mi) { pg.display_toggle(device, svg, mi, "OSM"); }
     );
     #pg.addMenuItem(6, "STRMSCP", pg); # TODO
     #pg.addMenuItem(7, "NEXRAD", pg); # TODO

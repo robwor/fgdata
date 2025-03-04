@@ -277,21 +277,6 @@
                 </binding>
             </checkbox>
 
-            <checkbox>
-                <label>STAMEN</label>
-                <halign>left</halign>
-
-                <property>/sim/gui/dialogs/map-canvas/draw-STAMEN</property>
-                <live>true</live>
-                <binding>
-                  <command>dialog-apply</command>
-                </binding>
-                <binding>
-                  <command>property-toggle</command>
-                </binding>
-            </checkbox>
-
-
             <!-- layer only supported if tutorial system is active and targets specified-->
 	 <!--
             <checkbox>
@@ -542,7 +527,7 @@
                             })();
                         }
 
-                        foreach(var type; [ r('OSM'), r('VFRChart'), r('STAMEN') ]) {
+                        foreach(var type; [ r('OSM'), r('VFRChart') ]) {
                             TestMap.addLayer(factory: canvas.OverlayLayer, type_arg: type.name,
                                              visible: 0, priority: 1,
                                              style: Styles.get(type.name),
