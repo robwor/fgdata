@@ -62,11 +62,11 @@
 <model n="101" type="string">AI/Aircraft/BAe-125/Models/bae125-ai.xml</model>
 <model n="102" type="string">AI/Aircraft/Bombardier-Challenger/Bombardier-Challenger-AirDolomiti.xml</model>
 <model n="104" type="string">AI/Aircraft/Citation-Bravo/Models/Bravo-ai.xml</model>
-<model n="105" type="string">AI/Aircraft/CR2/CR2-Default.xml</model>
+<model n="105" type="string">AI/Aircraft/CR2/CR2-default.xml</model>
 <model n="106" type="string">AI/Aircraft/Embraer-Legacy/Embraer-Legacy-AirFrance.xml</model>
 
 <!-- 151-200 Turboprop airliners -->
-<model n="151" type="string">AI/Aircraft/AT4/AT4-Default.xml</model>
+<model n="151" type="string">AI/Aircraft/AT4/AT4-default.xml</model>
 <model n="152" type="string">AI/Aircraft/AT7/AT7-default.xml</model>
 <model n="153" type="string">AI/Aircraft/DH3/DH3-AirNewZealand.xml</model>
 <model n="154" type="string">AI/Aircraft/b1900d/Models/B1900D.xml</model>
@@ -81,11 +81,11 @@
 <!-- 201-250 Twin engined narrow body jet airliners -->
 <model n="201" type="string">AI/Aircraft/717/717-Qantas.xml</model>
 <model n="202" type="string">AI/Aircraft/733/733-Norwegian.xml</model>
-<model n="203" type="string">AI/Aircraft/735/735-Default.xml</model>
-<model n="204" type="string">AI/Aircraft/736/736-Default.xml</model>
+<model n="203" type="string">AI/Aircraft/735/735-default.xml</model>
+<model n="204" type="string">AI/Aircraft/736/736-default.xml</model>
 <model n="205" type="string">AI/Aircraft/738/738-Aeroflot.xml</model>
 <model n="206" type="string">AI/Aircraft/738/738-ANA.xml</model>
-<model n="207" type="string">AI/Aircraft/739/73J-Default.xml</model>
+<model n="207" type="string">AI/Aircraft/739/73J-default.xml</model>
 <model n="208" type="string">AI/Aircraft/757/757-200-American.xml</model>
 <model n="209" type="string">AI/Aircraft/A300/A300-default.xml</model>
 <model n="210" type="string">AI/Aircraft/A310/A310-default.xml</model>
@@ -93,7 +93,7 @@
 <model n="212" type="string">AI/Aircraft/A320/A320-default.xml</model>
 <model n="213" type="string">AI/Aircraft/A321/A321-default.xml</model>
 <model n="214" type="string">AI/Aircraft/ERJ145/ERJ145-default.xml</model>
-<model n="215" type="string">AI/Aircraft/E95/E95-Default.xml</model>
+<model n="215" type="string">AI/Aircraft/E95/E95-default.xml</model>
 <model n="216" type="string">AI/Aircraft/Fokker-100/Fokker-100-KLM.xml</model>
 <model n="217" type="string">AI/Aircraft/Fokker-50/fokker50-KLM.xml</model>
 <model n="218" type="string">AI/Aircraft/Fokker-70/fokker70-KLM.xml</model>
