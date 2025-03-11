@@ -349,9 +349,6 @@
   <material>
     <name>IrrCropPastureCover</name>
     <name>IrrCrop</name>
-    <name>Orchard</name>
-    <name>Olives</name>
-    <name>Vineyard</name>
     <name>Rice</name>
     <name>MixedCropPastureCover</name>
     <name>MixedCrop</name>
@@ -377,6 +374,32 @@
     <tree-varieties>8</tree-varieties>
     <tree-height-m>20.0</tree-height-m>
     <tree-width-m>12.0</tree-width-m>
+  </material>
+
+  <material>
+    <name>Orchard</name>
+    <name>Olives</name>
+    <name>Vineyard</name>
+    <texture-set>
+      <texture>Terrain/mixedcrop2.png</texture>
+      <texture n="11">Terrain/grass_dry3a.png</texture>
+      <texture n="15">Terrain/sand_hires_ochre.png</texture>
+    </texture-set>
+    <xsize>2000</xsize>
+    <ysize>2000</ysize>
+    <light-coverage>2000000.0</light-coverage>
+    <solid>1</solid>
+    <friction-factor>0.9</friction-factor>
+    <rolling-friction>0.1</rolling-friction>
+    <bumpiness>0.7</bumpiness>
+    <load-resistance>1e30</load-resistance>
+    <object-group include="Materials/base/farm-buildings.xml"/>
+    <wood-coverage>400.0</wood-coverage>
+    <plantation>true</plantation>
+    <tree-texture>Trees/mediterranean-orchard.png</tree-texture>
+    <tree-varieties>4</tree-varieties>
+    <tree-height-m>10.0</tree-height-m>
+    <tree-width-m>10.0</tree-width-m>
   </material>
 
   <material>

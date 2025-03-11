@@ -180,6 +180,9 @@ tree-zero-density-angle-deg : The angle at which the slope is too steep to
          support significant vegetation.  Steeper slopes have no trees.
          (default : 60)
 
+plantation : Whether these trees are in a plantation and so should be distributed
+         regularly. (default : false )
+
 object-max-density-angle-deg : The angle at which objects and buildings become
          less dense due to a steep slope. (default : 20)
 
