@@ -1513,10 +1513,9 @@ Lokaal pad: %2</target>
   <file original="/home/devel/FGFS/flightgear/src/GUI/qml/SettingExtraArguments.qml" datatype="plaintext" source-language="en" target-language="nl"><body>
     <group restype="x-trolltech-linguist-context" resname="SettingExtraArguments">
       <trans-unit id="_msg279">
-        <source xml:space="preserve">Enter additional command-line arguments if any are required. See &lt;a href=&quot;http://flightgear.sourceforge.net/manual/next/en/getstart-ench4.html#x8-330004.4&quot;&gt;documentation&lt;/a&gt; for possible arguments. &lt;br&gt;&lt;b&gt;Warning:&lt;/b&gt; values entered here always override other settings; see the &lt;a href=&quot;#view-command-line&quot;&gt;final set of arguments&lt;/a&gt; that will be used.</source>
+        <source xml:space="preserve">Enter additional command-line arguments if any are required. See &lt;a href=&quot;https://wiki.flightgear.org/Command_line_options&quot;&gt;documentation&lt;/a&gt; for possible arguments. &lt;br&gt;&lt;b&gt;Warning:&lt;/b&gt; values entered here always override other settings; see the &lt;a href=&quot;#view-command-line&quot;&gt;final set of arguments&lt;/a&gt; that will be used.</source>
         <target xml:space="preserve"></target>
         <context-group purpose="location"><context context-type="linenumber">28</context></context-group>
-        <note annotates="source" from="developer">The “getstart” manual has translations. For languages listed in $ALL_LANGUAGES at &lt;https://sourceforge.net/p/flightgear/getstart/ci/next/tree/bin/makegetstart.sh&gt;, replace *both* occurrences of “en” in the URL with the appropriate language code from $ALL_LANGUAGES. And please test the modified URL before validating the translation. :-)</note>
       </trans-unit>
       <trans-unit id="_msg280" approved="yes">
         <source xml:space="preserve">&lt;b&gt;Warning:&lt;/b&gt; specifying &lt;tt&gt;fg-root&lt;/tt&gt;, &lt;tt&gt;fg-aircraft&lt;/tt&gt;, &lt;tt&gt;fg-scenery&lt;/tt&gt; or &lt;tt&gt;fg-home&lt;/tt&gt; using this section is not recommended, and may cause problem or prevent the simulator from running. Please use the add-ons page to setup scenery and aircrft directories, and the &apos;Select data files location&apos; menu item to change the root data directory.</source>
