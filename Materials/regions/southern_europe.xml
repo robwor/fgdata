@@ -621,4 +621,33 @@
     <bumpiness>0.3</bumpiness>
   </material>
 
+  <material>
+    <name>SignificantTrees</name>
+    <texture>Terrain/deciduous1.png</texture>
+    <xsize>1000</xsize>
+    <ysize>1000</ysize>
+    <light-coverage>10000000.0</light-coverage>
+    <wood-coverage>4000.0</wood-coverage>
+    <tree-texture>Trees/mediterranean-mixed.png</tree-texture>
+    <tree-varieties>8</tree-varieties>
+    <tree-height-m>15.0</tree-height-m>
+    <rolling-friction>1</rolling-friction>
+    <bumpiness>1</bumpiness>
+  </material>
+
+  <material>
+    <name>GardenVegetation</name>
+    <texture>Terrain/deciduous1.png</texture>
+    <xsize>1000</xsize>
+    <ysize>1000</ysize>
+    <light-coverage>10000000.0</light-coverage>
+    <wood-coverage>4000.0</wood-coverage>
+    <tree-texture>Trees/mediterranean-mixed.png</tree-texture>
+    <tree-varieties>8</tree-varieties>
+    <tree-height-m>5.0</tree-height-m>
+    <tree-width-m>3.0</tree-width-m>
+    <rolling-friction>1</rolling-friction>
+    <bumpiness>1</bumpiness>
+  </material>
+
 </PropertyList>
