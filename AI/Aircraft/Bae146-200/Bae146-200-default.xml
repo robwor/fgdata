@@ -4,5 +4,5 @@
   <author>Heiko Schulz</author>
   <status>early-production</status>
   <path>Models/bae146-200.ac</path>
-  <texture-path>Textures/default</texture-path>
+  <texture-path>Textures/Default</texture-path>
 </PropertyList>

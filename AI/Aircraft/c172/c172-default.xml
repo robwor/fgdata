@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
-
 <PropertyList>
- <description>c172</description>
- <author>me</author>  
- <path>Models/c172p.ac</path>
- <texture-path>Textures/default</texture-path>
+  <description>c172</description>
+  <author>me</author>
+  <path>Models/c172p.ac</path>
+  <texture-path>Textures/Default</texture-path>
 </PropertyList>

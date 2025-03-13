@@ -1,7 +1,4 @@
 <?xml version="1.0"?>
-
 <PropertyList include="beech-200-main.xml">
-
-  <texture-path>Textures/default</texture-path>
-
-  </PropertyList>
+  <texture-path>Textures/Default</texture-path>
+</PropertyList>

@@ -3,7 +3,5 @@
   <description>McDonnel-Douglas-MD90</description>
   <author>Innis Cunningham</author>
   <path>Models/md-90.ac</path>
-  <texture-path>Textures/default</texture-path>
+  <texture-path>Textures/Default</texture-path>
 </PropertyList>
-
-

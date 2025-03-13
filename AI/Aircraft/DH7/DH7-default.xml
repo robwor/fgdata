@@ -3,5 +3,5 @@
   <description>Dehavilland-Dash-7</description>
   <author>Chuck Dome, Innis Cunningham</author>
   <path>Models/dh7.ac</path>
-  <texture-path>Textures/default</texture-path>
+  <texture-path>Textures/Default</texture-path>
 </PropertyList>

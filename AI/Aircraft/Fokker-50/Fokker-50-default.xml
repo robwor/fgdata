@@ -3,7 +3,7 @@
 <description>Fokker-50</description>
 <author>Erik Hofman</author>
 <path>Models/fokker50.ac</path>
-<texture-path>Textures/default</texture-path>
+<texture-path>Textures/Default</texture-path>
 
 <offsets>
   <z-m>1.25</z-m>
@@ -129,7 +129,7 @@
     <entry><ind>20</ind><dep>0.0</dep></entry>
     <entry><ind>50</ind><dep>10.0</dep></entry>
     <entry><ind>70</ind><dep>20.0</dep></entry>
-    <entry><ind>90</ind><dep>30.0</dep></entry>    
+    <entry><ind>90</ind><dep>30.0</dep></entry>
     <entry><ind>100</ind><dep>20.0</dep></entry>
     <entry><ind>110</ind><dep>10.0</dep></entry>
     <entry><ind>130</ind><dep>0.0</dep></entry>
@@ -157,7 +157,7 @@
     <entry><ind>20</ind><dep>0.0</dep></entry>
     <entry><ind>50</ind><dep>-10.0</dep></entry>
     <entry><ind>70</ind><dep>-20.0</dep></entry>
-    <entry><ind>90</ind><dep>-30.0</dep></entry>    
+    <entry><ind>90</ind><dep>-30.0</dep></entry>
     <entry><ind>100</ind><dep>-20.0</dep></entry>
     <entry><ind>110</ind><dep>-10.0</dep></entry>
     <entry><ind>130</ind><dep>0.0</dep></entry>
@@ -271,7 +271,7 @@
     <entry><ind>0.0</ind><dep>0.0</dep></entry>
     <entry><ind>150</ind><dep>0.0</dep></entry>
     <entry><ind>155</ind><dep>150.0</dep></entry>
-    <entry><ind>160</ind><dep>150.0</dep></entry>    
+    <entry><ind>160</ind><dep>150.0</dep></entry>
   </interpolation>
  <center>
   <x-m>-9.410000</x-m>
@@ -293,7 +293,7 @@
     <entry><ind>0.0</ind><dep>60.0</dep></entry>
     <entry><ind>150</ind><dep>60.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>-0.690000</x-m>
@@ -326,7 +326,7 @@
     <entry><ind>0.0</ind><dep>0.0</dep></entry>
     <entry><ind>150</ind><dep>0.0</dep></entry>
     <entry><ind>155</ind><dep>150.0</dep></entry>
-    <entry><ind>160</ind><dep>150.0</dep></entry>    
+    <entry><ind>160</ind><dep>150.0</dep></entry>
   </interpolation>
  <center>
   <x-m>0.520000</x-m>
@@ -348,7 +348,7 @@
     <entry><ind>0.0</ind><dep>60.0</dep></entry>
     <entry><ind>150</ind><dep>60.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>-0.690000</x-m>
@@ -370,7 +370,7 @@
     <entry><ind>0.0</ind><dep>100.0</dep></entry>
     <entry><ind>150</ind><dep>100.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>-9.500000</x-m>
@@ -392,7 +392,7 @@
     <entry><ind>0.0</ind><dep>100.0</dep></entry>
     <entry><ind>150</ind><dep>100.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>-9.500000</x-m>
@@ -414,7 +414,7 @@
     <entry><ind>0.0</ind><dep>-100.0</dep></entry>
     <entry><ind>150</ind><dep>-100.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>-10.330000</x-m>
@@ -436,7 +436,7 @@
     <entry><ind>0.0</ind><dep>-100.0</dep></entry>
     <entry><ind>150</ind><dep>-100.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>-10.330000</x-m>
@@ -458,7 +458,7 @@
     <entry><ind>0.0</ind><dep>-60.0</dep></entry>
     <entry><ind>150</ind><dep>-60.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>-0.860000</x-m>
@@ -480,7 +480,7 @@
     <entry><ind>0.0</ind><dep>-60.0</dep></entry>
     <entry><ind>150</ind><dep>-60.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>1.050000</x-m>
@@ -502,7 +502,7 @@
     <entry><ind>0.0</ind><dep>60.0</dep></entry>
     <entry><ind>150</ind><dep>60.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>1.050000</x-m>
@@ -524,7 +524,7 @@
     <entry><ind>0.0</ind><dep>60.0</dep></entry>
     <entry><ind>150</ind><dep>60.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>-0.860000</x-m>
@@ -546,7 +546,7 @@
     <entry><ind>0.0</ind><dep>60.0</dep></entry>
     <entry><ind>150</ind><dep>60.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>1.050000</x-m>
@@ -568,7 +568,7 @@
     <entry><ind>0</ind><dep>-60.0</dep></entry>
     <entry><ind>150</ind><dep>-60.0</dep></entry>
     <entry><ind>155</ind><dep>0.0</dep></entry>
-    <entry><ind>160</ind><dep>0.0</dep></entry>    
+    <entry><ind>160</ind><dep>0.0</dep></entry>
   </interpolation>
  <center>
   <x-m>1.050000</x-m>
@@ -596,8 +596,8 @@
     <entry><ind>5</ind><dep>0.1</dep></entry>
     <entry><ind>10</ind><dep>0.5</dep></entry>
     <entry><ind>15</ind><dep>0.8</dep></entry>
-    <entry><ind>30</ind><dep>0.9</dep></entry>    
-    <entry><ind>160</ind><dep>1.0</dep></entry>    
+    <entry><ind>30</ind><dep>0.9</dep></entry>
+    <entry><ind>160</ind><dep>1.0</dep></entry>
   </interpolation>
 </animation>
 
@@ -622,9 +622,9 @@
     <entry><ind>1</ind><dep>50</dep></entry>
     <entry><ind>5</ind><dep>100</dep></entry>
     <entry><ind>10</ind><dep>200</dep></entry>
-    <entry><ind>15</ind><dep>300</dep></entry>    
-    <entry><ind>20</ind><dep>500</dep></entry>    
-    <entry><ind>160</ind><dep>500</dep></entry>    
+    <entry><ind>15</ind><dep>300</dep></entry>
+    <entry><ind>20</ind><dep>500</dep></entry>
+    <entry><ind>160</ind><dep>500</dep></entry>
   </interpolation>
  <center>
   <x-m>-3.530000</x-m>
@@ -652,8 +652,8 @@
     <entry><ind>14</ind><dep>0.01</dep></entry>
     <entry><ind>15</ind><dep>0.05</dep></entry>
     <entry><ind>20</ind><dep>0.3</dep></entry>
-    <entry><ind>30</ind><dep>0.6</dep></entry>    
-    <entry><ind>160</ind><dep>1.0</dep></entry>    
+    <entry><ind>30</ind><dep>0.6</dep></entry>
+    <entry><ind>160</ind><dep>1.0</dep></entry>
   </interpolation>
 </animation>
 
@@ -678,8 +678,8 @@
     <entry><ind>16</ind><dep>0.0</dep></entry>
     <entry><ind>18</ind><dep>-50</dep></entry>
     <entry><ind>20</ind><dep>-250</dep></entry>
-    <entry><ind>30</ind><dep>-500</dep></entry>    
-    <entry><ind>160</ind><dep>-500</dep></entry>    
+    <entry><ind>30</ind><dep>-500</dep></entry>
+    <entry><ind>160</ind><dep>-500</dep></entry>
   </interpolation>
  <center>
   <x-m>-3.530000</x-m>
