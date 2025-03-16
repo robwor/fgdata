@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!--
+This is a legacy file.
+Please use the USB HID event input config in /Input/HID/HoneycombAeronautical/
+-->
+
+<PropertyList>
+  <name>Honeycomb Aeronautical Charlie Rudder Pedal</name>
+</PropertyList>

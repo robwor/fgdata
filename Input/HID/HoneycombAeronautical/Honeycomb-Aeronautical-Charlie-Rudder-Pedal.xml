@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!--
+
+  Copyright (c) 2025 FlightGear Flight Simulator
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!--
+********************************************************************
+*
+* Bindings for Honeycomb Aeronautical Charlie Rudder Pedal
+*
+* HID: descriptor for:Honeycomb Aeronautical Charlie Rudder Pedal_0
+* [INFO]:input bytes: 05 01 09 04 A1 01 05 01 09 01 A1 01 09 30 09 31 09 32 15 00 26 FF 03 95 03 75 10 81 02 C0 C0
+********************************************************************
+-->
+
+<PropertyList>
+  <vendor-id>honeycomb</vendor-id>
+  <model-id>charlie</model-id>
+  <name>Honeycomb Aeronautical Charlie Rudder Pedal</name>
+  <device-dialog>generic-pedals</device-dialog>
+  <debug-events type="bool">false</debug-events>
+  <hid-debug-raw type="bool">false</hid-debug-raw>
+  <event>
+    <desc>Brake left</desc>
+    <name>abs-z-translate</name>
+    <min-range>0</min-range>
+    <max-range>1023</max-range>
+    <binding>
+      <command>property-scale</command>
+      <property>/controls/gear/brake-left</property>
+      <offset>1</offset>
+      <factor>0.5</factor>
+    </binding>
+  </event>
+  <event>
+    <desc>Brake right</desc>
+    <name>abs-y-translate</name>
+    <min-range>0</min-range>
+    <max-range>1023</max-range>
+    <binding>
+      <command>property-scale</command>
+      <property>/controls/gear/brake-right</property>
+      <offset>1</offset>
+      <factor>0.5</factor>
+    </binding>
+  </event>
+  <event>
+    <desc>Rudder</desc>
+    <name>abs-x-translate</name>
+    <min-range>0</min-range>
+    <max-range>1023</max-range>
+    <binding>
+      <command>property-scale</command>
+      <property>/controls/flight/rudder</property>
+    </binding>
+  </event>
+</PropertyList>
