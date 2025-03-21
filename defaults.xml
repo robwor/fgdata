@@ -1146,7 +1146,7 @@ Started September 2000 by David Megginson, david@megginson.com
       <debug type="bool">false</debug>
     </jetways>
     <terrasync preserve="y">
-      <enabled type="bool" userarchive="y">false</enabled>
+      <enabled type="bool" userarchive="y">true</enabled>
       <http-server>automatic</http-server>
         <!-- INTENTIONALLY LEFT BLANK! Do NOT edit.
                 This (empty) value is the initial/default value only. Use command-line option
