@@ -949,7 +949,7 @@ var showWeightDialog = func {
 
     tcell(fuelTable, "text", 0, 0).set("label", "Tank");
     tcell(fuelTable, "text", 0, 3).set("label", "Pounds");
-    tcell(fuelTable, "text", 0, 4).set("label", "Gallons");
+    tcell(fuelTable, "text", 0, 4).set("label", "Gallons (US)");
     tcell(fuelTable, "text", 0, 5).set("label", "Fraction");
 
     var tanks = props.globals.getNode("/consumables/fuel").getChildren("tank");
