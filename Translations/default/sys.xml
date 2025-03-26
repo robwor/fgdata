@@ -41,7 +41,7 @@
 
 
     <!--
-	Temporary feebdack text for initial error-reporting
+	Temporary feedback text for initial error-reporting
     -->
     <error-next-steps>This dialog is work-in-progress. The information included above may not be fully correct, so please check the detailed information below and give feedback if something seems wrong. Please include all the information below, as well as the message above.</error-next-steps>
 
@@ -60,7 +60,7 @@
     <error-category-input-device>The joystick (input device) '%VALUE%' couldn't be loaded correctly. This usually means its configuration file is incorrect.</error-category-input-device>
     <error-category-fgdata>Errors were found loading the core simulator files (FGData). This usually indicates a problem with the installation, or your local disk.</error-category-fgdata>
     <error-category-unknown>Errors occurred in an unknown part of FlightGear. Please report this bug to the FlightGear development team.</error-category-unknown>
-    <error-category-traffic>Problems occured loading simulated aircaft traffic: some traffic may not appear.</error-category-traffic>
+    <error-category-traffic>Problems occurred loading simulated aircraft traffic: some traffic may not appear.</error-category-traffic>
     <error-category-out-of-memory>Allocating memory failed. Some resources will not be loaded. Adjust your settings to reduce view distance or number of objects loaded.</error-category-out-of-memory>
     <error-category-multiplayer>Loading a model for another pilot (via multi-player) failed. The other pilot will appear as a default model. (You can disable these errors from the multiplayer settings dialog)</error-category-multiplayer>
     <error-category-shaders>Problems occurred loading visual effects (shaders). This can cause objects to be invisible or appear incorrect. It can sometimes be fixed by changing rendering settings inside FlightGear, or occasionally, by updating the drivers for your graphics card.</error-category-shaders>
@@ -83,7 +83,7 @@
     <error-dialog-load>Errors loading user-interface</error-dialog-load>
     <error-audio-fx-load>Audio FX description contains errors</error-audio-fx-load>
     <error-xml-load-command>Scripted loading of XML failed</error-xml-load-command>
-    <error-aircraft-systems>Errors occured loading aircraft systems (fuel, electrical, hydrualics)</error-aircraft-systems>
+    <error-aircraft-systems>Errors occurred loading aircraft systems (fuel, electrical, hydraulics)</error-aircraft-systems>
     <error-input-device-config>Errors loading input device configuration</error-input-device-config>
     <error-terraysnc>Errors downloading scenery from TerraSync</error-terraysnc>
 
