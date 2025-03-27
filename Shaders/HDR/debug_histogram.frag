@@ -36,7 +36,7 @@ void main()
             // Get the number of pixels in all bins before this one
             uint prev_pixel_count = 0u;
             for (int i = 1 /* Skip the first bin */; i < current_index; ++i) {
-                prev_pixel_count += texelFetch(histogram_tex, ivec2(i, 0), 0).r;;
+                prev_pixel_count += texelFetch(histogram_tex, ivec2(i, 0), 0).r;
             }
 
             uint total_pixels = histogram_get_total_pixels(histogram_tex);
