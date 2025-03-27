@@ -239,6 +239,12 @@ setlistener("/sim/signals/fdm-initialized", func {
     }, 5);
 });
 
+# Force an update when compositor is reloaded as initial compositor buffer
+# content may be undefined.
+setlistener("/sim/signals/compositor-reload", func {
+    update_envmap(true);
+});
+
 # If the update rate is modified at runtime, force an envmap update and restart
 # the timer with the new period.
 setlistener("/sim/rendering/hdr/envmap/update-rate-s", func(p) {
