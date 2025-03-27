@@ -336,6 +336,21 @@
   </pass>
 
   <!--
+      Reset the previous luminance value once, as the initial undefined value
+      may result in a lengthy wait for exposure to adjust.
+  -->
+  <pass>
+    <name>reset-luminance</name>
+    <type>quad</type>
+    <render-once>true</render-once>
+    <effect>Effects/HDR/reset-luminance</effect>
+    <attachment>
+      <component>color0</component>
+      <buffer>prev-luminance</buffer>
+    </attachment>
+  </pass>
+
+  <!--
       Atmospheric scattering.
   -->
   <pass>
