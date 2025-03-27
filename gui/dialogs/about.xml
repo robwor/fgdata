@@ -244,7 +244,21 @@
   </group>
   
   <hrule/>
-  
+
+
+  <text>
+    <halign>center</halign>
+    <label>Crash reporting</label>
+  </text>
+
+    <text>
+        <halign>left</halign>
+        <label>MMMMMMMMMMMMMMMMMMMM</label>
+        <format>Anonymous user ID: %s</format>
+        <property>/sim/crashreport/sentry-user-id</property>
+      </text>
+    <hrule/>
+
   <group>
     <layout>hbox</layout>
     <halign>fill</halign>
