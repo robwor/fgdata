@@ -218,6 +218,7 @@ Started September 2000 by David Megginson, david@megginson.com
       <photoscenery>
         <enabled type="bool" userarchive="y">false</enabled>
       </photoscenery>
+      <lod-scale type="float" userarchive="y">1.0</lod-scale>
       <filtering type="int">8</filtering>
       <shaders>
         <tessellation type="bool" userarchive="y">false</tessellation>
