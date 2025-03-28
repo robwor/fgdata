@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<PropertyList>
+  <hud>
+    <name>Standard HUD</name>
+    <description>Standard HUD with pitch and roll ladder, compass rose, speed and altitude tapes, and control position indicators.</description>
+    <path>Huds/default-HUD.nas</path>
+  </hud>
+  <hud>
+    <name>Scenery Development HUD</name>
+    <description>HUD intended to assist with scenery development.  Includes lat/lon, latitude, ground elevation, compass indicator and tile path</description>
+    <path>Huds/scenery-HUD.nas</path>
+  </hud>
+</PropertyList>

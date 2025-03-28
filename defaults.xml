@@ -694,40 +694,8 @@ Started September 2000 by David Megginson, david@megginson.com
       <path>Aircraft/Generic/Panels/generic-trans-mini-panel.xml</path>
     </panel_2>
     <hud>
-      <path n="1">Huds/default.xml</path>
-      <path n="2">Huds/NTPS.xml</path>
-      <path n="3">Huds/minimal.xml</path>
-      <path n="4">Huds/developer.xml</path>
-      <!-- new HUD -->
-      <visibility n="1" type="bool">false</visibility>
-      <!-- new HUD -->
-      <font>
-        <name type="string">Helvetica.txf</name>
-        <size type="float">8</size>
-      </font>
-      <current-color type="int">0</current-color>
-      <palette>
-        <color n="0">
-          <!-- day -->
-          <transparent type="bool">true</transparent>
-          <antialiased type="bool">true</antialiased>
-          <brightness type="float">0.85</brightness>
-          <alpha type="float">0.85</alpha>
-          <red type="float">0.38</red>
-          <green type="float">1.0</green>
-          <blue type="float">0.22</blue>
-        </color>
-        <color n="1">
-          <!-- night -->
-          <transparent type="bool">false</transparent>
-          <antialiased type="bool">false</antialiased>
-          <brightness type="float">0.75</brightness>
-          <alpha type="float">0.67</alpha>
-          <red type="float">0.9</red>
-          <green type="float">0.1</green>
-          <blue type="float">0.1</blue>
-        </color>
-      </palette>
+      <hud-list include="Huds/hud-list.xml"/>
+      <visibility type="bool">false</visibility>
     </hud>
     <lon-lat-format type="int" userarchive="y">2</lon-lat-format>
     <systems>

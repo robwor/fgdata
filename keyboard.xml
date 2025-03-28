@@ -1037,16 +1037,16 @@ top down before the key bindings are parsed.
   <desc>HUD Master Switch</desc>
   <binding>
    <command>nasal</command>
-   <script>aircraft.HUD.cycle_color()</script>
+   <script>aircraft.HUD.toggle_visibility()</script>
   </binding>
  </key>
 
  <key n="105">
   <name>i</name>
-  <desc>Normal HUD</desc>
+  <desc>Cycle HUD color scheme</desc>
   <binding>
    <command>nasal</command>
-   <script>aircraft.HUD.normal_type()</script>
+   <script>aircraft.HUD.cycle_color()</script>
   </binding>
  </key>
 

@@ -1153,52 +1153,61 @@ var kias_to_ktas = func(kias, altitude) {
 # ==============================================================================
 #
 var HUD = {
-	init: func {
-		me.vis1N = props.globals.getNode("/sim/hud/visibility[1]", 1);
-		me.currcolN = props.globals.getNode("/sim/hud/current-color", 1);
-		me.currentPathN = props.globals.getNode("/sim/hud/current-path", 1);
-		me.hudN = props.globals.getNode("/sim/hud", 1);
-		me.paletteN = props.globals.getNode("/sim/hud/palette", 1);
-		me.brightnessN = props.globals.getNode("/sim/hud/color/brightness", 1);
-		me.currentN = me.vis1N;
+	init: func() {
+		me.visibleN = props.globals.getNode("/sim/hud/visible", 1);
+		me.hudListN = props.globals.getNode("/sim/hud/hud-list", 1);
+		me.currentHUDIndex = 0;
+		me.currentHUD = nil;
 
-		# keep compatibility with earlier version of FG - hud/path[1] is
-		# the default Hud
-		me.currentPathN.setIntValue(1);
+		# Set up the resize callback to regenerate the current HUD.
+		#canvas.getDesktop().addSizeChangedCallback(load_current_HUD);
 	},
-	cycle_color: func {		# h-key
-		if (!me.currentN.getBoolValue())		# if off, turn on
-			return me.currentN.setBoolValue(1);
+	load_current_HUD: func() {
+		var huds = me.hudListN.getChildren("hud");
+		if ((size(huds) > 0) and huds[me.currentHUDIndex] != nil) {
+			var hud_file = huds[me.currentHUDIndex].getChild("path").getValue();
+			var hud_name = huds[me.currentHUDIndex].getChild("name").getValue();
 
-		var i = me.currcolN.getValue() + 1;		# if through, turn off
-		if (i < 0 or i >= size(me.paletteN.getChildren("color"))) {
-			me.currentN.setBoolValue(0);
-			me.currcolN.setIntValue(0);
-		} else {					# otherwise change color
-			me.currentN.setBoolValue(1);
-			me.currcolN.setIntValue(i);
+			# Path may be relative to FGROOT, or absolute
+			var hud_path = hud_file;
+			if (! io.exists(hud_path)) hud_path = getprop("/sim/fg-root") ~ "/" ~ hud_file;
+
+			if (io.exists(hud_path)) {
+				if (me.currentHUD != nil) {
+					me.currentHUD.del();
+				}
+				io.load_nasal(hud_path, "hud");
+				me.currentHUD = hud.HUD.new();
+			} else {
+				print("Unable to load HUD " ~ hud_name ~ " from " ~ hud_path);
+			}
 		}
 	},
-	cycle_brightness: func {	# H-key
-		me.is_active() or return;
-		var br = me.brightnessN.getValue() - 0.2;
-		me.brightnessN.setValue(br > 0.01 ? br : 1);
-	},
-    normal_type: func {		# i-key
-	    me.currentPathN.setIntValue(1);
-    },
-    cycle_type: func {		# I-key
-	    var i = me.currentPathN.getValue() + 1;
-		if (i < 1 or i > size(me.hudN.getChildren("path"))) {
-		    # back to the start
-			me.currentPathN.setIntValue(1);
+	toggle_visibility: func() { # h-key
+		if (me.currentHUD) {
+			me.currentHUD.set_visibility(! me.visibleN.getBoolValue());
+			me.visibleN.setBoolValue(!me.visibleN.getBoolValue());
 		} else {
-			me.currentPathN.setIntValue(i);
+			# No HUD loaded, so load it.
+			me.load_current_HUD();
 		}
-    },
-	is_active: func {
-		me.vis1N.getValue();
+
+		# TODO - remove this
+		me.load_current_HUD();
 	},
+	cycle_color: func() {		# i-key
+		if (me.currentHUD) me.currentHUD.cycle_color();
+	},
+	cycle_brightness: func() {	# H-key
+		if (me.currentHUD) me.currentHUD.cycle_brightness();
+	},
+    cycle_type: func() {		# I-key
+		me.currentHUDIndex = math.mod(me.currentHUDIndex + 1, size(me.hudListN.getChildren("hud")));
+		me.load_current_HUD();
+    },
+	is_visible: func() {
+		return me.visible.getBoolValue();
+	}
 };
 
 # crossfeed_valve
