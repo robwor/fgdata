@@ -1190,10 +1190,8 @@ var HUD = {
 		} else {
 			# No HUD loaded, so load it.
 			me.load_current_HUD();
+			me.visibleN.setBoolValue(1);
 		}
-
-		# TODO - remove this
-		me.load_current_HUD();
 	},
 	cycle_color: func() {		# i-key
 		if (me.currentHUD) me.currentHUD.cycle_color();
