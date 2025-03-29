@@ -69,7 +69,7 @@ vec3 wingflex_apply_deformation(vec3 pos)
             mat4 rotation_matrix = mat4(
                 pow(normal[0],2)*tmp+cos(rotation_rad),              normal[1]*normal[0]*tmp-normal[2]*sin(rotation_rad), normal[2]*normal[0]*tmp+normal[1]*sin(rotation_rad), 0.0,
                 normal[0]*normal[1]*tmp+normal[2]*sin(rotation_rad), pow(normal[1],2)*tmp+cos(rotation_rad),              normal[2]*normal[1]*tmp-normal[0]*sin(rotation_rad), 0.0,
-                normal[0]*normal[2]*tmp-normal[1]*sin(rotation_rad), normal[1]*normal[2]*tmp+normal[0]*sin(rotation_rad), pow(norma[2],2)*tmp+cos(rotation_rad),               0.0,
+                normal[0]*normal[2]*tmp-normal[1]*sin(rotation_rad), normal[1]*normal[2]*tmp+normal[0]*sin(rotation_rad), pow(normal[2],2)*tmp+cos(rotation_rad),               0.0,
                 0.0,                                                 0.0,                                                 0.0,                                                 1.0);
             vec4 old_point;
             old_point[0] = pos.x;
