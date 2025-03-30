@@ -20,7 +20,7 @@ Contents ----------------------------------------------------------------------
    3.8  RAILWAY_ROUGH / RAILWAY_DETAILED
    3.9  BUILDING_LIST
    3.10 TREE_LIST
-   3.11 LINEAR_FEATURE_LIST
+   3.11 LINE_FEATURE_LIST
    3.12 OBJECT_LIGHT
    3.13 LIGHT_LIST
    3.14 OBJECT_INSTANCED
@@ -505,7 +505,7 @@ Where:
 - X,Y,Z are the cartesian coordinates of the tree. +X is South, +Y is East
 - A,B,C is optional and represents the normal of the underlying terrain.  Used for shadows.  Defaults to (0,0,1)
 
-3.11  LINEAR_FEATURE_LIST
+3.11  LINE_FEATURE_LIST
 -------------------------
 
 Defines a file containing a set of linear feature that should be rendered using a
@@ -513,11 +513,11 @@ particular Material.  E.g. Road, Waterways
 
 Example:
 
-  LINEAR_FEATURE_LIST roads.txt Road
+  LINE_FEATURE_LIST roads.txt Road
 
 Syntax
 
-  LINEAR_FEATURE_LIST <filename> <material name>
+  LINE_FEATURE_LIST <filename> <material name>
 
 Where:
 - <filename> is the name of a file containing linear feature positions.  May be a .txt or
