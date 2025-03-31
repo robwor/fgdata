@@ -41,6 +41,17 @@ create-test-data:
     paths:
       - $TEST_DATA_DIR
 
+validate-shaders:
+  stage: test
+  before_script:
+    # grab the script from FGMeta
+    # note we don't clone submodules so this is tiny
+    git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/flightgear/fgmeta
+
+  script:
+    PYTHONPATH="$CI_PROJECT_DIR/fgmeta/python3-flightgear" 
+    ./fgmeta/fg-validate-shaders $CI_PROJECT_DIR
+
 # all the files from FGData which we bunlde with the application / image
 # installers. Keep this small since this impacts file mirrors, code-signing, 
 # etc.
