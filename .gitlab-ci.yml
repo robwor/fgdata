@@ -34,14 +34,15 @@ create-test-data:
 validate-shaders:
   stage: test
   image: registry.gitlab.com/flightgear/flightgear
-  allow_failure: true
+  allow_failure:
+    exit_codes: 2 # warnings
   before_script:
     # grab the script from FGMeta
     # note we don't clone submodules so this is tiny
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/flightgear/fgmeta
   script:
     - export PYTHONPATH="$CI_PROJECT_DIR/fgmeta/python3-flightgear" 
-    - ./fgmeta/fg-validate-shaders $CI_PROJECT_DIR
+    - ./fgmeta/fg-validate-shaders $CI_PROJECT_DIR || exit $!
 
 # all the files from FGData which we bunlde with the application / image
 # installers. Keep this small since this impacts file mirrors, code-signing, 
