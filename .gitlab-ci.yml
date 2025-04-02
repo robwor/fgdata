@@ -39,7 +39,6 @@ validate-shaders:
     # grab the script from FGMeta
     # note we don't clone submodules so this is tiny
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/flightgear/fgmeta
-    - ls
   script:
     - export PYTHONPATH="$CI_PROJECT_DIR/fgmeta/python3-flightgear" 
     - ./fgmeta/fg-validate-shaders $CI_PROJECT_DIR
