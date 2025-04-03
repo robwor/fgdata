@@ -42,7 +42,7 @@ validate-shaders:
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/flightgear/fgmeta
   script:
     - export PYTHONPATH="$CI_PROJECT_DIR/fgmeta/python3-flightgear" 
-    - ./fgmeta/fg-validate-shaders $CI_PROJECT_DIR || exit $!
+    - ./fgmeta/fg-validate-shaders $CI_PROJECT_DIR || exit $?
 
 # all the files from FGData which we bunlde with the application / image
 # installers. Keep this small since this impacts file mirrors, code-signing, 
