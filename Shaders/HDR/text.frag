@@ -37,7 +37,7 @@ float logdepth_encode(float z);
 
 void main()
 {
-    float alpha = texture(glyph_tex, fs_in.texcoord).a;
+    float alpha = texture(glyph_tex, fs_in.texcoord).r;
 
     vec3 N = normalize(fs_in.vertex_normal);
     vec3 V = normalize(-fs_in.view_vector);
