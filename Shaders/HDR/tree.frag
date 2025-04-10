@@ -84,7 +84,7 @@ void main()
         N.x = 1.0 - N.x;
     }
     N = N * 2.0 - 1.0;
-    // // This is exact only for viewing under 90 degrees
+    // This is exact only for viewing under 90 degrees
     N = normalize(N.x * tangent + N.y * fs_in.vs_up + N.z * normal);
 
     gbuffer_pack_pbr_dither(N, color, 0.0, 1.0, 1.0, vec3(0.0), texel.a);

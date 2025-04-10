@@ -59,7 +59,7 @@ void main()
     vs_out.texcoord.y = vs_out.texcoord.y + 0.25 * step(snow_level, instancePosition.z) + 0.5 * season;
 
     // scaling
-    float scale = (rand_1d(instancePosition.x) + rand_1d(instancePosition.y))/2.0f + 0.5f;
+    float scale = (rand_1d(instancePosition.x) + rand_1d(instancePosition.y)) * 0.5 + 0.5;
     vec3 position = pos.xyz * normal.xxy * scale;
 
     // Rotation of the generic quad to specific one for the tree.
