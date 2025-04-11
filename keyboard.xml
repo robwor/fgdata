@@ -367,6 +367,11 @@ top down before the key bindings are parsed.
     </binding>
    </mod-up>
   </mod-shift>
+  <mod-ctrl>
+   <binding>
+    <command>vr-recenter</command>
+   </binding>
+  </mod-ctrl>
  </key>
 
  <key n="33">
