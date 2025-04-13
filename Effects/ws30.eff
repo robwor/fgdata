@@ -111,6 +111,7 @@
       </texture-unit>
 
       <!-- texture unit 7 direct from VPBBuilder.cxx -->
+      <!-- texture unit 8 direct from VPBBuilder.cxx -->
 
       <program>
         <vertex-shader>Shaders/HDR/ws30_old.vert</vertex-shader>
@@ -144,9 +145,15 @@
         <value type="int">6</value>
       </uniform>
       <uniform>
-        <name>coastline</name>
+        <name>coastlineTexture</name>
         <type>sampler-2d</type>
         <value type="int">7</value>
+      </uniform>
+
+      <uniform>
+        <name>waterTexture</name>
+        <type>sampler-2d</type>
+        <value type="int">8</value>
       </uniform>
 
       <!-- Procedural texturing uniforms -->

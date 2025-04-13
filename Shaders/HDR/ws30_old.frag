@@ -40,11 +40,12 @@ in VS_OUT {
 } fs_in;
 
 // Samplers
-uniform sampler2D landclass;
+uniform sampler2D landclassTexture;
 uniform sampler2DArray textureArray;
 uniform sampler2D perlin;
 // Coastline texture - generated from VPBTechnique
-uniform sampler2D coastline;
+uniform sampler2D coastlineTexture;
+uniform sampler2D waterTexture;
 
 // Procedural texturing uniforms
 uniform float eye_alt;
@@ -256,8 +257,8 @@ void main()
     if (fg_photoScenery) {
         // The photoscenery orthophotos are stored in the landclass texture
         // and use normalised tile coordinates
-        texel = texture(landclass, vec2(tile_coord.s, 1.0 - tile_coord.t));
-        water_lc = (texture(coastline, vec2(tile_coord.s, tile_coord.t)).r > 0.1);
+        texel = texture(landclassTexture, vec2(tile_coord.s, 1.0 - tile_coord.t));
+        water_lc = (texture(waterTexture, vec2(tile_coord.s, tile_coord.t)).r > 0.1);
 
         // Do not attempt any mixing
         flag = 0;
@@ -265,15 +266,15 @@ void main()
     } else {
         // Lookup the base texture texel for this fragment and any neighbors, with mixing
         texel = ws30_get_mixed_texel(0, fs_in.ground_texcoord, lc, num_unique_neighbors, lc_n, mfact, dxdy_gc);
-        water_lc = texture(landclass, vec2(tile_coord.s, tile_coord.t)).b > 0.5;
+        water_lc = texture(landclassTexture, vec2(tile_coord.s, tile_coord.t)).b > 0.5;
     }
 
     // The coastline BLUE channel provides a higher detail level for waters.
     // The coastline GREEN channel provides a steepness modified that is used
     // so that rivers and lakes are displayed with water on more angled
     // surfaces. Otherwise rivers tend to just be sand, as they flow downhill.
-    float steepness_modifier = texture(coastline, tile_coord).g * 0.1;
-    bool water = water_lc || texture(coastline, tile_coord).b > 0.05;
+    float steepness_modifier = texture(coastlineTexture, tile_coord).g * 0.1;
+    bool water = water_lc || texture(coastlineTexture, tile_coord).b > 0.05;
     if (water && (fs_in.steepness + steepness_modifier < WATER_START)) {
         // For water surfaces that are simply too steep to be plausible we look
         // for an adjacent landclass and mix it with a possible shoreline.

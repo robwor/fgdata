@@ -208,7 +208,7 @@ const int tex_lookup_type = 0;
 // Uniforms used by landclass search functions.
 // If any uniforms change name or form, remember to update here and in fragment shaders.
 
-uniform sampler2D landclass;
+uniform sampler2D landclassTexture;
 uniform sampler2DArray textureArray;
 uniform sampler2D perlin;
 
@@ -498,7 +498,7 @@ vec4 ws30_get_mixed_texel(in int texture_type,
 int read_landclass_id(vec2 tile_coord)
 {
     int lc;
-    if (landclass_source == 0) lc = (int(texture(landclass, tile_coord.st).g * 255.0 + 0.5));
+    if (landclass_source == 0) lc = (int(texture(landclassTexture, tile_coord.st).g * 255.0 + 0.5));
     else lc = (get_random_landclass(tile_coord.st, tile_size));
     return lc;
 }
@@ -506,8 +506,8 @@ int read_landclass_id(vec2 tile_coord)
 // Landclass sources: texture or random
 ivec2 read_landclass_id_and_water(vec2 tile_coord)
 {
-    int lc = int(texture(landclass, tile_coord.st).g * 255.0 + 0.5);
-    return ivec2(lc, (texture(landclass, tile_coord.st).b > 0.9) ? 1 : 0);
+    int lc = int(texture(landclassTexture, tile_coord.st).g * 255.0 + 0.5);
+    return ivec2(lc, (texture(landclassTexture, tile_coord.st).b > 0.9) ? 1 : 0);
 }
 
 int read_landclass_id_non_pixelated(vec2 tile_coord, const float landclass_texel_size_m)
@@ -586,7 +586,7 @@ int lookup_landclass_id(in vec2 tile_coord,
 
         // Landclass texture dimensions, in texels - Needs glsl 1.30+
         // Probably best to just send as uniforms if texture sizes don't vary, or are fixed per terrain LoD level.
-        vec2 texture_dim_tx = vec2(textureSize(landclass, 0));
+        vec2 texture_dim_tx = vec2(textureSize(landclassTexture, 0));
 
         // Coordinates of current fragment, in texels
         vec2 c0_tx = c0 * texture_dim_tx;
