@@ -434,7 +434,7 @@
             </group>
 
             <textbox>
-                <name>basic description</name>
+                <name>basic-description</name>
                 <halign>fill</halign>
                 <valign>fill</valign>
                 <stretch>true</stretch>

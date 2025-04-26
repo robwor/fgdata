@@ -55,6 +55,7 @@ loadWidget("ScrollArea");
 loadWidget("Slider");
 loadWidget("Switch");
 loadWidget("TabWidget");
+loadWidget("TextBox");
 loadWidget("WindowButton");
 
 # standard dialogs

@@ -81,6 +81,7 @@ DefaultStyle.widgets.button = {
     var min_width = text ? math.max(80, me._label.maxWidth() + 16) : 28;
     model.setLayoutMinimumSize([min_width, 28]);
     model.setLayoutSizeHint([min_width, 28]);
+    model.setLayoutMaximumSize([1024, 28]);
 
     return me;
   },
@@ -194,6 +195,7 @@ DefaultStyle.widgets.checkbox = {
     var min_width = me._label.maxWidth() + 3 + 28;
     model.setLayoutMinimumSize([min_width, 28]);
     model.setLayoutSizeHint([min_width, 28]);
+    model.setLayoutMaximumSize([1024, 28]);
 
     return me;
   },
@@ -294,6 +296,7 @@ DefaultStyle.widgets["radio-button"] = {
     var min_width = 3 + 18 + 3 + (text ? me._label.maxWidth() : 0);
     model.setLayoutMinimumSize([min_width, 28]);
     model.setLayoutSizeHint([min_width, 28]);
+    model.setLayoutMaximumSize([MAX_SIZE, 28]);
 
     return me;
   },
@@ -376,6 +379,11 @@ DefaultStyle.widgets.label = {
     me._text.setVisible(1);
 
     var hfw_func = nil;
+
+    # this implies no clipping of long strings, 
+    # which breaks BoxLayout when we overflow.
+    # might need to consider an different algorithm in BoxLayout 
+    # when min-width is too big
     var min_width = me._text.maxWidth() + 4;
     var width_hint = min_width;
 
@@ -387,6 +395,10 @@ DefaultStyle.widgets.label = {
       # prefer approximately quadratic text blocks
       if( width_hint > 24 )
         width_hint = int(math.sqrt(width_hint * 24));
+
+        model.setLayoutMaximumSize([width_hint, width_hint]);
+    } else {
+        model.setLayoutMaximumSize([MAX_SIZE, 28]);
     }
 
     model.setHeightForWidthFunc(hfw_func);
@@ -534,6 +546,7 @@ DefaultStyle.widgets["line-edit"] = {
   _updateLayoutSizes: func(model) {
     model.setLayoutMinimumSize([100, 28]);
     model.setLayoutSizeHint([model._MAX_SIZE, 28]);
+    model.setLayoutMaximumSize([MAX_SIZE, 28]);
   },
   update: func(model)
   {
@@ -868,6 +881,28 @@ DefaultStyle.widgets.rule = {
 
     return me;
   },
+
+  _updateLayout: func(model)
+  {
+    var minLayoutSize = 40;
+    var lineWidth = 4;
+
+    if( me['_text'] != nil ) {
+      minLayoutSize =  me._text.maxWidth() + 40;
+      lineWidth = 28; # text height
+    }
+
+    if (me._isVertical ) {
+      model.setLayoutMinimumSize([lineWidth, minLayoutSize]);
+      model.setLayoutSizeHint([lineWidth, MAX_SIZE]);
+      model.setLayoutMaximumSize([lineWidth, MAX_SIZE]);
+    } else {
+      model.setLayoutMinimumSize([minLayoutSize, lineWidth]);
+      model.setLayoutSizeHint([MAX_SIZE, lineWidth]);
+      model.setLayoutMaximumSize([MAX_SIZE, lineWidth]);
+    }
+  },
+
   setText: func(model, text)
   {
     if( text == nil or size(text) == 0 )
@@ -886,9 +921,6 @@ DefaultStyle.widgets.rule = {
     me._createElement("text", "text")
       .setText(text);
 
-    var width_hint =  me._text.maxWidth() + 40;
-
-
     var bgColor = me._style.getColor("fg_color");
     var shadowColor = me._style.getColor("fg_color_shadow");
 
@@ -901,14 +933,15 @@ DefaultStyle.widgets.rule = {
             .set("stroke", shadowColor)
             .set("stroke-width", 1);
 
-    model.setLayoutMinimumSize([40, 28]);
-    # TODO mark as expanding?
-    model.setLayoutSizeHint([width_hint, 28]);
+    me._updateLayout(model);
 
     return me.update(model);
   },
+
   update: func(model)
   {
+    me._updateLayout(model);
+
     # different color if disabled?
     if( me['_text'] != nil )
     {
@@ -970,8 +1003,12 @@ DefaultStyle.widgets.slider = {
             .set("alignment", "center-top");
   },
 
-  _updateLayoutSizes: func(model) {
+  _updateLayoutSizes: func(model) 
+  {
   	me.update(model);
+
+    # TODO handle vertical sliders in the future
+
     var h = me._thumb.imageSize()[1] + 6;
     if (model._valueDisplayPosition != model.ValuePosition.None) {
       h += me._style.getSize("slider-value-font-size", me._style.getSize("base-font-size")) +
@@ -991,6 +1028,7 @@ DefaultStyle.widgets.slider = {
     preferredWidth = math.max(preferredWidth, minSz[0]);
 
     model.setLayoutSizeHint([preferredWidth, h]);
+    model.setLayoutMaximumSize([MAX_SIZE, h]);
   },
 
   setNormValue: func(model, normValue)
@@ -1510,6 +1548,7 @@ DefaultStyle.widgets["combo-box"] = {
     var min_width = math.max(80, inset + me._label.maxWidth() + inset + me._arrowIcon.imageSize()[0] + inset);
     model.setLayoutMinimumSize([min_width, 28]);
     model.setLayoutSizeHint([min_width, 28]);
+    model.setLayoutSizeHint([MAX_SIZE, 28]);
 
     return me;
   },
@@ -1628,3 +1667,104 @@ DefaultStyle.widgets.list = {
 	},
 };
 
+# A label
+DefaultStyle.widgets["text-box"] = {
+  new: func(parent, cfg)
+  {
+    me._root = parent.createChild("group", "label");
+    me._bg = me._root.createChild("path", "bg")
+            .setVisible(0);
+    me._text = me._root.createChild("text", "text")
+            .set("font", "LiberationFonts/LiberationSans-Regular.ttf")
+            .set("character-size", 14)
+            .set("alignment", "left-baseline")
+            .setVisible(0);
+  },
+  setSize: func(model, w, h)
+  {
+    me._bg.reset().rect(0, 0, w, h);
+    if (model._text_align == "left") {
+      me._text.set("alignment", "left-baseline");
+      me._text.setTranslation(2, 2 + h / 2);
+    } elsif (model._text_align == "center") {
+      me._text.set("alignment", "center-baseline");
+      me._text.setTranslation(2 + w / 2, 2 + h / 2)
+    } elsif (model._text_align == "right") {
+      me._text.set("alignment", "right-baseline");
+      me._text.setTranslation(w - 2, 2 + h / 2);
+    }
+
+    # always word-wrap
+    me._text.set("max-width", w - 4);
+    return me;
+  },
+  setText: func(model, text)
+  {
+    if (!isstr(text) or size(text) == 0) {
+      model.setHeightForWidthFunc(nil);
+      me._text.setVisible(0);
+      return me;
+    }
+
+    me._text.setText(text);
+    me._text.setVisible(1);
+
+    var m = me;
+    var hfw_func = func(w) m.heightForWidth(w);
+    var min_width = 32;
+
+    # prefer approximately quadratic text blocks
+    var width_hint = me._text.maxWidth() + 4;
+    width_hint = int(math.sqrt(width_hint * 24));
+
+    logprint(LOG_INFO, "Textbox width hint is:", width_hint);
+
+    model.setHeightForWidthFunc(hfw_func);
+    model.setLayoutMinimumSize([min_width, 28]);
+    model.setLayoutSizeHint([width_hint, 28]);
+
+    return me.update(model);
+  },
+  # @description Set or clear the background color
+  # @param bg scalar CSS color or 'none'
+  setBackground: func(model, bg)
+  {
+    if (bg == nil or bg == "none") {
+      me._bg.setVisible(0);
+      return me;
+    }
+
+    me._bg.setVisible(1);
+    me._bg.set("fill", bg);
+    return me;
+  },
+  setFont: func(model, path) {
+    if (path != nil) {
+      me._text.setFont(path);
+    } else {
+      me._text.setFont(me._style.getFont("default"));
+    }
+    me.setText(model, me._text.get("text"));
+  },
+  setColor: func(model, color) {
+    if (color == nil) {
+      color = me._style.getColor("fg_color");
+    }
+    me._text.set("fill", color);
+  },
+  heightForWidth: func(w)
+  {
+    if (!me._text.getVisible()) {
+      return -1;
+    }
+
+    return math.max(14, me._text.heightForWidth(w - 4));
+  },
+  update: func(model)
+  {
+    if (me._text.getVisible() and model._color == nil) {
+      var color_name = model._windowFocus() ? "fg_color" : "backdrop_fg_color";
+      me._text.set("fill", me._style.getColor(color_name));
+    }
+  },
+};

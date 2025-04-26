@@ -14,6 +14,13 @@ var XMLDialog = {
         var d = me.dialog();
         var sz = [d.width, d.height];
         me._window = canvas.Window.new(sz, "dialog", d.name);
+        me._sizeToContents = 0;
+
+        logprint(LOG_INFO, "Dialog size is:", d.width, d.height);
+        if ((d.width == 0) or (d.height == 0)) {
+            logprint(LOG_INFO, "Dialog will resize to fit contents");
+            me._sizeToContents = 1;
+        }
 
         # FIXME: lookup translated dialog name, this is the
         # key string here
@@ -32,6 +39,13 @@ var XMLDialog = {
         ourCanvas.set("background", canvas.style.getColor("bg_color"));
         var rootCanvasGroup = ourCanvas.createGroup();
 
+        if (me._sizeToContents) {
+            var rootLayout = rootObject.layoutItem();
+            var szh = rootLayout.sizeHint();
+            logprint(LOG_INFO, "Setting window size to hint:", szh[0], szh[1]);
+            me._window.setSize(szh);
+        }
+
         # get the root XMLObject, almost certainly a container of
         # some kind. (eg frame / group / scroll area)
         var rootObject = me.dialog().root;
@@ -40,6 +54,14 @@ var XMLDialog = {
         # until we are made visible to make things more efficient/lazy
         rootObject.show(rootCanvasGroup);
         ourCanvas.setLayout(rootObject.layoutItem());
+
+
+        var rootLayout = rootObject.layoutItem();
+        var szh = rootLayout.sizeHint(); 
+        var minsz = rootLayout.minimumSize(); 
+
+        logprint(LOG_INFO, "Dialog root layout size hint:", szh[0], ",", szh[1]);
+        logprint(LOG_INFO, "Dialog root layout min size:", minsz[0], ",", minsz[1]);
     },
 
     # this is the callback from the canvas.Window: we request a close of
@@ -69,7 +91,7 @@ var XMLDialog = {
 
     onClose: func
     {
-        logprint(LOG_WARN, "XMLDialog closed");
+        logprint(LOG_INFO, "XMLDialog closed");
 
         # call the base canvas.Window delete method, not
         # our wrapper above.
@@ -185,6 +207,13 @@ var XMLObjectBase =
         }
 
         if (ghosttype(l) == "canvas.Widget") {
+            if (compatWidgetSizeHint) {
+                logprint(LOG_INFO, me.name, ": Compat widget: setting hint to min size:", debug.string(l.minimumSize()));
+                # old PUI layout code uses minimum size as the hint for many simple
+                # widgets such as buttons and labels
+                l.setSizeHint(l.minimumSize());
+            }
+
             var fixedWidth = me._configValue("width");
             var fixedHeight = me._configValue("height");
             if (fixedWidth or fixedHeight) {
@@ -202,6 +231,7 @@ var XMLObjectBase =
                 }
                 l.setMaximumSize(maxSize);
                 l.setMinimumSize(minSize);
+                logprint(LOG_INFO, me.name, ": Fixed size widget,", debug.string(minSize));
             }
 
             var prefWidth = me._configValue("pref-width");
@@ -218,15 +248,11 @@ var XMLObjectBase =
                     maxSize[1] = prefHeight;
                 }
 
-                l.setLayoutSizeHint(hint);
-                l.setLayoutMinimumSize(hint);
-                l.setLayoutMaximumSize(maxSize);
-            }
+                l.setSizeHint(hint);
+                l.setMaximumSize(maxSize);
 
-            if (compatWidgetSizeHint) {
-                # old PUI layout code uses minimum size as the hint for many simple
-                # widgets such as buttons and labels
-                l.setLayoutSizeHint(l.minimumSize());
+                #logprint(LOG_INFO, me.name, ": Setting widget size hint to:", debug.string(hint));
+                #logprint(LOG_INFO, me.name, ": Setting widget max size to:", debug.string(maxSize));
             }
         } else {
             # layout item is not a NasalWidget, so lacks public
@@ -742,6 +768,46 @@ var XMLList = {
     },
 };
 
+var XMLText =
+{
+    show: func(viewParent)
+    {
+        me._view = cwidgets.TextBox.new(viewParent, canvas.style, {});
+        
+        # copy initial visiblity
+        me._view.visible = me.visible;
+
+        me._label = me._configValue("label");
+        me._format = me._configValue("format");
+        me._layout = me._view;
+        me._applyLayoutConfig(true);
+        me.update();
+
+        return me._view;
+    },
+
+    update: func() {
+        me.valueChanged();
+    },
+
+    valueChanged: func()
+    {
+        if (me._view == nil) {
+            return;
+        }
+
+        var v = me.value;
+        if (v == nil) {
+            v = me._label;
+        }
+        if (me._format) {
+            me._view.setText(sprintf(me._format, v));
+        } else {
+            me._view.setText(v);
+        }
+    }
+};
+
 var _createCompatObjectLookupHash = {
     "button": XMLButton,
     "checkbox": XMLCheckbox,
@@ -756,6 +822,7 @@ var _createCompatObjectLookupHash = {
     "list": XMLList,
     "text": XMLLabel,
     "radio": XMLRadioButton,
+    "textbox": XMLText
 };
 
 # this is the callback function invoked by C++ to build Nasal peers

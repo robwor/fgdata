@@ -718,10 +718,20 @@
 		<item>
 			<name>reload-gui</name>
 			<binding>
+                <command>nasal-reload</command>
+                <module>canvas</module>
+            </binding>
+			<binding>
+                <command>nasal-reload</command>
+                <module>gui</module>
+            </binding>
+			<binding>
 				<command>reinit</command>
 				<subsystem>gui</subsystem>
 			</binding>
 		</item>
+
+         
 
 		<item>
 			<name>reload-input</name>
