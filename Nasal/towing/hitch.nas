@@ -2,7 +2,7 @@
 #			TOWING NASAL CODE
 #
 #		original version by D-NXKT up to version 30.12.2014
-#		updates by Bea Wolf and D-NXKT, version 12/2023
+#		updates by Bea Wolf and D-NXKT, version 04/2025
 #
 #
 # Purpose of this routine:
@@ -175,7 +175,7 @@
 # 4. Set optional properties:
 #
 # Only aircraft-specific properties should be set by the aircraft. All other options can be adjusted by the
-# winch GUI dialog and are stored by this script itself (TODO)
+# winch GUI dialog and are stored by this script itself
 #
 # Aircraft-specific properties are
 #	* weak link (aerotow/winch)
@@ -271,52 +271,72 @@ var check_or_create = func ( name, value, type ) {
 
 #	Load stored settings
 var config_file = getprop("/sim/fg-home") ~ "/Export/hitch-config.xml";
+if( io.stat( config_file ) != nil ){
+	var config_properties = io.read_properties( config_file );
+	var config_file_valid = 1;
+} else {
+	var config_file_valid = 0;
+}
 
-var load_prop = func( property, cnfg_p ){
-	if( cnfg_p != nil ){
-		property.setValue( cnfg_p.getValue() );
+var new_config_property = func( path, value, type, cfg_p ){
+	var p = getprop( path );
+	if( p != nil ){ # the property has been set by either aircraft-set.xml or stored aircraft-data
+		# print( "Load from aircraft-set.xml or stored aircraft-data "~ path);
+		return props.globals.getNode( path );
+	} else {
+		# print( "initialize property "~ path );
+		p = props.globals.initNode( path, value, type ); # initialize property with default values
+		if( config_file_valid ){
+			var cnfg_node = config_properties.getNode( cfg_p );
+			if( cnfg_node != nil ){
+				# If there is a valid saved configuration (Export/hitch-config.xml) for this property, load it
+				# print( "Load from global configuration "~ path );
+				p.setValue( cnfg_node.getValue() );
+			}
+		}
+		return p;
 	}
 }
 
 var config = {
 	aerotow: {
-		elastic_constant:	props.globals.initNode("sim/hitches/aerotow/tow/elastic-constant", 9111.0, "DOUBLE"), # saved in config
-		weight_per_m_kg_m:	props.globals.initNode("sim/hitches/aerotow/tow/weight-per-m-kg-m", 0.35, "DOUBLE"), # saved in config
-		length:				props.globals.initNode("sim/hitches/aerotow/tow/length", 60.0, "DOUBLE"), # saved in config
-		path_to_model:		props.globals.initNode("sim/hitches/aerotow/rope/path_to_model", "Models/Aircraft/towropes.xml", "STRING"), # saved in config
-		rope_diameter_mm:	props.globals.initNode("sim/hitches/aerotow/rope/rope-diameter-mm", 20.0, "DOUBLE"), # saved in config
+		elastic_constant:		new_config_property("sim/hitches/aerotow/tow/elastic-constant", 9111.0, "DOUBLE", "aerotow/elastic-constant"),
+		weight_per_m_kg_m:	new_config_property("sim/hitches/aerotow/tow/weight-per-m-kg-m", 0.35, "DOUBLE", "aerotow/weight-per-m-kg-m"),
+		length:			new_config_property("sim/hitches/aerotow/tow/length", 60.0, "DOUBLE", "aerotow/length"),
+		path_to_model:		new_config_property("sim/hitches/aerotow/rope/path_to_model", "Models/Aircraft/towropes.xml", "STRING", "aerotow/path_to_model"),
+		rope_diameter_mm:		new_config_property("sim/hitches/aerotow/rope/rope-diameter-mm", 20.0, "DOUBLE", "aerotow/rope-diameter-mm"), 
 	},
 	winch: {
-		elastic_constant:	props.globals.initNode("sim/hitches/winch/tow/elastic-constant", 40001.0, "DOUBLE"), # saved in config
-		weight_per_m_kg_m:	props.globals.initNode("sim/hitches/winch/tow/weight-per-m-kg-m", 0.1, "DOUBLE"), # saved in config
-		initial_tow_length:	props.globals.initNode("sim/hitches/winch/winch/initial-tow-length-m", 1000.0, "DOUBLE"), # saved in config
-		path_to_model:		props.globals.initNode("sim/hitches/winch/rope/path_to_model", "Models/Aircraft/towropes.xml", "STRING"), # saved in config
-		rope_diameter_mm:	props.globals.initNode("sim/hitches/winch/rope/rope-diameter-mm", 20.0, "DOUBLE"), # saved in config
+		elastic_constant:		new_config_property("sim/hitches/winch/tow/elastic-constant", 40001.0, "DOUBLE", "winch/elastic-constant"),
+		weight_per_m_kg_m:	new_config_property("sim/hitches/winch/tow/weight-per-m-kg-m", 0.1, "DOUBLE", "winch/weight-per-m-kg-m"),
+		initial_tow_length:	new_config_property("sim/hitches/winch/winch/initial-tow-length-m", 1000.0, "DOUBLE", "winch/initial-tow-length-m"),
+		path_to_model:		new_config_property("sim/hitches/winch/rope/path_to_model", "Models/Aircraft/towropes.xml", "STRING", "winch/path_to_model"),
+		rope_diameter_mm:		new_config_property("sim/hitches/winch/rope/rope-diameter-mm", 20.0, "DOUBLE", "winch/rope-diameter-mm"),
 
 		rope_breakage: {
-			height:		props.globals.initNode("sim/hitches/winch/breakage/height", 100.0, "DOUBLE"), # saved in config
-			random:		props.globals.initNode("sim/hitches/winch/breakage/random", 0, "BOOL"), # saved in config
+			height:		new_config_property("sim/hitches/winch/breakage/height", 100.0, "DOUBLE", "winch/breakage/height"),
+			random:		new_config_property("sim/hitches/winch/breakage/random", 0, "BOOL", "winch/breakage/random"),
 		},
 		loss_of_power: {
-			height:		props.globals.initNode("sim/hitches/winch/loss-of-power/height", 100.0, "DOUBLE"), # saved in config
-			random:		props.globals.initNode("sim/hitches/winch/loss-of-power/random", 0, "BOOL"), # saved in config
+			height:		new_config_property("sim/hitches/winch/loss-of-power/height", 100.0, "DOUBLE", "winch/loss-of-power/height"),
+			random:		new_config_property("sim/hitches/winch/loss-of-power/random", 0, "BOOL", "winch/loss-of-power/random"),
 		},
-		max_tow_length_m:	props.globals.initNode("sim/hitches/winch/winch/max-tow-length-m", 1500.0, "DOUBLE"), # saved in config
-		max_spool_speed:	props.globals.initNode("sim/hitches/winch/winch/max-spool-speed-m-s", 40.0, "DOUBLE"), # saved in config
+		max_tow_length_m:		new_config_property("sim/hitches/winch/winch/max-tow-length-m", 1500.0, "DOUBLE", "winch/max-tow-length-m"),
+		max_spool_speed:		new_config_property("sim/hitches/winch/winch/max-spool-speed-m-s", 40.0, "DOUBLE", "winch/max-spool-speed-m-s"),
 
-		force_acceleration:	props.globals.initNode("sim/hitches/winch/winch/force-acceleration-N-s", 1000.0, "DOUBLE"), # saved in config
-		spool_acceleration:	props.globals.initNode("sim/hitches/winch/winch/spool-acceleration-m-s-s", 8.0, "DOUBLE"), # saved in config
+		force_acceleration:	new_config_property("sim/hitches/winch/winch/force-acceleration-N-s", 1000.0, "DOUBLE", "winch/force-acceleration-N-s"),
+		spool_acceleration:	new_config_property("sim/hitches/winch/winch/spool-acceleration-m-s-s", 8.0, "DOUBLE", "winch/spool-acceleration-m-s-s"),
 
-		max_unspool_speed:	props.globals.initNode("sim/hitches/winch/winch/max-unspool-speed-m-s", 40.0, "DOUBLE"), # saved in config
-		max_force:			props.globals.initNode("sim/hitches/winch/winch/max-force-N", 10000.0, "DOUBLE"), # saved in config
-		max_power:			props.globals.initNode("sim/hitches/winch/winch/max-power-kW", 123.0, "DOUBLE"), # saved in config
-		magic_constant:		props.globals.initNode("sim/hitches/winch/winch/magic-constant", 500.0, "DOUBLE"), # saved in config
+		max_unspool_speed:	new_config_property("sim/hitches/winch/winch/max-unspool-speed-m-s", 40.0, "DOUBLE", "winch/max-unspool-speed-m-s"),
+		max_force:			new_config_property("sim/hitches/winch/winch/max-force-N", 10000.0, "DOUBLE", "winch/max-force-N"),
+		max_power:			new_config_property("sim/hitches/winch/winch/max-power-kW", 123.0, "DOUBLE", "winch/max-power-kW"),
+		magic_constant:		new_config_property("sim/hitches/winch/winch/magic-constant", 500.0, "DOUBLE", "winch/magic-constant"),
 
 		messages: {
-			launch_signaller:	props.globals.initNode("/sim/hitches/winch/messages/launch-signaller", 1, "BOOL"), # saved in config
-			winch_driver:	props.globals.initNode("/sim/hitches/winch/messages/winch-driver", 1, "BOOL"), # saved in config
-			pilot:		props.globals.initNode("/sim/hitches/winch/messages/pilot", 1, "BOOL"), # saved in config
-			remote_ac:		props.globals.initNode("/sim/hitches/winch/messages/remote-ac", 1, "BOOL"), # saved in config
+			launch_signaller:	new_config_property("/sim/hitches/winch/messages/launch-signaller", 1, "BOOL", "winch/messages/launch-signaller"),
+			winch_driver:	new_config_property("/sim/hitches/winch/messages/winch-driver", 1, "BOOL", "winch/messages/winch-driver"),
+			pilot:		new_config_property("/sim/hitches/winch/messages/pilot", 1, "BOOL", "winch/messages/pilot"),
+			remote_ac:		new_config_property("/sim/hitches/winch/messages/remote-ac", 1, "BOOL", "winch/messages/remote-ac"),
 		},
 	},
 };
@@ -357,38 +377,6 @@ var write_config = func {
 	io.write_properties( config_file, c );
 }
 
-if( io.stat( config_file ) != nil ){
-	var config_properties = io.read_properties( config_file );
-
-	load_prop( config.aerotow.elastic_constant, config_properties.getNode("aerotow/elastic-constant") );
-	load_prop( config.aerotow.weight_per_m_kg_m, config_properties.getNode("aerotow/weight-per-m-kg-m") );
-	load_prop( config.aerotow.length, config_properties.getNode("aerotow/length") );
-	load_prop( config.aerotow.path_to_model, config_properties.getNode("aerotow/path_to_model") );
-	load_prop( config.aerotow.rope_diameter_mm, config_properties.getNode("aerotow/rope-diameter-mm") );
-
-	load_prop( config.winch.elastic_constant, config_properties.getNode("winch/elastic-constant") );
-	load_prop( config.winch.weight_per_m_kg_m, config_properties.getNode("winch/weight-per-m-kg-m") );
-	load_prop( config.winch.initial_tow_length, config_properties.getNode("winch/initial-tow-length-m") );
-	load_prop( config.winch.path_to_model, config_properties.getNode("winch/path_to_model") );
-	load_prop( config.winch.rope_diameter_mm, config_properties.getNode("winch/rope-diameter-mm") );
-	load_prop( config.winch.rope_breakage.height, config_properties.getNode("winch/breakage/height") );
-	load_prop( config.winch.rope_breakage.random, config_properties.getNode("winch/breakage/random") );
-	load_prop( config.winch.loss_of_power.height, config_properties.getNode("winch/loss-of-power/height") );
-	load_prop( config.winch.loss_of_power.random, config_properties.getNode("winch/loss-of-power/random") );
-	load_prop( config.winch.max_tow_length_m, config_properties.getNode("winch/max-tow-length-m") );
-	load_prop( config.winch.max_spool_speed, config_properties.getNode("winch/max-spool-speed-m-s") );
-	load_prop( config.winch.force_acceleration, config_properties.getNode("winch/force-acceleration-N-s") );
-	load_prop( config.winch.spool_acceleration, config_properties.getNode("winch/spool-acceleration-m-s-s") );
-	load_prop( config.winch.max_unspool_speed, config_properties.getNode("winch/max-unspool-speed-m-s") );
-	load_prop( config.winch.max_force, config_properties.getNode("winch/max-force-N") );
-	load_prop( config.winch.max_power, config_properties.getNode("winch/max-power-kW") );
-	load_prop( config.winch.magic_constant, config_properties.getNode("winch/magic-constant") );
-	load_prop( config.winch.messages.launch_signaller, config_properties.getNode("winch/messages/launch-signaller") );
-	load_prop( config.winch.messages.winch_driver, config_properties.getNode("winch/messages/winch-driver") );
-	load_prop( config.winch.messages.pilot, config_properties.getNode("winch/messages/pilot") );
-	load_prop( config.winch.messages.remote_ac, config_properties.getNode("winch/messages/remote-ac") );
-}
-
 var aircraft_settings = {
 	aerotow: {
 		force_calc_by_other:	check_or_create("sim/hitches/aerotow/force-is-calculated-by-other", 0, "BOOL"),	# aircraft-specific
@@ -422,8 +410,8 @@ var check_aircraft_tow_settings = func{
 		#	Estimation basis:
 		#			type	|	typical tow speed	|	typical weight	|	reference
 		#		hang glider	|		50 kph			|		100 kg		|	https://www.safa.asn.au/resources/Tow%20Manual%20v5.4.1.pdf
-		#		Ka6			|		90 kph			|		250 kg		|	http://www.smbc-eferding.at/wp-content/uploads/2014/01/Flughandbuch-Ka-6.pdf
-		#		LS8			|		120 kph			|		500 kg		|	https://www.sglenzburg.ch/org/public/Dokumente/SGL/10-AFM/fhb_ls8a_rev3_tm8020.pdf
+		#		Ka6		|		90 kph			|		250 kg		|	http://www.smbc-eferding.at/wp-content/uploads/2014/01/Flughandbuch-Ka-6.pdf
+		#		LS8		|		120 kph			|		500 kg		|	https://www.sglenzburg.ch/org/public/Dokumente/SGL/10-AFM/fhb_ls8a_rev3_tm8020.pdf
 		#		DG-1000S	|		130 kph			|		650 kg		|	http://adelaidesoaring.on.net/wp-content/uploads/2014/01/DG-1000s-Flight-Manual.pdf
 		#
 		#	a quadratic regression for this data leads to y = -0.0002x2 + 0.3286x + 20.839, we use (simplified): f(x) = -0.0002 * x^2 + 0.33 * x + 21
@@ -439,17 +427,17 @@ var check_aircraft_tow_settings = func{
 
 # yasim properties for aerotow (should be already defined for yasim aircraft but not for JSBSim aircraft
 var aerotow_hash = {
-	broken: 		props.globals.initNode("sim/hitches/aerotow/broken", 0, "BOOL"),
+	broken: 			props.globals.initNode("sim/hitches/aerotow/broken", 0, "BOOL"),
 	force: 			props.globals.initNode("sim/hitches/aerotow/force", 0.0, "DOUBLE"),
 	mp_auto_connect_period:	props.globals.initNode("sim/hitches/aerotow/mp-auto-connect-period", 0.0, "DOUBLE"),
-	mp_time_lag:	props.globals.initNode("sim/hitches/aerotow/mp-time-lag", 0.0, "DOUBLE"),
-	open:			props.globals.initNode("sim/hitches/aerotow/open", 1, "BOOL"),	#always init to true
+	mp_time_lag:		props.globals.initNode("sim/hitches/aerotow/mp-time-lag", 0.0, "DOUBLE"),
+	open:				props.globals.initNode("sim/hitches/aerotow/open", 1, "BOOL"),	#always init to true
 	speed_tow_direction:	props.globals.initNode("sim/hitches/aerotow/speed-in-tow-direction", 0.0, "DOUBLE"),
-	old_open:		props.globals.initNode("sim/hitches/aerotow/oldOpen", 1, "BOOL"),
+	old_open:			props.globals.initNode("sim/hitches/aerotow/oldOpen", 1, "BOOL"),
 	tow: {
 		conn_ai_node:		props.globals.initNode("sim/hitches/aerotow/tow/connected-to-ai-node", 0, "BOOL"),
 		conn_ai_or_mp_callsign:	props.globals.initNode("sim/hitches/aerotow/tow/connected-to-ai-or-mp-callsign", "", "STRING"),
-		conn_ai_or_mp_id:	props.globals.initNode("sim/hitches/aerotow/tow/connected-to-ai-or-mp-id", 0, "INT"),
+		conn_ai_or_mp_id:		props.globals.initNode("sim/hitches/aerotow/tow/connected-to-ai-or-mp-id", 0, "INT"),
 		conn_mp_node:		props.globals.initNode("sim/hitches/aerotow/tow/connected-to-mp-node", 0, "BOOL"),
 		conn_prop_node:		props.globals.initNode("sim/hitches/aerotow/tow/connected-to-property-node", 0, "BOOL"),
 		dist:				props.globals.initNode("sim/hitches/aerotow/tow/dist", 0.0, "DOUBLE"),
@@ -462,28 +450,28 @@ var aerotow_hash = {
 		length:		props.globals.initNode("sim/hitches/aerotow/tow/length", 60.0, "DOUBLE"),
 	},
 	rope: {
-		exist:			props.globals.initNode("sim/hitches/aerotow/rope/exist", 0, "BOOL"),
+		exist:		props.globals.initNode("sim/hitches/aerotow/rope/exist", 0, "BOOL"),
 		model_id:		props.globals.initNode("sim/hitches/aerotow/rope/model_id", -1, "INT"),
 		
 		lat:			props.globals.initNode("ai/models/aerotowrope/position/latitude-deg", 0.0, "DOUBLE"),
 		lon:			props.globals.initNode("ai/models/aerotowrope/position/longitude-deg", 0.0, "DOUBLE"),
 		alt:			props.globals.initNode("ai/models/aerotowrope/position/altitude-ft", 0.0, "DOUBLE"),
 		hdg:			props.globals.initNode("ai/models/aerotowrope/orientation/true-heading-deg", 0.0, "DOUBLE"),
-		pitch:			props.globals.initNode("ai/models/aerotowrope/orientation/pitch-deg", 0.0, "DOUBLE"),
+		pitch:		props.globals.initNode("ai/models/aerotowrope/orientation/pitch-deg", 0.0, "DOUBLE"),
 	},
 };
 				
 # yasim properties for winch (should already be defined for yasim aircraft but not for JSBSim aircraft
 var winch_hash = {
-	open:			props.globals.initNode("sim/hitches/winch/open", 1, "BOOL"),	#always init to true
+	open:				props.globals.initNode("sim/hitches/winch/open", 1, "BOOL"),	#always init to true
 	broken:			props.globals.initNode("sim/hitches/winch/broken", 0, "BOOL"),
-	type:			0,
-	rope_breakage_p:	props.globals.initNode("sim/hitches/winch/breakage/enabled", 0, "BOOL"), # NOT saved in config: Must be selected explicitly each time
+	type:				0,
+	rope_breakage_p:		props.globals.initNode("sim/hitches/winch/breakage/enabled", 0, "BOOL"), # NOT saved in config: Must be selected explicitly each time
 	rope_breakage:		0,
 	rope_breakage_height_int: 100.0,
 	loss_of_power: {
-		enabled_p:	props.globals.initNode("sim/hitches/winch/loss-of-power/enabled", 0, "BOOL"), # NOT saved in config: Must be selected explicitly each time
-		enabled:	0,
+		enabled_p:		props.globals.initNode("sim/hitches/winch/loss-of-power/enabled", 0, "BOOL"), # NOT saved in config: Must be selected explicitly each time
+		enabled:		0,
 		height_int: 	100.0,
 	},
 	global_pos:	[
@@ -492,19 +480,19 @@ var winch_hash = {
 		props.globals.initNode("sim/hitches/winch/winch/global-pos-z", 0.0, "DOUBLE"),
 		],
 	tow: {
-		length:			props.globals.initNode("sim/hitches/winch/tow/length", 0.0, "DOUBLE"),
+		length:		props.globals.initNode("sim/hitches/winch/tow/length", 0.0, "DOUBLE"),
 		dist:			props.globals.initNode("sim/hitches/winch/tow/dist", 0.0, "DOUBLE"),
 	},
-	old_open:		props.globals.initNode("sim/hitches/winch/oldOpen", 1, "BOOL"),
+	old_open:			props.globals.initNode("sim/hitches/winch/oldOpen", 1, "BOOL"),
 	rope: {
-		exist:			props.globals.initNode("sim/hitches/winch/rope/exist", 0, "BOOL"),
+		exist:		props.globals.initNode("sim/hitches/winch/rope/exist", 0, "BOOL"),
 		model_id:		props.globals.initNode("sim/hitches/winch/rope/model_id", -1, "INT"),
 		
 		lat:			props.globals.initNode("ai/models/winchrope/position/latitude-deg", 0.0, "DOUBLE"),
 		lon:			props.globals.initNode("ai/models/winchrope/position/longitude-deg", 0.0, "DOUBLE"),
 		alt:			props.globals.initNode("ai/models/winchrope/position/altitude-ft", 0.0, "DOUBLE"),
 		hdg:			props.globals.initNode("ai/models/winchrope/orientation/true-heading-deg", 0.0, "DOUBLE"),
-		pitch:			props.globals.initNode("ai/models/winchrope/orientation/pitch-deg", 0.0, "DOUBLE"),
+		pitch:		props.globals.initNode("ai/models/winchrope/orientation/pitch-deg", 0.0, "DOUBLE"),
 	},
 };
 
@@ -514,13 +502,13 @@ var speed_setting = 0.0;	# used with constant speed type winch
 
 if ( fdm == "jsb" ) {
 	# new properties for JSBSim aerotow
-	aircraft_settings.aerotow.force_name_jsbsim		= check_or_create("sim/hitches/aerotow/force_name_jsbsim", "hitch", "STRING"); # aircraft-specific
+	aircraft_settings.aerotow.force_name_jsbsim	= check_or_create("sim/hitches/aerotow/force_name_jsbsim", "hitch", "STRING"); # aircraft-specific
 	aircraft_settings.aerotow.decoupled_locations	= check_or_create("sim/hitches/aerotow/decoupled-force-and-rope-locations", 0, "BOOL"); # aircraft-specific
 	aircraft_settings.winch.force_name_jsbsim		= check_or_create("sim/hitches/winch/force_name_jsbsim", "hitch", "STRING"); # aircraft-specific
 	aircraft_settings.winch.automatic_release_angle	= check_or_create("sim/hitches/winch/automatic-release-angle-deg", 361.0, "DOUBLE"); # aircraft-specific
-	aircraft_settings.winch.decoupled_locations		= check_or_create("sim/hitches/winch/decoupled-force-and-rope-locations", 0, "BOOL"); # aircraft-specific
+	aircraft_settings.winch.decoupled_locations	= check_or_create("sim/hitches/winch/decoupled-force-and-rope-locations", 0, "BOOL"); # aircraft-specific
 
-	aerotow_hash.mp_old_open	= props.globals.initNode("sim/hitches/aerotow/mp_oldOpen", 1, "BOOL");
+	aerotow_hash.mp_old_open			= props.globals.initNode("sim/hitches/aerotow/mp_oldOpen", 1, "BOOL");
 	aerotow_hash.tow.mp_last_reported_dist	= props.globals.initNode("sim/hitches/aerotow/tow/mp_last_reported_dist", 0.0, "DOUBLE");
 	
 	# new properties for JSBSim winch
@@ -598,7 +586,7 @@ var orientation = [
 		props.globals.getNode("orientation/pitch-deg", 1),
 	];
 
-var wind_from		=	check_or_create("environment/wind-from-heading-deg", 0.0, "DOUBLE");
+var wind_from	=	check_or_create("environment/wind-from-heading-deg", 0.0, "DOUBLE");
 var wind_speed_kt	=	check_or_create("environment/wind-speed-kt", 0.0, "DOUBLE");
 	
 var set_force_apply = func ( hash, hitchname ){
@@ -1676,7 +1664,6 @@ var releaseHitch = func (device){
 	setprop("fdm/jsbsim/external_reactions/" ~ hitchname ~ "/z", 0.);
 	
 	winch_hash.actual_force.setDoubleValue( 0.0 );
-	winch_hash.clutched.setBoolValue( 0 );
 	
 	if ( device == "aerotow" ) {
 		setprop("sim/hitches/aerotow/tow/end-force-x", 0.);		 # MP tow-end forces
