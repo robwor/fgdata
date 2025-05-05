@@ -2,15 +2,6 @@
 
 <PropertyList>
 
-  <default-translation>
-    <atc>Translations/default/atc.no_translate.xml</atc>
-    <menu>Translations/default/menu.xml</menu>
-    <options>Translations/default/options.xml</options>
-    <sys>Translations/default/sys.xml</sys>
-    <tips>Translations/default/tips.xml</tips>
-    <weather-scenarios>Translations/default/weather-scenarios.xml</weather-scenarios>
-  </default-translation>
-
   <locale n="0">
     <!-- The id is used for finding which formula applies to a given
          locale for the sake of choosing between plural forms. -->
