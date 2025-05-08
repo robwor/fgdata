@@ -545,7 +545,7 @@ DefaultStyle.widgets["line-edit"] = {
   },
   _updateLayoutSizes: func(model) {
     model.setLayoutMinimumSize([100, 28]);
-    model.setLayoutSizeHint([model._MAX_SIZE, 28]);
+    model.setLayoutSizeHint([200, 28]);
     model.setLayoutMaximumSize([MAX_SIZE, 28]);
   },
   update: func(model)
@@ -894,11 +894,11 @@ DefaultStyle.widgets.rule = {
 
     if (me._isVertical ) {
       model.setLayoutMinimumSize([lineWidth, minLayoutSize]);
-      model.setLayoutSizeHint([lineWidth, MAX_SIZE]);
+      model.setLayoutSizeHint([lineWidth, minLayoutSize]);
       model.setLayoutMaximumSize([lineWidth, MAX_SIZE]);
     } else {
       model.setLayoutMinimumSize([minLayoutSize, lineWidth]);
-      model.setLayoutSizeHint([MAX_SIZE, lineWidth]);
+      model.setLayoutSizeHint([minLayoutSize, lineWidth]);
       model.setLayoutMaximumSize([MAX_SIZE, lineWidth]);
     }
   },
@@ -1024,10 +1024,10 @@ DefaultStyle.widgets.slider = {
     model.setLayoutMinimumSize(minSz);
 
     # calculate preferred size 
-    var preferredWidth = (model._maxValue -  model._minValue) / (model._stepSize or 1);
-    preferredWidth = math.max(preferredWidth, minSz[0]);
+    # disabled becuase using the numerical range for the preferred size works super badly,
+    # we have sliders with ranges of eg [-450, 7000]
 
-    model.setLayoutSizeHint([preferredWidth, h]);
+    model.setLayoutSizeHint([240, h]);
     model.setLayoutMaximumSize([MAX_SIZE, h]);
   },
 
@@ -1258,7 +1258,7 @@ DefaultStyle.widgets.dial = {
       degreesRange -= nowrapMargin;
       offset = nowrapMargin / 2;
     }
-    me._handle.setRotation((model._normValue() * degreesRange + offset) * D2R);
+    me._handle.setRotation((model._normValue() * degreesRange + offset) * D2R); 
     me._drawTicks(model);
   },
 
@@ -1548,7 +1548,9 @@ DefaultStyle.widgets["combo-box"] = {
     var min_width = math.max(80, inset + me._label.maxWidth() + inset + me._arrowIcon.imageSize()[0] + inset);
     model.setLayoutMinimumSize([min_width, 28]);
     model.setLayoutSizeHint([min_width, 28]);
-    model.setLayoutSizeHint([MAX_SIZE, 28]);
+
+    # TODO use preferred width of widest item text
+    model.setLayoutSizeHint([min_width * 2, 28]);
 
     return me;
   },

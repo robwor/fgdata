@@ -11,6 +11,12 @@ var _addItem = func(parent, itemGhost) {
 		shortcut: itemGhost.shortcut,
 		enabled: itemGhost.enabled,
 	);
+
+	itemGhost.addChangedCallback(func { 
+		item.setEnabled(itemGhost.enabled);
+		item.setText(itemGhost.label);
+		item.update(); 
+	});
 }
 
 var _addMenu = func(parent, menuGhost) {

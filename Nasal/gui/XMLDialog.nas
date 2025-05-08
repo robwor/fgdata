@@ -13,15 +13,17 @@ var XMLDialog = {
     {
         var d = me.dialog();
         var sz = [d.width, d.height];
-        me._window = canvas.Window.new(sz, "dialog", d.name);
         me._sizeToContents = 0;
 
-        logprint(LOG_INFO, "Dialog size is:", d.width, d.height);
-        if ((d.width == 0) or (d.height == 0)) {
+        if ((d.width <= 0) or (d.height <= 0)) {
             logprint(LOG_INFO, "Dialog will resize to fit contents");
             me._sizeToContents = 1;
+            sz = [100, 100]; # canvas.Window.new doesn't like size of 0
+        } else {
+            logprint(LOG_INFO, "Dialog size is:", d.width, "x", d.height);
         }
 
+        me._window = canvas.Window.new(sz, "dialog", d.name);
         # FIXME: lookup translated dialog name, this is the
         # key string here
         me._window.setTitle(d.title);
@@ -83,9 +85,23 @@ var XMLDialog = {
     onGeometryChanged: func()
     {
         var d = me.dialog();
+        var rootLayout = d.root.layoutItem();
+
         logprint(LOG_INFO, "Dialog geometry is now:" ~ d.x ~ ", " ~ d.y ~ " w:" ~ d.width ~ ", h:" ~ d.height);
         me._window.setPosition(d.x, d.y);
-        me._window.setSize(d.width, d.height);
+
+        var width = d.width;
+        var height = d.height;
+        if (width <= 0) {
+            width = rootLayout.sizeHint()[0];
+        }
+
+        if (height <= 0) {
+            height = rootLayout.sizeHint()[1];
+        }
+        
+        logprint(LOG_INFO, "Setting window size to:", width, ",", height);
+        me._window.setSize(width, height);
     },
 
     onClose: func
@@ -208,12 +224,12 @@ var XMLObjectBase =
         }
 
         if (ghosttype(l) == "canvas.Widget") {
-            if (compatWidgetSizeHint) {
-                logprint(LOG_INFO, me.name, ": Compat widget: setting hint to min size:", debug.string(l.minimumSize()));
-                # old PUI layout code uses minimum size as the hint for many simple
-                # widgets such as buttons and labels
-                l.setSizeHint(l.minimumSize());
-            }
+            # if (compatWidgetSizeHint) {
+            #     logprint(LOG_INFO, me.name, ": Compat widget: setting hint to min size:", debug.string(l.minimumSize()));
+            #     # old PUI layout code uses minimum size as the hint for many simple
+            #     # widgets such as buttons and labels
+            #     l.setLayoutSizeHint(l.minimumSize());
+            # }
 
             var fixedWidth = me._configValue("width");
             var fixedHeight = me._configValue("height");
@@ -764,8 +780,6 @@ var XMLEmpty =
         me._view = canvas.createChild("empty", "group");
         me._layout = canvas.Spacer.new();
         me._applyLayoutConfig();
-        me._layout.setLayoutSizeHint([canvas.gui.Widget._MAX_SIZE, canvas.gui.Widget._MAX_SIZE]);
-        me._layout.setLayoutMaximumSize([canvas.gui.Widget._MAX_SIZE, canvas.gui.Widget._MAX_SIZE]);
         me.update();
 
         return me._view;
@@ -1056,6 +1070,7 @@ var _createCompatObjectLookupHash = {
     "slider": XMLSlider,
     "dial": XMLDial,
     "group": XMLGroup,
+    "frame", XMLFrame,
     "input": XMLTextEdit,
     "empty": XMLEmpty,
     "hrule": XMLHRule,

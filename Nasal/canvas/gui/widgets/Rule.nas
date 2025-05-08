@@ -17,7 +17,7 @@ gui.widgets.HorizontalRule = {
 
 # should ask Style the rule height, not hard-code 1px
     m.setLayoutMinimumSize([16, 2]);
-    m.setLayoutSizeHint([m._MAX_SIZE, 2]); # expand to fill
+    m.setLayoutSizeHint([100, 2]); # expand to fill
     m.setLayoutMaximumSize([m._MAX_SIZE, 2]);
 
     m.setText(m._cfg.get("text", ""));
@@ -43,7 +43,7 @@ gui.widgets.VerticalRule = {
 
 # should ask Style the rule height, not hard-code 1px
     m.setLayoutMinimumSize([2, 16]);
-    m.setLayoutSizeHint([2, m._MAX_SIZE]); # expand to fill
+    m.setLayoutSizeHint([2, 100]); # expand to fill
     m.setLayoutMaximumSize([2, m._MAX_SIZE]);
 
     m.setText(m._cfg.get("text", ""));
