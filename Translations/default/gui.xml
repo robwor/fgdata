@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<resource>
+  <meta>
+    <file-type>FlightGear default translation file</file-type>
+    <format-version>1</format-version>
+    <description>Labels for common/standard GUI items</description>
+    <language-description>Engineering English</language-description>
+  </meta>
+
+  <strings>
+    <cancel>Cancel</cancel>
+  <strings>
+
+</resource>

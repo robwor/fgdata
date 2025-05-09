@@ -69,6 +69,12 @@ var XMLDialog = {
         me.onClose();
     },
 
+    onWindowHelp: func
+    {
+        logprint(LOG_INFO, "Dialog help requested");
+        me.dialog().requestHelp();
+    },
+
     onBringToFront: func()
     {
         me._window.raise();
@@ -89,6 +95,7 @@ var XMLDialog = {
         # call the base canvas.Window delete method, not
         # our wrapper above.
         call(canvas.Window.del, [], me._window);
+        return true;
     }
 
 };
@@ -282,6 +289,38 @@ var XMLObjectBase =
         me.activateBindings();
     },
 
+    _roleWeights: {
+        "help":     -100,       # help is strange, moves
+        # spacer goes in at 0
+        "cancel":   1,
+        "revert":   20,
+        "reset":    50,
+        # default weight for no role
+        "apply":    150,
+        "accept":   200
+    },
+
+        # return the ordering value based on the role and other datta
+    _orderInButtonBox: func()
+    {
+        # TODO: make platform specific
+        var baseWeight = 100;
+        var r = me.role();
+        if (contains(me._roleWeights, r)) {
+            baseWeight = me._roleWeights[r];
+        } else {
+            logprint(LOG_DEBUG, "Unknown GUI button role:", r);
+        }
+
+        # bias default button to the right
+        # (maybe platform specific)
+        if (me._configValue("default")) {
+            baseWeight += 100;
+        }
+
+        return baseWeight;
+    },
+
     apply: func()
     {
         # we must not apply() on live properties, since me.value is
@@ -340,10 +379,94 @@ var XMLButton =
         me._applyLayoutConfig(true);
 
         return me._view;
+    },
+
+    role: func()
+    {
+        return me._configValue("button-role");
+    },
+
+    isDefault: func()
+    {
+        return me._configBool("default");
     }
+};
 
+var XMLStandardButton =
+{
+    init: func(objectProps)
+    {
+        me._action = nil;
+        var ws = me.buttonType();
+        if (ws == "okay") {
+            me._role = "accept";
+            me._action = func { 
+                me.dialog().apply();
+                me.dialog().requestClose(); 
+            };
+        } elsif (ws == "cancel") {
+            me._role = ws;
+            me._action = func { me.dialog().requestClose(); };
+        } elsif (ws == "revert") {
+            me._role = ws;
+            me._action = func { me.dialog().revert(); };
+        } else if (ws == "apply") {
+            me._role = "apply";
+            me._action = func { me.dialog().apply(); };
+        } else if (ws == "close") {
+            me._role = "cancel";
+            me._action = func { me.dialog().requestClose(); };
+        } else if (ws == "use-defaults") {
+            me._role = "apply";
+            # no action: should we make this standard?
+        } else {
+            logprint(LOG_WARN, "Unknown standard button type:", ws);
+            me._role = "";
+        }
 
+        # we use the type as the translation key
+        me._label = me.tr(ws, "gui");
+    },
 
+    buttonType: func()
+    {
+        return me._configValue("button-type");
+    },
+
+    show: func(viewParent)
+    {
+        var isDefault = me._configBool("default");
+        me._view = cwidgets.Button.new(viewParent, canvas.style, {
+            "text": me._label,
+            "default": isDefault,
+        });
+        me._layout = me._view;
+
+        # copy initial visiblity
+        me._view.visible = me.visible;
+
+        # hook up the button to our bindings
+        me._view.listen("clicked", func  me._onClicked(); );
+        me._applyLayoutConfig(true);
+
+        return me._view;
+    },
+
+    _onClicked: func() {
+        if (me.hasBindings) {
+            # should we activate the standard binding as well?
+            # seems better not to, and give the UI designer the choice
+            me.activateBindings();
+        } else {
+            logprint(LOG_INFO, "Standard button: invoking built-in action");
+            me._action();
+        }
+    },
+
+    role: func()
+    {
+        return me._role;
+    }
 };
 
 var XMLCheckbox =
@@ -502,8 +625,9 @@ var XMLGroup =
                 } else {
                     layout.addItem(childItem);
 
-                    # TODO: support 'equal' configBool here, set
-                    # stretch factor as well?
+                    if (c._configBool("equal")) {
+                        layout.setEquals(childItem);
+                    }
 
                     # old layout.cxx code only implements stretch on
                     # hbox and vbox, so this is the correct equivalent place
@@ -802,8 +926,132 @@ var XMLText =
     }
 };
 
+var XMLButtonBox =
+{
+    init: func(objectProps)
+    {
+        
+    },
+
+    show: func(viewParent)
+    {
+        me._view = viewParent.createChild("group");
+        # copy initial visiblity
+        me._view.visible = me.visible;
+
+        var layout  = canvas.HBoxLayout.new();
+        me._layout = layout;
+        #layout.setSpacing(me._padding);
+        #me._applyLayoutConfig();
+
+        var orderedButtons = [];
+        foreach (var c; me.children) {
+            var cty = c.type;
+            if ((cty != 'button') and (cty != 'standard-button')) {
+                logprint(LOG_WARN, "XMLButtonBox: child is not a button or standard button");
+                continue;
+            }
+
+            append(orderedButtons, c);
+        }
+
+        # sort function
+        var by_order = func(a, b) {
+            a._orderInButtonBox() < b._orderInButtonBox();
+        };
+
+        # sort now
+        orderedButtons = sort(orderedButtons, by_order);
+        var lastOrder = -1000;
+    
+        foreach (var b; orderedButtons) {
+            b.show(me._view);
+            var childItem = b.layoutItem();
+
+        # insert the expanding space 
+            var order = b._orderInButtonBox();
+            if (lastOrder < 0 and order >= 0) {
+                layout.addStretch(1);
+            }
+            lastOrder = order;
+            
+            # TODO: respect platform ordering based on role
+            layout.addItem(childItem);
+            layout.setEquals(childItem);
+        }
+        me.update();
+
+        return me._view;
+    },
+
+    update: func()
+    {
+        # re-create children if we are visible?
+    }
+};
+
+
+var XMLTabs =
+{
+    init: func(objectProps)
+    {
+    },
+
+    show: func(viewParent)
+    {
+        me._view = cwidgets.TabWidget.new(viewParent, canvas.style, {});
+        # copy initial visiblity
+        me._view.visible = me.visible;
+
+        foreach (var c; me.children) {
+            # create tab for each child
+            c.show(me._view.getContent());
+
+            var pageId = c.configValue("tab-id");
+            var pageLabel = c.configValue("tab-label");
+
+            if (!pageId or !pageLabel) {
+                logprint(LOG_WARN, "XMLTabs: child widget has missing tab-id / tab-label")
+            } else {
+                me._view.addTab(pageId, pageLabel, c.layoutItem());
+            }
+        }
+
+        me._layout = me._view;
+        me._applyLayoutConfig(true);
+        valueChanged();
+
+        me._view.listen("selected-item-changed", func(e) {
+            me.property.setValue(e.detail.value);
+            me._activateBindings();
+        });
+
+        return me._view;
+    },
+
+    valueChanged: func()
+    {
+        if (me._view == nil) {
+            return;
+        }
+
+        if (me.value == nil) {
+            return;
+        }
+
+        me._view.setCurrentTab(me.value);
+    },
+
+    apply: func
+    {
+        # apply is a no-op for us, because we always update immediately
+        # (i.e live is effectively always true)
+    }
+};
+
 var _createCompatObjectLookupHash = {
     "button": XMLButton,
+    "standard-button": XMLStandardButton,
     "checkbox": XMLCheckbox,
     "slider": XMLSlider,
     "dial": XMLDial,
@@ -816,7 +1064,9 @@ var _createCompatObjectLookupHash = {
     "list": XMLList,
     "text": XMLLabel,
     "radio": XMLRadioButton,
-    "textbox": XMLText
+    "textbox": XMLText,
+    "button-box": XMLButtonBox,
+    "tabs": XMLTabs
 };
 
 # this is the callback function invoked by C++ to build Nasal peers
