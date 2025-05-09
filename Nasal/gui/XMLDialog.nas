@@ -18,9 +18,8 @@ var XMLDialog = {
         if ((d.width <= 0) or (d.height <= 0)) {
             logprint(LOG_INFO, "Dialog will resize to fit contents");
             me._sizeToContents = 1;
-            sz = [100, 100]; # canvas.Window.new doesn't like size of 0
         } else {
-            logprint(LOG_INFO, "Dialog size is:", d.width, "x", d.height);
+            logprint(LOG_INFO, "Dialog explicit size is:", d.width, "x", d.height);
         }
 
         me._window = canvas.Window.new(sz, "dialog", d.name);
