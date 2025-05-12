@@ -31,7 +31,14 @@ var Window = {
 
     m.setInt("content-size[0]", size[0]);
     m.setInt("content-size[1]", size[1]);
-    m.setDouble("aspect-ratio", size[0]/size[1]);
+    
+    # avoid NaN on empty window
+    if (size[1] > 0) {  
+      m.setDouble("aspect-ratio", size[0]/size[1]);
+    } else {
+      m.setDouble("aspect-ratio",1.0);
+    }
+    
     m.setBool("lock-aspect-ratio", 0);
     if (type == "window" or type == "dialog") {
       m.centerOnScreen();
