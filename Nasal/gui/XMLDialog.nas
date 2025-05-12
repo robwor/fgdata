@@ -1069,7 +1069,8 @@ var _createCompatObjectLookupHash = {
     "slider": XMLSlider,
     "dial": XMLDial,
     "group": XMLGroup,
-    "frame", XMLFrame,
+# disabled pending implemention work.
+  #  "frame", XMLFrame,
     "input": XMLTextEdit,
     "empty": XMLEmpty,
     "hrule": XMLHRule,
