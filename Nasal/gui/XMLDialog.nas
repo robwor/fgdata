@@ -38,30 +38,23 @@ var XMLDialog = {
         var ourCanvas = me._window.getCanvas(1); # create, probably
         ourCanvas.set("background", canvas.style.getColor("bg_color"));
         var rootCanvasGroup = ourCanvas.createGroup();
-
-        if (me._sizeToContents) {
-            var rootLayout = rootObject.layoutItem();
-            var szh = rootLayout.sizeHint();
-            logprint(LOG_INFO, "Setting window size to hint:", szh[0], szh[1]);
-            me._window.setSize(szh);
-        }
-
         # get the root XMLObject, almost certainly a container of
         # some kind. (eg frame / group / scroll area)
         var rootObject = me.dialog().root;
+
+        if (me._sizeToContents) {
+            var rootLayout = rootObject.layoutItem();
+            if (rootLayout) {
+                var szh = rootLayout.sizeHint();
+                logprint(LOG_INFO, "Setting window size to hint:", szh[0], szh[1]);
+                me._window.setSize(szh);
+            }
+        }
 
         # show the root object inside our Canvas group. We could delay this
         # until we are made visible to make things more efficient/lazy
         rootObject.show(rootCanvasGroup);
         ourCanvas.setLayout(rootObject.layoutItem());
-
-
-        var rootLayout = rootObject.layoutItem();
-        var szh = rootLayout.sizeHint(); 
-        var minsz = rootLayout.minimumSize(); 
-
-        logprint(LOG_INFO, "Dialog root layout size hint:", szh[0], ",", szh[1]);
-        logprint(LOG_INFO, "Dialog root layout min size:", minsz[0], ",", minsz[1]);
     },
 
     # this is the callback from the canvas.Window: we request a close of
@@ -147,7 +140,8 @@ var XMLObjectBase =
     {
         var m = {
             parents: [XMLObjectBase],
-            _localValue: nil
+            _localValue: nil,
+            _layout: nil
         };
         return m;
     },
