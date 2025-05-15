@@ -43,18 +43,22 @@ var XMLDialog = {
         # some kind. (eg frame / group / scroll area)
         var rootObject = me.dialog().root;
 
+        # show the root object inside our Canvas group. We could delay this
+        # until we are made visible to make things more efficient/lazy
+        rootObject.show(rootCanvasGroup);
+        
         if (me._sizeToContents) {
             var rootLayout = rootObject.layoutItem();
             if (rootLayout) {
                 var szh = rootLayout.sizeHint();
                 logprint(LOG_INFO, "Setting window size to hint:", szh[0], szh[1]);
                 me._window.setSize(szh);
+            } else {
+                logprint(LOG_INFO, "Size to contents but no root layout exists.");
             }
         }
 
-        # show the root object inside our Canvas group. We could delay this
-        # until we are made visible to make things more efficient/lazy
-        rootObject.show(rootCanvasGroup);
+
         ourCanvas.setLayout(rootObject.layoutItem());
     },
 
