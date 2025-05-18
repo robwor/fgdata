@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
+
+<?FlightGear-tr context="dialog-exit"?>
+
 <PropertyList>
   <ui-version>2</ui-version>
   <name>exit</name>
@@ -6,12 +9,18 @@
   <layout>vbox</layout>
 
   <text>
-    <label>Exit FlightGear?</label>
+    <label translate="y">
+      label-exit-question
+      <?FlightGear-tr text="Exit FlightGear?"?>
+    </label>
   </text>
 
   <button-box>
     <button>
-      <legend>Exit</legend>
+      <legend translate="y">
+        legend-exit-button
+        <?FlightGear-tr text="Exit"?>
+      </legend>
       <default>true</default>
       <button-role>accept</button-role>
       <binding>

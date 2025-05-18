@@ -44,6 +44,8 @@ var Node = {
     equals         : func(n) _equals(me._g, [isa(n, Node) ? n._g : n]),
     clearValue     : func _alias(me._g, [_globals()]) and me.unalias(),
 
+    location       : func _location(me._g, arg),
+
     getDisplayName : func(force_index = 0) {
         var (name, index) = (me.getName(), me.getIndex());
         if (force_index or index > 0) {

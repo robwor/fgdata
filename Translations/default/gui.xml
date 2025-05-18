@@ -9,7 +9,13 @@
   </meta>
 
   <strings>
-    <cancel>Cancel</cancel>
+    <button-accept>Okay</button-accept>
+    <button-cancel>Cancel</button-cancel>
+    <button-apply>Apply</button-apply>
+    <button-revert>Revert</button-revert>
+    <button-help>Help</button-help>
+    <button-reset>Reset</button-reset>
+    <button-close>Close</button-close>
   </strings>
 
 </resource>

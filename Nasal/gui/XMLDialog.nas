@@ -23,8 +23,6 @@ var XMLDialog = {
         }
 
         me._window = canvas.Window.new(sz, "dialog", d.name);
-        # FIXME: lookup translated dialog name, this is the
-        # key string here
         me._window.setTitle(d.title);
         me._window.set("resize", d.resizeable);
 
@@ -194,6 +192,39 @@ var XMLObjectBase =
         if (node == nil)
             return def;
         return node.getBoolValue();
+    },
+
+    # retrive a string which is user-facing and hence should be translated
+    _configTrValue: func(name)
+    {
+        var node = me.config.getNode(name);
+        if (node == nil) {
+            return nil;
+        }
+
+        if (!node.getAttribute("translate")) {
+            logprint(DEV_WARN, "XML GUI: config property '", name, "' of '", me.name,
+                 "' is not marked for translation. ", node.location());
+            return node.getValue();
+        }
+
+        return me.tr(node.getValue());
+    },
+
+    # same as above, but translation is not mandatory, so no warning will appear in developer mode
+    _configOptionalTrValue: func(name)
+    {
+        var node = me.config.getNode(name);
+        if (node == nil) {
+            return nil;
+        }
+
+        var v = node.getValue();
+        if (!node.getAttribute("translate")) {
+            return v;
+        }
+
+        return me.tr(v);
     },
 
     _applyLayoutConfig: func(compatWidgetSizeHint = false)
@@ -385,10 +416,19 @@ var XMLButton =
     show: func(viewParent)
     {
         me._view = cwidgets.Button.new(viewParent, canvas.style, {
-            "text": me._configValue("legend"),
             "default": me._configBool("default"),
         });
         me._layout = me._view;
+
+        var r = me.role();
+        var tl = me._configTrValue("legend");
+        if (r and !tl) {
+            logprint(LOG_INFO, "Setting XMLButton text based on role");
+            # default text based on role
+            tl = me.tr("button-" ~ r, "gui");
+        }
+
+        me._view.setText(tl);
 
         # copy initial visiblity
         me._view.visible = me.visible;
@@ -408,6 +448,37 @@ var XMLButton =
     isDefault: func()
     {
         return me._configBool("default");
+    },
+
+    _roleWeights: {
+        "help":     -100,       # help is a funny one, moves
+        "cancel":   0,
+        "revert":   20,
+        "reset":    50,
+        # default weight for no role
+        "apply":    150,
+        "accept":   200
+    },
+
+    # return the ordering value based on the role and other datta
+    _orderInButtonBox: func()
+    {
+        # TODO: make platform specific
+        var baseWeight = 100;
+        
+        var r = me.role();
+        if (contains(me._roleWeights, r)) {
+            baseWeight = me._roleWeights[r];
+        } else {
+            logprint(DEV_WARN, "Unknown XML button role:", r);
+        }
+
+        # bias default button to the right
+        if (me._configValue("default")) {
+            baseWeight += 100;
+        }
+
+        return baseWeight;
     }
 };
 
@@ -444,7 +515,7 @@ var XMLStandardButton =
         }
 
         # we use the type as the translation key
-        me._label = me.tr(ws, "gui");
+        me._label = me.tr("button-" ~ ws, "gui");
     },
 
     buttonType: func()
@@ -493,7 +564,7 @@ var XMLCheckbox =
     show: func(viewParent)
     {
         me._view = cwidgets.CheckBox.new(viewParent, canvas.style, {
-            "text": me._configValue("label"),
+            "text": me._configTrValue("label"),
             "checked": me.value     # avoid toggled event on setting value
         });
 
@@ -562,8 +633,8 @@ var XMLLabel =
         # copy initial visiblity
         me._view.visible = me.visible;
 
-        me._label = me._configValue("label");
-        me._format = me._configValue("format");
+        me._label = me._configTrValue("label");
+        me._format = me._configOptionalTrValue("format");
         me._layout = me._view;
         me._applyLayoutConfig(true);
         me.valueChanged();
@@ -912,7 +983,7 @@ var XMLText =
         # copy initial visiblity
         me._view.visible = me.visible;
 
-        me._label = me._configValue("label");
+        me._label = me._configTrValue("label");
         me._format = me._configValue("format");
         me._layout = me._view;
         me._applyLayoutConfig(true);
@@ -1025,7 +1096,7 @@ var XMLTabs =
             c.show(me._view.getContent());
 
             var pageId = c.configValue("tab-id");
-            var pageLabel = c.configValue("tab-label");
+            var pageLabel = me.tr(c.configValue("tab-label"));
 
             if (!pageId or !pageLabel) {
                 logprint(LOG_WARN, "XMLTabs: child widget has missing tab-id / tab-label")
