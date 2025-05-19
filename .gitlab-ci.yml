@@ -44,6 +44,21 @@ validate-shaders:
     - export PYTHONPATH="$CI_PROJECT_DIR/fgmeta/python3-flightgear" 
     - ./fgmeta/fg-validate-shaders $CI_PROJECT_DIR || exit $?
 
+# XML files containing the <?FlightGear-tr?> processing instruction:
+# check that contexts are declared, don't overlap, follow naming rules, etc.
+validate-XML-translations:
+  stage: test
+  image: registry.gitlab.com/flightgear/flightgear
+  allow_failure: false
+  script:
+    - cd $CI_BUILDS_DIR
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/flightgear/fgmeta
+    - export PYTHONPATH="$CI_BUILDS_DIR/fgmeta/python3-flightgear"
+    - echo "Running fg-extract-translatable-strings in check mode..."
+
+    - $CI_BUILDS_DIR/fgmeta/i18n/fg-extract-translatable-strings check $CI_PROJECT_DIR
+    - 'echo "fg-extract-translatable-strings: done"'
+
 # all the files from FGData which we bunlde with the application / image
 # installers. Keep this small since this impacts file mirrors, code-signing, 
 # etc.
