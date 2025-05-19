@@ -772,13 +772,21 @@ var cycleMouseMode = func(node)
     }
 
     var modeNode = props.globals.getNode('/devices/status/mice/mouse[0]/mode');
-    var mode = modeNode.getValue() + 1;
+    var mode = modeNode.getValue();
+    # 360 mouse mode: treat mode 4 (360) as mode 0 for cycling
+    if (mode == 4) mode = 0;
+    mode += 1;
 
     if ((mode == 1) and getprop('/sim/mouse/skip-flight-controls-mode')) {
         mode +=1;
     }
 
     if (mode == 3) mode = 0;
+
+    # 360 mouse mode: treat mode 0 as mode 4 (360)
+    var cur360 = props.globals.getNode('/sim/vr/cursors/mouse[0]/vr-mode').getValue();
+    if (cur360 and mode == 0) mode = 4;
+
     modeNode.setIntValue(mode);
 
     # this is really a 'show on-screen hints' control
@@ -804,8 +812,14 @@ var cycleMouseMode = func(node)
 
     if (mode == 1) {
         msg = "Mouse is controlling flight controls.";
-    } else {
+    } else if (mode == 2) {
         msg = "Mouse is controlling view direction.";
+    } else { # mode == 4
+        msg = "Mouse is in 360 mode.";
+        suffix = "Press Ctrl + TAB to turn off.";
+        if (reason == "right-click") {
+            suffix = "Press Shift + Right-click to turn off.";
+        }
     }
     
     msg = msg ~ " " ~ suffix;
@@ -814,6 +828,90 @@ var cycleMouseMode = func(node)
 }
 
 addcommand("cycle-mouse-mode", cycleMouseMode);
+
+var toggle360Mouse = func(node)
+{
+    var reason = node.getChild("reason").getValue();
+    var cur360 = props.globals.getNode('/sim/vr/cursors/mouse[0]/vr-mode');
+    var modeNode = props.globals.getNode('/devices/status/mice/mouse[0]/mode');
+    var mode = modeNode.getValue();
+    var msg = "";
+    # give correct feedback for the UI action which prompted this
+    var suffix = "Press Ctrl + TAB to ";
+    if (reason == "shift+right-click") {
+        suffix = "Shift + Right-click to ";
+    }
+    if (mode == 0) {
+        # Prevent accidental mouse capture without either VR cursor or VR running
+        var vrMouseAlways = props.globals.getNode('/sim/vr/cursors/mouse[0]/show-always').getBoolValue();
+        var vrRunning = props.globals.getNode('/sim/vr/running').getBoolValue();
+        if (vrMouseAlways or vrRunning) {
+            mode = 4;
+            msg = "360 mouse ON.";
+            suffix = suffix ~ "turn off.";
+            cur360.setBoolValue(true);
+        } else {
+            return;
+        }
+    } else if (mode == 4) {
+        mode = 0;
+        msg = "360 mouse OFF.";
+        suffix = suffix ~ "turn back on.";
+        cur360.setBoolValue(false);
+    } else {
+        return;
+    }
+
+    modeNode.setIntValue(mode);
+
+    msg = msg ~ " " ~ suffix;
+
+    fgcommand("show-message", props.Node.new({ "label": msg, "id":"mouse-mode" }));
+}
+
+addcommand("toggle-360-mouse", toggle360Mouse);
+
+var set360Mouse = func(enable)
+{
+    var cur360 = props.globals.getNode('/sim/vr/cursors/mouse[0]/vr-mode');
+    cur360.setBoolValue(enable);
+
+    var modeNode = props.globals.getNode('/devices/status/mice/mouse[0]/mode');
+    var mode = modeNode.getValue();
+    var msg = "";
+    if (mode == 0) {
+        if (!enable)
+            return;
+        mode = 4;
+        msg = "360 mouse ON.";
+    } else if (mode == 4) {
+        if (enable)
+            return;
+        mode = 0;
+        msg = "360 mouse OFF.";
+    } else {
+        return;
+    }
+
+    modeNode.setIntValue(mode);
+
+    # give correct feedback for the UI action which prompted this
+    if (enable) {
+        suffix = "Remove headset or press Ctrl + TAB to turn off.";
+    } else {
+        suffix = "Replace headset to turn back on.";
+    }
+    msg = msg ~ " " ~ suffix;
+
+    fgcommand("show-message", props.Node.new({ "label": msg, "id":"mouse-mode" }));
+}
+
+setlistener("/sim/vr/user-present", func(prop){
+    var trigger = props.globals.getNode('/sim/vr/cursors/mouse[0]/vr-mode-user-presence').getValue();
+    if (trigger) {
+        set360Mouse(prop.getValue());
+    }
+}, 0, 0);
 
 var setMouseFlightControlsSensitivity = func(sensitivity)
 {

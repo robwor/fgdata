@@ -15,7 +15,7 @@ current mode for each mouse is held in the
 
  <mouse n="0">
 
-  <mode-count type="int">4</mode-count>
+  <mode-count type="int">5</mode-count>
   <mode archive="y" type="int">0</mode>
 
 
@@ -52,6 +52,12 @@ current mode for each mouse is held in the
         <command>cycle-mouse-mode</command>
         <reason>right-click</reason>
     </binding>
+    <mod-shift>
+      <binding>
+        <command>toggle-360-mouse</command>
+        <reason>shift+right-click</reason>
+      </binding>
+    </mod-shift>
    </button>
 
    <!-- extra buttons control FoV -->
@@ -502,6 +508,54 @@ current mode for each mouse is held in the
     </x-axis-ctrl>
 
   </mode>
+
+  <!-- Mode 4: 360 mouse -->
+  <mode n="4">
+   <cursor>inherit</cursor>
+   <constrained type="bool">true</constrained>
+   <pass-through type="bool">false</pass-through>
+
+   <vr-cursor>
+    <condition>
+     <true/>
+    </condition>
+    <pass-through type="bool">true</pass-through>
+   </vr-cursor>
+
+   <!-- Mouse right/left motion -->
+   <x-axis>
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/vr/cursors/mouse[0]/dx</property>
+     <property>/devices/status/mice/mouse/accel-x</property>
+    </binding>
+   </x-axis>
+
+   <!-- Mouse up/down motion -->
+   <y-axis>
+    <binding>
+     <command>property-assign</command>
+     <property>/sim/vr/cursors/mouse[0]/dy</property>
+     <property>/devices/status/mice/mouse/accel-y</property>
+    </binding>
+   </y-axis>
+
+   <button n="2">
+    <binding>
+     <command>cycle-mouse-mode</command>
+     <reason>right-click</reason>
+    </binding>
+
+    <mod-shift>
+      <binding>
+        <command>toggle-360-mouse</command>
+        <reason>shift+right-click</reason>
+      </binding>
+    </mod-shift>
+   </button>
+
+  </mode>
+
     
  </mouse> <!-- of mouse 0 -->
 

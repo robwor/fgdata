@@ -207,6 +207,25 @@
     </checkbox>
   </group>
 
+  <group>
+    <layout>hbox</layout>
+    <halign>left</halign>
+    <default-padding>1</default-padding>
+    <text>
+      <label>  </label>
+    </text>
+    <checkbox>
+      <halign>left</halign>
+      <label>Enable 360 mouse when VR in use</label>
+      <property>/sim/vr/cursors/mouse[0]/vr-mode-user-presence</property>
+      <enable><property>/sim/vr/openxr/system/supports-user-presence</property></enable>
+      <live>true</live>
+      <binding>
+        <command>dialog-apply</command>
+      </binding>
+    </checkbox>
+  </group>
+
   <empty>
     <stretch>true</stretch>
   </empty>

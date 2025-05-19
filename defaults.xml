@@ -589,6 +589,8 @@ Started September 2000 by David Megginson, david@megginson.com
         <mouse n="0">
           <show-always type="bool" userarchive="y">false</show-always>
           <show-vr-running type="bool" userarchive="y">true</show-vr-running>
+          <vr-mode-user-presence type="bool" userarchive="y">true</vr-mode-user-presence>
+          <vr-mode type="bool">false</vr-mode>
         </mouse>
       </cursors>
       <depth-info type="bool" userarchive="y">true</depth-info>
@@ -596,6 +598,7 @@ Started September 2000 by David Megginson, david@megginson.com
       <mirror-enabled type="bool" userarchive="y">true</mirror-enabled>
       <mirror-mode type="string" userarchive="y">AUTOMATIC</mirror-mode>
       <mode type="string" userarchive="y">AUTOMATIC</mode>
+      <running type="bool">false</running>
       <swapchain-mode type="string" userarchive="y">AUTOMATIC</swapchain-mode>
       <validation-layer type="bool" userarchive="y">false</validation-layer>
       <visibility-mask type="bool" userarchive="y">true</visibility-mask>

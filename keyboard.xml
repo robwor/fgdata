@@ -123,17 +123,28 @@ top down before the key bindings are parsed.
 
  <!-- Tab key, also Ctrl-I, bit odd -->
  <key n="9">
-	<name>Tab</name>
-	<desc>Cycle mouse mode</desc>
-	<binding>
+  <name>Tab</name>
+  <desc>Cycle mouse mode</desc>
+  <binding>
 
-        <condition>
-            <not><property>/devices/status/keyboard/alt</property></not>
-            <not><property>/devices/status/keyboard/ctrl</property></not>
-        </condition>
-		<command>cycle-mouse-mode</command>
-		<reason>key-press</reason>
-	</binding>
+   <condition>
+    <not><property>/devices/status/keyboard/alt</property></not>
+    <not><property>/devices/status/keyboard/ctrl</property></not>
+   </condition>
+   <command>cycle-mouse-mode</command>
+   <reason>key-press</reason>
+  </binding>
+
+  <mod-ctrl>
+   <desc>Toggle 360 mouse</desc>
+   <binding>
+    <condition>
+     <not><property>/devices/status/keyboard/alt</property></not>
+    </condition>
+    <command>toggle-360-mouse</command>
+    <reason>key-press</reason>
+   </binding>
+  </mod-ctrl>
  </key>
 
  <key n="10"> <!-- OSG -->
