@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource>
+  <meta>
+    <file-type>FlightGear default translation file</file-type>
+    <format-version>1</format-version>
+    <description>Automatically extracted strings with context 'dialog-exit'</description>
+    <language-description>Engineering English</language-description>
+  </meta>
+  <strings>
+    <exit-FlightGear-question-label>Exit FlightGear?</exit-FlightGear-question-label>
+    <exit-button-label>Exit</exit-button-label>
+  </strings>
+</resource>

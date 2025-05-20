@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource>
+  <meta>
+    <file-type>FlightGear default translation file</file-type>
+    <format-version>1</format-version>
+    <description>Automatically extracted strings with context 'dialog-location-in-air'</description>
+    <language-description>Engineering English</language-description>
+  </meta>
+  <strings>
+    <NDB-radio-button comment="Label corresponding to a radio button">NDB:</NDB-radio-button>
+    <NDB-selection-input comment="Label corresponding to a text input field">NDB:</NDB-selection-input>
+    <VOR-radio-button comment="Label corresponding to a radio button">VOR:</VOR-radio-button>
+    <VOR-selection-input comment="Label corresponding to a text input field">VOR:</VOR-selection-input>
+    <aircraft-carrier-radio-button comment="Label corresponding to a radio button">Aircraft Carrier:</aircraft-carrier-radio-button>
+    <airport-radio-button>Airport:</airport-radio-button>
+    <airport-selection-input>Airport:</airport-selection-input>
+    <airspeed-kt-input>Airspeed (kt):</airspeed-kt-input>
+    <altitude-ft-input>Altitude (ft):</altitude-ft-input>
+    <azimuth-deg-input>Azimuth (deg):</azimuth-deg-input>
+    <carrier-position-selection-combo comment="Position selection on an aircraft carrier">Position:</carrier-position-selection-combo>
+    <carrier-selection-combo>Carrier:</carrier-selection-combo>
+    <distance-nm-input>Distance (nm):</distance-nm-input>
+    <fix-radio-button comment="Label corresponding to a radio button">Fix:</fix-radio-button>
+    <fix-selection-input comment="Label corresponding to a text input field">Fix:</fix-selection-input>
+    <glidepath-deg-input>Glidepath (deg):</glidepath-deg-input>
+    <heading-deg-input>Heading (deg):</heading-deg-input>
+    <latitude-input>Latitude:</latitude-input>
+    <longitude-input>Longitude:</longitude-input>
+    <position-aircraft-in-air-label>Position Aircraft In Air</position-aircraft-in-air-label>
+    <position-radio-button>Position:</position-radio-button>
+    <relative-position-label comment="Title">Relative Position</relative-position-label>
+    <runway-selection-input>Runway:</runway-selection-input>
+  </strings>
+</resource>
