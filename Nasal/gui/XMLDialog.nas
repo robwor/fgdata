@@ -317,6 +317,14 @@ var XMLObjectBase =
     _changeLocalValue: func(newValue)
     {
         me._localValue = newValue;
+    # hidden widgets don't update their properties. Without this, an invisible
+    # widget still clamps its property when live
+    # see https://gitlab.com/flightgear/flightgear/-/issues/3136
+
+        if (!me.visible) {
+            return;
+        }
+
         if (me.live and me.property) {
             me.property.setValue(newValue);
         }
@@ -324,6 +332,7 @@ var XMLObjectBase =
 
     valueChanged: func
     {
+        # ideally re-enable this, but needs care in updating on init
         # if (me._localValue == me.value)
         #     return;
 
@@ -379,6 +388,11 @@ var XMLObjectBase =
             return;
         }
 
+        # also don't apply on hidden widgets, since this may force properties into unexpected values
+        if (!me.visible) {
+            return;
+        }
+
         if (me._localValue == me.value)
             return;
 
@@ -392,6 +406,10 @@ var XMLObjectBase =
 
     visibleChanged: func() 
     {
+        if (me.visible) {
+            me.update();
+        }
+
         me._view.setVisible(me.visible);
     },
 
