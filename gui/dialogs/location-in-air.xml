@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
+
+<?FlightGear-tr context="dialog-location-in-air"?>
+
 <PropertyList>
   <name>location-in-air</name>
   <layout>vbox</layout>
@@ -108,7 +111,10 @@
     <layout>hbox</layout>
 
     <text>
-      <label>Position Aircraft In Air</label>
+      <label translate="y">
+        position-aircraft-in-air-label
+        <?FlightGear-tr text="Position Aircraft In Air"?>
+      </label>
     </text>
 
     <empty>
@@ -138,7 +144,10 @@
       <radio>
         <live>true</live>
         <halign>left</halign>
-        <label>Airport:</label>
+        <label translate="y">
+          airport-radio-button
+          <?FlightGear-tr text="Airport:"?>
+        </label>
         <property>/sim/gui/dialogs/location-in-air/airport</property>
         <binding>
           <command>dialog-apply</command>
@@ -150,7 +159,10 @@
       </radio>
 
       <radio>
-        <label>Position:</label>
+        <label translate="y">
+          position-radio-button
+          <?FlightGear-tr text="Position:"?>
+        </label>
         <halign>left</halign>
         <live>true</live>
         <property>/sim/gui/dialogs/location-in-air/lonlat</property>
@@ -164,7 +176,11 @@
       </radio>
 
       <radio>
-        <label>VOR:</label>
+        <label translate="y">
+          VOR-radio-button
+          <?FlightGear-tr text="VOR:"
+            comment="Label corresponding to a radio button"?>
+        </label>
         <halign>left</halign>
         <live>true</live>
         <property>/sim/gui/dialogs/location-in-air/vor</property>
@@ -180,7 +196,11 @@
       <radio>
         <live>true</live>
         <halign>left</halign>
-        <label>NDB:</label>
+        <label translate="y">
+          NDB-radio-button
+          <?FlightGear-tr text="NDB:"
+            comment="Label corresponding to a radio button"?>
+        </label>
 
         <property>/sim/gui/dialogs/location-in-air/ndb</property>
         <binding>
@@ -194,7 +214,11 @@
 
 
       <radio>
-        <label>Fix:</label>
+        <label translate="y">
+          fix-radio-button
+          <?FlightGear-tr text="Fix:"
+            comment="Label corresponding to a radio button"?>
+        </label>
         <live>true</live>
         <property>/sim/gui/dialogs/location-in-air/fix</property>
         <halign>left</halign>
@@ -210,7 +234,11 @@
 
       <radio>
         <live>true</live>
-        <label>Aircraft Carrier:</label>
+        <label translate="y">
+          aircraft-carrier-radio-button
+          <?FlightGear-tr text="Aircraft Carrier:"
+            comment="Label corresponding to a radio button"?>
+        </label>
         <property>/sim/gui/dialogs/location-in-air/carrier-active</property>
         <halign>left</halign>
 
@@ -234,7 +262,10 @@
         <row>0</row>
         <col>0</col>
         <halign>right</halign>
-        <label>Airport:</label>
+        <label translate="y">
+          airport-selection-input
+          <?FlightGear-tr text="Airport:"?>
+        </label>
       </text>
       <input>
         <row>0</row>
@@ -249,7 +280,10 @@
         <row>1</row>
         <col>0</col>
         <halign>right</halign>
-        <label>  Runway:</label>
+        <label translate="y">
+          runway-selection-input
+          <?FlightGear-tr text="Runway:"?>
+        </label>
       </text>
       <input>
         <row>1</row>
@@ -273,7 +307,10 @@
         <row>0</row>
         <col>0</col>
         <halign>right</halign>
-        <label>Longitude:</label>
+        <label translate="y">
+          longitude-input
+          <?FlightGear-tr text="Longitude:"?>
+        </label>
       </text>
       <input>
         <row>0</row>
@@ -288,7 +325,10 @@
         <row>1</row>
         <col>0</col>
         <halign>right</halign>
-        <label>  Latitude:</label>
+        <label translate="y">
+          latitude-input
+          <?FlightGear-tr text="Latitude:"?>
+        </label>
       </text>
       <input>
         <row>1</row>
@@ -312,7 +352,11 @@
         <row>0</row>
         <col>0</col>
         <halign>right</halign>
-        <label>VOR:</label>
+        <label translate="y">
+          VOR-selection-input
+          <?FlightGear-tr text="VOR:"
+            comment="Label corresponding to a text input field"?>
+        </label>
       </text>
       <input>
         <row>0</row>
@@ -338,7 +382,11 @@
         <row>0</row>
         <col>0</col>
         <halign>right</halign>
-        <label>NDB:</label>
+        <label translate="y">
+          NDB-selection-input
+          <?FlightGear-tr text="NDB:"
+            comment="Label corresponding to a text input field"?>
+        </label>
       </text>
       <input>
         <row>0</row>
@@ -362,7 +410,11 @@
         <row>0</row>
         <col>0</col>
         <halign>right</halign>
-        <label>Fix:</label>
+        <label translate="y">
+          fix-selection-input
+          <?FlightGear-tr text="Fix:"
+            comment="Label corresponding to a text input field"?>
+        </label>
       </text>
       <input>
         <row>0</row>
@@ -386,7 +438,10 @@
         <row>0</row>
         <col>0</col>
         <halign>right</halign>
-        <label>Carrier:</label>
+        <label translate="y">
+          carrier-selection-combo
+          <?FlightGear-tr text="Carrier:"?>
+        </label>
       </text>
       <combo>
         <name>carrier-selection</name>
@@ -406,7 +461,11 @@
         <row>1</row>
         <col>0</col>
         <halign>right</halign>
-        <label>Position:</label>
+        <label translate="y">
+          carrier-position-selection-combo
+          <?FlightGear-tr text="Position:"
+            comment="Position selection on an aircraft carrier"?>
+        </label>
       </text>
       <combo>
         <name>carrier-position-selection</name>
@@ -424,7 +483,10 @@
   <hrule/>
 
   <text>
-    <label>Relative Position</label>
+    <label translate="y">
+      relative-position-label
+      <?FlightGear-tr text="Relative Position" comment="Title"?>
+    </label>
   </text>
 
   <group>
@@ -435,7 +497,10 @@
       <text>
         <row>0</row><col>0</col>
         <halign>right</halign>
-        <label>  Distance (nm):</label>
+        <label translate="y">
+          distance-nm-input
+          <?FlightGear-tr text="Distance (nm):"?>
+        </label>
         <enable><not><property>/sim/gui/dialogs/location-in-air/lonlat</property></not></enable>
       </text>
       <input>
@@ -447,7 +512,10 @@
       <text>
         <row>0</row><col>2</col>
         <halign>right</halign>
-        <label>Azimuth (deg):</label>
+        <label translate="y">
+          azimuth-deg-input
+          <?FlightGear-tr text="Azimuth (deg):"?>
+        </label>
         <enable><not><property>/sim/gui/dialogs/location-in-air/lonlat</property></not></enable>
       </text>
       <input>
@@ -459,7 +527,10 @@
       <text>
         <row>1</row><col>0</col>
         <halign>right</halign>
-        <label>Altitude (ft):</label>
+        <label translate="y">
+          altitude-ft-input
+          <?FlightGear-tr text="Altitude (ft):"?>
+        </label>
       </text>
       <input>
         <row>1</row><col>1</col>
@@ -469,7 +540,10 @@
       <text>
         <row>1</row><col>2</col>
         <halign>right</halign>
-        <label>  Glidepath (deg):</label>
+        <label translate="y">
+          glidepath-deg-input
+          <?FlightGear-tr text="Glidepath (deg):"?>
+        </label>
       </text>
       <input>
         <row>1</row><col>3</col>
@@ -479,7 +553,10 @@
       <text>
         <row>2</row><col>0</col>
         <halign>right</halign>
-        <label>Airspeed (kt):</label>
+        <label translate="y">
+          airspeed-kt-input
+          <?FlightGear-tr text="Airspeed (kt):"?>
+        </label>
       </text>
       <input>
         <row>2</row><col>1</col>
@@ -489,7 +566,10 @@
       <text>
         <row>2</row><col>2</col>
         <halign>right</halign>
-        <label>Heading (deg):</label>
+        <label translate="y">
+          heading-deg-input
+          <?FlightGear-tr text="Heading (deg):"?>
+        </label>
         <enable><not><property>/sim/gui/dialogs/location-in-air/airport</property></not></enable>
       </text>
       <input>
