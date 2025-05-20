@@ -1219,8 +1219,8 @@
         <target xml:space="preserve">Active/désactive le codage vidéo pendant que FlightGear rejoue la bande spécifiée avec --load-tape</target>
       </trans-unit>
       <trans-unit id="options/load-tape-desc:0" approved="yes">
-        <source xml:space="preserve">Load recording of earlier FlightGear session. For &lt;name&gt;, if &lt;name&gt; ends with .fgdata it is treated as the local path of the recording file; otherwise we form the local path by prepending &lt;name&gt; with the tape directory and appending &quot;.fgtape&quot;. For &lt;url&gt; (starting with http:// or https://) we download the remote recording (which must be a Continuous recording) in the background to a url-dependent filename while replaying it; if the url-dependent filename already exists it is assumed to be a truncated download and we only download any remaining data.</source>
-        <target xml:space="preserve">Charge un enregistrement d&apos;une session précédente de FlightGear. Avec la forme &lt;nom&gt;, si &lt;nom&gt; se termine par .fgdata, il est considéré comme un chemin local vers le fichier d&apos;enregistrement ; sinon, ce chemin est formé en concaténant le dossier d&apos;enregistrement de bandes, &lt;nom&gt; et le suffixe .fgtape. Avec la forme &lt;url&gt; (commençant par http:// ou https://), FlightGear télécharge en arrière-plan l&apos;enregistrement distant (qui doit être un enregistrement Continu) dans un fichier dont le nom dépend de l&apos;URL ; l&apos;enregistrement est rejoué en même temps ; si ce fichier existe déjà, il est considéré comme un téléchargement tronqué et FlightGear ne télécharge alors que les données manquantes.</target>
+        <source xml:space="preserve">Load recording of earlier FlightGear session. For &lt;name&gt;, if &lt;name&gt; ends with &quot;.fgtape&quot; it is treated as the local path of the recording file; otherwise we form the local path by prepending &lt;name&gt; with the tape directory and appending &quot;.fgtape&quot;. For &lt;url&gt; (starting with http:// or https://) we download the remote recording (which must be a Continuous recording) in the background to a url-dependent filename while replaying it; if the url-dependent filename already exists it is assumed to be a truncated download and we only download any remaining data.</source>
+        <target xml:space="preserve">Charge un enregistrement d&apos;une session précédente de FlightGear. Avec la forme &lt;nom&gt;, si &lt;nom&gt; se termine par .fgtape, il est considéré comme un chemin local vers le fichier d&apos;enregistrement ; sinon, ce chemin est formé en concaténant le dossier d&apos;enregistrement de bandes, &lt;nom&gt; et le suffixe .fgtape. Avec la forme &lt;url&gt; (commençant par http:// ou https://), FlightGear télécharge en arrière-plan l&apos;enregistrement distant (qui doit être un enregistrement Continu) dans un fichier dont le nom dépend de l&apos;URL ; l&apos;enregistrement est rejoué en même temps ; si ce fichier existe déjà, il est considéré comme un téléchargement tronqué et FlightGear ne télécharge alors que les données manquantes.</target>
       </trans-unit>
       <trans-unit id="options/load-tape-fixed-dt:0" approved="yes">
         <source xml:space="preserve">Set fixed-dt mode while replaying tape specified by --load-tape</source>
@@ -1724,7 +1724,7 @@
         <target xml:space="preserve">Erreur de chargement d&apos;un modèle 3D</target>
       </trans-unit>
       <trans-unit id="sys/error-aircraft-systems:0" approved="yes">
-        <source xml:space="preserve">Errors occured loading aircraft systems (fuel, electrical, hydrualics)</source>
+        <source xml:space="preserve">Errors occurred loading aircraft systems (fuel, electrical, hydraulics)</source>
         <target xml:space="preserve">Des erreurs se sont produites en chargeant les systèmes de l&apos;aéronef (carburant, système électrique ou hydraulique)</target>
         <note from="translator">Ne manque-t-il pas des points de suspension dans la chaîne en anglais ?</note>
       </trans-unit>
@@ -1782,7 +1782,7 @@
         <target xml:space="preserve">Les scènes téléchargées avec TerraSync ne se chargent pas correctement. Ceci est généralement dû à des problèmes de connexion réseau ou de disque dur local.</target>
       </trans-unit>
       <trans-unit id="sys/error-category-traffic:0" approved="yes">
-        <source xml:space="preserve">Problems occured loading simulated aircaft traffic: some traffic may not appear.</source>
+        <source xml:space="preserve">Problems occurred loading simulated aircraft traffic: some traffic may not appear.</source>
         <target xml:space="preserve">Des problèmes ont été rencontrés en essayant de charger le trafic aérien simulé ; une partie du trafic risque de ne pas apparaître.</target>
       </trans-unit>
       <trans-unit id="sys/error-category-unknown:0" approved="yes">
@@ -2186,6 +2186,149 @@
       <trans-unit id="weather-scenarios/warm-sector-name:0" approved="yes">
         <source xml:space="preserve">Warm sector</source>
         <target xml:space="preserve">Secteur chaud</target>
+      </trans-unit>
+    </group>
+    <group restype="x-trolltech-linguist-context" resname="dialog-exit">
+      <trans-unit id="dialog-exit/exit-FlightGear-question-label:0" approved="yes">
+        <source xml:space="preserve">Exit FlightGear?</source>
+        <target xml:space="preserve">Quitter FlightGear ?</target>
+      </trans-unit>
+      <trans-unit id="dialog-exit/exit-button-label:0" approved="yes">
+        <source xml:space="preserve">Exit</source>
+        <target xml:space="preserve">Quitter</target>
+      </trans-unit>
+    </group>
+    <group restype="x-trolltech-linguist-context" resname="dialog-location-in-air">
+      <trans-unit id="dialog-location-in-air/NDB-radio-button:0" approved="yes">
+        <source xml:space="preserve">NDB:</source>
+        <target xml:space="preserve">NDB :</target>
+        <note annotates="source" from="developer">Label corresponding to a radio button</note>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/NDB-selection-input:0" approved="yes">
+        <source xml:space="preserve">NDB:</source>
+        <target xml:space="preserve">NDB :</target>
+        <note annotates="source" from="developer">Label corresponding to a text input field</note>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/VOR-radio-button:0" approved="yes">
+        <source xml:space="preserve">VOR:</source>
+        <target xml:space="preserve">VOR :</target>
+        <note annotates="source" from="developer">Label corresponding to a radio button</note>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/VOR-selection-input:0" approved="yes">
+        <source xml:space="preserve">VOR:</source>
+        <target xml:space="preserve">VOR :</target>
+        <note annotates="source" from="developer">Label corresponding to a text input field</note>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/aircraft-carrier-radio-button:0" approved="yes">
+        <source xml:space="preserve">Aircraft Carrier:</source>
+        <target xml:space="preserve">Porte-avions :</target>
+        <note annotates="source" from="developer">Label corresponding to a radio button</note>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/airport-radio-button:0" approved="yes">
+        <source xml:space="preserve">Airport:</source>
+        <target xml:space="preserve">Aérodrome :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/airport-selection-input:0" approved="yes">
+        <source xml:space="preserve">Airport:</source>
+        <target xml:space="preserve">Aérodrome :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/airspeed-kt-input:0" approved="yes">
+        <source xml:space="preserve">Airspeed (kt):</source>
+        <target xml:space="preserve">Vitesse air (nœuds) :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/altitude-ft-input:0" approved="yes">
+        <source xml:space="preserve">Altitude (ft):</source>
+        <target xml:space="preserve">Altitude (pieds) :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/azimuth-deg-input:0" approved="yes">
+        <source xml:space="preserve">Azimuth (deg):</source>
+        <target xml:space="preserve">Azimut (degrés) :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/carrier-position-selection-combo:0" approved="yes">
+        <source xml:space="preserve">Position:</source>
+        <target xml:space="preserve">Position :</target>
+        <note annotates="source" from="developer">Position selection on an aircraft carrier</note>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/carrier-selection-combo:0" approved="yes">
+        <source xml:space="preserve">Carrier:</source>
+        <target xml:space="preserve">Porte-avions :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/distance-nm-input:0" approved="yes">
+        <source xml:space="preserve">Distance (nm):</source>
+        <target xml:space="preserve">Distance (nm) :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/fix-radio-button:0" approved="yes">
+        <source xml:space="preserve">Fix:</source>
+        <target xml:space="preserve">Fix :</target>
+        <note annotates="source" from="developer">Label corresponding to a radio button</note>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/fix-selection-input:0" approved="yes">
+        <source xml:space="preserve">Fix:</source>
+        <target xml:space="preserve">Fix :</target>
+        <note annotates="source" from="developer">Label corresponding to a text input field</note>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/glidepath-deg-input:0" approved="yes">
+        <source xml:space="preserve">Glidepath (deg):</source>
+        <target xml:space="preserve">Trajectoire de descente (degrés) :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/heading-deg-input:0" approved="yes">
+        <source xml:space="preserve">Heading (deg):</source>
+        <target xml:space="preserve">Cap (degrés) :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/latitude-input:0" approved="yes">
+        <source xml:space="preserve">Latitude:</source>
+        <target xml:space="preserve">Latitude :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/longitude-input:0" approved="yes">
+        <source xml:space="preserve">Longitude:</source>
+        <target xml:space="preserve">Longitude :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/position-aircraft-in-air-label:0" approved="yes">
+        <source xml:space="preserve">Position Aircraft In Air</source>
+        <target xml:space="preserve">Placer l&apos;avion en l&apos;air</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/position-radio-button:0" approved="yes">
+        <source xml:space="preserve">Position:</source>
+        <target xml:space="preserve">Position :</target>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/relative-position-label:0" approved="yes">
+        <source xml:space="preserve">Relative Position</source>
+        <target xml:space="preserve">Placement relatif</target>
+        <note annotates="source" from="developer">Title</note>
+      </trans-unit>
+      <trans-unit id="dialog-location-in-air/runway-selection-input:0" approved="yes">
+        <source xml:space="preserve">Runway:</source>
+        <target xml:space="preserve">Piste :</target>
+      </trans-unit>
+    </group>
+    <group restype="x-trolltech-linguist-context" resname="gui">
+      <trans-unit id="gui/button-accept:0" approved="yes">
+        <source xml:space="preserve">Okay</source>
+        <target xml:space="preserve">OK</target>
+      </trans-unit>
+      <trans-unit id="gui/button-apply:0" approved="yes">
+        <source xml:space="preserve">Apply</source>
+        <target xml:space="preserve">Appliquer</target>
+      </trans-unit>
+      <trans-unit id="gui/button-cancel:0" approved="yes">
+        <source xml:space="preserve">Cancel</source>
+        <target xml:space="preserve">Annuler</target>
+      </trans-unit>
+      <trans-unit id="gui/button-close:0" approved="yes">
+        <source xml:space="preserve">Close</source>
+        <target xml:space="preserve">Fermer</target>
+      </trans-unit>
+      <trans-unit id="gui/button-help:0" approved="yes">
+        <source xml:space="preserve">Help</source>
+        <target xml:space="preserve">Aide</target>
+      </trans-unit>
+      <trans-unit id="gui/button-reset:0" approved="yes">
+        <source xml:space="preserve">Reset</source>
+        <target xml:space="preserve">Réinitialiser</target>
+      </trans-unit>
+      <trans-unit id="gui/button-revert:0" approved="yes">
+        <source xml:space="preserve">Revert</source>
+        <target xml:space="preserve">Rétablir</target>
       </trans-unit>
     </group>
   </body></file>

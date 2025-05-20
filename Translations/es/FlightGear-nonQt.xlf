@@ -1237,9 +1237,9 @@
           <source>Enable/Disable encode video while replaying tape specified by --load-tape</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/load-tape-desc:0" translate="yes" approved="yes">
-          <source>Load recording of earlier FlightGear session. For &lt;name&gt;, if &lt;name&gt; ends with .fgdata it is treated as the local path of the recording file; otherwise we form the local path by prepending &lt;name&gt; with the tape directory and appending ".fgtape". For &lt;url&gt; (starting with http:// or https://) we download the remote recording (which must be a Continuous recording) in the background to a url-dependent filename while replaying it; if the url-dependent filename already exists it is assumed to be a truncated download and we only download any remaining data.</source>
-          <target>Cargar grabación de una sesión anterior de FlightGear. Para &lt;nombre&gt;, si &lt;nombre&gt; termina en .fgdata, se trata como la ruta local del archivo de grabación; de lo contrario, se forma la ruta local anteponiendo &lt;nombre&gt; con el directorio de la cinta y añadiendo ".fgtape". Para &lt;url&gt; (comenzando con http:// o https://) se descarga la grabación remota (que debe ser una grabación Continua) en segundo plano a un nombre de archivo dependiente de la URL mientras se reproduce; si el nombre de archivo dependiente de la URL ya existe, se asume que es una descarga truncada y solo se descargan los datos restantes.</target>
+        <trans-unit id="options/load-tape-desc:0" translate="yes" approved="no">
+          <source>Load recording of earlier FlightGear session. For &lt;name&gt;, if &lt;name&gt; ends with ".fgtape" it is treated as the local path of the recording file; otherwise we form the local path by prepending &lt;name&gt; with the tape directory and appending ".fgtape". For &lt;url&gt; (starting with http:// or https://) we download the remote recording (which must be a Continuous recording) in the background to a url-dependent filename while replaying it; if the url-dependent filename already exists it is assumed to be a truncated download and we only download any remaining data.</source>
+          <target state="needs-review-translation">Cargar grabación de una sesión anterior de FlightGear. Para &lt;nombre&gt;, si &lt;nombre&gt; termina en .fgdata, se trata como la ruta local del archivo de grabación; de lo contrario, se forma la ruta local anteponiendo &lt;nombre&gt; con el directorio de la cinta y añadiendo ".fgtape". Para &lt;url&gt; (comenzando con http:// o https://) se descarga la grabación remota (que debe ser una grabación Continua) en segundo plano a un nombre de archivo dependiente de la URL mientras se reproduce; si el nombre de archivo dependiente de la URL ya existe, se asume que es una descarga truncada y solo se descargan los datos restantes.</target>
         </trans-unit>
         <trans-unit id="options/load-tape-fixed-dt:0" translate="yes" approved="no">
           <source>Set fixed-dt mode while replaying tape specified by --load-tape</source>
@@ -1743,9 +1743,9 @@
           <source>Error loading 3D model</source>
           <target>Error cargando modelo 3D</target>
         </trans-unit>
-        <trans-unit id="sys/error-aircraft-systems:0" translate="yes" approved="yes">
-          <source>Errors occured loading aircraft systems (fuel, electrical, hydrualics)</source>
-          <target>Han ocurrido errores al cargar los sistemas de la aeronave (de combustible, eléctricos, hidráulicos)</target>
+        <trans-unit id="sys/error-aircraft-systems:0" translate="yes" approved="no">
+          <source>Errors occurred loading aircraft systems (fuel, electrical, hydraulics)</source>
+          <target state="needs-review-translation">Han ocurrido errores al cargar los sistemas de la aeronave (de combustible, eléctricos, hidráulicos)</target>
         </trans-unit>
         <trans-unit id="sys/error-audio-fx-load:0" translate="yes" approved="yes">
           <source>Audio FX description contains errors</source>
@@ -1799,9 +1799,9 @@
           <source>Scenery downloaded via TerraSync is not loading correctly. The usually indicates a problem with your network connection or local disk.</source>
           <target>El escenario descargado via TerraSync no se está cargando correctamente. Esto normalmente indica un problema con la conexión de red o con el disco local.</target>
         </trans-unit>
-        <trans-unit id="sys/error-category-traffic:0" translate="yes" approved="yes">
-          <source>Problems occured loading simulated aircaft traffic: some traffic may not appear.</source>
-          <target>Problemas al cargar tráfico de aeronaves simuladas: algún tráfico puede no aparecer.</target>
+        <trans-unit id="sys/error-category-traffic:0" translate="yes" approved="no">
+          <source>Problems occurred loading simulated aircraft traffic: some traffic may not appear.</source>
+          <target state="needs-review-translation">Problemas al cargar tráfico de aeronaves simuladas: algún tráfico puede no aparecer.</target>
         </trans-unit>
         <trans-unit id="sys/error-category-unknown:0" translate="yes" approved="yes">
           <source>Errors occurred in an unknown part of FlightGear. Please report this bug to the FlightGear development team.</source>
@@ -2198,6 +2198,149 @@
         <trans-unit id="weather-scenarios/warm-sector-name:0" translate="yes" approved="yes">
           <source>Warm sector</source>
           <target>Sector cálido</target>
+        </trans-unit>
+      </group>
+      <group restype="x-trolltech-linguist-context" resname="dialog-exit">
+        <trans-unit id="dialog-exit/exit-FlightGear-question-label:0" translate="yes" approved="no">
+          <source>Exit FlightGear?</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-exit/exit-button-label:0" translate="yes" approved="no">
+          <source>Exit</source>
+          <target state="new" />
+        </trans-unit>
+      </group>
+      <group restype="x-trolltech-linguist-context" resname="dialog-location-in-air">
+        <trans-unit id="dialog-location-in-air/NDB-radio-button:0" translate="yes" approved="no">
+          <source>NDB:</source>
+          <target state="needs-review-translation" />
+          <note from="developer" annotates="source">Label corresponding to a radio button</note>
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/NDB-selection-input:0" translate="yes" approved="no">
+          <source>NDB:</source>
+          <target state="needs-review-translation" />
+          <note from="developer" annotates="source">Label corresponding to a text input field</note>
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/VOR-radio-button:0" translate="yes" approved="no">
+          <source>VOR:</source>
+          <target state="needs-review-translation" />
+          <note from="developer" annotates="source">Label corresponding to a radio button</note>
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/VOR-selection-input:0" translate="yes" approved="no">
+          <source>VOR:</source>
+          <target state="needs-review-translation" />
+          <note from="developer" annotates="source">Label corresponding to a text input field</note>
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/aircraft-carrier-radio-button:0" translate="yes" approved="no">
+          <source>Aircraft Carrier:</source>
+          <target state="needs-review-translation" />
+          <note from="developer" annotates="source">Label corresponding to a radio button</note>
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/airport-radio-button:0" translate="yes" approved="no">
+          <source>Airport:</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/airport-selection-input:0" translate="yes" approved="no">
+          <source>Airport:</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/airspeed-kt-input:0" translate="yes" approved="no">
+          <source>Airspeed (kt):</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/altitude-ft-input:0" translate="yes" approved="no">
+          <source>Altitude (ft):</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/azimuth-deg-input:0" translate="yes" approved="no">
+          <source>Azimuth (deg):</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/carrier-position-selection-combo:0" translate="yes" approved="no">
+          <source>Position:</source>
+          <target state="needs-review-translation" />
+          <note from="developer" annotates="source">Position selection on an aircraft carrier</note>
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/carrier-selection-combo:0" translate="yes" approved="no">
+          <source>Carrier:</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/distance-nm-input:0" translate="yes" approved="no">
+          <source>Distance (nm):</source>
+          <target state="needs-review-translation" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/fix-radio-button:0" translate="yes" approved="no">
+          <source>Fix:</source>
+          <target state="needs-review-translation" />
+          <note from="developer" annotates="source">Label corresponding to a radio button</note>
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/fix-selection-input:0" translate="yes" approved="no">
+          <source>Fix:</source>
+          <target state="needs-review-translation" />
+          <note from="developer" annotates="source">Label corresponding to a text input field</note>
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/glidepath-deg-input:0" translate="yes" approved="no">
+          <source>Glidepath (deg):</source>
+          <target state="needs-review-translation" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/heading-deg-input:0" translate="yes" approved="no">
+          <source>Heading (deg):</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/latitude-input:0" translate="yes" approved="no">
+          <source>Latitude:</source>
+          <target state="needs-review-translation" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/longitude-input:0" translate="yes" approved="no">
+          <source>Longitude:</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/position-aircraft-in-air-label:0" translate="yes" approved="no">
+          <source>Position Aircraft In Air</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/position-radio-button:0" translate="yes" approved="no">
+          <source>Position:</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/relative-position-label:0" translate="yes" approved="no">
+          <source>Relative Position</source>
+          <target state="needs-review-translation" />
+          <note from="developer" annotates="source">Title</note>
+        </trans-unit>
+        <trans-unit id="dialog-location-in-air/runway-selection-input:0" translate="yes" approved="no">
+          <source>Runway:</source>
+          <target state="needs-review-translation" />
+        </trans-unit>
+      </group>
+      <group restype="x-trolltech-linguist-context" resname="gui">
+        <trans-unit id="gui/button-accept:0" translate="yes" approved="no">
+          <source>Okay</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="gui/button-apply:0" translate="yes" approved="no">
+          <source>Apply</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="gui/button-cancel:0" translate="yes" approved="no">
+          <source>Cancel</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="gui/button-close:0" translate="yes" approved="no">
+          <source>Close</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="gui/button-help:0" translate="yes" approved="no">
+          <source>Help</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="gui/button-reset:0" translate="yes" approved="no">
+          <source>Reset</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="gui/button-revert:0" translate="yes" approved="no">
+          <source>Revert</source>
+          <target state="new" />
         </trans-unit>
       </group>
     </body>
