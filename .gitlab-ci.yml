@@ -8,6 +8,16 @@ variables:
   TEST_DATA_DIR: $CI_PROJECT_DIR/testFGData
   BUNDLED_DATA_DIR: $CI_PROJECT_DIR/bundledFGData
 
+# Do not run pipelines on forks. Run them on merge requests branches, tags
+# and the protected branches.
+workflow:
+  rules:
+    - if: $CI_PROJECT_NAMESPACE != "flightgear"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+
 # minimal data for running FGTestSuite, keep this as small as possible
 # since we frequently copy it to the code builders
 create-test-data:
