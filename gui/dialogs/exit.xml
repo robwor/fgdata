@@ -9,6 +9,7 @@
   <layout>vbox</layout>
 
   <text>
+    <name>exit-prompt</name>
     <label translate="y">
       exit-FlightGear-question-label
       <?FlightGear-tr text="Exit FlightGear?"?>
@@ -17,6 +18,7 @@
 
   <button-box>
     <button>
+      <name>exit-button</name>
       <legend translate="y">
         exit-button-label
         <?FlightGear-tr text="Exit"?>
