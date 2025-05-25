@@ -185,7 +185,8 @@ define(
                 }
 
                 self.aircraftMarker = L.aircraftMarker(self.map.getCenter(), {
-                    className : 'you-aircraft-marker-icon'
+                    className : 'you-aircraft-marker-icon',
+                    draggable: !!params, // permanently block dragging on minimap, for minimap the params = undefined
                 });
 
                 self.aircraftMarker.addTo(self.map);
@@ -250,12 +251,25 @@ define(
                 self.map.setView(center);
                 self.aircraftMarker.setLatLng(center);
 
-                // Enable/disable own aircraft dragging
-                self.dragOwnAircraft = ko.observable(true);
+                if (params && params.hasToggleOwnAircraftDrag) {
+                    // Enable/disable own aircraft dragging only for main map
+                    self.dragOwnAircraft = ko.observable(true);
 
-                self.toggleDragOwnAircraft = function(a) {
-                    self.dragOwnAircraft(!self.dragOwnAircraft());
-                    self.dragOwnAircraft() ? self.aircraftMarker.dragging.enable() : self.aircraftMarker.dragging.disable();
+                    self.setAircraftMarkerCursor = function(cursorStyle) {
+                        const el = self.aircraftMarker.getElement();
+                        if (el) {
+                            el.style.cursor = cursorStyle;
+                        }
+                    };
+
+                    self.toggleDragOwnAircraft = function(a) {
+                        self.dragOwnAircraft(!self.dragOwnAircraft());
+                        self.dragOwnAircraft() ? self.aircraftMarker.dragging.enable() : self.aircraftMarker.dragging.disable();
+                        self.setAircraftMarkerCursor(self.dragOwnAircraft() ? 'move' : 'inherit');
+                    }
+
+                    // Set default aircraft marker cursor
+                    self.setAircraftMarkerCursor(self.dragOwnAircraft() ? 'move' : 'inherit');
                 }
 
             }
