@@ -615,9 +615,9 @@ var XMLRadioButton =
 {
     show: func(viewParent)
     {
-        me._view = cwidgets.RadioButton.new(viewParent, canvas.style, {"text": me._configValue("label")});
-
-         # copy initial visiblity
+        me._view = cwidgets.RadioButton.new(viewParent, canvas.style,
+                                            {"text": me._configTrValue("label")});
+        # copy initial visiblity
         me._view.visible = me.visible;
 
         me._layout = me._view;
