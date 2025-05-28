@@ -211,20 +211,21 @@ var XMLObjectBase =
         return me.tr(node.getValue());
     },
 
-    # same as above, but translation is not mandatory, so no warning will appear in developer mode
-    _configOptionalTrValue: func(name)
+    # Function tailored for the handling of <format>, which is not necessarily
+    # translated, and may have plural variations only if the underlying value
+    # is an integer. No warning will be emitted in the absence of translate="y".
+    _configOptionalTrValue: func(name, value)
     {
         var node = me.config.getNode(name);
         if (node == nil) {
             return nil;
         }
 
-        var v = node.getValue();
         if (!node.getAttribute("translate")) {
-            return v;
+            return node.getValue();      # e.g., untranslated <format> string
         }
 
-        return me.tr(v);
+        return me.translateWithMaybePlural(name, value);
     },
 
     _applyLayoutConfig: func(compatWidgetSizeHint = false)
@@ -647,12 +648,12 @@ var XMLLabel =
     show: func(viewParent)
     {
         me._view = cwidgets.Label.new(viewParent, canvas.style, {});
-        
+
         # copy initial visiblity
         me._view.visible = me.visible;
 
         me._label = me._configTrValue("label");
-        me._format = me._configOptionalTrValue("format");
+        me._format = nil;       # will be set in update()
         me._layout = me._view;
         me._applyLayoutConfig(true);
         me.valueChanged();
@@ -670,6 +671,7 @@ var XMLLabel =
             v = me._label;
         }
 
+        me._format = me._configOptionalTrValue("format", v);
         if (me._format) {
             me._view.setText(sprintf(me._format, v));
         } else {
