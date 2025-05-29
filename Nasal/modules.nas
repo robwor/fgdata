@@ -44,6 +44,7 @@ var Module = {
     _orig_setlistener: setlistener,
     _orig_maketimer: maketimer,
     _orig_settimer: settimer,
+    _orig_removelistener: removelistener,
 
     # id: must be a string without special characters or spaces
     # ns: optional namespace name
@@ -158,6 +159,7 @@ var Module = {
         me.tcountN.setIntValue(0);
         me.lhitN.setIntValue(0);
         me._redirect_setlistener();
+        me._redirect_removelistener();
         me._redirect_maketimer();
         me._redirect_settimer();
 
@@ -198,8 +200,8 @@ var Module = {
                 globals[me.namespace]["setlistener"] = func {};
             foreach (var id; me._listeners) {
                 logprint(DEV_WARN, "Removing listener "~id);
-                if (removelistener(id)) {
-                    me.lcountN.setValue(me.lcountN.getValue() - 1);
+                if (_orig_removelistener(id)) {
+                    me.lcountN.decrement();
                 }
             }
             me._listeners = [];
@@ -253,6 +255,8 @@ var Module = {
                 p = props.getNode(p, 1).resolveAlias();
             }
             if (runtime == nil) runtime = me._setlistener_runtime_default;
+            var listenerId = 0;
+
             if (me._debug) {
                 var f_debug = func {
                     me.lhitN.setValue(me.lhitN.getValue() + 1);
@@ -261,19 +265,36 @@ var Module = {
                     }
                     call(f, arg);
                 };
-                append(me._listeners, Module._orig_setlistener(p, f_debug, start, runtime));
+
+                listenerId = Module._orig_setlistener(p, f_debug, start, runtime);
+                append(me._listeners, listenerId);
                 var c = caller(1);
                 if (c != nil) {
                     print(sprintf("[%s] setlistener for %s called from %s:%s",
                         me.namespace, p.getPath(), io.basename(c[2]), c[3]));
                 };
             } else {
-                append(me._listeners, Module._orig_setlistener(p,
-                    f, start, runtime));
+                listenerId = Module._orig_setlistener(p, f, start, runtime);
+                append(me._listeners, listenerId);
             }
-            me.lcountN.setValue(me.lcountN.getValue() + 1);
+            me.lcountN.increment();
+            # ensure callers can still manually remove listeners by ID
+            return listenerId;
         }
         me.setlistener = globals[me.namespace].setlistener;
+    },
+
+    # if the user manually removes a listener, update our list to avoid
+    # double-removes
+    _redirect_removelistener: func() {
+        globals[me.namespace].removelistener = func(id) {
+            var sz = Module._orig_removelistener(id);
+            remove(me._listeners, id);
+            me.lcountN.decrement();
+            return sz;
+        }
+
+        me.removelistener = globals[me.namespace].removelistener;
     },
 
     # redirect maketimer for module
