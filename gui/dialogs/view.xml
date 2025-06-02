@@ -1,10 +1,23 @@
 <?xml version="1.0"?>
 
+<?FlightGear-tr context="dialog-view"?>
+<?FlightGear-tr id="other-views-heading-label" text="Other Views"?>
+<?FlightGear-tr id="aircraft-specific-views-heading-label"
+                text='"%s" Specific Views'
+                comment="%s = name of the selected aircraft"?>
+<?FlightGear-tr id="unnamed-view-number-n" text="unnamed view %d"
+                comment="%d = view number"?>
+
 <PropertyList>
   <name>view</name>
+  <title translate="y">
+    view-options-title
+    <?FlightGear-tr text="View Options" comment="This is the dialog title."?>
+  </title>
 
   <nasal>
     <open>
+      var tr = FGTranslate.new().getResource("dialog-view");
 
       var group = gui.findElementByName(cmdarg(), "active-views");
       var ac = getprop("/sim/aircraft");
@@ -13,7 +26,9 @@
       group.removeChildren("text");
 
       var t = group.getChild("text", 0, 1);
-      t.getNode("label", 1).setValue("Standard Views");
+      # Translatable string 'standard-views-heading-label' is defined in the
+      # dialog XML config below.
+      t.getNode("label", 1).setValue(tr.get("standard-views-heading-label"));
       t.getNode("halign", 1).setValue("left");
 
 
@@ -28,7 +43,8 @@
               mode = 2;
               group.getChild("empty", 1, 1).getChild("stretch", 0, 1).setValue(1);
               var t = group.getChild("text", 1, 1);
-              t.getNode("label", 1).setValue("Other Views");
+              t.getNode("label", 1).setValue(
+                tr.get("other-views-heading-label"));
             }
 
           } elsif (index >= 100) {
@@ -37,7 +53,8 @@
               mode = 1;
               group.getChild("empty", 0, 1).getChild("stretch", 0, 1).setValue(1);
               var t = group.getChild("text", 1, 1);
-              t.getNode("label", 1).setValue("\"" ~ ac ~ "\" Specific Views");
+              t.getNode("label", 1).setValue(
+                sprintf(tr.get("aircraft-specific-views-heading-label"), ac));
               t.getNode("halign", 1).setValue("left");
             }
           }
@@ -45,7 +62,9 @@
           var target = group.getChild("checkbox", index, 1);
           props.copy(group.getNode("checkbox-template"), target);
           var nameValue = name != nil ? name.getValue() : nil;
-          target.getNode("label").setValue(nameValue != nil ? nameValue : ("** unnamed view " ~ index ~ " **"));
+          target.getNode("label").setValue(
+            nameValue != nil ? nameValue :
+            sprintf("** " ~ tr.get("unnamed-view-number-n") ~ " **", index));
           target.getNode("property").setValue(enabled.getPath());
         }
       }
@@ -58,33 +77,15 @@
   <group>
     <layout>hbox</layout>
 
-    <text>
-      <label>View Options</label>
-    </text>
-
-    <empty><stretch>1</stretch></empty>
-
-    <button>
-      <legend>X</legend>
-      <key>Esc</key>
-      <pref-width>20</pref-width>
-      <pref-height>20</pref-height>
-      <binding>
-        <command>dialog-close</command>
-      </binding>
-    </button>
-  </group>
-
-  <hrule/>
-
-  <group>
-    <layout>hbox</layout>
-
     <group>
       <layout>vbox</layout>
+      <valign>top</valign>
 
       <text>
-        <label>Select Active Views</label>
+        <label translate="y">
+          select-active-views-instruction
+          <?FlightGear-tr text="Select Active Views"?>
+        </label>
       </text>
 
       <group>
@@ -94,7 +95,10 @@
 
         <text>
           <halign>left</halign>
-          <label>Standard Views</label>
+          <label translate="y">
+            standard-views-heading-label
+            <?FlightGear-tr text="Standard Views"?>
+          </label>
         </text>
 
         <checkbox-template>
@@ -116,12 +120,18 @@
       <valign>top</valign>
 
       <text>
-        <label>Display Options</label>
+        <label translate="y">
+          display-options-heading-label
+          <?FlightGear-tr text="Display Options"?>
+        </label>
       </text>
 
       <checkbox>
         <halign>left</halign>
-        <label>Show frame rate</label>
+        <label translate="y">
+          show-frame-rate-checkbox
+          <?FlightGear-tr text="Show frame rate"?>
+        </label>
         <property>/sim/rendering/fps-display</property>
         <binding>
           <command>dialog-apply</command>
@@ -130,7 +140,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Show frame spacing</label>
+        <label translate="y">
+          show-frame-spacing-checkbox
+          <?FlightGear-tr text="Show frame spacing"?>
+        </label>
         <property>/sim/rendering/frame-latency-display</property>
         <binding>
           <command>dialog-apply</command>
@@ -139,7 +152,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Show chat messages</label>
+        <label translate="y">
+          show-chat-messages-checkbox
+          <?FlightGear-tr text="Show chat messages"?>
+        </label>
         <property>/sim/multiplay/chat-display</property>
         <binding>
           <command>dialog-apply</command>
@@ -150,7 +166,11 @@
         <layout>hbox</layout>
 
         <text>
-          <label>Chat and event log position (requires restart):</label>
+          <label translate="y">
+            selection-of-chat-and-event-log-position
+            <?FlightGear-tr
+              text="Chat and event log position (requires restart):"?>
+          </label>
         </text>
 
         <combo>
@@ -168,7 +188,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Show popup messages</label>
+        <label translate="y">
+          show-popup-messages-checkbox
+          <?FlightGear-tr text="Show popup messages"?>
+        </label>
         <!-- generalising this property for all popups -->
         <property>/sim/view-name-popup</property>
         <binding>
@@ -178,7 +201,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Show popup when cycling mouse behaviour</label>
+        <label translate="y">
+          show-popup-when-cycling-mouse-behaviour-checkbox
+          <?FlightGear-tr text="Show popup when cycling mouse behaviour"?>
+        </label>
         <property>/sim/mouse/cycle-mode-popup</property>
         <binding>
           <command>dialog-apply</command>
@@ -188,7 +214,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Show tooltips</label>
+        <label translate="y">
+          show-tooltips-checkbox
+          <?FlightGear-tr text="Show tooltips"?>
+        </label>
         <property>/sim/mouse/tooltips-enabled</property>
         <binding>
           <command>dialog-apply</command>
@@ -197,7 +226,10 @@
 
       <checkbox>
           <halign>left</halign>
-          <label>Show tooltip on mouse press</label>
+          <label translate="y">
+            show-tooltip-on-mouse-press-checkbox
+            <?FlightGear-tr text="Show tooltip on mouse press"?>
+          </label>
         <property>/sim/mouse/click-shows-tooltip</property>
         <binding>
           <command>dialog-apply</command>
@@ -206,7 +238,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Show 2D panel</label>
+        <label translate="y">
+          show-2D-panel-checkbox
+          <?FlightGear-tr text="Show 2D panel"?>
+        </label>
         <property>/sim/panel/visibility</property>
         <binding>
           <command>dialog-apply</command>
@@ -215,7 +250,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Hide 2D panel in non-centered view</label>
+        <label translate="y">
+          hide-2D-panel-in-non-centered-view-checkbox
+          <?FlightGear-tr text="Hide 2D panel in non-centered view"?>
+        </label>
         <property>/sim/panel/hide-nonzero-heading-offset</property>
         <enable>
           <property>/sim/panel/visibility</property>
@@ -227,7 +265,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Hide 2D panel in non-cockpit view</label>
+        <label translate="y">
+          hide-2D-panel-in-non-cockpit-view-checkbox
+          <?FlightGear-tr text="Hide 2D panel in non-cockpit view"?>
+        </label>
         <property>/sim/panel/hide-nonzero-view</property>
         <enable>
           <property>/sim/panel/visibility</property>
@@ -239,7 +280,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Autohide menubar</label>
+        <label translate="y">
+          autohide-menubar-checkkox
+          <?FlightGear-tr text="Autohide menubar"?>
+        </label>
         <property>/sim/menubar/autovisibility/enabled</property>
         <binding>
           <command>dialog-apply</command>
@@ -252,7 +296,12 @@
         <padding>0</padding>
 
         <checkbox>
-          <label>Autohide cursor in</label>
+          <label translate="y">
+            autohide-cursor-in-label
+            <?FlightGear-tr
+              text="Autohide cursor in"
+              comment="This is followed by a input field allowing one to enter a number of seconds"?>
+          </label>
           <property>/sim/mouse/hide-cursor</property>
           <binding>
             <command>dialog-apply</command>
@@ -274,12 +323,21 @@
 
         <text>
           <label>sec.</label>
+          <format translate="y">
+            format-string-for-cursor-timeout-sec
+            <?FlightGear-tr text="second(s)" has-plural="true"?>
+          </format>
+          <property>/sim/mouse/cursor-timeout-sec</property>
+          <live>true</live>
         </text>
       </group>
 
       <checkbox>
         <halign>left</halign>
-        <label>Legacy multiplayer view selector</label>
+        <label translate="y">
+          legacy-multiplayer-view-selector-checkbox
+          <?FlightGear-tr text="Legacy multiplayer view selector"?>
+        </label>
         <property>/sim/menubar/legacy-multiplayer-view-selector/enabled</property>
         <binding>
           <command>dialog-apply</command>
@@ -288,7 +346,13 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Show Pilot Model</label>
+        <label translate="y">
+          show-pilot-model-checkbox
+          <?FlightGear-tr
+            text="Show Pilot Model"
+            comment="This option is not always visible (it depends on a property)."
+          ?>
+        </label>
         <property>/sim/rendering/pilot-model/enabled</property>
         <visible>
           <equals>
@@ -312,12 +376,18 @@
       <valign>top</valign>
 
       <text>
-        <label>Marker Pins</label>
+        <label translate="y">
+          marker-pins-heading-label
+          <?FlightGear-tr text="Marker Pins"?>
+        </label>
       </text>
 
       <checkbox>
         <halign>left</halign>
-        <label>Show</label>
+        <label translate="y">
+          show-marker-pins-general-toggle-checkbox
+          <?FlightGear-tr text="Show"?>
+        </label>
         <property>/sim/marker-pins/master</property>
         <binding>
           <command>dialog-apply</command>
@@ -328,7 +398,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Airports</label>
+        <label translate="y">
+          show-airport-marker-pins-checkbox
+          <?FlightGear-tr text="Airports"?>
+        </label>
         <property>/sim/marker-pins/airports</property>
         <binding>
           <command>dialog-apply</command>
@@ -337,7 +410,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Navaids</label>
+        <label translate="y">
+          show-navaid-marker-pins-checkbox
+          <?FlightGear-tr text="Navaids"?>
+        </label>
         <property>/sim/marker-pins/navaids</property>
         <binding>
           <command>dialog-apply</command>
@@ -346,7 +422,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Fixes</label>
+        <label translate="y">
+          show-fix-marker-pins-checkbox
+          <?FlightGear-tr text="Fixes"?>
+        </label>
         <property>/sim/marker-pins/fixes</property>
         <binding>
           <command>dialog-apply</command>
@@ -355,7 +434,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>POI</label>
+        <label translate="y">
+          show-POI-marker-pins-checkbox
+          <?FlightGear-tr text="POI" comment="POI = Points Of Interest"?>
+        </label>
         <property>/sim/marker-pins/pois</property>
         <binding>
           <command>dialog-apply</command>
@@ -366,7 +448,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Traffic</label>
+        <label translate="y">
+          show-traffic-marker-pins-checkbox
+          <?FlightGear-tr text="Traffic"?>
+        </label>
         <property>/sim/marker-pins/traffic</property>
         <binding>
           <command>dialog-apply</command>

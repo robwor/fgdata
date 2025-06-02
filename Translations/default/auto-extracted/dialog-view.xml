@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource>
+  <meta>
+    <file-type>FlightGear default translation file</file-type>
+    <format-version>1</format-version>
+    <description>Automatically extracted strings with context 'dialog-view'</description>
+    <language-description>Engineering English</language-description>
+  </meta>
+  <strings>
+    <aircraft-specific-views-heading-label comment="%s = name of the selected aircraft">"%s" Specific Views</aircraft-specific-views-heading-label>
+    <autohide-cursor-in-label comment="This is followed by a input field allowing one to enter a number of seconds">Autohide cursor in</autohide-cursor-in-label>
+    <autohide-menubar-checkkox>Autohide menubar</autohide-menubar-checkkox>
+    <display-options-heading-label>Display Options</display-options-heading-label>
+    <format-string-for-cursor-timeout-sec has-plural="true">second(s)</format-string-for-cursor-timeout-sec>
+    <hide-2D-panel-in-non-centered-view-checkbox>Hide 2D panel in non-centered view</hide-2D-panel-in-non-centered-view-checkbox>
+    <hide-2D-panel-in-non-cockpit-view-checkbox>Hide 2D panel in non-cockpit view</hide-2D-panel-in-non-cockpit-view-checkbox>
+    <legacy-multiplayer-view-selector-checkbox>Legacy multiplayer view selector</legacy-multiplayer-view-selector-checkbox>
+    <marker-pins-heading-label>Marker Pins</marker-pins-heading-label>
+    <other-views-heading-label>Other Views</other-views-heading-label>
+    <select-active-views-instruction>Select Active Views</select-active-views-instruction>
+    <selection-of-chat-and-event-log-position>Chat and event log position (requires restart):</selection-of-chat-and-event-log-position>
+    <show-2D-panel-checkbox>Show 2D panel</show-2D-panel-checkbox>
+    <show-POI-marker-pins-checkbox comment="POI = Points Of Interest">POI</show-POI-marker-pins-checkbox>
+    <show-airport-marker-pins-checkbox>Airports</show-airport-marker-pins-checkbox>
+    <show-chat-messages-checkbox>Show chat messages</show-chat-messages-checkbox>
+    <show-fix-marker-pins-checkbox>Fixes</show-fix-marker-pins-checkbox>
+    <show-frame-rate-checkbox>Show frame rate</show-frame-rate-checkbox>
+    <show-frame-spacing-checkbox>Show frame spacing</show-frame-spacing-checkbox>
+    <show-marker-pins-general-toggle-checkbox>Show</show-marker-pins-general-toggle-checkbox>
+    <show-navaid-marker-pins-checkbox>Navaids</show-navaid-marker-pins-checkbox>
+    <show-pilot-model-checkbox comment="This option is not always visible (it depends on a property).">Show Pilot Model</show-pilot-model-checkbox>
+    <show-popup-messages-checkbox>Show popup messages</show-popup-messages-checkbox>
+    <show-popup-when-cycling-mouse-behaviour-checkbox>Show popup when cycling mouse behaviour</show-popup-when-cycling-mouse-behaviour-checkbox>
+    <show-tooltip-on-mouse-press-checkbox>Show tooltip on mouse press</show-tooltip-on-mouse-press-checkbox>
+    <show-tooltips-checkbox>Show tooltips</show-tooltips-checkbox>
+    <show-traffic-marker-pins-checkbox>Traffic</show-traffic-marker-pins-checkbox>
+    <standard-views-heading-label>Standard Views</standard-views-heading-label>
+    <unnamed-view-number-n comment="%d = view number">unnamed view %d</unnamed-view-number-n>
+    <view-options-title comment="This is the dialog title.">View Options</view-options-title>
+  </strings>
+</resource>
