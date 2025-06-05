@@ -1,34 +1,17 @@
 <?xml version="1.0"?>
 
+<?FlightGear-tr context="dialog-rendering"?>
+
 <PropertyList>
 	<name>rendering</name>
+	<title translate="y">
+	  rendering-options-title
+	  <?FlightGear-tr text="Rendering Options"
+	    comment="This is the dialog title."?>
+	</title>
 	<modal>false</modal>
 	<layout>vbox</layout>
 	<padding>20</padding>
-
-	<group>
-		<layout>hbox</layout>
-
-		<text>
-			<label>Rendering Options</label>
-		</text>
-
-		<empty>
-			<stretch>1</stretch>
-		</empty>
-
-		<button>
-			<legend>X</legend>
-			<key>Esc</key>
-			<pref-width>20</pref-width>
-			<pref-height>20</pref-height>
-			<binding>
-				<command>dialog-close</command>
-			</binding>
-		</button>
-	</group>
-
-	<hrule/>
 
 	<text>
 		<visible>
@@ -42,7 +25,11 @@
 			<green>0.6</green>
 			<blue>0.6</blue>
 		</color>
-		<label>Warning: Your graphics card may not support complex graphics.</label>
+		<label translate="y">
+      shader-warning-label
+      <?FlightGear-tr
+        text="Warning: Your graphics card may not support complex graphics."?>
+    </label>
 	</text>
 
 	<group>
@@ -66,7 +53,10 @@
 				<halign>left</halign>
 
 				<checkbox>
-					<label>Throttle frame rate</label>
+					<label translate="y">
+            throttle-frame-rate-checkbox
+            <?FlightGear-tr text="Throttle frame rate"?>
+          </label>
 					<name>frame-rate-throttle</name>
 					<property>/sim/gui/frame-rate-throttled</property>
 					<binding>
@@ -113,7 +103,10 @@
 						</greater-than>
 					</visible>
 					<label>99 Hz</label>
-					<format>%2.0f Hz</format>
+					<format translate="y">
+            frame-rate-throttle-hz-format
+            <?FlightGear-tr text="%2.0f Hz"?>
+          </format>
 					<live>true</live>
 					<property>/sim/frame-rate-throttle-hz</property>
 				</text>
@@ -121,7 +114,10 @@
 
 			<checkbox>
 				<halign>left</halign>
-				<label>Compensate field of view for wider screens</label>
+				<label translate="y">
+          field-of-view-compensation-checkbox
+          <?FlightGear-tr text="Compensate field of view for wider screens"?>
+        </label>
 				<property>sim/current-view/field-of-view-compensation</property>
 				<binding>
 					<command>nasal</command>
@@ -131,7 +127,11 @@
 
 			<checkbox>
 				<halign>left</halign>
-				<label>Use disk space for faster loading (DDS Texture Cache)</label>
+				<label translate="y">
+          enable-texture-cache-checkbox
+          <?FlightGear-tr
+            text="Use disk space for faster loading (DDS Texture Cache)"?>
+        </label>
 				<name>texture-cache-enabled</name>
 				<property>/sim/rendering/texture-cache/cache-enabled</property>
 				<binding>
@@ -142,7 +142,10 @@
 
 			<checkbox>
 				<halign>left</halign>
-				<label>Use point sprites for runway lights</label>
+				<label translate="y">
+          use-point-sprites-checkbox
+          <?FlightGear-tr text="Use point sprites for runway lights"?>
+        </label>
 				<property>/sim/rendering/point-sprites</property>
 				<binding>
 					<command>dialog-apply</command>
@@ -151,7 +154,10 @@
 
 			<checkbox>
 				<halign>left</halign>
-				<label>Use triangles for directional lights</label>
+				<label translate="y">
+          triangle-directional-lights-checkbox
+          <?FlightGear-tr text="Use triangles for directional lights"?>
+        </label>
 				<property>/sim/rendering/triangle-directional-lights</property>
 				<binding>
 					<command>dialog-apply</command>
@@ -163,7 +169,10 @@
 
 			<checkbox>
 				<halign>left</halign>
-				<label>Animated jetways</label>
+				<label translate="y">
+          animated-jetways-checkbox
+          <?FlightGear-tr text="Animated jetways"?>
+        </label>
 				<name>jetways</name>
 				<property>/nasal/jetways/enabled</property>
 				<binding>
@@ -174,7 +183,10 @@
 
 			<checkbox>
 				<halign>left</halign>
-				<label>Satellite Photoscenery</label>
+				<label translate="y">
+          satellite-photoscenery-checkbox
+          <?FlightGear-tr text="Satellite Photoscenery"?>
+        </label>
 				<name>satellite-photoscenery</name>
 				<property>/sim/rendering/photoscenery/enabled</property>
 				<binding>
@@ -185,7 +197,10 @@
 
 			<checkbox>
 				<halign>left</halign>
-				<label>Wireframe</label>
+				<label translate="y">
+          wireframe-checkbox
+          <?FlightGear-tr text="Wireframe"?>
+        </label>
 				<name>wireframe</name>
 				<property>/sim/rendering/wireframe</property>
 				<binding>
@@ -196,7 +211,10 @@
 
 			<checkbox>
 				<halign>left</halign>
-				<label>Tessellation</label>
+				<label translate="y">
+          tessellation-checkbox
+          <?FlightGear-tr text="Tessellation"?>
+        </label>
 				<name>tessellation</name>
 				<property>/sim/rendering/shaders/tessellation</property>
 				<binding>
@@ -209,7 +227,11 @@
 				<layout>hbox</layout>
 				<halign>left</halign>
 				<text>
-					<label>Maximum number of aircraft and scenery tiles cached</label>
+					<label translate="y">
+            max-paged-lod-slider
+            <?FlightGear-tr
+              text="Maximum number of aircraft and scenery tiles cached"?>
+          </label>
 				</text>
 				<slider>
 					<name>max-plod</name>
@@ -225,7 +247,11 @@
 				</slider>
 				<text>
 					<label>12345</label>
-					<format>%d</format>
+					<format translate="y">
+            max-paged-lod-format
+            <?FlightGear-tr text="%d"
+              comment="Value of /sim/rendering/max-paged-lod"?>
+          </format>
 					<live>true</live>
 					<property>/sim/rendering/max-paged-lod</property>
 				</text>
@@ -237,7 +263,11 @@
 					<green>0.6</green>
 					<blue>0.6</blue>
 				</color>
-				<label>Warning: High values use a lot amount of memory and GPU</label>
+				<label translate="y">
+          max-paged-lod-warning
+          <?FlightGear-tr
+            text="Warning: High values use a lot amount of memory and GPU"?>
+        </label>
 				<visible>
 					<greater-than>
 						<property>/sim/rendering/max-paged-lod</property>
@@ -260,7 +290,10 @@
 					</visible>
 					<text>
 						<halign>left</halign>
-						<label>Graphics Quality</label>
+						<label translate="y">
+              graphics-presets-combo
+              <?FlightGear-tr text="Graphics Quality"?>
+            </label>
 					</text>
 					<combo>
 						<name>graphics-preset</name>
@@ -291,7 +324,10 @@
 					</visible>
 
 					<button>
-						<legend>Advanced Options</legend>
+						<legend translate="y">
+              advanced-options-button
+              <?FlightGear-tr text="Advanced Options"?>
+            </legend>
 						<halign>left</halign>
 						<binding>
 							<command>dialog-show</command>
@@ -309,7 +345,11 @@
 					<halign>left</halign>
 					<row>0</row>
 					<col>1</col>
-					<label>Custom</label>
+					<label translate="y">
+            custom-rendering-settings-checkbox
+            <?FlightGear-tr text="Custom"
+              comment="Whether to use custom rendering settings"?>
+          </label>
 					<name>custom-settings</name>
 					<property>/sim/gui/dialogs/rendering/custom-settings</property>
 					<binding>
@@ -323,12 +363,12 @@
 						</script>
 					</binding>
 				</checkbox>
-				
+
 			</group>
 
             <group>
                 <layout>table</layout>
-                
+
 			    <textbox>
 					<visible>
 						<property>/sim/rendering/preset-active</property>
@@ -356,8 +396,10 @@
 					</visible>
 					<row>0</row>
 					<col>0</col>
-					<legend>Save custom settings to file</legend>
-					<pref-width>200</pref-width>
+					<legend translate="y">
+            save-custom-settings-to-file-button
+            <?FlightGear-tr text="Save custom settings to file"?>
+          </legend>
                     <binding>
                         <command>nasal</command>
                         <script>
@@ -377,13 +419,16 @@
 				<layout>hbox</layout>
 				<checkbox>
 					<halign>left</halign>
-					<label>WS3.0 (Experimental - requires OSG 3.6)</label>
+					<label translate="y">
+            use-vpb-checkbox
+            <?FlightGear-tr text="WS3.0 (Experimental - requires OSG 3.6)"?>
+          </label>
 					<name>ws30</name>
 					<property>/scenery/use-vpb</property>
 					<enable>
 						<property>/sim/gui/dialogs/rendering/vpb-available</property>
 					</enable>
-					
+
 					<binding>
 						<command>dialog-apply</command>
 						<object-name>ws30</object-name>
@@ -401,7 +446,10 @@
 							<value>true</value>
 						</equals>
 					</enable>
-					<label>Elevation delta below airports</label>
+					<label translate="y">
+            elevation-delta-below-airports-slider
+            <?FlightGear-tr text="Elevation delta below airports"?>
+          </label>
 				</text>
 				<slider>
 					<name>elev-delta</name>
@@ -429,7 +477,11 @@
 							<value>true</value>
 						</equals>
 					</enable>
-					<format>%2dm</format>
+					<format translate="y">
+            elevation-delta-below-airports-format
+            <?FlightGear-tr text="%2d m"
+              comment="%d = number of meters for “Elevation delta below airports”"?>
+          </format>
 					<live>true</live>
 					<property>/scenery/elevation-mesh/constraint-gap-m</property>
 				</text>
@@ -444,9 +496,13 @@
 					<green>0.6</green>
 					<blue>0.6</blue>
 				</color>
-				<label>Some changes require a complete restart to be applied.</label>
+				<label translate="y">
+          restart-required-notice
+          <?FlightGear-tr
+            text="Some changes require a complete restart to be applied."?>
+        </label>
 			</text>
-			
+
 		</group>
 
 		<!-- only for a gap -->

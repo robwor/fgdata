@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource>
+  <meta>
+    <file-type>FlightGear default translation file</file-type>
+    <format-version>1</format-version>
+    <description>Automatically extracted strings with context 'dialog-rendering'</description>
+    <language-description>Engineering English</language-description>
+  </meta>
+  <strings>
+    <advanced-options-button>Advanced Options</advanced-options-button>
+    <animated-jetways-checkbox>Animated jetways</animated-jetways-checkbox>
+    <custom-rendering-settings-checkbox comment="Whether to use custom rendering settings">Custom</custom-rendering-settings-checkbox>
+    <elevation-delta-below-airports-format comment="%d = number of meters for “Elevation delta below airports”">%2d m</elevation-delta-below-airports-format>
+    <elevation-delta-below-airports-slider>Elevation delta below airports</elevation-delta-below-airports-slider>
+    <enable-texture-cache-checkbox>Use disk space for faster loading (DDS Texture Cache)</enable-texture-cache-checkbox>
+    <field-of-view-compensation-checkbox>Compensate field of view for wider screens</field-of-view-compensation-checkbox>
+    <frame-rate-throttle-hz-format>%2.0f Hz</frame-rate-throttle-hz-format>
+    <graphics-presets-combo>Graphics Quality</graphics-presets-combo>
+    <max-paged-lod-format comment="Value of /sim/rendering/max-paged-lod">%d</max-paged-lod-format>
+    <max-paged-lod-slider>Maximum number of aircraft and scenery tiles cached</max-paged-lod-slider>
+    <max-paged-lod-warning>Warning: High values use a lot amount of memory and GPU</max-paged-lod-warning>
+    <rendering-options-title comment="This is the dialog title.">Rendering Options</rendering-options-title>
+    <restart-required-notice>Some changes require a complete restart to be applied.</restart-required-notice>
+    <satellite-photoscenery-checkbox>Satellite Photoscenery</satellite-photoscenery-checkbox>
+    <save-custom-settings-to-file-button>Save custom settings to file</save-custom-settings-to-file-button>
+    <shader-warning-label>Warning: Your graphics card may not support complex graphics.</shader-warning-label>
+    <tessellation-checkbox>Tessellation</tessellation-checkbox>
+    <throttle-frame-rate-checkbox>Throttle frame rate</throttle-frame-rate-checkbox>
+    <triangle-directional-lights-checkbox>Use triangles for directional lights</triangle-directional-lights-checkbox>
+    <use-point-sprites-checkbox>Use point sprites for runway lights</use-point-sprites-checkbox>
+    <use-vpb-checkbox>WS3.0 (Experimental - requires OSG 3.6)</use-vpb-checkbox>
+    <wireframe-checkbox>Wireframe</wireframe-checkbox>
+  </strings>
+</resource>
