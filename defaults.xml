@@ -582,6 +582,9 @@ Started September 2000 by David Megginson, david@megginson.com
       </database-pager>
     </rendering>
     <vr>
+      <config>
+        <cursors include="VR/cursors.xml"/>
+      </config>
       <depth-info type="bool" userarchive="y">true</depth-info>
       <enabled type="bool" userarchive="y">false</enabled>
       <mirror-enabled type="bool" userarchive="y">true</mirror-enabled>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PropertyList>
+  <name>Effects/mouse-cursor</name>
+  <inherits-from>Effects/model-default</inherits-from>
+
+  <technique n="109">
+    <scheme>hdr-geometry</scheme>
+    <pass>
+      <depth>
+        <enabled>true</enabled>
+        <write-mask>true</write-mask>
+      </depth>
+    </pass>
+  </technique>
+</PropertyList>

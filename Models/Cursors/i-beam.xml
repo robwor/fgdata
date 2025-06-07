@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+I-beam cursor model.
+
+Copyright (C) 2025 James Hogan
+GPL-2.0-or-later
+
+-->
+<PropertyList>
+  <path>i-beam.ac</path>
+
+  <effect>
+    <inherits-from>Effects/mouse-cursor</inherits-from>
+    <object-name>cursor</object-name>
+  </effect>
+</PropertyList>
