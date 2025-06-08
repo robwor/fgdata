@@ -102,6 +102,7 @@
 
   <group>
     <layout>hbox</layout>
+    <halign>left</halign>
     <default-padding>1</default-padding>
     <text>
       <label>  </label>
@@ -150,6 +151,24 @@
       <label> </label>
     </text>
 
+  </group>
+
+  <group>
+    <layout>hbox</layout>
+    <halign>left</halign>
+    <default-padding>1</default-padding>
+    <text>
+      <label>  </label>
+    </text>
+    <checkbox>
+      <halign>left</halign>
+      <label>Head tracked sound (for headphones)</label>
+      <property>/sim/sound/head-tracked</property>
+      <live>true</live>
+      <binding>
+        <command>dialog-apply</command>
+      </binding>
+    </checkbox>
   </group>
 
   <empty>
