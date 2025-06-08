@@ -171,6 +171,42 @@
     </checkbox>
   </group>
 
+  <group>
+    <layout>hbox</layout>
+    <halign>left</halign>
+    <default-padding>1</default-padding>
+    <text>
+      <label>  </label>
+    </text>
+    <checkbox>
+      <halign>left</halign>
+      <label>Show 3D mouse cursor in VR</label>
+      <property>/sim/vr/cursors/mouse[0]/show-vr-running</property>
+      <live>true</live>
+      <binding>
+        <command>dialog-apply</command>
+      </binding>
+    </checkbox>
+  </group>
+
+  <group>
+    <layout>hbox</layout>
+    <halign>left</halign>
+    <default-padding>1</default-padding>
+    <text>
+      <label>  </label>
+    </text>
+    <checkbox>
+      <halign>left</halign>
+      <label>Always show 3D mouse cursor</label>
+      <property>/sim/vr/cursors/mouse[0]/show-always</property>
+      <live>true</live>
+      <binding>
+        <command>dialog-apply</command>
+      </binding>
+    </checkbox>
+  </group>
+
   <empty>
     <stretch>true</stretch>
   </empty>

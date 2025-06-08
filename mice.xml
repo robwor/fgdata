@@ -24,6 +24,18 @@ current mode for each mouse is held in the
    <constrained type="bool">false</constrained>
    <pass-through type="bool">true</pass-through>
 
+   <vr-cursor>
+    <condition>
+     <or>
+      <property>/sim/vr/cursors/mouse[0]/show-always</property>
+      <and>
+       <property>/sim/vr/running</property>
+       <property>/sim/vr/cursors/mouse[0]/show-vr-running</property>
+      </and>
+     </or>
+    </condition>
+   </vr-cursor>
+
    <button n="0">
     <binding>
      <condition>

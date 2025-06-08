@@ -585,6 +585,12 @@ Started September 2000 by David Megginson, david@megginson.com
       <config>
         <cursors include="VR/cursors.xml"/>
       </config>
+      <cursors>
+        <mouse n="0">
+          <show-always type="bool" userarchive="y">false</show-always>
+          <show-vr-running type="bool" userarchive="y">true</show-vr-running>
+        </mouse>
+      </cursors>
       <depth-info type="bool" userarchive="y">true</depth-info>
       <enabled type="bool" userarchive="y">false</enabled>
       <mirror-enabled type="bool" userarchive="y">true</mirror-enabled>
