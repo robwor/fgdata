@@ -1,35 +1,29 @@
 <?xml version="1.0"?>
 
+<?FlightGear-tr context="dialog-advanced-graphics-options"?>
+
+<?FlightGear-tr id="low-spec-description" unwrap-text="true" text="\
+  The Low Specifications render mode provides low quality visuals
+  with maximum compatibility. This setting is recommended for
+  users with less powerful hardware or integrated video cards."?>
+
+<?FlightGear-tr id="als-description" unwrap-text="true" text="\
+  Atmospheric Light Scattering uses a sophisticated physical
+  atmospheric model and several other effects to give realistic
+  rendering of large distances. It is recommended to run this
+  configuration on relatively powerful hardware."?>
+
 <PropertyList>
   <name>advanced-graphics-options</name>
+  <ui-version>2</ui-version>
   <modal>false</modal>
   <layout>vbox</layout>
   <default-padding>3</default-padding>
-
-  <group>
-    <layout>hbox</layout>
-    <default-padding>1</default-padding>
-
-    <text>
-      <label>Advanced Graphics Options</label>
-    </text>
-
-    <empty>
-      <stretch>true</stretch>
-    </empty>
-
-    <button>
-      <legend>X</legend>
-      <key>Esc</key>
-      <pref-width>20</pref-width>
-      <pref-height>20</pref-height>
-      <binding>
-        <command>dialog-close</command>
-      </binding>
-    </button>
-  </group>
-
-  <hrule/>
+  <title translate="y">
+    advanced-graphics-options-title
+    <?FlightGear-tr text="Advanced Graphics Options"
+      comment="This is the dialog title."?>
+  </title>
 
   <group>
     <layout>hbox</layout>
@@ -49,7 +43,11 @@
       <group>
         <layout>hbox</layout>
         <text>
-          <label>General</label>
+          <label translate="y">
+            general-heading-label
+            <?FlightGear-tr text="General"
+              comment="Heading in the Advanced Graphics Options dialog"?>
+          </label>
           <halign>left</halign>
         </text>
         <hrule>
@@ -59,7 +57,10 @@
 
       <text>
         <halign>left</halign>
-        <label>Select Rendering Mode</label>
+        <label translate="y">
+          select-rendering-mode-label
+          <?FlightGear-tr text="Select Rendering Mode"?>
+        </label>
       </text>
 
       <!-- only for a gap -->
@@ -83,7 +84,10 @@
             <name>low-spec-mode</name>
             <property>/sim/gui/dialogs/advanced/mode/low-spec-mode</property>
             <live>true</live>
-            <label>Low Specifications</label>
+            <label translate="y">
+              low-specifications-radio-button
+              <?FlightGear-tr text="Low Specifications"?>
+            </label>
             <binding>
               <command>property-assign</command>
               <property>/sim/gui/dialogs/advanced/mode/low-spec-mode</property>
@@ -113,7 +117,10 @@
             <halign>right</halign>
             <name>use-shaders</name>
             <property>/sim/rendering/shaders/use-shaders</property>
-            <label>Use Shaders</label>
+            <label translate="y">
+              use-shaders-checkbox
+              <?FlightGear-tr text="Use Shaders"?>
+            </label>
             <live>true</live>
             <enable>
               <not>
@@ -153,7 +160,10 @@
           <name>als-mode</name>
           <property>/sim/gui/dialogs/advanced/mode/als-mode</property>
           <live>true</live>
-          <label>Atmospheric Light Scattering (ALS)</label>
+          <label translate="y">
+            als-mode-radio-button
+            <?FlightGear-tr text="Atmospheric Light Scattering (ALS)"?>
+          </label>
           <binding>
             <command>property-assign</command>
             <property>/sim/gui/dialogs/advanced/mode/low-spec-mode</property>
@@ -201,7 +211,11 @@
           <green>0.6</green>
           <blue>0.6</blue>
         </color>
-        <label>Some of these settings can only be changed when using ALS.</label>
+        <label translate="y">
+          hint-about-settings-only-available-under-ALS-label
+          <?FlightGear-tr
+            text="Some of these settings can only be changed when using ALS."?>
+        </label>
       </text>
 
       <group>
@@ -214,7 +228,10 @@
           <row>0</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Terrain Quality</label>
+          <label translate="y">
+            terrain-quality-combo
+            <?FlightGear-tr text="Terrain Quality"?>
+          </label>
         </text>
         <combo>
           <enable>
@@ -225,10 +242,38 @@
           <name>terrain-quality</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/advanced/terrain-quality</property>
-          <value>Low</value>
-          <value>Medium</value>
-          <value>High</value>
-          <value>Ultra</value>
+          <item>
+            <label translate="y">
+              combo-label-for-low-quality-terrain
+              <?FlightGear-tr text="Low"
+                comment="This is about Terrain Quality."?>
+            </label>
+            <value>Low</value>
+          </item>
+          <item>
+            <label translate="y">
+              combo-label-for-medium-quality-terrain
+              <?FlightGear-tr text="Medium"
+                comment="This is about Terrain Quality."?>
+            </label>
+            <value>Medium</value>
+          </item>
+          <item>
+            <label translate="y">
+              combo-label-for-high-quality-terrain
+              <?FlightGear-tr text="High"
+                comment="This is about Terrain Quality."?>
+            </label>
+            <value>High</value>
+          </item>
+          <item>
+            <label translate="y">
+              combo-label-for-utra-quality-terrain
+              <?FlightGear-tr text="Ultra"
+                comment="This is about Terrain Quality."?>
+            </label>
+            <value>Ultra</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>terrain-quality</object-name>
@@ -261,7 +306,10 @@
           <row>1</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Model Effects</label>
+          <label translate="y">
+            model-effects-combo
+            <?FlightGear-tr text="Model Effects"?>
+          </label>
         </text>
         <combo>
           <enable>
@@ -272,8 +320,22 @@
           <name>model-effects</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/advanced/model-effects</property>
-          <value>Disabled</value>
-          <value>Enabled</value>
+          <item>
+            <label translate="y">
+              model-effects-disabled-label
+              <?FlightGear-tr text="Disabled"
+                comment="This is about Model Effects."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              model-effects-enabled-label
+              <?FlightGear-tr text="Enabled"
+                comment="This is about Model Effects."?>
+            </label>
+            <value>Enabled</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>model-effects</object-name>
@@ -298,7 +360,10 @@
           <row>2</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Water Effects</label>
+          <label translate="y">
+            water-effects-combo
+            <?FlightGear-tr text="Water Effects"?>
+          </label>
         </text>
         <combo>
           <enable>
@@ -309,9 +374,30 @@
           <name>water-effects</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/advanced/water-effects</property>
-          <value>Disabled</value>
-          <value>Low</value>
-          <value>High</value>
+          <item>
+            <label translate="y">
+              water-effects-disabled-label
+              <?FlightGear-tr text="Disabled"
+                comment="This is about Water Effects."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              water-effects-low-label
+              <?FlightGear-tr text="Low"
+                comment="This is about Water Effects."?>
+            </label>
+            <value>Low</value>
+          </item>
+          <item>
+            <label translate="y">
+              water-effects-high-label
+              <?FlightGear-tr text="High"
+                comment="This is about Water Effects."?>
+            </label>
+            <value>High</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>water-effects</object-name>
@@ -338,7 +424,10 @@
           <row>4</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Clouds Detail</label>
+          <label translate="y">
+            clouds-detail-combo
+            <?FlightGear-tr text="Clouds Detail"?>
+          </label>
         </text>
         <combo>
           <enable>
@@ -349,8 +438,22 @@
           <name>clouds</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/advanced/clouds</property>
-          <value>Low</value>
-          <value>High</value>
+          <item>
+            <label translate="y">
+              clouds-detail-low-label
+              <?FlightGear-tr text="Low"
+                comment="This is about Clouds Detail."?>
+            </label>
+            <value>Low</value>
+          </item>
+          <item>
+            <label translate="y">
+              clouds-detail-high-label
+              <?FlightGear-tr text="High"
+                comment="This is about Clouds Detail."?>
+            </label>
+            <value>High</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>clouds</object-name>
@@ -375,7 +478,10 @@
           <row>5</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Wind Effects</label>
+          <label translate="y">
+            wind-effects-combo
+            <?FlightGear-tr text="Wind Effects"?>
+          </label>
         </text>
         <combo>
           <enable>
@@ -386,8 +492,22 @@
           <name>wind-effects</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/advanced/wind-effects</property>
-          <value>Disabled</value>
-          <value>Enabled</value>
+          <item>
+            <label translate="y">
+              wind-effects-disabled-label
+              <?FlightGear-tr text="Disabled"
+                comment="This is about Wind Effects."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              wind-effects-enabled-label
+              <?FlightGear-tr text="Enabled"
+                comment="This is about Wind Effects."?>
+            </label>
+            <value>Enabled</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>wind-effects</object-name>
@@ -412,7 +532,10 @@
           <row>6</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Overlay</label>
+          <label translate="y">
+            overlay-combo
+            <?FlightGear-tr text="Overlay"?>
+          </label>
         </text>
         <combo>
           <enable>
@@ -423,8 +546,24 @@
           <name>overlay</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/advanced/overlay</property>
-          <value>Disabled</value>
-          <value>Enabled</value>
+          <item>
+            <label translate="y">
+              overlay-disabled-label
+              <?FlightGear-tr text="Disabled" unwrap-comment="true"
+                comment="This is about Overlay in the Advanced Graphics Options
+                         dialog (/sim/gui/dialogs/advanced/overlay)."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              overlay-enabled-label
+              <?FlightGear-tr text="Enabled" unwrap-comment="true"
+                comment="This is about Overlay in the Advanced Graphics Options
+                         dialog (/sim/gui/dialogs/advanced/overlay)."?>
+            </label>
+            <value>Enabled</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>overlay</object-name>
@@ -446,7 +585,10 @@
           <row>7</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Anti-aliasing</label>
+          <label translate="y">
+            anti-aliasing-combo
+            <?FlightGear-tr text="Anti-aliasing"?>
+          </label>
         </text>
         <combo>
           <row>7</row>
@@ -454,10 +596,38 @@
           <name>anti-aliasing</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/advanced/anti-aliasing</property>
-          <value>Disabled</value>
-          <value>MSAA 2x</value>
-          <value>MSAA 4x</value>
-          <value>MSAA 8x</value>
+          <item>
+            <label translate="y">
+              anti-aliasing-disabled-label
+              <?FlightGear-tr text="Disabled"
+                comment="This is about Anti-aliasing."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              anti-aliasing-msaa-2x-label
+              <?FlightGear-tr text="MSAA 2x"
+                comment="This is an Anti-aliasing setting."?>
+            </label>
+            <value>MSAA 2x</value>
+          </item>
+          <item>
+            <label translate="y">
+              anti-aliasing-msaa-4x-label
+              <?FlightGear-tr text="MSAA 4x"
+                comment="This is an Anti-aliasing setting."?>
+            </label>
+            <value>MSAA 4x</value>
+          </item>
+          <item>
+            <label translate="y">
+              anti-aliasing-msaa-8x-label
+              <?FlightGear-tr text="MSAA 8x"
+                comment="This is an Anti-aliasing setting."?>
+            </label>
+            <value>MSAA 8x</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>anti-aliasing</object-name>
@@ -518,7 +688,10 @@
       <group>
         <layout>hbox</layout>
         <text>
-          <label>Shadows and Lights</label>
+          <label translate="y">
+            shadows-and-lights-heading-label
+            <?FlightGear-tr text="Shadows and Lights"?>
+          </label>
           <halign>left</halign>
         </text>
         <hrule>
@@ -532,7 +705,10 @@
           <row>0</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Shadow Quality</label>
+          <label translate="y">
+            shadow-quality-combo
+            <?FlightGear-tr text="Shadow Quality"?>
+          </label>
         </text>
         <text>
           <row>0</row>
@@ -545,11 +721,46 @@
           <name>shadows</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/advanced/shadows</property>
-          <value>Disabled</value>
-          <value>Low</value>
-          <value>Medium</value>
-          <value>High</value>
-          <value>Ultra</value>
+          <item>
+            <label translate="y">
+              shadow-quality-disabled-label
+              <?FlightGear-tr text="Disabled"
+                comment="This is about Shadow Quality."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              shadow-quality-low-label
+              <?FlightGear-tr text="Low"
+                comment="This is about Shadow Quality."?>
+            </label>
+            <value>Low</value>
+          </item>
+          <item>
+            <label translate="y">
+              shadow-quality-medium-label
+              <?FlightGear-tr text="Medium"
+                comment="This is about Shadow Quality."?>
+            </label>
+            <value>Medium</value>
+          </item>
+          <item>
+            <label translate="y">
+              shadow-quality-high-label
+              <?FlightGear-tr text="High"
+                comment="This is about Shadow Quality."?>
+            </label>
+            <value>High</value>
+          </item>
+          <item>
+            <label translate="y">
+              shadow-quality-ultra-label
+              <?FlightGear-tr text="Ultra"
+                comment="This is about Shadow Quality."?>
+            </label>
+            <value>Ultra</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>shadows</object-name>
@@ -580,7 +791,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Dynamic lighting</label>
+        <label translate="y">
+          dynamic-lighting-checkbox
+          <?FlightGear-tr text="Dynamic lighting"?>
+        </label>
         <name>dynamic-lighting</name>
         <property>/sim/rendering/dynamic-lighting/enabled</property>
         <binding>
@@ -591,7 +805,10 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Limit the number of lights being displayed</label>
+        <label translate="y">
+          limit-lights-checkbox
+          <?FlightGear-tr text="Limit the number of lights being displayed"?>
+        </label>
         <name>limit-lights</name>
         <property>/sim/gui/dialogs/advanced/limit-lights</property>
         <binding>
@@ -620,7 +837,10 @@
         <layout>hbox</layout>
         <halign>right</halign>
         <text>
-          <label>Maximum number of point lights</label>
+          <label translate="y">
+            max-pointlights-slider
+            <?FlightGear-tr text="Maximum number of point lights"?>
+          </label>
           <enable>
             <and>
               <property>/sim/rendering/dynamic-lighting/enabled</property>
@@ -663,7 +883,10 @@
         <layout>hbox</layout>
         <halign>right</halign>
         <text>
-          <label>Maximum number of spot lights</label>
+          <label translate="y">
+            max-spotlights-slider
+            <?FlightGear-tr text="Maximum number of spot lights"?>
+          </label>
           <enable>
             <and>
               <property>/sim/rendering/dynamic-lighting/enabled</property>
@@ -705,7 +928,10 @@
       <group>
         <layout>hbox</layout>
         <text>
-          <label>Scenery Layers</label>
+          <label translate="y">
+            scenery-layers-heading
+            <?FlightGear-tr text="Scenery Layers"?>
+          </label>
           <halign>left</halign>
         </text>
         <hrule>
@@ -720,7 +946,10 @@
           <row>0</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Pylons and power lines</label>
+          <label translate="y">
+            pylons-and-power-lines-combo
+            <?FlightGear-tr text="Pylons and power lines"?>
+          </label>
         </text>
         <combo>
           <row>0</row>
@@ -728,9 +957,30 @@
           <name>pylons</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/rendering/pylons</property>
-          <value>Disabled</value>
-          <value>Basic</value>
-          <value>Detailed</value>
+          <item>
+            <label translate="y">
+              pylons-and-power-lines-disabled-label
+              <?FlightGear-tr text="Disabled"
+                comment="This is about Pylons and power lines."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              pylons-and-power-lines-basic-label
+              <?FlightGear-tr text="Basic"
+                comment="This is about Pylons and power lines."?>
+            </label>
+            <value>Basic</value>
+          </item>
+          <item>
+            <label translate="y">
+              pylons-and-power-lines-detailed-label
+              <?FlightGear-tr text="Detailed"
+                comment="This is about Pylons and power lines."?>
+            </label>
+            <value>Detailed</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>pylons</object-name>
@@ -757,7 +1007,10 @@
           <row>1</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Detailed Roads and Railways</label>
+          <label translate="y">
+            detailed-roads-and-railways-combo
+            <?FlightGear-tr text="Detailed Roads and Railways"?>
+          </label>
         </text>
         <combo>
           <row>1</row>
@@ -765,8 +1018,22 @@
           <name>roads</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/rendering/roads</property>
-          <value>Disabled</value>
-          <value>Enabled</value>
+          <item>
+            <label translate="y">
+              detailed-roads-and-railways-disabled-label
+              <?FlightGear-tr text="Disabled"
+                comment="This is about Detailed Roads and Railways."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              detailed-roads-and-railways-enabled-label
+              <?FlightGear-tr text="Enabled"
+                comment="This is about Detailed Roads and Railways."?>
+            </label>
+            <value>Enabled</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>roads</object-name>
@@ -788,7 +1055,10 @@
           <row>2</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Buildings</label>
+          <label translate="y">
+            buildings-combo
+            <?FlightGear-tr text="Buildings"?>
+          </label>
         </text>
         <combo>
           <row>2</row>
@@ -796,9 +1066,33 @@
           <name>buildings</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/rendering/buildings</property>
-          <value>Disabled</value>
-          <value>Randomly Generated</value>
-          <value>OpenStreetMap Data</value>
+          <item>
+            <label translate="y">
+              buildings-combo-disabled-label
+              <?FlightGear-tr text="Disabled" unwrap-comment="true"
+                comment="This is about Buildings in the Advanced Graphics
+                         Options dialog."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              buildings-combo-randomly-generated-label
+              <?FlightGear-tr text="Randomly Generated" unwrap-comment="true"
+                comment="This is about Buildings in the Advanced Graphics
+                         Options dialog."?>
+            </label>
+            <value>Randomly Generated</value>
+          </item>
+          <item>
+            <label translate="y">
+              buildings-combo-openstreetmap-data-label
+              <?FlightGear-tr text="OpenStreetMap Data" unwrap-comment="true"
+                comment="This is about Buildings in the Advanced Graphics
+                         Options dialog."?>
+            </label>
+            <value>OpenStreetMap Data</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>buildings</object-name>
@@ -832,7 +1126,10 @@
           <row>3</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Random Scenery Objects</label>
+          <label translate="y">
+            random-scenery-objects-combo
+            <?FlightGear-tr text="Random Scenery Objects"?>
+          </label>
         </text>
         <combo>
           <row>3</row>
@@ -840,8 +1137,22 @@
           <name>random-objects</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/rendering/random-objects</property>
-          <value>Disabled</value>
-          <value>Enabled</value>
+          <item>
+            <label translate="y">
+              random-scenery-objects-disabled-label
+              <?FlightGear-tr text="Disabled"
+                comment="This is about Random Scenery Objects."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              random-scenery-objects-enabled-label
+              <?FlightGear-tr text="Enabled"
+                comment="This is about Random Scenery Objects."?>
+            </label>
+            <value>Enabled</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>random-objects</object-name>
@@ -863,7 +1174,10 @@
           <row>4</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Autogenerated Vegetation</label>
+          <label translate="y">
+            autogenerated-vegetation-combo
+            <?FlightGear-tr text="Autogenerated Vegetation"?>
+          </label>
         </text>
         <combo>
           <row>4</row>
@@ -871,14 +1185,70 @@
           <name>random-vegetation</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/rendering/random-vegetation</property>
-          <value>Disabled</value>
-          <value>Ultra Low Density</value>
-          <value>Very Low Density</value>
-          <value>Low Density</value>
-          <value>Medium Density</value>
-          <value>High Density</value>
-          <value>Very High Density</value>
-          <value>Ultra High Density</value>
+          <item>
+            <label translate="y">
+              autogenerated-vegetation-disabled-label
+              <?FlightGear-tr text="Disabled"
+                comment="This is about Autogenerated Vegetation."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              autogenerated-vegetation-ultra-low-density-label
+              <?FlightGear-tr text="Ultra Low Density"
+                comment="This is about Autogenerated Vegetation."?>
+            </label>
+            <value>Ultra Low Density</value>
+          </item>
+          <item>
+            <label translate="y">
+              autogenerated-vegetation-very-low-density-label
+              <?FlightGear-tr text="Very Low Density"
+                comment="This is about Autogenerated Vegetation."?>
+            </label>
+            <value>Very Low Density</value>
+          </item>
+          <item>
+            <label translate="y">
+              autogenerated-vegetation-low-density-label
+              <?FlightGear-tr text="Low Density"
+                comment="This is about Autogenerated Vegetation."?>
+            </label>
+            <value>Low Density</value>
+          </item>
+          <item>
+            <label translate="y">
+              autogenerated-vegetation-medium-density-label
+              <?FlightGear-tr text="Medium Density"
+                comment="This is about Autogenerated Vegetation."?>
+            </label>
+            <value>Medium Density</value>
+          </item>
+          <item>
+            <label translate="y">
+              autogenerated-vegetation-high-density-label
+              <?FlightGear-tr text="High Density"
+                comment="This is about Autogenerated Vegetation."?>
+            </label>
+            <value>High Density</value>
+          </item>
+          <item>
+            <label translate="y">
+              autogenerated-vegetation-very-high-density-label
+              <?FlightGear-tr text="Very High Density"
+                comment="This is about Autogenerated Vegetation."?>
+            </label>
+            <value>Very High Density</value>
+          </item>
+          <item>
+            <label translate="y">
+              autogenerated-vegetation-ultra-high-density-label
+              <?FlightGear-tr text="Ultra High Density"
+                comment="This is about Autogenerated Vegetation."?>
+            </label>
+            <value>Ultra High Density</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>random-vegetation</object-name>
@@ -934,7 +1304,10 @@
           <row>5</row>
           <col>0</col>
           <halign>left</halign>
-          <label>OpenStreetMap Trees</label>
+          <label translate="y">
+            openstreetmap-trees-combo
+            <?FlightGear-tr text="OpenStreetMap Trees"?>
+          </label>
         </text>
         <combo>
           <row>5</row>
@@ -942,8 +1315,22 @@
           <name>osm2city-trees</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/rendering/osm2city-trees</property>
-          <value>Disabled</value>
-          <value>Enabled</value>
+          <item>
+            <label translate="y">
+              openstreetmap-trees-disabled-label
+              <?FlightGear-tr text="Disabled"
+                comment="This is about OpenStreetMap Trees."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              openstreetmap-trees-enabled-label
+              <?FlightGear-tr text="Enabled"
+                comment="This is about OpenStreetMap Trees."?>
+            </label>
+            <value>Enabled</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>osm2city-trees</object-name>
@@ -967,7 +1354,10 @@
           <row>6</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Vegetation Shadows</label>
+          <label translate="y">
+            vegetation-shadows-combo
+            <?FlightGear-tr text="Vegetation Shadows"?>
+          </label>
         </text>
         <combo>
           <row>6</row>
@@ -975,8 +1365,22 @@
           <name>vegetation-shadows</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/rendering/vegetation-shadows</property>
-          <value>Disabled</value>
-          <value>Enabled</value>
+          <item>
+            <label translate="y">
+              vegetation-shadows-disabled-label
+              <?FlightGear-tr text="Disabled"
+                comment="This is about Vegetation Shadows."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              vegetation-shadows-enabled-label
+              <?FlightGear-tr text="Enabled"
+                comment="This is about Vegetation Shadows."?>
+            </label>
+            <value>Enabled</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>vegetation-shadows</object-name>
@@ -998,7 +1402,10 @@
           <row>7</row>
           <col>0</col>
           <halign>left</halign>
-          <label>Scenery Objects</label>
+          <label translate="y">
+            scenery-objects-combo
+            <?FlightGear-tr text="Scenery Objects"?>
+          </label>
         </text>
 
         <combo>
@@ -1007,8 +1414,24 @@
           <name>placed-objects</name>
           <pref-width>200</pref-width>
           <property>/sim/gui/dialogs/rendering/placed-objects</property>
-          <value>Disabled</value>
-          <value>Enabled</value>
+          <item>
+            <label translate="y">
+              scenery-objects-disabled-label
+              <?FlightGear-tr text="Disabled" unwrap-comment="true"
+                comment="This is about Scenery Objects in the Advanced
+                         Graphics Options dialog."?>
+            </label>
+            <value>Disabled</value>
+          </item>
+          <item>
+            <label translate="y">
+              scenery-objects-enabled-label
+              <?FlightGear-tr text="Enabled" unwrap-comment="true"
+                comment="This is about Scenery Objects in the Advanced
+                         Graphics Options dialog."?>
+            </label>
+            <value>Enabled</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>placed-objects</object-name>
@@ -1036,20 +1459,14 @@
             <green>0.6</green>
             <blue>0.6</blue>
           </color>
-          <label>Warning: Pylons, Detailed Roads, Buildings use a lot of memory</label>
-        </text>
-
-        <text>
-          <row>9</row>
-          <col>0</col>1
-          <colspan>2</colspan>
-          <halign>left</halign>
-          <color>
-            <red>1.0</red>
-            <green>0.6</green>
-            <blue>0.6</blue>
-          </color>
-          <label>and disk space, and are only available in limited areas.</label>
+          <label translate="y">
+            warning-about-stuff-that-uses-a-lot-of-memory-and-disk-space
+            <?FlightGear-tr
+              text="\
+Warning: Pylons, Detailed Roads, Buildings use a lot of memory
+and disk space, and are only available in limited areas."
+              comment="This uses manual line wrapping for now, which is not ideal; see https://gitlab.com/flightgear/flightgear/-/work_items/3171"?>
+          </label>
         </text>
       </group>
 
@@ -1061,7 +1478,10 @@
       <group>
         <layout>hbox</layout>
         <text>
-          <label>Atmospheric Effects</label>
+          <label translate="y">
+            atmospheric-effects-heading-label
+            <?FlightGear-tr text="Atmospheric Effects"?>
+          </label>
           <halign>left</halign>
         </text>
         <hrule>
@@ -1071,7 +1491,13 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Particles (smoke, dust, spray)</label>
+        <label translate="y">
+          particles-checkbox
+          <?FlightGear-tr text="Particles (smoke, dust, spray)"
+            unwrap-comment="true"
+            comment="This is a checkbox in the Advanced Graphics Options
+                     dialog."?>
+        </label>
         <name>particles</name>
         <property>/sim/rendering/particles</property>
         <binding>
@@ -1082,7 +1508,12 @@
 
       <checkbox>
         <halign>left</halign>
-        <label>Precipitation</label>
+        <label translate="y">
+          precipitation-checkbox
+          <?FlightGear-tr text="Precipitation" unwrap-comment="true"
+            comment="This is a checkbox in the Advanced Graphics Options
+                     dialog."?>
+        </label>
         <name>precipitation</name>
         <property>/sim/rendering/precipitation-gui-enable</property>
         <binding>
@@ -1098,7 +1529,11 @@
             <property>/nasal/local_weather/enabled</property>
           </not>
         </enable>
-        <label>3D clouds (required by Detailed Weather)</label>
+        <!-- The translation ID can't start with a digit -->
+        <label translate="y">
+          three-dimensions-clouds-checkbox
+          <?FlightGear-tr text="3D clouds (required by Detailed Weather)"?>
+        </label>
         <name>3d-clouds</name>
         <property>/sim/rendering/clouds3d-enable</property>
         <binding>
@@ -1111,7 +1546,10 @@
         <layout>hbox</layout>
         <halign>right</halign>
         <text>
-          <label>Cloud density</label>
+          <label translate="y">
+            cloud-density-slider
+            <?FlightGear-tr text="Cloud density"?>
+          </label>
           <enable>
             <property>/sim/rendering/clouds3d-enable</property>
           </enable>
@@ -1150,7 +1588,10 @@
         <layout>hbox</layout>
         <halign>right</halign>
         <text>
-          <label>Cloud visibility range</label>
+          <label translate="y">
+            cloud-visibility-range-slider
+            <?FlightGear-tr text="Cloud visibility range"?>
+          </label>
           <enable>
             <property>/sim/rendering/clouds3d-enable</property>
           </enable>
@@ -1170,7 +1611,7 @@
             <property>/sim/rendering/clouds3d-enable</property>
           </enable>
           <label>12345678</label>
-          <format>%.fm</format>
+          <format>%.f m</format>
           <live>true</live>
           <property>/sim/rendering/clouds3d-vis-range</property>
         </text>
@@ -1239,16 +1680,14 @@
   <nasal>
     <open>
       <![CDATA[
+      var tr = FGTranslate.new().getResource(
+        "dialog-advanced-graphics-options");
+
       setprop("/sim/gui/dialogs/advanced/low-spec-description",
-              "The Low Specifications render mode provides low quality visuals " ~
-              "with maximum compatibility. This setting is recommended for " ~
-              "users with less powerful hardware or integrated video cards.");
+              tr.get("low-spec-description"));
 
       setprop("/sim/gui/dialogs/advanced/als-description",
-              "Atmospheric Light Scattering uses a sophisticated physical " ~
-              "atmospheric model and several other effects to give realistic " ~
-              "rendering of large distances. It is recommended to run this " ~
-              "configuration on relatively powerful hardware.");
+              tr.get("als-description"));
 
       # General
       if (getprop("/sim/rendering/shaders/skydome")) {
