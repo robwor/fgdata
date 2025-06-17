@@ -195,9 +195,9 @@ var XMLObjectBase =
     },
 
     # retrive a string which is user-facing and hence should be translated
-    _configTrValue: func(name)
+    _configTrValue: func(name, baseNode = nil)
     {
-        var node = me.config.getNode(name);
+        var node = (baseNode or me.config).getNode(name);
         if (node == nil) {
             return nil;
         }
@@ -941,11 +941,17 @@ var XMLComboBox =
         # copy initial visiblity
         me._view.visible = me.visible;
 
-        # do we support a label or is that a seperate widget?
-        foreach (var valueNode; me.config.getChildren("value")) {
-            me._view.createItem(valueNode.getValue(), valueNode.getValue());
+        if (me.dialog.uiVersion < 2) {
+            foreach (var valueNode; me.config.getChildren("value")) {
+                me._view.createItem(valueNode.getValue(), valueNode.getValue());
+            }
+        } else {
+            foreach (var itemNode; me.config.getChildren("item")) {
+                me._view.createItem(me._configTrValue("label", itemNode),
+                                    itemNode.getChild("value").getValue());
+            }
         }
- 
+
         me._layout = me._view;
         me._applyLayoutConfig();
         me.valueChanged();
