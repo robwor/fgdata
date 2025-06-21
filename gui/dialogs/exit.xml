@@ -5,6 +5,13 @@
 <PropertyList>
   <ui-version>2</ui-version>
   <name>exit</name>
+  <!-- Given the “Exit FlightGear?” label, this seems to me to be a decent
+       dialog title. -->
+  <title translate="y">
+    exit-dialog-title
+    <?FlightGear-tr text="FlightGear"
+      comment="This is the title of the Exit dialog."?>
+  </title>
   <modal>false</modal>
   <layout>vbox</layout>
 

@@ -9,5 +9,6 @@
   <strings>
     <exit-FlightGear-question-label>Exit FlightGear?</exit-FlightGear-question-label>
     <exit-button-label>Exit</exit-button-label>
+    <exit-dialog-title comment="This is the title of the Exit dialog.">FlightGear</exit-dialog-title>
   </strings>
 </resource>

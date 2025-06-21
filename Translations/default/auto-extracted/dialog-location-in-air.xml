@@ -25,8 +25,8 @@
     <glidepath-deg-input>Glidepath (deg):</glidepath-deg-input>
     <heading-deg-input>Heading (deg):</heading-deg-input>
     <latitude-input>Latitude:</latitude-input>
+    <location-in-air-title comment="This is the dialog title.">Position Aircraft In Air</location-in-air-title>
     <longitude-input>Longitude:</longitude-input>
-    <position-aircraft-in-air-label>Position Aircraft In Air</position-aircraft-in-air-label>
     <position-radio-button>Position:</position-radio-button>
     <relative-position-label comment="Title">Relative Position</relative-position-label>
     <runway-selection-input>Runway:</runway-selection-input>

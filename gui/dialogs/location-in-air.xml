@@ -4,6 +4,11 @@
 
 <PropertyList>
   <name>location-in-air</name>
+  <title translate="y">
+    location-in-air-title
+    <?FlightGear-tr text="Position Aircraft In Air"
+      comment="This is the dialog title."?>
+  </title>
   <layout>vbox</layout>
   <halign>left</halign>
 
@@ -106,31 +111,6 @@
 
     <close># just kept for educational purposes :-)</close>
   </nasal>
-
-  <group>
-    <layout>hbox</layout>
-
-    <text>
-      <label translate="y">
-        position-aircraft-in-air-label
-        <?FlightGear-tr text="Position Aircraft In Air"?>
-      </label>
-    </text>
-
-    <empty>
-      <stretch>1</stretch>
-    </empty>
-
-    <button>
-      <legend>X</legend>
-      <key>Esc</key>
-      <pref-width>20</pref-width>
-      <pref-height>20</pref-height>
-      <binding>
-        <command>dialog-close</command>
-      </binding>
-    </button>
-  </group>
 
   <hrule />
 
