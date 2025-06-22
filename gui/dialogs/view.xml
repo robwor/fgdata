@@ -10,6 +10,7 @@
 
 <PropertyList>
   <name>view</name>
+  <ui-version>2</ui-version>
   <title translate="y">
     view-options-title
     <?FlightGear-tr text="View Options" comment="This is the dialog title."?>
@@ -176,8 +177,22 @@
         <combo>
           <name>chatlocation</name>
           <property>/sim/gui/chat-box-location</property>
-          <value>default</value>
-          <value>left</value>
+          <item>
+            <label translate="y">
+              chatlocation-default
+              <?FlightGear-tr text="default"
+                comment="Chat and event log position"?>
+            </label>
+            <value>default</value>
+          </item>
+          <item>
+            <label translate="y">
+              chatlocation-left
+              <?FlightGear-tr text="left"
+                comment="Chat and event log position"?>
+            </label>
+            <value>left</value>
+          </item>
           <binding>
             <command>dialog-apply</command>
             <object-name>chatlocation</object-name>

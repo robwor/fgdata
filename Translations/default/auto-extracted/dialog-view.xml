@@ -10,6 +10,8 @@
     <aircraft-specific-views-heading-label comment="%s = name of the selected aircraft">"%s" Specific Views</aircraft-specific-views-heading-label>
     <autohide-cursor-in-label comment="This is followed by a input field allowing one to enter a number of seconds">Autohide cursor in</autohide-cursor-in-label>
     <autohide-menubar-checkkox>Autohide menubar</autohide-menubar-checkkox>
+    <chatlocation-default comment="Chat and event log position">default</chatlocation-default>
+    <chatlocation-left comment="Chat and event log position">left</chatlocation-left>
     <display-options-heading-label>Display Options</display-options-heading-label>
     <format-string-for-cursor-timeout-sec has-plural="true">second(s)</format-string-for-cursor-timeout-sec>
     <hide-2D-panel-in-non-centered-view-checkbox>Hide 2D panel in non-centered view</hide-2D-panel-in-non-centered-view-checkbox>
