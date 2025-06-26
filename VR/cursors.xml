@@ -5,6 +5,12 @@
 
 <PropertyList>
 
+  <cue>
+    <model>
+      <path>Models/Cursors/direction-cue.xml</path>
+    </model>
+  </cue>
+
   <cursor>
     <cursor>inherit</cursor>
     <model>
