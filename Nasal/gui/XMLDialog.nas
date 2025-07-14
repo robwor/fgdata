@@ -941,7 +941,24 @@ var XMLComboBox =
         # copy initial visiblity
         me._view.visible = me.visible;
 
-        if (me.dialog.uiVersion < 2) {
+        # When present, <properties> names a property whose 'value' children
+        # define the possible values. This way doesn't distinguish between
+        # labels and values.
+        var propertiesNode = me.config.getChild("properties");
+
+        if (propertiesNode != nil) {
+            var n = props.globals.getNode(propertiesNode.getValue());
+            if (n == nil) {
+                logprint(LOG_WARN, "XMLComboBox: <properties> value '" ~
+                         propertiesNode.getValue() ~ "' should be a path to "
+                         "an existing node");
+                return;
+            }
+
+            foreach (var valueNode; n.getChildren("value")) {
+                me._view.createItem(valueNode.getValue(), valueNode.getValue());
+            }
+        } else if (me.dialog.uiVersion < 2) {
             foreach (var valueNode; me.config.getChildren("value")) {
                 me._view.createItem(valueNode.getValue(), valueNode.getValue());
             }
