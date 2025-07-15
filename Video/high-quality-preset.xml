@@ -1,9 +1,19 @@
 <?xml version="1.0"?>
 
+<?FlightGear-tr context="graphics-presets-high-quality"?>
+
 <PropertyList>
   <id>high-quality</id>
-  <name>High</name>
-  <description>High quality settings with the most demanding features disabled.</description>
+  <translation-domain>core</translation-domain>
+  <name translate="y">
+    name
+    <?FlightGear-tr text="High" comment="Name of a graphics preset"?>
+  </name>
+  <description translate="y">
+    description
+    <?FlightGear-tr
+      text="High quality settings with the most demanding features disabled."?>
+  </description>
   <order-num>3</order-num>
 
   <settings>

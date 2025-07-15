@@ -1,9 +1,19 @@
 <?xml version="1.0"?>
 
+<?FlightGear-tr context="graphics-presets-minimal-quality"?>
+
 <PropertyList>
   <id>minimal-quality</id>
-  <name>Minimal</name>
-  <description>Minimal settings for low-power laptops or very old systems.</description>
+  <translation-domain>core</translation-domain>
+  <name translate="y">
+    name
+    <?FlightGear-tr text="Minimal" comment="Name of a graphics preset"?>
+  </name>
+  <description translate="y">
+    description
+    <?FlightGear-tr
+      text="Minimal settings for low-power laptops or very old systems."?>
+  </description>
   <order-num>0</order-num>
 
   <settings>

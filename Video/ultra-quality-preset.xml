@@ -1,9 +1,18 @@
 <?xml version="1.0"?>
 
+<?FlightGear-tr context="graphics-presets-ultra-quality"?>
+
 <PropertyList>
   <id>ultra-quality</id>
-  <name>Ultra</name>
-  <description>Maximum settings for very powerful systems.</description>
+  <translation-domain>core</translation-domain>
+  <name translate="y">
+    name
+    <?FlightGear-tr text="Ultra" comment="Name of a graphics preset"?>
+  </name>
+  <description translate="y">
+    description
+    <?FlightGear-tr text="Maximum settings for very powerful systems."?>
+  </description>
   <order-num>4</order-num>
 
   <settings>

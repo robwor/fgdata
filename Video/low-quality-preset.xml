@@ -1,9 +1,18 @@
 <?xml version="1.0"?>
 
+<?FlightGear-tr context="graphics-presets-low-quality"?>
+
 <PropertyList>
   <id>low-quality</id>
-  <name>Low</name>
-  <description>Prioritize performance over eye candy.</description>
+  <translation-domain>core</translation-domain>
+  <name translate="y">
+    name
+    <?FlightGear-tr text="Low" comment="Name of a graphics preset"?>
+  </name>
+  <description translate="y">
+    description
+    <?FlightGear-tr text="Prioritize performance over eye candy."?>
+  </description>
   <order-num>1</order-num>
 
   <settings>

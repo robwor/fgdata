@@ -1,9 +1,18 @@
 <?xml version="1.0"?>
 
+<?FlightGear-tr context="graphics-presets-medium-quality"?>
+
 <PropertyList>
   <id>medium-quality</id>
-  <name>Medium</name>
-  <description>A nice tradeoff between performance and eye candy.</description>
+  <translation-domain>core</translation-domain>
+  <name translate="y">
+    name
+    <?FlightGear-tr text="Medium" comment="Name of a graphics preset"?>
+  </name>
+  <description translate="y">
+    description
+    <?FlightGear-tr text="A nice tradeoff between performance and eye candy."?>
+  </description>
   <order-num>2</order-num>
 
   <settings>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource>
+  <meta>
+    <file-type>FlightGear default translation file</file-type>
+    <format-version>1</format-version>
+    <description>Automatically extracted strings with context 'graphics-presets-low-quality'</description>
+    <language-description>Engineering English</language-description>
+  </meta>
+  <strings>
+    <description>Prioritize performance over eye candy.</description>
+    <name comment="Name of a graphics preset">Low</name>
+  </strings>
+</resource>
