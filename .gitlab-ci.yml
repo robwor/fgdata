@@ -8,6 +8,10 @@ variables:
   TEST_DATA_DIR: $CI_PROJECT_DIR/testFGData
   BUNDLED_DATA_DIR: $CI_PROJECT_DIR/bundledFGData
 
+  FGMETA_DIR: /tmp/fgmeta
+  PYTHON_VENV_DIR: /tmp/venv-dir
+  PYTHON_VENV_BINDIR: $PYTHON_VENV_DIR/bin
+
 # Do not run pipelines on forks. Run them on merge requests branches, tags
 # and the protected branches.
 workflow:
@@ -41,18 +45,40 @@ create-test-data:
     paths:
       - $TEST_DATA_DIR
 
+# Clone FGMeta and create a Python venv in $PYTHON_VENV_DIR with the
+# 'flightgear' package from fgmeta/python3-flightgear' installed in editable
+# mode (FGMeta submodules aren't cloned, so this is tiny).
+.prepare-python-venv: &prepare-python-venv
+  - |
+    if [[ -e "$FGMETA_DIR" ]]; then
+      echo "$FGMETA_DIR already exists before clone!"
+      exit 1
+    fi
+  - |
+    if [[ -e "$PYTHON_VENV_DIR" ]]; then
+      echo "$PYTHON_VENV_DIR already exists before creating the venv!"
+      exit 1
+    fi
+  - git clone https://gitlab.com/flightgear/fgmeta.git "$FGMETA_DIR"
+  # --system-site-packages allows the venv to use distro packages such as
+  # python3-lxml (which otherwise would be downloaded every time by pip).
+  - python3 -m venv --system-site-packages "$PYTHON_VENV_DIR"
+  # We want PEP 660 support; upgrading all these so as to avoid hitting
+  # https://bugs.launchpad.net/ubuntu/+source/python-pip/+bug/2018288
+  - '"$PYTHON_VENV_BINDIR"/pip install -U build pip setuptools'
+  - '"$PYTHON_VENV_BINDIR"/pip install -e "$FGMETA_DIR/python3-flightgear"'
+
 validate-shaders:
   stage: test
   image: registry.gitlab.com/flightgear/flightgear
   allow_failure:
     exit_codes: 2 # warnings
   before_script:
-    # grab the script from FGMeta
-    # note we don't clone submodules so this is tiny
-    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/flightgear/fgmeta
+    - *prepare-python-venv
   script:
-    - export PYTHONPATH="$CI_PROJECT_DIR/fgmeta/python3-flightgear" 
-    - ./fgmeta/fg-validate-shaders $CI_PROJECT_DIR || exit $?
+    - >
+      "$PYTHON_VENV_BINDIR"/python "$FGMETA_DIR/fg-validate-shaders"
+      "$CI_PROJECT_DIR" || exit $?
 
 # XML files containing the <?FlightGear-tr?> processing instruction:
 # check that contexts are declared, don't overlap, follow naming rules, etc.
@@ -60,14 +86,12 @@ validate-XML-translations:
   stage: test
   image: registry.gitlab.com/flightgear/flightgear
   allow_failure: false
+  before_script:
+    - *prepare-python-venv
   script:
-    - cd $CI_BUILDS_DIR
-    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/flightgear/fgmeta
-    - export PYTHONPATH="$CI_BUILDS_DIR/fgmeta/python3-flightgear"
-    - echo "Running fg-extract-translatable-strings in check mode..."
-
-    - $CI_BUILDS_DIR/fgmeta/i18n/fg-extract-translatable-strings check $CI_PROJECT_DIR
-    - 'echo "fg-extract-translatable-strings: done"'
+    - >
+      "$PYTHON_VENV_BINDIR"/fg-extract-translatable-strings check
+      "$CI_PROJECT_DIR" || exit $?
 
 # all the files from FGData which we bunlde with the application / image
 # installers. Keep this small since this impacts file mirrors, code-signing, 
