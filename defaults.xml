@@ -617,7 +617,7 @@ Started September 2000 by David Megginson, david@megginson.com
         <enabled type="bool" userarchive="y">true</enabled>
         <volume type="float" userarchive="y">0.6</volume>
       </scene>
-      <model-damping type="bool">1.0</model-damping>
+      <model-damping type="bool">1</model-damping>
       <device-name type="string" userarchive="y"/>
       <voice type="bool">true</voice>
       <voices>

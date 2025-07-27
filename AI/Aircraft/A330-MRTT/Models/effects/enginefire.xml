@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0"?>
 
 <!-- sweat by maggse -->
 <PropertyList>
@@ -8,17 +8,17 @@
     <texture>puff.png</texture>
     <emissive>true</emissive>
     <lighting>false</lighting>
-         
+
     <offsets>
       <roll-deg>90</roll-deg>
     </offsets>
-                 
+
     <attach>world</attach>
-         
+
     <placer>
       <type>point</type>
     </placer>
-         
+
     <shooter>
       <theta-min-deg>  65 </theta-min-deg>
       <theta-max-deg> 115 </theta-max-deg>
@@ -37,16 +37,16 @@
         <z-max-deg-sec> 0 </z-max-deg-sec>
       </rotation-speed>
     </shooter>
-         
+
     <counter>
       <particles-per-sec>
         <value>  25 </value>
         <spread> 15 </spread>
       </particles-per-sec>
     </counter>
-         
+
     <align>billboard</align>
-        
+
     <particle>
       <start>
         <color>
@@ -70,13 +70,13 @@
       <mass-kg>  1.30 </mass-kg>
       <radius-m> 0.03 </radius-m>
     </particle>
-         
+
     <program>
-      <fluid>               air   </fluid>
-      <gravity type="bool"> false </gravity>
-      <wind type="bool">    true  </wind>
+      <fluid>air</fluid>
+      <gravity type="bool">false</gravity>
+      <wind type="bool">true</wind>
     </program>
-         
+
   </particlesystem>
 
 </PropertyList>

@@ -65,7 +65,7 @@
                 <binding>
                     <command>property-assign</command>
                     <property>/instrumentation/comm/frequencies/selected-mhz</property>
-                    <value type="float">FREQUENCY</value>
+                    <value type="float">0.0</value>
                 </binding>
             </button>
 
@@ -78,7 +78,7 @@
                 <binding>
                     <command>property-assign</command>
                     <property>/instrumentation/comm[1]/frequencies/selected-mhz</property>
-                    <value type="float">FREQUENCY</value>
+                    <value type="float">0.0</value>
                 </binding>
             </button>
 		</group-template>

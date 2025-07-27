@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0"?>
 
 <!-- sweat by maggse -->
 <PropertyList>
@@ -11,13 +11,13 @@
     <offsets>
       <pitch-deg> 90 </pitch-deg>
     </offsets>
-        
+
     <attach>world</attach>
-        
+
     <placer>
       <type>point</type>
     </placer>
-        
+
     <shooter>
       <theta-min-deg> 0 </theta-min-deg>
       <theta-max-deg> 0 </theta-max-deg>
@@ -36,16 +36,16 @@
         <z-max-deg-sec> 20 </z-max-deg-sec>
       </rotation-speed>
     </shooter>
-        
+
     <counter>
       <particles-per-sec>
         <value> 25 </value>
         <spread> 0 </spread>
       </particles-per-sec>
     </counter>
-        
+
     <align>billboard</align>
-        
+
     <particle>
       <start>
         <color>
@@ -71,13 +71,13 @@
       <mass-kg>  0.5 </mass-kg>
       <radius-m> 0.1 </radius-m>
     </particle>
-        
+
     <program>
-      <fluid>               air   </fluid>
-      <gravity type="bool"> true  </gravity>
-      <wind type="bool">    false </wind>
+      <fluid>air</fluid>
+      <gravity type="bool">true</gravity>
+      <wind type="bool">false</wind>
     </program>
-        
+
   </particlesystem>
 
 </PropertyList>
