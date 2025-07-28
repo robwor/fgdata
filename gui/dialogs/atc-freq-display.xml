@@ -8,7 +8,7 @@
 			if (props.getNode("/sim/atc/freq-airport")!=nil) {
                 icao = props.getNode("/sim/atc/freq-airport");
 			}
-			var dialogTitle = sprintf("Airportfrequencies %s", icao.getValue());
+			var dialogTitle = sprintf("Airport frequencies %s", icao.getValue());
 			self.getNode("text/label").setValue(dialogTitle);
 			var apt = airportinfo(icao.getValue());
 			var frequencies = apt.comms();
