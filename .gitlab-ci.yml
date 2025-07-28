@@ -45,6 +45,9 @@ create-test-data:
     paths:
       - $TEST_DATA_DIR
 
+  rules:
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+
 # Clone FGMeta and create a Python venv in $PYTHON_VENV_DIR with the
 # 'flightgear' package from fgmeta/python3-flightgear' installed in editable
 # mode (FGMeta submodules aren't cloned, so this is tiny).
