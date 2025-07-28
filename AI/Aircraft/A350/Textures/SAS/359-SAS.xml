@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
-<PropertyList include="359-main.xml">
-  
-  <texture-path>Textures/SAS</texture-path>
+<PropertyList include="../../359-main.xml">
+
+<texture-path>Textures/SAS</texture-path>
 
 </PropertyList>
-
-
-
