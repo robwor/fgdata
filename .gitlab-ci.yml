@@ -70,7 +70,7 @@ create-test-data:
 
 validate-shaders:
   stage: test
-  image: registry.gitlab.com/flightgear/flightgear
+  image: ${CI_REGISTRY}/flightgear/flightgear-ci-docker/pre-commit:latest
   allow_failure:
     exit_codes: 2 # warnings
   before_script:
@@ -84,7 +84,7 @@ validate-shaders:
 # check that contexts are declared, don't overlap, follow naming rules, etc.
 validate-XML-translations:
   stage: test
-  image: registry.gitlab.com/flightgear/flightgear
+  image: ${CI_REGISTRY}/flightgear/flightgear-ci-docker/pre-commit:latest
   allow_failure: false
   before_script:
     - *prepare-python-venv
