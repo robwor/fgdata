@@ -424,19 +424,9 @@
 
 	<menu>
 		<name>equipment</name>
-
 		<item>
 			<name>map</name>
-            		<key>Ctrl-M</key>
-			<binding>
-				<command>dialog-show</command>
-				<dialog-name>map</dialog-name>
-			</binding>
-		</item>
-
-		<item>
-			<name>map-canvas</name>
-            		<!-- <key>Ctrl-M</key> -->
+            <key>Ctrl-M</key>
 			<binding>
 				<command>dialog-show</command>
 				<dialog-name>map-canvas</dialog-name>
@@ -731,8 +721,6 @@
 			</binding>
 		</item>
 
-         
-
 		<item>
 			<name>reload-input</name>
 			<binding>
@@ -901,6 +889,23 @@
 			<binding>
 				<command>nasal</command>
 				<script>gui.property_browser()</script>
+			</binding>
+		</item>
+
+		<item>
+			<name>ISFD</name>
+			<binding>
+				<command>nasal</command>
+				<script>
+					var nasal_dir = getprop("/sim/fg-root") ~ "/Aircraft/Instruments-3d/ISFD/";
+					if (! defined("ISFD")) {
+						io.load_nasal(nasal_dir ~ 'ISFD.nas', "isfd");
+					}
+
+					var myISFD = isfd.ISFD.new();
+					isfd.ISFD.displayGUI(myISFD);
+
+				</script>
 			</binding>
 		</item>
 

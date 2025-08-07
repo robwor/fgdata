@@ -1,5 +1,5 @@
 # XML Dialog - XML dialog object without using PUI
-# SPDX-FileCopyrightText: (C) 2022 James Turner <james@flightgear.org>
+# SPDX-FileCopyrightText: 2022 James Turner <james@flightgear.org>
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 # alias this module to keep things somewhat readable
@@ -107,8 +107,6 @@ var XMLDialog = {
 
     onClose: func
     {
-        logprint(LOG_INFO, "XMLDialog closed");
-
         # call the base canvas.Window delete method, not
         # our wrapper above.
         call(canvas.Window.del, [], me._window);
@@ -258,14 +256,8 @@ var XMLObjectBase =
             l.setAlignment(ha + va);
         }
 
-        if (ghosttype(l) == "canvas.Widget") {
-            # if (compatWidgetSizeHint) {
-            #     logprint(LOG_INFO, me.name, ": Compat widget: setting hint to min size:", debug.string(l.minimumSize()));
-            #     # old PUI layout code uses minimum size as the hint for many simple
-            #     # widgets such as buttons and labels
-            #     l.setLayoutSizeHint(l.minimumSize());
-            # }
-
+        var layoutGhostType = ghosttype(l); 
+        if ((layoutGhostType == "canvas.Widget") or (layoutGhostType == "canvas.ImageLayoutItem")) {
             var fixedWidth = me._configValue("width");
             var fixedHeight = me._configValue("height");
             if (fixedWidth or fixedHeight) {
@@ -290,18 +282,18 @@ var XMLObjectBase =
             var prefHeight = me._configValue("pref-height");
             if (prefWidth or prefHeight) {
                 var hint = l.sizeHint();
-                var maxSize = l.maximumSize();
+                #var maxSize = l.maximumSize();
                 if (prefWidth) {
                     hint[0] = prefWidth;
-                    maxSize[0] = prefWidth;
+                  #  maxSize[0] = prefWidth;
                 }
                 if (prefHeight) {
                     hint[1] = prefHeight;
-                    maxSize[1] = prefHeight;
+                   # maxSize[1] = prefHeight;
                 }
 
                 l.setSizeHint(hint);
-                l.setMaximumSize(maxSize);
+              #  l.setMaximumSize(maxSize);
 
                 #logprint(LOG_INFO, me.name, ": Setting widget size hint to:", debug.string(hint));
                 #logprint(LOG_INFO, me.name, ": Setting widget max size to:", debug.string(maxSize));
@@ -312,7 +304,6 @@ var XMLObjectBase =
             # cover these cases where XML dialogs specify sizes on
             # layouts
         }
-
     },
 
     _changeLocalValue: func(newValue)
@@ -403,6 +394,11 @@ var XMLObjectBase =
         }
 
         me.property.setValue(me._localValue);
+    },
+
+    update: func()
+    {
+        # empty update function
     },
 
     visibleChanged: func() 
@@ -507,24 +503,25 @@ var XMLStandardButton =
     {
         me._action = nil;
         var ws = me.buttonType();
+
         if (ws == "okay") {
             me._role = "accept";
             me._action = func { 
-                me.dialog().apply();
-                me.dialog().requestClose(); 
+                me.dialog.apply();
+                me.dialog.requestClose(); 
             };
         } elsif (ws == "cancel") {
             me._role = ws;
-            me._action = func { me.dialog().requestClose(); };
+            me._action = func { me.dialog.close(); };
         } elsif (ws == "revert") {
             me._role = ws;
-            me._action = func { me.dialog().revert(); };
+            me._action = func { me.dialog.revert(); };
         } else if (ws == "apply") {
             me._role = "apply";
-            me._action = func { me.dialog().apply(); };
+            me._action = func { me.dialog.apply(); };
         } else if (ws == "close") {
             me._role = "cancel";
-            me._action = func { me.dialog().requestClose(); };
+            me._action = func { me.dialog.close(); };
         } else if (ws == "use-defaults") {
             me._role = "apply";
             # no action: should we make this standard?
@@ -555,19 +552,21 @@ var XMLStandardButton =
         me._view.visible = me.visible;
 
         # hook up the button to our bindings
-        me._view.listen("clicked", func  me._onClicked(); );
+        me._view.listen("clicked", func() {
+            me._onClicked(); 
+        });
         me._applyLayoutConfig(true);
 
         return me._view;
     },
 
     _onClicked: func() {
+        debug.dump(me);
         if (me.hasBindings) {
             # should we activate the standard binding as well?
             # seems better not to, and give the UI designer the choice
             me.activateBindings();
         } else {
-            logprint(LOG_INFO, "Standard button: invoking built-in action");
             me._action();
         }
     },
@@ -1180,6 +1179,31 @@ var XMLTabs =
     }
 };
 
+var XMLCanvas = {
+    show: func(viewParent) {
+        me._view = viewParent.createChild("image", "canvas");
+        me._view.setSourceCanvas(me.canvas) ;
+        me._layout = canvas.ImageLayoutItem.new(me._view);
+
+        me._applyLayoutConfig();
+
+    # extra layout configuration specific to us
+        var fixedWidth = me._configValue("width");
+        var fixedHeight = me._configValue("height");
+        if (fixedWidth or fixedHeight) {
+            # set fixed canvas size
+        } else {
+            # dynamically resize the canvas to suit
+            me._layout.resizeCanvas = true;
+        }
+
+        return me._view;
+    },
+
+    update: func() {
+    },
+};
+
 var _createCompatObjectLookupHash = {
     "button": XMLButton,
     "standard-button": XMLStandardButton,
@@ -1199,7 +1223,8 @@ var _createCompatObjectLookupHash = {
     "radio": XMLRadioButton,
     "textbox": XMLText,
     "button-box": XMLButtonBox,
-    "tabs": XMLTabs
+    "tabs": XMLTabs,
+    "canvas" : XMLCanvas
 };
 
 # this is the callback function invoked by C++ to build Nasal peers
@@ -1219,6 +1244,11 @@ var _createCompatObject = func(type)
     var w = XMLObjectBase._new();
     # prepend the derived type to parents so it's found first
     w.parents = [widgetClass] ~ w.parents;
+
+    if (type == "canvas") {
+        return gui.xml.Canvas.new(w);
+    }
+
     return gui.xml.Object.new(w, type);
 };
 

@@ -36,29 +36,6 @@
 
     <group>
         <layout>hbox</layout>
-        <default-padding>1</default-padding>
-
-        <text>
-            <label>Map (Canvas)</label>
-        </text>
-
-        <empty><stretch>1</stretch></empty>
-
-        <button>
-            <legend>X</legend>
-            <key>Esc</key>
-            <pref-width>20</pref-width>
-            <pref-height>20</pref-height>
-            <binding>
-                <command>dialog-close</command>
-            </binding>
-        </button>
-    </group>
-
-    <hrule/>
-
-    <group>
-        <layout>hbox</layout>
         <stretch>true</stretch>
         <halign>fill</halign>
 
