@@ -893,23 +893,6 @@
 		</item>
 
 		<item>
-			<name>ISFD</name>
-			<binding>
-				<command>nasal</command>
-				<script>
-					var nasal_dir = getprop("/sim/fg-root") ~ "/Aircraft/Instruments-3d/ISFD/";
-					if (! defined("ISFD")) {
-						io.load_nasal(nasal_dir ~ 'ISFD.nas', "isfd");
-					}
-
-					var myISFD = isfd.ISFD.new();
-					isfd.ISFD.displayGUI(myISFD);
-
-				</script>
-			</binding>
-		</item>
-
-		<item>
 			<name>fg1000-pfd</name>
 			<binding>
 				<command>nasal</command>

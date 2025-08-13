@@ -282,21 +282,14 @@ var XMLObjectBase =
             var prefHeight = me._configValue("pref-height");
             if (prefWidth or prefHeight) {
                 var hint = l.sizeHint();
-                #var maxSize = l.maximumSize();
                 if (prefWidth) {
                     hint[0] = prefWidth;
-                  #  maxSize[0] = prefWidth;
                 }
                 if (prefHeight) {
                     hint[1] = prefHeight;
-                   # maxSize[1] = prefHeight;
                 }
 
                 l.setSizeHint(hint);
-              #  l.setMaximumSize(maxSize);
-
-                #logprint(LOG_INFO, me.name, ": Setting widget size hint to:", debug.string(hint));
-                #logprint(LOG_INFO, me.name, ": Setting widget max size to:", debug.string(maxSize));
             }
         } else {
             # layout item is not a NasalWidget, so lacks public
