@@ -8,7 +8,7 @@ var ErrorNotification =
   new: func
   {
     var m = {
-      parents: [ErrorNotification, PropertyElement.new(["/canvas/desktop", "window"], nil)],
+      parents: [ErrorNotification, PropertyElement.new(["/canvas/desktop", "window"], "error-popup")],
       _title: "",
     };
 
@@ -44,7 +44,7 @@ var ErrorNotification =
       view: size,
       placement: {
         type: "window",
-        index: me._node.getIndex()
+        id: "error-popup"
       },
       name: "Error Notification"
     });

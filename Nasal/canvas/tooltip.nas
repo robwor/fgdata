@@ -9,7 +9,7 @@ var Tooltip = {
   new: func(size, id = nil)
   {
     var m = {
-      parents: [Tooltip, PropertyElement.new(["/canvas/desktop", "window"], id)],
+      parents: [Tooltip, PropertyElement.new(["/canvas/desktop", "window"], 'primary-tooltip')],
       _listeners: [],
       _properties: [],
       _mapping: "",
@@ -57,6 +57,7 @@ var Tooltip = {
       view: size,
       placement: {
         type: "window",
+        id: "primary-tooltip",
         index: me._node.getIndex()
       },
       name: "Tooltip"
@@ -323,7 +324,7 @@ var Tooltip = {
   }
 };
 
-var tooltip = canvas.Tooltip.new([300, 100]);
+var tooltip = canvas.Tooltip.new([300, 100], nil);
 tooltip.createCanvas();
 
 var innerSetTooltip = func(node)

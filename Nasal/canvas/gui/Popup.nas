@@ -8,6 +8,11 @@ gui.Popup = {
 	#
 	# @param size ([width, height])
 	new: func(size_, id = nil, parent = nil, take_focus = 0) {
+		if (id == nil) {
+      		logprint(LOG_WARN, "Creating gui.Popup without ID");
+    	}
+
+
 		var ghost = _newWindowGhost(id);
 		var m = {
 			parents: [gui.Popup, PropertyElement, ghost],

@@ -13,6 +13,11 @@ var Window = {
     if (size == nil) {
       die("canvas.Window.new: size argument is null");
     }
+
+    if (id == nil) {
+      logprint(LOG_WARN, "Creating window without ID");
+    }
+
     var ghost = _newWindowGhost(id);
     var m = {
       parents: [Window, PropertyElement, ghost],
