@@ -89,7 +89,12 @@ void main()
     float stex1x = attr3.y; // Side texture X1
     float wtex1y = attr2.y; // Front/Roof/Side texture Y1
 
-    float mtcx = multitexcoord0.x - EPSILON;
+    // We use the sign of the x texture coordinate to offset things later
+    //  - roof texture coordinates are negative (0 -> -1)
+    //  - wall texture coordinates are positive (0 -> 1)
+    // We want to nudge mtcx is the appropriate direction so that all of the
+    //  offsets are applied in the correct direction
+    float mtcx = multitexcoord0.x - sign(vertex_color.y - EPSILON) * EPSILON;
 
     // Adjust the top texture coordinates to match roof shape
     float is_roof_top_vertex = vertex_color.z;
@@ -106,8 +111,17 @@ void main()
     vec2 tex0 = vec2(sign(mtcx) * (vertex_color.x*wtex0x + vertex_color.y*rtex0x + vertex_color.a*wtex0x),
                      vertex_color.x*wtex0y + vertex_color.y*rtex0y + vertex_color.a*wtex0y);
 
-    vec2 tex1 = vec2(vertex_color.x*wtex1x + vertex_color.y*wtex1x + vertex_color.a*stex1x,
-                     wtex1y);
+    vec2 tex1 = vec2(
+        // x-offsets
+        vertex_color.x*wtex1x + // main body front/back faces
+        vertex_color.a*stex1x + // main body left/right faces
+        vertex_color.y*(
+            is_front_or_back * wtex1x +         // roof front/back faces
+            (1.0f - is_front_or_back) * stex1x  // roof left/right faces
+        ),
+        // y-offsets
+        wtex1y
+    );
 
     vs_out.texcoord.x = tex0.x + mtcx * tex1.x;
     vs_out.texcoord.y = tex0.y + multitexcoord0.y * tex1.y;
