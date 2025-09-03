@@ -69,8 +69,7 @@
     <building-medium-ratio>0.1</building-medium-ratio>
     <building-large-ratio>0.0</building-large-ratio>
     <building-medium-max-floors>4</building-medium-max-floors>
-    <building-texture>Textures/buildings.png</building-texture>
-    <building-lightmap>Textures/buildings-lightmap.png</building-lightmap>
+    <building-texture>Textures/Buildings/global.png</building-texture>
     <wood-coverage>1000.0</wood-coverage>
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>

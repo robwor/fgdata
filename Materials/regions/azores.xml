@@ -204,8 +204,7 @@
     <building-small-max-depth-m>30.0</building-small-max-depth-m>
     <building-medium-ratio>0.6</building-medium-ratio>
     <building-large-ratio>0.2</building-large-ratio>
-    <building-texture>Textures/buildings.png</building-texture>
-    <building-lightmap>Textures/buildings-lightmap.png</building-lightmap>
+    <building-texture>Textures/Buildings/global.png</building-texture>
     <wood-coverage>250000.0</wood-coverage>
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>
@@ -234,8 +233,7 @@
     <building-medium-ratio>0.1</building-medium-ratio>
     <building-large-ratio>0.0</building-large-ratio>
     <building-medium-max-floors>4</building-medium-max-floors>
-    <building-texture>Textures/buildings.png</building-texture>
-    <building-lightmap>Textures/buildings-lightmap.png</building-lightmap>
+    <building-texture>Textures/Buildings/global.png</building-texture>
     <wood-coverage>1000.0</wood-coverage>
     <tree-texture>Trees/deciduous-alt.png</tree-texture>
     <tree-varieties>4</tree-varieties>

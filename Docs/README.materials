@@ -281,12 +281,27 @@ building-large-max-width-m : Max. width of large buildings. (default 75)
 building-large-min-depth-m : Min. depth of large buildings. (default 50)
 building-large-max-depth-m : Max. depth of large buildings. (default 75)
 
-building-texture : The texture used for all buildings. See Docs/buildings.png for
-                   details. (default Texture/buildings.png)
+building-texture : The texture used for all buildings. See Docs/buildings.png
+         for details. (default Textures/Buildings/global.png). Other secondary
+         textures (normalmap/orm/emissive) listed below are automatically
+         inferred if not explicitly defined using `building-texture` as a
+         prefix.
 
-building-lightmap: Emissive texture for all buildings, which is faded in at night to
-                   provide illusion of lit windows.  Same texture coordinates and
-                   format at building-texture above.
+building-normalmap : Normalmap for buildings. If not explicitly defined,
+         defaults to `<building-texture>-normalmap.png`
+         (e.g. Textures/Buildings/global-normalmap.png). Same texture
+         coordinates and format as building-texture above.
+
+building-orm-texture : Occlusion/Roughness/Metallic texture for buildings. If
+         not explicitly defined, defaults to `<building-texture>-orm.png`
+         (e.g. Textures/Buildings/global-orm.png). Same texture coordinates and
+         format as building-texture above.
+
+building-emissive-texture: Emissive texture for buildings, which is switched on
+         at night to provide illusion of lit windows and other surfaces. If
+         not explicitly defined, defaults to `<building-texture>-emissive.png`
+         (e.g. Textures/Buildings/global-emissive.png). Same texture coordinates
+         and format as building-texture above.
 
 building-range-m: Range at which all buildings are visible.  Beyond this point fewer
                   and fewer buildings are rendered, with no buildings rendered at

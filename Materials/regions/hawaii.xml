@@ -277,8 +277,7 @@
     <building-small-ratio>0.9</building-small-ratio>
     <building-medium-ratio>0.1</building-medium-ratio>
     <building-large-ratio>0.0</building-large-ratio>
-    <building-texture>Textures/buildings-caribbean.png</building-texture>
-    <building-lightmap>Textures/buildings-caribbean-lightmap.png</building-lightmap>
+    <building-texture>Textures/Buildings/caribbean.png</building-texture>
     <building-small-min-floors>1</building-small-min-floors>
     <building-small-max-floors>2</building-small-max-floors>
     <building-small-max-width-m>20.0</building-small-max-width-m>
