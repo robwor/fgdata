@@ -291,6 +291,7 @@ var NavDisplay = {
 
 		me.map = me.nd.createChild("map","map")
 			.set("clip", map_rect)
+			.set("projection","azimuthalequidistant")
 			.set("screen-range", 700);
 		var z_idx = map_opts['z-index'];
 		if (z_idx != nil) me.map.set('z-index', z_idx);
