@@ -88,15 +88,25 @@ var ErrorNotification =
 
   clicked: func()
   {
+    # always hid eon click
     me.hideNow();
-    fgcommand("show-error-report", props.Node.new({ "index": me._reportIndex})); # should we show the current one?
+
+    # only show the report if we are a notification, not
+    # if we're a simple message
+    if (me._reportIndex >= 0) {
+      fgcommand("show-error-report", props.Node.new({ "index": me._reportIndex})); # should we show the current one?
+    }
   },
 
-  updateText: func()
+  updateText: func(msg = nil)
   {
-    var msg = getprop("/sim/error-report/display/category");
-    var clickForMoreMsg = "\n\nClick to show further details.";
-    me._text.setText(msg ~ clickForMoreMsg);
+    if (msg == nil) {
+      msg = getprop("/sim/error-report/display/category");
+      var clickForMoreMsg = "\n\nClick to show further details.";
+      me._text.setText(msg ~ clickForMoreMsg);
+    } else {
+      me._text.setText(msg);
+    }
     me._updateBounds();
   },
 
@@ -139,7 +149,11 @@ var ErrorNotification =
     me._reportIndex = index;
     me._hideTimer.stop();
     me.setBool("visible", 1);
-    me._hideTimer.start();
+
+    if (me._reportIndex >= 0) {
+      # auto hide for notifciations but not for messages
+      me._hideTimer.start();
+    }
   },
 
   hideNow: func()
@@ -169,7 +183,21 @@ var showErrorNotification = func(node)
     errorNotificationCanvas.show(reportIndex);
 }
 
+var showErrorMessage = func(node)
+{
+    if (errorNotificationCanvas == nil) {
+        # create instance
+        errorNotificationCanvas = canvas.ErrorNotification.new();
+        errorNotificationCanvas._createCanvas();
+    }
+
+    var msg = node.getNode("message").getValue();
+    errorNotificationCanvas.updateText(msg);
+    errorNotificationCanvas.show(-1);
+}
+
 addcommand("show-error-notification-popup", showErrorNotification);
+addcommand("show-error-message-popup", showErrorMessage);
 
 # called from unload() in api.nas
 var unloadErrorNotification = func
