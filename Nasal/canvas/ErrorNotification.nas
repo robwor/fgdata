@@ -88,7 +88,7 @@ var ErrorNotification =
 
   clicked: func()
   {
-    # always hid eon click
+    # always hide on click
     me.hideNow();
 
     # only show the report if we are a notification, not
