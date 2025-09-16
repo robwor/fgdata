@@ -1,3 +1,5 @@
+var trSys = FGTranslate.new().getResource("sys");
+
 var ErrorNotification =
 {
   _CLASS: "canvas.ErrorNotification",
@@ -73,7 +75,7 @@ var ErrorNotification =
 
     me._text =
       root.createChild("text", "error-description")
-          .setText("An error occurred")
+          .setText(trSys.get("error-popup-heading"))
           .setAlignment("left-top")
           .setFontSize(14)
           .setFont("LiberationFonts/LiberationSans-Bold.ttf")
@@ -102,8 +104,8 @@ var ErrorNotification =
   {
     if (msg == nil) {
       msg = getprop("/sim/error-report/display/category");
-      var clickForMoreMsg = "\n\nClick to show further details.";
-      me._text.setText(msg ~ clickForMoreMsg);
+      var clickForMoreMsg = trSys.get("error-popup-click-for-more");
+      me._text.setText(msg ~ "\n\n" ~ clickForMoreMsg);
     } else {
       me._text.setText(msg);
     }
