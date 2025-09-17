@@ -151,7 +151,7 @@ var ErrorNotification =
     me.setBool("visible", 1);
 
     if (me._reportIndex >= 0) {
-      # auto hide for notifciations but not for messages
+      # auto hide for notifications but not for messages
       me._hideTimer.start();
     }
   },
