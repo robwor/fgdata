@@ -40,7 +40,7 @@
     <settings-migration-text>Saved settings were migrated from a previous version of FlightGear. If you encounter any problems when using the system, try restoring the default settings, before reporting a problem. Saved settings can affect the appearance, performance and features of the simulator.</settings-migration-text>
 
 
-    <error-popup-heading comment="Title of the error message/popu window">An error occurred</error-popup-heading>
+    <error-popup-heading comment="Title of the error message/popup window">An error occurred</error-popup-heading>
     <error-popup-click-for-more comment="Added to error message popup notification to prompt user how to get more info">Click to show further details.</error-popup-click-for-more>
 
 
