@@ -68,7 +68,7 @@
     <error-category-out-of-memory>Allocating memory failed. Some resources will not be loaded. Adjust your settings to reduce view distance or number of objects loaded.</error-category-out-of-memory>
     <error-category-multiplayer>Loading a model for another pilot (via multi-player) failed. The other pilot will appear as a default model. (You can disable these errors from the multiplayer settings dialog)</error-category-multiplayer>
     <error-category-shaders>Problems occurred loading visual effects (shaders). This can cause objects to be invisible or appear incorrect. It can sometimes be fixed by changing rendering settings inside FlightGear, or occasionally, by updating the drivers for your graphics card.</error-category-shaders>
-    <error-category-shared-models>The shared models data is missing or incomplete. This means all scenery will be missing some 3D models. To fix this, please enable TerraSync or download the current shared models data from http://www.flightgear.org/scenery/shared-models</error-category-shared-models>
+    <error-category-shared-models>The shared models data is missing or incomplete. This means all scenery will be missing some 3D models. To fix this, please enable TerraSync or download the current shared models data from https://www.flightgear.org/scenery/shared-models</error-category-shared-models>
     <error-category-network>Network errors occurred while downloading data. Check your network connection is working correctly.</error-category-network>
 
     <error-type-unknown>Unknown error</error-type-unknown>
@@ -100,7 +100,7 @@
 
     <shared-models-missing-title>Missing shared models</shared-models-missing-title>
     <shared-models-missing-terrasync>The shared scenery models have not downloaded correctly. This will cause missing elements in all scenery. Automatic scenery downloading is enabled, check your network connection is working as expected.</shared-models-missing-terrasync>
-    <shared-models-missing>The shared scenery models are not installed correctly. This will cause missing elements in all scenery. Enable automatic scenery downloading, or download the shared models from http://www.flightgear.org/scenery/shared-models and add them to your scenery list.</shared-models-missing>
+    <shared-models-missing>The shared scenery models are not installed correctly. This will cause missing elements in all scenery. Enable automatic scenery downloading, or download the shared models from https://www.flightgear.org/scenery/shared-models and add them to your scenery list.</shared-models-missing>
 
   </strings>
 </resource>
