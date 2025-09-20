@@ -1438,6 +1438,10 @@ DefaultStyle.widgets["menu-item"] = {
 		me._label.setText(text);
 		return me._updateLayoutSizes(model);
 	},
+
+  getTextWidth: func() {
+    return me._label.getSize()[0];
+  },
 	
 	setShortcut: func(model, shortcut) {
 		if (shortcut != nil) {
@@ -1521,6 +1525,8 @@ DefaultStyle.widgets["combo-box"] = {
               .set("font", "LiberationFonts/LiberationSans-Regular.ttf")
               .set("character-size", 14)
               .set("alignment", "left-center");
+
+    me._maxItemWidth = nil;
   },
   setSize: func(model, w, h)
   {
@@ -1544,13 +1550,6 @@ DefaultStyle.widgets["combo-box"] = {
   setText: func(model, text)
   {
     me._label.setText(text);
-    var inset = me._style.getSize("text-inset");
-    var min_width = math.max(80, inset + me._label.maxWidth() + inset + me._arrowIcon.imageSize()[0] + inset);
-    model.setLayoutMinimumSize([min_width, 28]);
-    model.setLayoutSizeHint([min_width, 28]);
-
-    # TODO use preferred width of widest item text
-    model.setLayoutSizeHint([min_width * 2, 28]);
 
     return me;
   },
@@ -1603,7 +1602,35 @@ DefaultStyle.widgets["combo-box"] = {
     me._border.set("src", file ~ suffix ~ ".png");
     me._buttonBorder.set("src", buttonFile ~ suffix ~ ".png");
     me._arrowIcon.set("src", arrowIconFile ~ ".png");
-  }
+
+    if (me._maxItemWidth == nil) {
+      me._maxItemWidth = me._getMaxWidthItem(model);
+
+      model.setLayoutMinimumSize([me._maxItemWidth, 28]);
+      model.setLayoutSizeHint([me._maxItemWidth, 28]);
+    }    
+  },
+
+  # Calculate how many pixels the longest text in the list has.
+  _getMaxWidthItem: func(model) {
+    var inset = me._style.getSize("text-inset");
+    var arrowIconWidth = me._arrowIcon.imageSize()[0];
+
+    var maxItemWidth = 80;
+    foreach (var menuItem; model._items) {
+      var itemWidth = inset + menuItem.getTextWidth() + inset + arrowIconWidth + inset;
+      if (itemWidth > maxItemWidth) {
+        maxItemWidth = itemWidth;
+      }
+    }
+
+    return maxItemWidth;
+  },
+
+  # Set me._maxItemWidth to nil for recalculate it.
+  _resetMaxItemWidth: func() {
+    me._maxItemWidth = nil;
+  },
 };
 
 DefaultStyle.widgets["list-item"] = {

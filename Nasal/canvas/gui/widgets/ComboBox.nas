@@ -84,6 +84,7 @@ gui.widgets.ComboBox = {
     var item = me.menu().createItem(text, func { m._itemCallback(index);}, {});
     item.menuValue = value;
     append(me._items, item);
+    me._view._resetMaxItemWidth();
     return item;
   },
 
