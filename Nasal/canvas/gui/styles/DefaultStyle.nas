@@ -396,7 +396,7 @@ DefaultStyle.widgets.label = {
       if( width_hint > 24 )
         width_hint = int(math.sqrt(width_hint * 24));
 
-        model.setLayoutMaximumSize([width_hint, width_hint]);
+        model.setLayoutMaximumSize([MAX_SIZE, width_hint]);
     } else {
         model.setLayoutMaximumSize([MAX_SIZE, 28]);
     }
