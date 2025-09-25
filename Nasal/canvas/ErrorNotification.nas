@@ -167,6 +167,12 @@ var ErrorNotification =
   _hideTimeout: func()
   {
     me.setBool("visible", 0);
+
+    # if the popup auto-hides, dismiss the report as well, or we will
+    # never process any future report
+    if (me._reportIndex >= 0) {
+      fgcommand("dismiss-error-report");
+    }
   }
 };
 
