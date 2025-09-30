@@ -171,4 +171,11 @@
     <load-resistance>1e30</load-resistance>
   </material>
 
+  <material>
+    <name>OSMBuildings</name>
+    <name>OSM_Building</name>
+
+    <building-texture>Textures/Buildings/caribbean.png</building-texture>
+  </material>
+
 </PropertyList>

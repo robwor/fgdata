@@ -439,4 +439,11 @@
     <tree-width-m>6.0</tree-width-m>
   </material>
 
+  <material>
+    <name>OSMBuildings</name>
+    <name>OSM_Building</name>
+
+    <building-texture>Textures/Buildings/caribbean.png</building-texture>
+  </material>
+
 </PropertyList>
