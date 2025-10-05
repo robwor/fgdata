@@ -69,7 +69,7 @@ gui.widgets.Slider = {
     me._view._updateLayoutSizes(me);
   },
 
-  setTicksPositon: func(pos) {
+  setTicksPosition: func(pos) {
     me._ticksPosition = pos;
     me._view._updateLayoutSizes(me);
   },
