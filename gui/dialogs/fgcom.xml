@@ -515,13 +515,24 @@
         <command>nasal</command>
         <script>
           <![CDATA[
-                 setprop("/sim/fgcom/enabled", 0);
+                var server = getprop("/sim/fgcom/selected-server");
+                server = split(" ", server)[0];
+                if (server == getprop("/sim/fgcom/server")) {
+                  # if the value isn't changing, don't disable+re-enable
+                  return;
+                }
 
-                 var server = getprop("/sim/fgcom/selected-server");
-                 server = split(" ", server)[0];
-                 setprop("/sim/fgcom/server", server);
+                logprint(LOG_INFO, "Selecting new FGCom sever:" ~ server);
+                var wasEnabled = getprop("/sim/fgcom/enabled");
+                setprop("/sim/fgcom/enabled", 0);
 
-                 setprop("/sim/fgcom/enabled", 1);
+                # this value is only reads when re-emabling
+                setprop("/sim/fgcom/server", server);
+
+                if (wasEnabled) {
+                  # re-enable after changing server
+                  setprop("/sim/fgcom/enabled", 1);
+                }
              ]]>
         </script>
       </binding>
