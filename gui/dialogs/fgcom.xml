@@ -526,7 +526,7 @@
                 var wasEnabled = getprop("/sim/fgcom/enabled");
                 setprop("/sim/fgcom/enabled", 0);
 
-                # this value is only reads when re-emabling
+                # this value is only read when re-enabling
                 setprop("/sim/fgcom/server", server);
 
                 if (wasEnabled) {
