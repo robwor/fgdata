@@ -200,7 +200,7 @@ var Module = {
                 globals[me.namespace]["setlistener"] = func {};
             foreach (var id; me._listeners) {
                 logprint(DEV_WARN, "Removing listener "~id);
-                if (_orig_removelistener(id)) {
+                if (Module._orig_removelistener(id)) {
                     me.lcountN.decrement();
                 }
             }
