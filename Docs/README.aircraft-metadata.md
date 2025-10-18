@@ -86,7 +86,7 @@ For FlightGear 2018.3.0 onwards there is a replacement system, based around a st
 list of authors. For each author their name can be supplied, and optionally other data
 if desired: nickname, email and a description of what they contributed.
 
-(The strucutre of this deliberatley matches that for add-ons)
+(The structure of this deliberatley matches that for add-ons)
 
 Both the old and and new data can co-exist to allow aircraft compatability with older
 versions of FlightGear.
@@ -94,7 +94,7 @@ versions of FlightGear.
 - maintainers information
 
 To distuinguish contributions and previous authors from active maintainers, there
-is a seperate maintainers section which can be provided. The syntax is the same
+is a separate maintainers section which can be provided. The syntax is the same
 as for the authors, but the contact email is more important. In the future we might
 potentially use this data to contact / notify all maintainers of aircraft.
 
@@ -107,6 +107,19 @@ repository. Again the format matches that uses for add-ons:
     <home-page>http://www.flightgear.org</home-page>
     <wikipedia>https://en.wikipedia.org/wiki/Cessna_172</wikipedia>
 </urls>
+
+- compatibility information
+
+`/sim/minimum-fg-version` indicates the minimum FG version supported by this aircraft.
+
+Additionally there are a set of boolean compatibility flags indicating compatibility
+with specific FlightGear features under `/sim/compatibility`.  Aircraft without the 
+correct minimum-fg-version and compatibility flags may not be shown in the aircraft
+Browse section of the launcher by default.
+
+The currently supported set of compatibility flags are as follows:
+
+`/sim/compatibility/pbr-model` indicates that the model is using Physics Based Rendering.
 
 - previews (splash screens)
 
