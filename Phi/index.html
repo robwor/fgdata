@@ -58,6 +58,12 @@ html, body, #wrapper {
 	color: white;
 }
 
+@media (max-width: 768px) {
+	#toolbar h1 {
+		font-size: 22px;
+	}
+}
+
 #content {
 	position: absolute;
 	top: 75px;
@@ -65,6 +71,7 @@ html, body, #wrapper {
 	width: 100%;
 }
 
+/* Desktop first */
 #widgetarea {
 	overflow-y: auto;
 	position: fixed;
@@ -72,7 +79,63 @@ html, body, #wrapper {
 	right: 0;
 	width: 220px;
 	bottom: 14pt;
+	z-index: 1000;
+	transition: right 0.3s ease;
+	background: #fff;
+	border-left: 1px solid #ccc;
+	box-shadow: -2px 0 6px rgba(0,0,0,0.1);
 }
+
+/* Widgets tab: hidden on desktop */
+#widget-tab {
+	display: none;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	position: fixed;
+	top: 10px; 
+	right: 0;
+	width: 30px;
+	height: 60px;
+	background: #FFF176;
+	color: black; 
+	cursor: pointer;
+	border-top-left-radius: 6px;
+	border-bottom-left-radius: 6px;
+	font-size: 18px;
+	z-index: 9999;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), /* main shadow */
+				-2px 2px 4px rgba(0, 0, 0, 0.1); /* slight shadow on the side */
+}
+
+#widget-tab span {
+	display: block;
+	height: 4px;
+	width: 80%;
+	background-color: black;
+	border-radius: 3px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+	#widgetarea {
+		top: 75px;
+		right: -100%;
+		width: 100%;
+	}
+
+	#widgetarea.open {
+		right: 0;
+	}
+
+	#widget-tab {
+		display: flex;
+		width: 40px;
+		height: 50px;
+	}
+}
+
 
 #statusbar {
 	background-color: gray;
@@ -117,6 +180,19 @@ html, body, #wrapper {
 	text-align: left;
 	margin: 0;
 	padding: 0 0 0 100px;
+}
+
+@media (max-width: 768px) {
+	.htabs {
+		height: 110px;
+	}
+
+	.htabs ul {
+		padding: 0;
+		display: flex;
+		flex-flow: wrap;
+		justify-content: center;
+	}
 }
 
 .htabs ul li {
@@ -179,6 +255,21 @@ html, body, #wrapper {
 	padding: 10px 230px 10px 10px;
 }
 
+@media (max-width: 768px) {
+	#htabs-content {
+		top: 60px;
+		padding: 10px 10px 10px 10px;
+		display: flex;
+		flex-flow: column;
+	}
+}
+
+@media (max-width: 684px) {
+	#htabs-content {
+		top: 110px;
+	}
+}
+
 .vtabs {
 	float: left;
 	margin: 0px;
@@ -188,11 +279,35 @@ html, body, #wrapper {
 	height: 100%;
 }
 
+@media (max-width: 768px) {
+	.vtabs {
+		display: flex;
+		flex-flow: row;
+		width: 100%;
+		height: fit-content;
+		gap: 10px;
+	}
+
+	.vtabs img {
+		width: 172px !important;
+		height: 128px !important;
+	}
+}
+
 .vtabs ul {
 	list-style: none;
 	text-align: center;
 	margin: 0px;
 	padding: 0px;
+}
+
+@media (max-width: 768px) {
+	.vtabs ul {
+		display: flex;
+		flex-flow: wrap;
+		height: fit-content;
+		gap: 10px;
+	}
 }
 
 .vtabs ul li {
@@ -205,6 +320,12 @@ html, body, #wrapper {
 	padding: 5px 7px 5px 7px;
 	margin: 10px 0;
 	text-decoration: none;
+}
+
+@media (max-width: 768px) {
+	.vtabs ul li {
+		margin: 0;
+	}
 }
 
 .vtabs ul li:hover {
@@ -223,6 +344,13 @@ html, body, #wrapper {
 	padding: 5px;
 	overflow: auto;
 	height: 100%;
+}
+
+@media (max-width: 768px) {
+	#vtabs-content {
+		margin: 10px 0 0 0;
+		padding: 0;
+	}
 }
 
 .right-floating {
@@ -273,8 +401,13 @@ code, pre {
             <div id="htabs-content" data-bind="component: { name: selectedTopic, params: { topic: selectedSubtopic } }"></div>
         </div>
         <div id="widgetarea" data-bind="foreach: widgets">
-              <sidebarwidget params="widget: $data">
-              </sidebarwidget>
+             <div id="widget-tab">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <sidebarwidget params="widget: $data">
+            </sidebarwidget>
         </div>
         <div id="statusbar">
             <span>FlightGear. Fly free, be happy. <a href="http://www.flightgear.org/">http://www.flightgear.org/</a></span>
@@ -282,5 +415,13 @@ code, pre {
     </div>
 </body>
 <script type="text/javascript" async="async" data-main="./main" src="3rdparty/require/require.js"></script>
-
+<script>
+    // For mobile: click on the tab to display side widgets.
+    document.addEventListener('click', (e) => {
+    if (e.target.closest('#widget-tab')) {
+        const panel = document.getElementById('widgetarea');
+        panel.classList.toggle('open');
+    }
+});
+</script>
 </html>

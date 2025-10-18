@@ -2,8 +2,14 @@
 .phi-datetime-2digits {
 	width: 2em;
 }
+
+#time-of-day {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
 </style>
-<fieldset>
+<fieldset id="time-of-day">
     <legend>Time of today</legend>
     <!--  ko foreach: timesOfToday -->
     <button data-bind="text: $data, click: $parent.setTimeOfToday">Clock Time</button>
