@@ -126,7 +126,7 @@
         <halign>left</halign>
         <label translate="y">
           airport-radio-button
-          <?FlightGear-tr text="Airport:"?>
+          <?FlightGear-tr text="Airport"?>
         </label>
         <property>/sim/gui/dialogs/location-in-air/airport</property>
         <binding>
@@ -141,7 +141,7 @@
       <radio>
         <label translate="y">
           position-radio-button
-          <?FlightGear-tr text="Position:"?>
+          <?FlightGear-tr text="Coordinates"?>
         </label>
         <halign>left</halign>
         <live>true</live>
@@ -158,7 +158,7 @@
       <radio>
         <label translate="y">
           VOR-radio-button
-          <?FlightGear-tr text="VOR:"
+          <?FlightGear-tr text="VOR"
             comment="Label corresponding to a radio button"?>
         </label>
         <halign>left</halign>
@@ -178,7 +178,7 @@
         <halign>left</halign>
         <label translate="y">
           NDB-radio-button
-          <?FlightGear-tr text="NDB:"
+          <?FlightGear-tr text="NDB"
             comment="Label corresponding to a radio button"?>
         </label>
 
@@ -196,7 +196,7 @@
       <radio>
         <label translate="y">
           fix-radio-button
-          <?FlightGear-tr text="Fix:"
+          <?FlightGear-tr text="Fix"
             comment="Label corresponding to a radio button"?>
         </label>
         <live>true</live>
@@ -216,7 +216,7 @@
         <live>true</live>
         <label translate="y">
           aircraft-carrier-radio-button
-          <?FlightGear-tr text="Aircraft Carrier:"
+          <?FlightGear-tr text="Aircraft Carrier"
             comment="Label corresponding to a radio button"?>
         </label>
         <property>/sim/gui/dialogs/location-in-air/carrier-active</property>
@@ -494,7 +494,7 @@
         <halign>right</halign>
         <label translate="y">
           azimuth-deg-input
-          <?FlightGear-tr text="Azimuth (deg):"?>
+          <?FlightGear-tr text="Azimuth (°):"?>
         </label>
         <enable><not><property>/sim/gui/dialogs/location-in-air/lonlat</property></not></enable>
       </text>
@@ -522,7 +522,7 @@
         <halign>right</halign>
         <label translate="y">
           glidepath-deg-input
-          <?FlightGear-tr text="Glidepath (deg):"?>
+          <?FlightGear-tr text="Glidepath (°):"?>
         </label>
       </text>
       <input>
@@ -548,7 +548,7 @@
         <halign>right</halign>
         <label translate="y">
           heading-deg-input
-          <?FlightGear-tr text="Heading (deg):"?>
+          <?FlightGear-tr text="Heading (°):"?>
         </label>
         <enable><not><property>/sim/gui/dialogs/location-in-air/airport</property></not></enable>
       </text>

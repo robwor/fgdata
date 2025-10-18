@@ -55,7 +55,7 @@
 				<checkbox>
 					<label translate="y">
             throttle-frame-rate-checkbox
-            <?FlightGear-tr text="Throttle frame rate"?>
+            <?FlightGear-tr text="Limit frame rate"?>
           </label>
 					<name>frame-rate-throttle</name>
 					<property>/sim/gui/frame-rate-throttled</property>
@@ -105,7 +105,7 @@
 					<label>99 Hz</label>
 					<format translate="y">
             frame-rate-throttle-hz-format
-            <?FlightGear-tr text="%2.0f Hz"?>
+            <?FlightGear-tr text="%2.0f FPS"?>
           </format>
 					<live>true</live>
 					<property>/sim/frame-rate-throttle-hz</property>
