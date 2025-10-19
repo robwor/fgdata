@@ -471,14 +471,6 @@
           <source>Video Control</source>
           <target />
         </trans-unit>
-        <trans-unit id="menu/video-start:0" translate="no" approved="no">
-          <source>Video Start</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="menu/video-stop:0" translate="no" approved="no">
-          <source>Video Stop</source>
-          <target />
-        </trans-unit>
         <trans-unit id="menu/view:0" translate="yes" approved="no">
           <source>View</source>
           <target>Zobraziť</target>
@@ -713,142 +705,6 @@
           <source>Enable/Disable developer mode</source>
           <target />
         </trans-unit>
-        <trans-unit id="options/disable-ai-models-desc:0" translate="no" approved="no">
-          <source>Deprecated option (disable internal AI subsystem)</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-ai-traffic-desc:0" translate="no" approved="no">
-          <source>Disable artificial traffic.</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-anti-alias-hud-desc:0" translate="no" approved="no">
-          <source>Disable anti-aliased HUD</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-auto-coordination-desc:0" translate="no" approved="no">
-          <source>Disable auto coordination</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-clock-freeze-desc:0" translate="no" approved="no">
-          <source>Clock advances normally</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-clouds-desc:0" translate="no" approved="no">
-          <source>Disable 2D (flat) cloud layers</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-clouds3d-desc:0" translate="no" approved="no">
-          <source>Disable 3D (volumetric) cloud layers</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-distance-attenuation:0" translate="no" approved="no">
-          <source>Disable runway light distance attenuation</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-enhanced-lighting:0" translate="no" approved="no">
-          <source>Disable enhanced runway lighting</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-fgcom-desc:0" translate="no" approved="no">
-          <source>Disable FGCom built-in</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-freeze-desc:0" translate="no" approved="no">
-          <source>Start in a running state</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-fuel-freeze-desc:0" translate="no" approved="no">
-          <source>Fuel is consumed normally</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-fullscreen-desc:0" translate="no" approved="no">
-          <source>Disable fullscreen mode</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-gui-desc:0" translate="no" approved="no">
-          <source>Enable headless mode</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-hold-short-desc:0" translate="no" approved="no">
-          <source>Disable the move to hold short position for multiplayer</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-horizon-effect:0" translate="no" approved="no">
-          <source>Disable celestial body growth illusion near the horizon</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-hud-3d-desc:0" translate="no" approved="no">
-          <source>Disable 3D HUD</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-hud-desc:0" translate="no" approved="no">
-          <source>Disable Heads Up Display (HUD)</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-mouse-pointer-desc:0" translate="no" approved="no">
-          <source>Disable extra mouse pointer</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-panel-desc:0" translate="no" approved="no">
-          <source>Disable instrument panel</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-random-buildings-desc:0" translate="no" approved="no">
-          <source>Exclude random buildings objects</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-random-objects-desc:0" translate="no" approved="no">
-          <source>Exclude random scenery objects</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-random-vegetation-desc:0" translate="no" approved="no">
-          <source>Exclude random vegetation objects</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-real-weather-fetch-desc:0" translate="no" approved="no">
-          <source>Disable METAR based real weather fetching</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-save-on-exit:0" translate="no" approved="no">
-          <source>Don't save preferences upon program exit</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-sentry-desc:0" translate="no" approved="no">
-          <source>Disable crash and error reports from being sent to the development team for analysis</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-sound-desc:0" translate="no" approved="no">
-          <source>Disable sound effects</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-specular-highlight:0" translate="no" approved="no">
-          <source>Disable specular reflections on textured objects</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-splash-screen-desc:0" translate="no" approved="no">
-          <source>Disable splash screen</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-terrasync-desc:0" translate="no" approved="no">
-          <source>Disable automatic scenery downloads/updates</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-texture-cache-desc:0" translate="no" approved="no">
-          <source>Disable texture cache (DDS)</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-textures-desc:0" translate="no" approved="no">
-          <source>Disable textures</source>
-          <target>Zakázať textúry</target>
-        </trans-unit>
-        <trans-unit id="options/disable-vr-desc:0" translate="no" approved="no">
-          <source>Disable VR</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/disable-wireframe-desc:0" translate="no" approved="no">
-          <source>Disable wireframe drawing mode</source>
-          <target />
-        </trans-unit>
         <trans-unit id="options/distance-attenuation-desc:0" translate="yes" approved="no">
           <source>Enable/Disable runway light distance attenuation</source>
           <target />
@@ -860,138 +716,6 @@
         <trans-unit id="options/download-dir-desc:0" translate="yes" approved="no">
           <source>Base directory to use for aircraft and scenery downloads (the TerraSync scenery directory may be specifically set with --terrasync-dir)</source>
           <target />
-        </trans-unit>
-        <trans-unit id="options/enable-ai-models-desc:0" translate="no" approved="no">
-          <source>Enable AI subsystem (required for multi-player, AI traffic and many other animations)</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-ai-traffic-desc:0" translate="no" approved="no">
-          <source>Enable artificial traffic.</source>
-          <target>Povoliť umelú premávku.</target>
-        </trans-unit>
-        <trans-unit id="options/enable-anti-alias-hud-desc:0" translate="no" approved="no">
-          <source>Enable anti-aliased HUD</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-auto-coordination-desc:0" translate="no" approved="no">
-          <source>Enable auto coordination</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-clock-freeze-desc:0" translate="no" approved="no">
-          <source>Do not advance clock</source>
-          <target>Zastaviť čas</target>
-        </trans-unit>
-        <trans-unit id="options/enable-clouds-desc:0" translate="no" approved="no">
-          <source>Enable 2D (flat) cloud layers</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-clouds3d-desc:0" translate="no" approved="no">
-          <source>Enable 3D (volumetric) cloud layers</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-distance-attenuation:0" translate="no" approved="no">
-          <source>Enable runway light distance attenuation</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-enhanced-lighting:0" translate="no" approved="no">
-          <source>Enable enhanced runway lighting</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-fgcom-desc:0" translate="no" approved="no">
-          <source>Enable FGCom built-in</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-freeze-desc:0" translate="no" approved="no">
-          <source>Start in a frozen state</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-fuel-freeze-desc:0" translate="no" approved="no">
-          <source>Fuel tank quantity forced to remain constant</source>
-          <target>Vynútiť stále množstvo paliva v nádržiach</target>
-        </trans-unit>
-        <trans-unit id="options/enable-fullscreen-desc:0" translate="no" approved="no">
-          <source>Enable fullscreen mode</source>
-          <target>Povoliť režim na celú obrazovku</target>
-        </trans-unit>
-        <trans-unit id="options/enable-horizon-effect:0" translate="no" approved="no">
-          <source>Enable celestial body growth illusion near the horizon</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-hud-3d-desc:0" translate="no" approved="no">
-          <source>Enable 3D HUD</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-hud-desc:0" translate="no" approved="no">
-          <source>Enable Heads Up Display (HUD)</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-mouse-pointer-desc:0" translate="no" approved="no">
-          <source>Enable extra mouse pointer</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-mouse-pointer-desc:1" translate="no" approved="no">
-          <source>(i.e. for full screen Voodoo based cards)</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-panel-desc:0" translate="no" approved="no">
-          <source>Enable instrument panel</source>
-          <target>Povoliť prístrojovú dosku</target>
-        </trans-unit>
-        <trans-unit id="options/enable-random-buildings-desc:0" translate="no" approved="no">
-          <source>Include random buildings objects</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-random-objects-desc:0" translate="no" approved="no">
-          <source>Include random scenery objects</source>
-          <target>Zahrnúť náhodné objekty scenérie</target>
-        </trans-unit>
-        <trans-unit id="options/enable-random-vegetation-desc:0" translate="no" approved="no">
-          <source>Include random vegetation objects</source>
-          <target>Zahrnúť náhodné objekty vegetácie</target>
-        </trans-unit>
-        <trans-unit id="options/enable-real-weather-fetch-desc:0" translate="no" approved="no">
-          <source>Enable METAR based real weather fetching (this requires an open internet connection)</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-save-on-exit:0" translate="no" approved="no">
-          <source>Allow saving preferences at program exit</source>
-          <target>Umožniť ukladanie predvolieb pri ukončení programu</target>
-        </trans-unit>
-        <trans-unit id="options/enable-sentry-desc:0" translate="no" approved="no">
-          <source>Enable crash and error reports to be sent to the development team for analysis</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-sound-desc:0" translate="no" approved="no">
-          <source>Enable sound effects</source>
-          <target>Povoliť zvukové efekty</target>
-        </trans-unit>
-        <trans-unit id="options/enable-specular-highlight:0" translate="no" approved="no">
-          <source>Enable specular reflections on textured objects</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-splash-screen-desc:0" translate="no" approved="no">
-          <source>Enable splash screen</source>
-          <target>Povoliť úvodnú obrazovku</target>
-        </trans-unit>
-        <trans-unit id="options/enable-terrasync-desc:0" translate="no" approved="no">
-          <source>Enable automatic scenery downloads/updates</source>
-          <target>Povoliť automatické preberanie/aktualizovanie scenérie</target>
-        </trans-unit>
-        <trans-unit id="options/enable-texture-cache-desc:0" translate="no" approved="no">
-          <source>Enable texture cache (DDS)</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-textures-desc:0" translate="no" approved="no">
-          <source>Enable textures</source>
-          <target>Povoliť textúry</target>
-        </trans-unit>
-        <trans-unit id="options/enable-vr-desc:0" translate="no" approved="no">
-          <source>Enable VR</source>
-          <target />
-        </trans-unit>
-        <trans-unit id="options/enable-wireframe-desc:0" translate="no" approved="no">
-          <source>Enable wireframe drawing mode</source>
-          <target>Povoliť režim vykresľovania drôtového modelu</target>
         </trans-unit>
         <trans-unit id="options/environment-options:0" translate="yes" approved="no">
           <source>Environment Options</source>
@@ -1755,6 +1479,10 @@
           <source>Loading a model for another pilot (via multi-player) failed. The other pilot will appear as a default model. (You can disable these errors from the multiplayer settings dialog)</source>
           <target />
         </trans-unit>
+        <trans-unit id="sys/error-category-network:0" translate="yes" approved="no">
+          <source>Network errors occurred while downloading data. Check your network connection is working correctly.</source>
+          <target state="new" />
+        </trans-unit>
         <trans-unit id="sys/error-category-out-of-memory:0" translate="yes" approved="no">
           <source>Allocating memory failed. Some resources will not be loaded. Adjust your settings to reduce view distance or number of objects loaded.</source>
           <target />
@@ -1766,6 +1494,10 @@
         <trans-unit id="sys/error-category-shaders:0" translate="yes" approved="no">
           <source>Problems occurred loading visual effects (shaders). This can cause objects to be invisible or appear incorrect. It can sometimes be fixed by changing rendering settings inside FlightGear, or occasionally, by updating the drivers for your graphics card.</source>
           <target />
+        </trans-unit>
+        <trans-unit id="sys/error-category-shared-models:0" translate="yes" approved="no">
+          <source>The shared models data is missing or incomplete. This means all scenery will be missing some 3D models. To fix this, please enable automatic scenery download or download the current shared models data from https://www.flightgear.org/scenery/shared-models</source>
+          <target state="new" />
         </trans-unit>
         <trans-unit id="sys/error-category-terrasync:0" translate="yes" approved="no">
           <source>Scenery downloaded via TerraSync is not loading correctly. The usually indicates a problem with your network connection or local disk.</source>
@@ -1798,6 +1530,16 @@
         <trans-unit id="sys/error-next-steps:0" translate="yes" approved="no">
           <source>This dialog is work-in-progress. The information included above may not be fully correct, so please check the detailed information below and give feedback if something seems wrong. Please include all the information below, as well as the message above.</source>
           <target />
+        </trans-unit>
+        <trans-unit id="sys/error-popup-click-for-more:0" translate="yes" approved="no">
+          <source>Click to show further details.</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Added to error message popup notification to prompt user how to get more info</note>
+        </trans-unit>
+        <trans-unit id="sys/error-popup-heading:0" translate="yes" approved="no">
+          <source>An error occurred</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Title of the error message/popup window</note>
         </trans-unit>
         <trans-unit id="sys/error-scenery-load:0" translate="yes" approved="no">
           <source>Errors loading scenery</source>
@@ -1926,6 +1668,18 @@
         <trans-unit id="sys/settings-migration-title:0" translate="yes" approved="no">
           <source>Settings migrated</source>
           <target />
+        </trans-unit>
+        <trans-unit id="sys/shared-models-missing:0" translate="yes" approved="no">
+          <source>The shared scenery models are not installed correctly. This will cause missing elements in all scenery. Enable automatic scenery download, or download the shared models from https://www.flightgear.org/scenery/shared-models and add them to your scenery list.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="sys/shared-models-missing-terrasync:0" translate="yes" approved="no">
+          <source>The shared scenery models have not downloaded correctly. This will cause missing elements in all scenery. Automatic scenery download is enabled, check your network connection is working as expected.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="sys/shared-models-missing-title:0" translate="yes" approved="no">
+          <source>Missing shared models</source>
+          <target state="new" />
         </trans-unit>
         <trans-unit id="sys/units-kbytes:0" translate="yes" approved="no">
           <source>KB</source>
@@ -2181,10 +1935,15 @@
           <source>Exit</source>
           <target state="new" />
         </trans-unit>
+        <trans-unit id="dialog-exit/exit-dialog-title:0" translate="yes" approved="no">
+          <source>FlightGear</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is the title of the Exit dialog.</note>
+        </trans-unit>
       </group>
       <group restype="x-trolltech-linguist-context" resname="dialog-location-in-air">
         <trans-unit id="dialog-location-in-air/NDB-radio-button:0" translate="yes" approved="no">
-          <source>NDB:</source>
+          <source>NDB</source>
           <target state="needs-review-translation" />
           <note from="developer" annotates="source">Label corresponding to a radio button</note>
         </trans-unit>
@@ -2194,7 +1953,7 @@
           <note from="developer" annotates="source">Label corresponding to a text input field</note>
         </trans-unit>
         <trans-unit id="dialog-location-in-air/VOR-radio-button:0" translate="yes" approved="no">
-          <source>VOR:</source>
+          <source>VOR</source>
           <target state="needs-review-translation" />
           <note from="developer" annotates="source">Label corresponding to a radio button</note>
         </trans-unit>
@@ -2204,13 +1963,13 @@
           <note from="developer" annotates="source">Label corresponding to a text input field</note>
         </trans-unit>
         <trans-unit id="dialog-location-in-air/aircraft-carrier-radio-button:0" translate="yes" approved="no">
-          <source>Aircraft Carrier:</source>
+          <source>Aircraft Carrier</source>
           <target state="needs-review-translation" />
           <note from="developer" annotates="source">Label corresponding to a radio button</note>
         </trans-unit>
         <trans-unit id="dialog-location-in-air/airport-radio-button:0" translate="yes" approved="no">
-          <source>Airport:</source>
-          <target state="new" />
+          <source>Airport</source>
+          <target state="needs-review-translation" />
         </trans-unit>
         <trans-unit id="dialog-location-in-air/airport-selection-input:0" translate="yes" approved="no">
           <source>Airport:</source>
@@ -2225,8 +1984,8 @@
           <target state="new" />
         </trans-unit>
         <trans-unit id="dialog-location-in-air/azimuth-deg-input:0" translate="yes" approved="no">
-          <source>Azimuth (deg):</source>
-          <target state="new" />
+          <source>Azimuth (°):</source>
+          <target state="needs-review-translation" />
         </trans-unit>
         <trans-unit id="dialog-location-in-air/carrier-position-selection-combo:0" translate="yes" approved="no">
           <source>Position:</source>
@@ -2242,7 +2001,7 @@
           <target state="needs-review-translation" />
         </trans-unit>
         <trans-unit id="dialog-location-in-air/fix-radio-button:0" translate="yes" approved="no">
-          <source>Fix:</source>
+          <source>Fix</source>
           <target state="needs-review-translation" />
           <note from="developer" annotates="source">Label corresponding to a radio button</note>
         </trans-unit>
@@ -2252,28 +2011,29 @@
           <note from="developer" annotates="source">Label corresponding to a text input field</note>
         </trans-unit>
         <trans-unit id="dialog-location-in-air/glidepath-deg-input:0" translate="yes" approved="no">
-          <source>Glidepath (deg):</source>
+          <source>Glidepath (°):</source>
           <target state="needs-review-translation" />
         </trans-unit>
         <trans-unit id="dialog-location-in-air/heading-deg-input:0" translate="yes" approved="no">
-          <source>Heading (deg):</source>
-          <target state="new" />
+          <source>Heading (°):</source>
+          <target state="needs-review-translation" />
         </trans-unit>
         <trans-unit id="dialog-location-in-air/latitude-input:0" translate="yes" approved="no">
           <source>Latitude:</source>
           <target state="needs-review-translation" />
         </trans-unit>
+        <trans-unit id="dialog-location-in-air/location-in-air-title:0" translate="yes" approved="no">
+          <source>Position Aircraft In Air</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is the dialog title.</note>
+        </trans-unit>
         <trans-unit id="dialog-location-in-air/longitude-input:0" translate="yes" approved="no">
           <source>Longitude:</source>
           <target state="new" />
         </trans-unit>
-        <trans-unit id="dialog-location-in-air/position-aircraft-in-air-label:0" translate="yes" approved="no">
-          <source>Position Aircraft In Air</source>
-          <target state="new" />
-        </trans-unit>
         <trans-unit id="dialog-location-in-air/position-radio-button:0" translate="yes" approved="no">
-          <source>Position:</source>
-          <target state="new" />
+          <source>Coordinates</source>
+          <target state="needs-review-translation" />
         </trans-unit>
         <trans-unit id="dialog-location-in-air/relative-position-label:0" translate="yes" approved="no">
           <source>Relative Position</source>
@@ -2313,6 +2073,707 @@
         <trans-unit id="gui/button-revert:0" translate="yes" approved="no">
           <source>Revert</source>
           <target state="new" />
+        </trans-unit>
+      </group>
+      <group restype="x-trolltech-linguist-context" resname="dialog-advanced-graphics-options">
+        <trans-unit id="dialog-advanced-graphics-options/advanced-graphics-options-title:0" translate="yes" approved="no">
+          <source>Advanced Graphics Options</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is the dialog title.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/als-description:0" translate="yes" approved="no">
+          <source>Atmospheric Light Scattering uses a sophisticated physical atmospheric model and several other effects to give realistic rendering of large distances. It is recommended to run this configuration on relatively powerful hardware.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/als-mode-radio-button:0" translate="yes" approved="no">
+          <source>Atmospheric Light Scattering (ALS)</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/anti-aliasing-combo:0" translate="yes" approved="no">
+          <source>Anti-aliasing</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/anti-aliasing-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Anti-aliasing.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/anti-aliasing-msaa-2x-label:0" translate="yes" approved="no">
+          <source>MSAA 2x</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is an Anti-aliasing setting.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/anti-aliasing-msaa-4x-label:0" translate="yes" approved="no">
+          <source>MSAA 4x</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is an Anti-aliasing setting.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/anti-aliasing-msaa-8x-label:0" translate="yes" approved="no">
+          <source>MSAA 8x</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is an Anti-aliasing setting.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/atmospheric-effects-heading-label:0" translate="yes" approved="no">
+          <source>Atmospheric Effects</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-combo:0" translate="yes" approved="no">
+          <source>Autogenerated Vegetation</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Autogenerated Vegetation.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-high-density-label:0" translate="yes" approved="no">
+          <source>High Density</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Autogenerated Vegetation.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-low-density-label:0" translate="yes" approved="no">
+          <source>Low Density</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Autogenerated Vegetation.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-medium-density-label:0" translate="yes" approved="no">
+          <source>Medium Density</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Autogenerated Vegetation.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-ultra-high-density-label:0" translate="yes" approved="no">
+          <source>Ultra High Density</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Autogenerated Vegetation.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-ultra-low-density-label:0" translate="yes" approved="no">
+          <source>Ultra Low Density</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Autogenerated Vegetation.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-very-high-density-label:0" translate="yes" approved="no">
+          <source>Very High Density</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Autogenerated Vegetation.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-very-low-density-label:0" translate="yes" approved="no">
+          <source>Very Low Density</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Autogenerated Vegetation.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/buildings-combo:0" translate="yes" approved="no">
+          <source>Buildings</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/buildings-combo-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Buildings in the Advanced Graphics Options dialog.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/buildings-combo-openstreetmap-data-label:0" translate="yes" approved="no">
+          <source>OpenStreetMap Data</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Buildings in the Advanced Graphics Options dialog.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/buildings-combo-randomly-generated-label:0" translate="yes" approved="no">
+          <source>Randomly Generated</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Buildings in the Advanced Graphics Options dialog.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/cloud-density-slider:0" translate="yes" approved="no">
+          <source>Cloud density</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/cloud-visibility-range-slider:0" translate="yes" approved="no">
+          <source>Cloud visibility range</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/clouds-detail-combo:0" translate="yes" approved="no">
+          <source>Clouds Detail</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/clouds-detail-high-label:0" translate="yes" approved="no">
+          <source>High</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Clouds Detail.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/clouds-detail-low-label:0" translate="yes" approved="no">
+          <source>Low</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Clouds Detail.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/combo-label-for-high-quality-terrain:0" translate="yes" approved="no">
+          <source>High</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Terrain Quality.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/combo-label-for-low-quality-terrain:0" translate="yes" approved="no">
+          <source>Low</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Terrain Quality.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/combo-label-for-medium-quality-terrain:0" translate="yes" approved="no">
+          <source>Medium</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Terrain Quality.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/combo-label-for-utra-quality-terrain:0" translate="yes" approved="no">
+          <source>Ultra</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Terrain Quality.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/detailed-roads-and-railways-combo:0" translate="yes" approved="no">
+          <source>Detailed Roads and Railways</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/detailed-roads-and-railways-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Detailed Roads and Railways.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/detailed-roads-and-railways-enabled-label:0" translate="yes" approved="no">
+          <source>Enabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Detailed Roads and Railways.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/dynamic-lighting-checkbox:0" translate="yes" approved="no">
+          <source>Dynamic lighting</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/general-heading-label:0" translate="yes" approved="no">
+          <source>General</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Heading in the Advanced Graphics Options dialog</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/hint-about-settings-only-available-under-ALS-label:0" translate="yes" approved="no">
+          <source>Some of these settings can only be changed when using ALS.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/limit-lights-checkbox:0" translate="yes" approved="no">
+          <source>Limit the number of lights being displayed</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/low-spec-description:0" translate="yes" approved="no">
+          <source>The Low Specifications render mode provides low quality visuals with maximum compatibility. This setting is recommended for users with less powerful hardware or integrated video cards.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/low-specifications-radio-button:0" translate="yes" approved="no">
+          <source>Low Specifications</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/max-pointlights-slider:0" translate="yes" approved="no">
+          <source>Maximum number of point lights</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/max-spotlights-slider:0" translate="yes" approved="no">
+          <source>Maximum number of spot lights</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/model-effects-combo:0" translate="yes" approved="no">
+          <source>Model Effects</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/model-effects-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Model Effects.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/model-effects-enabled-label:0" translate="yes" approved="no">
+          <source>Enabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Model Effects.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/openstreetmap-trees-combo:0" translate="yes" approved="no">
+          <source>OpenStreetMap Trees</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/openstreetmap-trees-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about OpenStreetMap Trees.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/openstreetmap-trees-enabled-label:0" translate="yes" approved="no">
+          <source>Enabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about OpenStreetMap Trees.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/overlay-combo:0" translate="yes" approved="no">
+          <source>Overlay</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/overlay-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Overlay in the Advanced Graphics Options dialog (/sim/gui/dialogs/advanced/overlay).</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/overlay-enabled-label:0" translate="yes" approved="no">
+          <source>Enabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Overlay in the Advanced Graphics Options dialog (/sim/gui/dialogs/advanced/overlay).</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/particles-checkbox:0" translate="yes" approved="no">
+          <source>Particles (smoke, dust, spray)</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is a checkbox in the Advanced Graphics Options dialog.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/precipitation-checkbox:0" translate="yes" approved="no">
+          <source>Precipitation</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is a checkbox in the Advanced Graphics Options dialog.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/pylons-and-power-lines-basic-label:0" translate="yes" approved="no">
+          <source>Basic</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Pylons and power lines.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/pylons-and-power-lines-combo:0" translate="yes" approved="no">
+          <source>Pylons and power lines</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/pylons-and-power-lines-detailed-label:0" translate="yes" approved="no">
+          <source>Detailed</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Pylons and power lines.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/pylons-and-power-lines-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Pylons and power lines.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/random-scenery-objects-combo:0" translate="yes" approved="no">
+          <source>Random Scenery Objects</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/random-scenery-objects-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Random Scenery Objects.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/random-scenery-objects-enabled-label:0" translate="yes" approved="no">
+          <source>Enabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Random Scenery Objects.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/scenery-layers-heading:0" translate="yes" approved="no">
+          <source>Scenery Layers</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/scenery-objects-combo:0" translate="yes" approved="no">
+          <source>Scenery Objects</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/scenery-objects-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Scenery Objects in the Advanced Graphics Options dialog.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/scenery-objects-enabled-label:0" translate="yes" approved="no">
+          <source>Enabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Scenery Objects in the Advanced Graphics Options dialog.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/select-rendering-mode-label:0" translate="yes" approved="no">
+          <source>Select Rendering Mode</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/shadow-quality-combo:0" translate="yes" approved="no">
+          <source>Shadow Quality</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/shadow-quality-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Shadow Quality.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/shadow-quality-high-label:0" translate="yes" approved="no">
+          <source>High</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Shadow Quality.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/shadow-quality-low-label:0" translate="yes" approved="no">
+          <source>Low</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Shadow Quality.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/shadow-quality-medium-label:0" translate="yes" approved="no">
+          <source>Medium</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Shadow Quality.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/shadow-quality-ultra-label:0" translate="yes" approved="no">
+          <source>Ultra</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Shadow Quality.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/shadows-and-lights-heading-label:0" translate="yes" approved="no">
+          <source>Shadows and Lights</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/terrain-quality-combo:0" translate="yes" approved="no">
+          <source>Terrain Quality</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/three-dimensions-clouds-checkbox:0" translate="yes" approved="no">
+          <source>3D clouds (required by Detailed Weather)</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/use-shaders-checkbox:0" translate="yes" approved="no">
+          <source>Use Shaders</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/vegetation-shadows-combo:0" translate="yes" approved="no">
+          <source>Vegetation Shadows</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/vegetation-shadows-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Vegetation Shadows.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/vegetation-shadows-enabled-label:0" translate="yes" approved="no">
+          <source>Enabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Vegetation Shadows.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/warning-about-stuff-that-uses-a-lot-of-memory-and-disk-space:0" translate="yes" approved="no">
+          <source>Warning: Pylons, Detailed Roads, Buildings use a lot of memory
+and disk space, and are only available in limited areas.</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This uses manual line wrapping for now, which is not ideal; see https://gitlab.com/flightgear/flightgear/-/work_items/3171</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/water-effects-combo:0" translate="yes" approved="no">
+          <source>Water Effects</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/water-effects-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Water Effects.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/water-effects-high-label:0" translate="yes" approved="no">
+          <source>High</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Water Effects.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/water-effects-low-label:0" translate="yes" approved="no">
+          <source>Low</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Water Effects.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/wind-effects-combo:0" translate="yes" approved="no">
+          <source>Wind Effects</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/wind-effects-disabled-label:0" translate="yes" approved="no">
+          <source>Disabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Wind Effects.</note>
+        </trans-unit>
+        <trans-unit id="dialog-advanced-graphics-options/wind-effects-enabled-label:0" translate="yes" approved="no">
+          <source>Enabled</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is about Wind Effects.</note>
+        </trans-unit>
+      </group>
+      <group restype="x-trolltech-linguist-context" resname="dialog-rendering">
+        <trans-unit id="dialog-rendering/advanced-options-button:0" translate="yes" approved="no">
+          <source>Advanced Options</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/animated-jetways-checkbox:0" translate="yes" approved="no">
+          <source>Animated jetways</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/custom-rendering-settings-checkbox:0" translate="yes" approved="no">
+          <source>Custom</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Whether to use custom rendering settings</note>
+        </trans-unit>
+        <trans-unit id="dialog-rendering/elevation-delta-below-airports-format:0" translate="yes" approved="no">
+          <source>%2d m</source>
+          <target state="new" />
+          <note from="developer" annotates="source">%d = number of meters for “Elevation delta below airports”</note>
+        </trans-unit>
+        <trans-unit id="dialog-rendering/elevation-delta-below-airports-slider:0" translate="yes" approved="no">
+          <source>Elevation delta below airports</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/enable-texture-cache-checkbox:0" translate="yes" approved="no">
+          <source>Use disk space for faster loading (DDS Texture Cache)</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/field-of-view-compensation-checkbox:0" translate="yes" approved="no">
+          <source>Compensate field of view for wider screens</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/frame-rate-throttle-hz-format:0" translate="yes" approved="no">
+          <source>%2.0f FPS</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/graphics-presets-combo:0" translate="yes" approved="no">
+          <source>Graphics Quality</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/max-paged-lod-format:0" translate="yes" approved="no">
+          <source>%d</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Value of /sim/rendering/max-paged-lod</note>
+        </trans-unit>
+        <trans-unit id="dialog-rendering/max-paged-lod-slider:0" translate="yes" approved="no">
+          <source>Maximum number of aircraft and scenery tiles cached</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/max-paged-lod-warning:0" translate="yes" approved="no">
+          <source>Warning: High values use a lot amount of memory and GPU</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/rendering-options-title:0" translate="yes" approved="no">
+          <source>Rendering Options</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is the dialog title.</note>
+        </trans-unit>
+        <trans-unit id="dialog-rendering/restart-required-notice:0" translate="yes" approved="no">
+          <source>Some changes require a complete restart to be applied.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/satellite-photoscenery-checkbox:0" translate="yes" approved="no">
+          <source>Satellite Photoscenery</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/save-custom-settings-to-file-button:0" translate="yes" approved="no">
+          <source>Save custom settings to file</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/shader-warning-label:0" translate="yes" approved="no">
+          <source>Warning: Your graphics card may not support complex graphics.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/tessellation-checkbox:0" translate="yes" approved="no">
+          <source>Tessellation</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/throttle-frame-rate-checkbox:0" translate="yes" approved="no">
+          <source>Limit frame rate</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/triangle-directional-lights-checkbox:0" translate="yes" approved="no">
+          <source>Use triangles for directional lights</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/use-point-sprites-checkbox:0" translate="yes" approved="no">
+          <source>Use point sprites for runway lights</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/use-vpb-checkbox:0" translate="yes" approved="no">
+          <source>WS3.0 (Experimental - requires OSG 3.6)</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-rendering/wireframe-checkbox:0" translate="yes" approved="no">
+          <source>Wireframe</source>
+          <target state="new" />
+        </trans-unit>
+      </group>
+      <group restype="x-trolltech-linguist-context" resname="dialog-view">
+        <trans-unit id="dialog-view/aircraft-specific-views-heading-label:0" translate="yes" approved="no">
+          <source>"%s" Specific Views</source>
+          <target state="new" />
+          <note from="developer" annotates="source">%s = name of the selected aircraft</note>
+        </trans-unit>
+        <trans-unit id="dialog-view/autohide-cursor-in-label:0" translate="yes" approved="no">
+          <source>Autohide cursor in</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is followed by a input field allowing one to enter a number of seconds</note>
+        </trans-unit>
+        <trans-unit id="dialog-view/autohide-menubar-checkkox:0" translate="yes" approved="no">
+          <source>Autohide menubar</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/chatlocation-default:0" translate="yes" approved="no">
+          <source>default</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Chat and event log position</note>
+        </trans-unit>
+        <trans-unit id="dialog-view/chatlocation-left:0" translate="yes" approved="no">
+          <source>left</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Chat and event log position</note>
+        </trans-unit>
+        <trans-unit id="dialog-view/display-options-heading-label:0" translate="yes" approved="no">
+          <source>Display Options</source>
+          <target state="new" />
+        </trans-unit>
+        <group id="dialog-view/format-string-for-cursor-timeout-sec:0" restype="x-gettext-plurals">
+          <trans-unit id="dialog-view/format-string-for-cursor-timeout-sec:0[0]" translate="yes" approved="no">
+            <source>second(s)</source>
+            <target state="new" />
+          </trans-unit>
+          <trans-unit id="dialog-view/format-string-for-cursor-timeout-sec:0[1]" translate="yes" approved="no">
+            <source>second(s)</source>
+            <target state="new" />
+          </trans-unit>
+          <trans-unit id="dialog-view/format-string-for-cursor-timeout-sec:0[2]" translate="yes" approved="no">
+            <source>second(s)</source>
+            <target state="new" />
+          </trans-unit>
+        </group>
+        <trans-unit id="dialog-view/hide-2D-panel-in-non-centered-view-checkbox:0" translate="yes" approved="no">
+          <source>Hide 2D panel in non-centered view</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/hide-2D-panel-in-non-cockpit-view-checkbox:0" translate="yes" approved="no">
+          <source>Hide 2D panel in non-cockpit view</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/legacy-multiplayer-view-selector-checkbox:0" translate="yes" approved="no">
+          <source>Legacy multiplayer view selector</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/marker-pins-heading-label:0" translate="yes" approved="no">
+          <source>Marker Pins</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/other-views-heading-label:0" translate="yes" approved="no">
+          <source>Other Views</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/select-active-views-instruction:0" translate="yes" approved="no">
+          <source>Select Active Views</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/selection-of-chat-and-event-log-position:0" translate="yes" approved="no">
+          <source>Chat and event log position (requires restart):</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-2D-panel-checkbox:0" translate="yes" approved="no">
+          <source>Show 2D panel</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-POI-marker-pins-checkbox:0" translate="yes" approved="no">
+          <source>POI</source>
+          <target state="new" />
+          <note from="developer" annotates="source">POI = Points Of Interest</note>
+        </trans-unit>
+        <trans-unit id="dialog-view/show-airport-marker-pins-checkbox:0" translate="yes" approved="no">
+          <source>Airports</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-chat-messages-checkbox:0" translate="yes" approved="no">
+          <source>Show chat messages</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-fix-marker-pins-checkbox:0" translate="yes" approved="no">
+          <source>Fixes</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-frame-rate-checkbox:0" translate="yes" approved="no">
+          <source>Show frame rate</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-frame-spacing-checkbox:0" translate="yes" approved="no">
+          <source>Show frame spacing</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-marker-pins-general-toggle-checkbox:0" translate="yes" approved="no">
+          <source>Show</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-navaid-marker-pins-checkbox:0" translate="yes" approved="no">
+          <source>Navaids</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-pilot-model-checkbox:0" translate="yes" approved="no">
+          <source>Show Pilot Model</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This option is not always visible (it depends on a property).</note>
+        </trans-unit>
+        <trans-unit id="dialog-view/show-popup-messages-checkbox:0" translate="yes" approved="no">
+          <source>Show popup messages</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-popup-when-cycling-mouse-behaviour-checkbox:0" translate="yes" approved="no">
+          <source>Show popup when cycling mouse behaviour</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-tooltip-on-mouse-press-checkbox:0" translate="yes" approved="no">
+          <source>Show tooltip on mouse press</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-tooltips-checkbox:0" translate="yes" approved="no">
+          <source>Show tooltips</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/show-traffic-marker-pins-checkbox:0" translate="yes" approved="no">
+          <source>Traffic</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/standard-views-heading-label:0" translate="yes" approved="no">
+          <source>Standard Views</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="dialog-view/unnamed-view-number-n:0" translate="yes" approved="no">
+          <source>unnamed view %d</source>
+          <target state="new" />
+          <note from="developer" annotates="source">%d = view number</note>
+        </trans-unit>
+        <trans-unit id="dialog-view/view-options-title:0" translate="yes" approved="no">
+          <source>View Options</source>
+          <target state="new" />
+          <note from="developer" annotates="source">This is the dialog title.</note>
+        </trans-unit>
+      </group>
+      <group restype="x-trolltech-linguist-context" resname="graphics-presets-high-quality">
+        <trans-unit id="graphics-presets-high-quality/description:0" translate="yes" approved="no">
+          <source>High quality settings with the most demanding features disabled.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="graphics-presets-high-quality/name:0" translate="yes" approved="no">
+          <source>High</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Name of a graphics preset</note>
+        </trans-unit>
+      </group>
+      <group restype="x-trolltech-linguist-context" resname="graphics-presets-low-quality">
+        <trans-unit id="graphics-presets-low-quality/description:0" translate="yes" approved="no">
+          <source>Prioritize performance over eye candy.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="graphics-presets-low-quality/name:0" translate="yes" approved="no">
+          <source>Low</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Name of a graphics preset</note>
+        </trans-unit>
+      </group>
+      <group restype="x-trolltech-linguist-context" resname="graphics-presets-medium-quality">
+        <trans-unit id="graphics-presets-medium-quality/description:0" translate="yes" approved="no">
+          <source>A nice tradeoff between performance and eye candy.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="graphics-presets-medium-quality/name:0" translate="yes" approved="no">
+          <source>Medium</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Name of a graphics preset</note>
+        </trans-unit>
+      </group>
+      <group restype="x-trolltech-linguist-context" resname="graphics-presets-minimal-quality">
+        <trans-unit id="graphics-presets-minimal-quality/description:0" translate="yes" approved="no">
+          <source>Minimal settings for low-power laptops or very old systems.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="graphics-presets-minimal-quality/name:0" translate="yes" approved="no">
+          <source>Minimal</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Name of a graphics preset</note>
+        </trans-unit>
+      </group>
+      <group restype="x-trolltech-linguist-context" resname="graphics-presets-ultra-quality">
+        <trans-unit id="graphics-presets-ultra-quality/description:0" translate="yes" approved="no">
+          <source>Maximum settings for very powerful systems.</source>
+          <target state="new" />
+        </trans-unit>
+        <trans-unit id="graphics-presets-ultra-quality/name:0" translate="yes" approved="no">
+          <source>Ultra</source>
+          <target state="new" />
+          <note from="developer" annotates="source">Name of a graphics preset</note>
         </trans-unit>
       </group>
     </body>
