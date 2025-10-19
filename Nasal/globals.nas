@@ -247,7 +247,7 @@ var MainWindow = {
     removeSizeChangedCallback: func(cb) {
         var i = vecindex(MainWindow._sizeChangedCallbacks, cb);
         if (i != nil) {
-            MainWindow._sizeChangedCallbacks = subvec(MainWindow._sizeChangedCallbacks, 0, i) ~ subvec(MainWindow._sizeChangedCallbacks, i + 1);
+            removeat(MainWindow._sizeChangedCallbacks, i);
         }
     },
 

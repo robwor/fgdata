@@ -180,8 +180,7 @@ gui.widgets.RadioButtonsGroup = {
   removeRadioButton: func(r)
   {
     if ((var index = find(r, me.radios)) > -1) {
-      var radio = radios[index];
-      me.radios = subvec(me.radios, 0, index) ~ subvec(me.radios, index + 1);
+      var radio = removeat(me.radios, index);
       if (index < size(me.radios)) {
         me.radios[index].setChecked();
       } elsif (size(me.radios) > 0) {

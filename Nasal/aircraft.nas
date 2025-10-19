@@ -413,7 +413,7 @@ var data = {
 		foreach (var n; props.nodeList(p)) {
 			var i = vecindex(me.catalog, n.getPath());
 			if (i != nil) {
-				me.catalog = subvec(me.catalog, 0, i) ~ subvec(me.catalog, i + 1);
+				removeat(me.catalog, i);
 			}
 		}
 		return me;

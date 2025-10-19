@@ -118,9 +118,8 @@ var Vector = {
             if (index < 0) {
                 index = me.size() + index;
             }
-            var item = me.vector[index];
-            me.vector = subvec(me.vector, 0, index) ~ subvec(me.vector, index + 1);
-            return item;
+
+            return removeat(me.vector, index);
         }
         else {
             return pop(me.vector);

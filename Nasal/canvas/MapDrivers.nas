@@ -54,9 +54,7 @@ var MultiRouteDriver = {
             elsif(sz == 2 and idx == 1)
                 pop(me._flightplans);
             else {
-                var subv_l = subvec(me._flightplans, 0, idx);
-                var subv_r = subvec(me._flightplans, idx + 1);
-                me._flightplans = subv_l ~ subv_r;
+                removeat(me._flightplans, idx);
             }
         }
         me.triggerSignal('fp-added');

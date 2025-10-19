@@ -192,7 +192,7 @@ gui.Popup = {
 		me._ghost.hide();
 		for (var i = 0; i < size(gui.open_popups); i += 1) {
 			if (gui.open_popups[i] == me) {
-				gui.open_popups = subvec(gui.open_popups, 0, i) ~ subvec(gui.open_popups, i);
+				removeat(gui.open_popups, i);
 				break;
 			}
 		}

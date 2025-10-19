@@ -1070,10 +1070,7 @@ var MultiSymbolLayer = {
 			var e = me.list[i];
 			if (Symbol.Controller.equals(e.model, model)) {
 				# Remove this element from the list
-				# TODO: maybe C function for this? extend pop() to accept index?
-				var prev = subvec(me.list, 0, i);
-				var next = subvec(me.list, i+1);
-				me.list = prev~next;
+				removeat(me.list, i);
 				e.del();
 				return 1;
 			}
