@@ -1478,6 +1478,10 @@
         <source xml:space="preserve">Loading a model for another pilot (via multi-player) failed. The other pilot will appear as a default model. (You can disable these errors from the multiplayer settings dialog)</source>
         <target xml:space="preserve">Loading a model for another pilot (via multi-player) failed. The other pilot will appear as a default model. (You can disable these errors from the multiplayer settings dialog)</target>
       </trans-unit>
+      <trans-unit id="sys/error-category-network:0" approved="yes">
+        <source xml:space="preserve">Network errors occurred while downloading data. Check your network connection is working correctly.</source>
+        <target xml:space="preserve">Network errors occurred while downloading data. Check your network connection is working correctly.</target>
+      </trans-unit>
       <trans-unit id="sys/error-category-out-of-memory:0" approved="yes">
         <source xml:space="preserve">Allocating memory failed. Some resources will not be loaded. Adjust your settings to reduce view distance or number of objects loaded.</source>
         <target xml:space="preserve">Allocating memory failed. Some resources will not be loaded. Adjust your settings to reduce view distance or number of objects loaded.</target>
@@ -1489,6 +1493,10 @@
       <trans-unit id="sys/error-category-shaders:0" approved="yes">
         <source xml:space="preserve">Problems occurred loading visual effects (shaders). This can cause objects to be invisible or appear incorrect. It can sometimes be fixed by changing rendering settings inside FlightGear, or occasionally, by updating the drivers for your graphics card.</source>
         <target xml:space="preserve">Problems occurred loading visual effects (shaders). This can cause objects to be invisible or appear incorrect. It can sometimes be fixed by changing rendering settings inside FlightGear, or occasionally, by updating the drivers for your graphics card.</target>
+      </trans-unit>
+      <trans-unit id="sys/error-category-shared-models:0" approved="yes">
+        <source xml:space="preserve">The shared models data is missing or incomplete. This means all scenery will be missing some 3D models. To fix this, please enable automatic scenery download or download the current shared models data from https://www.flightgear.org/scenery/shared-models</source>
+        <target xml:space="preserve">The shared models data is missing or incomplete. This means all scenery will be missing some 3D models. To fix this, please enable automatic scenery download or download the current shared models data from https://www.flightgear.org/scenery/shared-models</target>
       </trans-unit>
       <trans-unit id="sys/error-category-terrasync:0" approved="yes">
         <source xml:space="preserve">Scenery downloaded via TerraSync is not loading correctly. The usually indicates a problem with your network connection or local disk.</source>
@@ -1521,6 +1529,16 @@
       <trans-unit id="sys/error-next-steps:0" approved="yes">
         <source xml:space="preserve">This dialog is work-in-progress. The information included above may not be fully correct, so please check the detailed information below and give feedback if something seems wrong. Please include all the information below, as well as the message above.</source>
         <target xml:space="preserve">This dialog is work-in-progress. The information included above may not be fully correct, so please check the detailed information below and give feedback if something seems wrong. Please include all the information below, as well as the message above.</target>
+      </trans-unit>
+      <trans-unit id="sys/error-popup-click-for-more:0" approved="yes">
+        <source xml:space="preserve">Click to show further details.</source>
+        <target xml:space="preserve">Click to show further details.</target>
+        <note annotates="source" from="developer">Added to error message popup notification to prompt user how to get more info</note>
+      </trans-unit>
+      <trans-unit id="sys/error-popup-heading:0" approved="yes">
+        <source xml:space="preserve">An error occurred</source>
+        <target xml:space="preserve">An error occurred</target>
+        <note annotates="source" from="developer">Title of the error message/popup window</note>
       </trans-unit>
       <trans-unit id="sys/error-scenery-load:0" approved="yes">
         <source xml:space="preserve">Errors loading scenery</source>
@@ -1649,6 +1667,18 @@
       <trans-unit id="sys/settings-migration-title:0" approved="yes">
         <source xml:space="preserve">Settings migrated</source>
         <target xml:space="preserve">Settings migrated</target>
+      </trans-unit>
+      <trans-unit id="sys/shared-models-missing:0" approved="yes">
+        <source xml:space="preserve">The shared scenery models are not installed correctly. This will cause missing elements in all scenery. Enable automatic scenery download, or download the shared models from https://www.flightgear.org/scenery/shared-models and add them to your scenery list.</source>
+        <target xml:space="preserve">The shared scenery models are not installed correctly. This will cause missing elements in all scenery. Enable automatic scenery download, or download the shared models from https://www.flightgear.org/scenery/shared-models and add them to your scenery list.</target>
+      </trans-unit>
+      <trans-unit id="sys/shared-models-missing-terrasync:0" approved="yes">
+        <source xml:space="preserve">The shared scenery models have not downloaded correctly. This will cause missing elements in all scenery. Automatic scenery download is enabled, check your network connection is working as expected.</source>
+        <target xml:space="preserve">The shared scenery models have not downloaded correctly. This will cause missing elements in all scenery. Automatic scenery download is enabled, check your network connection is working as expected.</target>
+      </trans-unit>
+      <trans-unit id="sys/shared-models-missing-title:0" approved="yes">
+        <source xml:space="preserve">Missing shared models</source>
+        <target xml:space="preserve">Missing shared models</target>
       </trans-unit>
       <trans-unit id="sys/units-kbytes:0" approved="yes">
         <source xml:space="preserve">KB</source>
@@ -1904,11 +1934,16 @@
         <source xml:space="preserve">Exit</source>
         <target xml:space="preserve">Exit</target>
       </trans-unit>
+      <trans-unit id="dialog-exit/exit-dialog-title:0" approved="yes">
+        <source xml:space="preserve">FlightGear</source>
+        <target xml:space="preserve">FlightGear</target>
+        <note annotates="source" from="developer">This is the title of the Exit dialog.</note>
+      </trans-unit>
     </group>
     <group restype="x-trolltech-linguist-context" resname="dialog-location-in-air">
       <trans-unit id="dialog-location-in-air/NDB-radio-button:0" approved="yes">
-        <source xml:space="preserve">NDB:</source>
-        <target xml:space="preserve">NDB:</target>
+        <source xml:space="preserve">NDB</source>
+        <target xml:space="preserve">NDB</target>
         <note annotates="source" from="developer">Label corresponding to a radio button</note>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/NDB-selection-input:0" approved="yes">
@@ -1917,8 +1952,8 @@
         <note annotates="source" from="developer">Label corresponding to a text input field</note>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/VOR-radio-button:0" approved="yes">
-        <source xml:space="preserve">VOR:</source>
-        <target xml:space="preserve">VOR:</target>
+        <source xml:space="preserve">VOR</source>
+        <target xml:space="preserve">VOR</target>
         <note annotates="source" from="developer">Label corresponding to a radio button</note>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/VOR-selection-input:0" approved="yes">
@@ -1927,13 +1962,13 @@
         <note annotates="source" from="developer">Label corresponding to a text input field</note>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/aircraft-carrier-radio-button:0" approved="yes">
-        <source xml:space="preserve">Aircraft Carrier:</source>
-        <target xml:space="preserve">Aircraft Carrier:</target>
+        <source xml:space="preserve">Aircraft Carrier</source>
+        <target xml:space="preserve">Aircraft Carrier</target>
         <note annotates="source" from="developer">Label corresponding to a radio button</note>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/airport-radio-button:0" approved="yes">
-        <source xml:space="preserve">Airport:</source>
-        <target xml:space="preserve">Airport:</target>
+        <source xml:space="preserve">Airport</source>
+        <target xml:space="preserve">Airport</target>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/airport-selection-input:0" approved="yes">
         <source xml:space="preserve">Airport:</source>
@@ -1948,8 +1983,8 @@
         <target xml:space="preserve">Altitude (ft):</target>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/azimuth-deg-input:0" approved="yes">
-        <source xml:space="preserve">Azimuth (deg):</source>
-        <target xml:space="preserve">Azimuth (deg):</target>
+        <source xml:space="preserve">Azimuth (°):</source>
+        <target xml:space="preserve">Azimuth (°):</target>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/carrier-position-selection-combo:0" approved="yes">
         <source xml:space="preserve">Position:</source>
@@ -1965,8 +2000,8 @@
         <target xml:space="preserve">Distance (nm):</target>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/fix-radio-button:0" approved="yes">
-        <source xml:space="preserve">Fix:</source>
-        <target xml:space="preserve">Fix:</target>
+        <source xml:space="preserve">Fix</source>
+        <target xml:space="preserve">Fix</target>
         <note annotates="source" from="developer">Label corresponding to a radio button</note>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/fix-selection-input:0" approved="yes">
@@ -1975,28 +2010,29 @@
         <note annotates="source" from="developer">Label corresponding to a text input field</note>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/glidepath-deg-input:0" approved="yes">
-        <source xml:space="preserve">Glidepath (deg):</source>
-        <target xml:space="preserve">Glidepath (deg):</target>
+        <source xml:space="preserve">Glidepath (°):</source>
+        <target xml:space="preserve">Glidepath (°):</target>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/heading-deg-input:0" approved="yes">
-        <source xml:space="preserve">Heading (deg):</source>
-        <target xml:space="preserve">Heading (deg):</target>
+        <source xml:space="preserve">Heading (°):</source>
+        <target xml:space="preserve">Heading (°):</target>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/latitude-input:0" approved="yes">
         <source xml:space="preserve">Latitude:</source>
         <target xml:space="preserve">Latitude:</target>
       </trans-unit>
+      <trans-unit id="dialog-location-in-air/location-in-air-title:0" approved="yes">
+        <source xml:space="preserve">Position Aircraft In Air</source>
+        <target xml:space="preserve">Position Aircraft In Air</target>
+        <note annotates="source" from="developer">This is the dialog title.</note>
+      </trans-unit>
       <trans-unit id="dialog-location-in-air/longitude-input:0" approved="yes">
         <source xml:space="preserve">Longitude:</source>
         <target xml:space="preserve">Longitude:</target>
       </trans-unit>
-      <trans-unit id="dialog-location-in-air/position-aircraft-in-air-label:0" approved="yes">
-        <source xml:space="preserve">Position Aircraft In Air</source>
-        <target xml:space="preserve">Position Aircraft In Air</target>
-      </trans-unit>
       <trans-unit id="dialog-location-in-air/position-radio-button:0" approved="yes">
-        <source xml:space="preserve">Position:</source>
-        <target xml:space="preserve">Position:</target>
+        <source xml:space="preserve">Coordinates</source>
+        <target xml:space="preserve">Coordinates</target>
       </trans-unit>
       <trans-unit id="dialog-location-in-air/relative-position-label:0" approved="yes">
         <source xml:space="preserve">Relative Position</source>
@@ -2036,6 +2072,704 @@
       <trans-unit id="gui/button-revert:0" approved="yes">
         <source xml:space="preserve">Revert</source>
         <target xml:space="preserve">Revert</target>
+      </trans-unit>
+    </group>
+    <group restype="x-trolltech-linguist-context" resname="dialog-advanced-graphics-options">
+      <trans-unit id="dialog-advanced-graphics-options/advanced-graphics-options-title:0" approved="yes">
+        <source xml:space="preserve">Advanced Graphics Options</source>
+        <target xml:space="preserve">Advanced Graphics Options</target>
+        <note annotates="source" from="developer">This is the dialog title.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/als-description:0" approved="yes">
+        <source xml:space="preserve">Atmospheric Light Scattering uses a sophisticated physical atmospheric model and several other effects to give realistic rendering of large distances. It is recommended to run this configuration on relatively powerful hardware.</source>
+        <target xml:space="preserve">Atmospheric Light Scattering uses a sophisticated physical atmospheric model and several other effects to give realistic rendering of large distances. It is recommended to run this configuration on relatively powerful hardware.</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/als-mode-radio-button:0" approved="yes">
+        <source xml:space="preserve">Atmospheric Light Scattering (ALS)</source>
+        <target xml:space="preserve">Atmospheric Light Scattering (ALS)</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/anti-aliasing-combo:0" approved="yes">
+        <source xml:space="preserve">Anti-aliasing</source>
+        <target xml:space="preserve">Anti-aliasing</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/anti-aliasing-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Anti-aliasing.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/anti-aliasing-msaa-2x-label:0" approved="yes">
+        <source xml:space="preserve">MSAA 2x</source>
+        <target xml:space="preserve">MSAA 2x</target>
+        <note annotates="source" from="developer">This is an Anti-aliasing setting.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/anti-aliasing-msaa-4x-label:0" approved="yes">
+        <source xml:space="preserve">MSAA 4x</source>
+        <target xml:space="preserve">MSAA 4x</target>
+        <note annotates="source" from="developer">This is an Anti-aliasing setting.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/anti-aliasing-msaa-8x-label:0" approved="yes">
+        <source xml:space="preserve">MSAA 8x</source>
+        <target xml:space="preserve">MSAA 8x</target>
+        <note annotates="source" from="developer">This is an Anti-aliasing setting.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/atmospheric-effects-heading-label:0" approved="yes">
+        <source xml:space="preserve">Atmospheric Effects</source>
+        <target xml:space="preserve">Atmospheric Effects</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-combo:0" approved="yes">
+        <source xml:space="preserve">Autogenerated Vegetation</source>
+        <target xml:space="preserve">Autogenerated Vegetation</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Autogenerated Vegetation.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-high-density-label:0" approved="yes">
+        <source xml:space="preserve">High Density</source>
+        <target xml:space="preserve">High Density</target>
+        <note annotates="source" from="developer">This is about Autogenerated Vegetation.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-low-density-label:0" approved="yes">
+        <source xml:space="preserve">Low Density</source>
+        <target xml:space="preserve">Low Density</target>
+        <note annotates="source" from="developer">This is about Autogenerated Vegetation.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-medium-density-label:0" approved="yes">
+        <source xml:space="preserve">Medium Density</source>
+        <target xml:space="preserve">Medium Density</target>
+        <note annotates="source" from="developer">This is about Autogenerated Vegetation.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-ultra-high-density-label:0" approved="yes">
+        <source xml:space="preserve">Ultra High Density</source>
+        <target xml:space="preserve">Ultra High Density</target>
+        <note annotates="source" from="developer">This is about Autogenerated Vegetation.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-ultra-low-density-label:0" approved="yes">
+        <source xml:space="preserve">Ultra Low Density</source>
+        <target xml:space="preserve">Ultra Low Density</target>
+        <note annotates="source" from="developer">This is about Autogenerated Vegetation.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-very-high-density-label:0" approved="yes">
+        <source xml:space="preserve">Very High Density</source>
+        <target xml:space="preserve">Very High Density</target>
+        <note annotates="source" from="developer">This is about Autogenerated Vegetation.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/autogenerated-vegetation-very-low-density-label:0" approved="yes">
+        <source xml:space="preserve">Very Low Density</source>
+        <target xml:space="preserve">Very Low Density</target>
+        <note annotates="source" from="developer">This is about Autogenerated Vegetation.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/buildings-combo:0" approved="yes">
+        <source xml:space="preserve">Buildings</source>
+        <target xml:space="preserve">Buildings</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/buildings-combo-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Buildings in the Advanced Graphics Options dialog.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/buildings-combo-openstreetmap-data-label:0" approved="yes">
+        <source xml:space="preserve">OpenStreetMap Data</source>
+        <target xml:space="preserve">OpenStreetMap Data</target>
+        <note annotates="source" from="developer">This is about Buildings in the Advanced Graphics Options dialog.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/buildings-combo-randomly-generated-label:0" approved="yes">
+        <source xml:space="preserve">Randomly Generated</source>
+        <target xml:space="preserve">Randomly Generated</target>
+        <note annotates="source" from="developer">This is about Buildings in the Advanced Graphics Options dialog.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/cloud-density-slider:0" approved="yes">
+        <source xml:space="preserve">Cloud density</source>
+        <target xml:space="preserve">Cloud density</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/cloud-visibility-range-slider:0" approved="yes">
+        <source xml:space="preserve">Cloud visibility range</source>
+        <target xml:space="preserve">Cloud visibility range</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/clouds-detail-combo:0" approved="yes">
+        <source xml:space="preserve">Clouds Detail</source>
+        <target xml:space="preserve">Clouds Detail</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/clouds-detail-high-label:0" approved="yes">
+        <source xml:space="preserve">High</source>
+        <target xml:space="preserve">High</target>
+        <note annotates="source" from="developer">This is about Clouds Detail.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/clouds-detail-low-label:0" approved="yes">
+        <source xml:space="preserve">Low</source>
+        <target xml:space="preserve">Low</target>
+        <note annotates="source" from="developer">This is about Clouds Detail.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/combo-label-for-high-quality-terrain:0" approved="yes">
+        <source xml:space="preserve">High</source>
+        <target xml:space="preserve">High</target>
+        <note annotates="source" from="developer">This is about Terrain Quality.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/combo-label-for-low-quality-terrain:0" approved="yes">
+        <source xml:space="preserve">Low</source>
+        <target xml:space="preserve">Low</target>
+        <note annotates="source" from="developer">This is about Terrain Quality.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/combo-label-for-medium-quality-terrain:0" approved="yes">
+        <source xml:space="preserve">Medium</source>
+        <target xml:space="preserve">Medium</target>
+        <note annotates="source" from="developer">This is about Terrain Quality.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/combo-label-for-utra-quality-terrain:0" approved="yes">
+        <source xml:space="preserve">Ultra</source>
+        <target xml:space="preserve">Ultra</target>
+        <note annotates="source" from="developer">This is about Terrain Quality.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/detailed-roads-and-railways-combo:0" approved="yes">
+        <source xml:space="preserve">Detailed Roads and Railways</source>
+        <target xml:space="preserve">Detailed Roads and Railways</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/detailed-roads-and-railways-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Detailed Roads and Railways.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/detailed-roads-and-railways-enabled-label:0" approved="yes">
+        <source xml:space="preserve">Enabled</source>
+        <target xml:space="preserve">Enabled</target>
+        <note annotates="source" from="developer">This is about Detailed Roads and Railways.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/dynamic-lighting-checkbox:0" approved="yes">
+        <source xml:space="preserve">Dynamic lighting</source>
+        <target xml:space="preserve">Dynamic lighting</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/general-heading-label:0" approved="yes">
+        <source xml:space="preserve">General</source>
+        <target xml:space="preserve">General</target>
+        <note annotates="source" from="developer">Heading in the Advanced Graphics Options dialog</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/hint-about-settings-only-available-under-ALS-label:0" approved="yes">
+        <source xml:space="preserve">Some of these settings can only be changed when using ALS.</source>
+        <target xml:space="preserve">Some of these settings can only be changed when using ALS.</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/limit-lights-checkbox:0" approved="yes">
+        <source xml:space="preserve">Limit the number of lights being displayed</source>
+        <target xml:space="preserve">Limit the number of lights being displayed</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/low-spec-description:0" approved="yes">
+        <source xml:space="preserve">The Low Specifications render mode provides low quality visuals with maximum compatibility. This setting is recommended for users with less powerful hardware or integrated video cards.</source>
+        <target xml:space="preserve">The Low Specifications render mode provides low quality visuals with maximum compatibility. This setting is recommended for users with less powerful hardware or integrated video cards.</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/low-specifications-radio-button:0" approved="yes">
+        <source xml:space="preserve">Low Specifications</source>
+        <target xml:space="preserve">Low Specifications</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/max-pointlights-slider:0" approved="yes">
+        <source xml:space="preserve">Maximum number of point lights</source>
+        <target xml:space="preserve">Maximum number of point lights</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/max-spotlights-slider:0" approved="yes">
+        <source xml:space="preserve">Maximum number of spot lights</source>
+        <target xml:space="preserve">Maximum number of spot lights</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/model-effects-combo:0" approved="yes">
+        <source xml:space="preserve">Model Effects</source>
+        <target xml:space="preserve">Model Effects</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/model-effects-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Model Effects.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/model-effects-enabled-label:0" approved="yes">
+        <source xml:space="preserve">Enabled</source>
+        <target xml:space="preserve">Enabled</target>
+        <note annotates="source" from="developer">This is about Model Effects.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/openstreetmap-trees-combo:0" approved="yes">
+        <source xml:space="preserve">OpenStreetMap Trees</source>
+        <target xml:space="preserve">OpenStreetMap Trees</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/openstreetmap-trees-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about OpenStreetMap Trees.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/openstreetmap-trees-enabled-label:0" approved="yes">
+        <source xml:space="preserve">Enabled</source>
+        <target xml:space="preserve">Enabled</target>
+        <note annotates="source" from="developer">This is about OpenStreetMap Trees.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/overlay-combo:0" approved="yes">
+        <source xml:space="preserve">Overlay</source>
+        <target xml:space="preserve">Overlay</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/overlay-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Overlay in the Advanced Graphics Options dialog (/sim/gui/dialogs/advanced/overlay).</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/overlay-enabled-label:0" approved="yes">
+        <source xml:space="preserve">Enabled</source>
+        <target xml:space="preserve">Enabled</target>
+        <note annotates="source" from="developer">This is about Overlay in the Advanced Graphics Options dialog (/sim/gui/dialogs/advanced/overlay).</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/particles-checkbox:0" approved="yes">
+        <source xml:space="preserve">Particles (smoke, dust, spray)</source>
+        <target xml:space="preserve">Particles (smoke, dust, spray)</target>
+        <note annotates="source" from="developer">This is a checkbox in the Advanced Graphics Options dialog.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/precipitation-checkbox:0" approved="yes">
+        <source xml:space="preserve">Precipitation</source>
+        <target xml:space="preserve">Precipitation</target>
+        <note annotates="source" from="developer">This is a checkbox in the Advanced Graphics Options dialog.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/pylons-and-power-lines-basic-label:0" approved="yes">
+        <source xml:space="preserve">Basic</source>
+        <target xml:space="preserve">Basic</target>
+        <note annotates="source" from="developer">This is about Pylons and power lines.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/pylons-and-power-lines-combo:0" approved="yes">
+        <source xml:space="preserve">Pylons and power lines</source>
+        <target xml:space="preserve">Pylons and power lines</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/pylons-and-power-lines-detailed-label:0" approved="yes">
+        <source xml:space="preserve">Detailed</source>
+        <target xml:space="preserve">Detailed</target>
+        <note annotates="source" from="developer">This is about Pylons and power lines.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/pylons-and-power-lines-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Pylons and power lines.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/random-scenery-objects-combo:0" approved="yes">
+        <source xml:space="preserve">Random Scenery Objects</source>
+        <target xml:space="preserve">Random Scenery Objects</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/random-scenery-objects-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Random Scenery Objects.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/random-scenery-objects-enabled-label:0" approved="yes">
+        <source xml:space="preserve">Enabled</source>
+        <target xml:space="preserve">Enabled</target>
+        <note annotates="source" from="developer">This is about Random Scenery Objects.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/scenery-layers-heading:0" approved="yes">
+        <source xml:space="preserve">Scenery Layers</source>
+        <target xml:space="preserve">Scenery Layers</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/scenery-objects-combo:0" approved="yes">
+        <source xml:space="preserve">Scenery Objects</source>
+        <target xml:space="preserve">Scenery Objects</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/scenery-objects-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Scenery Objects in the Advanced Graphics Options dialog.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/scenery-objects-enabled-label:0" approved="yes">
+        <source xml:space="preserve">Enabled</source>
+        <target xml:space="preserve">Enabled</target>
+        <note annotates="source" from="developer">This is about Scenery Objects in the Advanced Graphics Options dialog.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/select-rendering-mode-label:0" approved="yes">
+        <source xml:space="preserve">Select Rendering Mode</source>
+        <target xml:space="preserve">Select Rendering Mode</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/shadow-quality-combo:0" approved="yes">
+        <source xml:space="preserve">Shadow Quality</source>
+        <target xml:space="preserve">Shadow Quality</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/shadow-quality-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Shadow Quality.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/shadow-quality-high-label:0" approved="yes">
+        <source xml:space="preserve">High</source>
+        <target xml:space="preserve">High</target>
+        <note annotates="source" from="developer">This is about Shadow Quality.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/shadow-quality-low-label:0" approved="yes">
+        <source xml:space="preserve">Low</source>
+        <target xml:space="preserve">Low</target>
+        <note annotates="source" from="developer">This is about Shadow Quality.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/shadow-quality-medium-label:0" approved="yes">
+        <source xml:space="preserve">Medium</source>
+        <target xml:space="preserve">Medium</target>
+        <note annotates="source" from="developer">This is about Shadow Quality.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/shadow-quality-ultra-label:0" approved="yes">
+        <source xml:space="preserve">Ultra</source>
+        <target xml:space="preserve">Ultra</target>
+        <note annotates="source" from="developer">This is about Shadow Quality.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/shadows-and-lights-heading-label:0" approved="yes">
+        <source xml:space="preserve">Shadows and Lights</source>
+        <target xml:space="preserve">Shadows and Lights</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/terrain-quality-combo:0" approved="yes">
+        <source xml:space="preserve">Terrain Quality</source>
+        <target xml:space="preserve">Terrain Quality</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/three-dimensions-clouds-checkbox:0" approved="yes">
+        <source xml:space="preserve">3D clouds (required by Detailed Weather)</source>
+        <target xml:space="preserve">3D clouds (required by Detailed Weather)</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/use-shaders-checkbox:0" approved="yes">
+        <source xml:space="preserve">Use Shaders</source>
+        <target xml:space="preserve">Use Shaders</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/vegetation-shadows-combo:0" approved="yes">
+        <source xml:space="preserve">Vegetation Shadows</source>
+        <target xml:space="preserve">Vegetation Shadows</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/vegetation-shadows-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Vegetation Shadows.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/vegetation-shadows-enabled-label:0" approved="yes">
+        <source xml:space="preserve">Enabled</source>
+        <target xml:space="preserve">Enabled</target>
+        <note annotates="source" from="developer">This is about Vegetation Shadows.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/warning-about-stuff-that-uses-a-lot-of-memory-and-disk-space:0" approved="yes">
+        <source xml:space="preserve">Warning: Pylons, Detailed Roads, Buildings use a lot of memory
+and disk space, and are only available in limited areas.</source>
+        <target xml:space="preserve">Warning: Pylons, Detailed Roads, Buildings use a lot of memory
+and disk space, and are only available in limited areas.</target>
+        <note annotates="source" from="developer">This uses manual line wrapping for now, which is not ideal; see https://gitlab.com/flightgear/flightgear/-/work_items/3171</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/water-effects-combo:0" approved="yes">
+        <source xml:space="preserve">Water Effects</source>
+        <target xml:space="preserve">Water Effects</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/water-effects-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Water Effects.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/water-effects-high-label:0" approved="yes">
+        <source xml:space="preserve">High</source>
+        <target xml:space="preserve">High</target>
+        <note annotates="source" from="developer">This is about Water Effects.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/water-effects-low-label:0" approved="yes">
+        <source xml:space="preserve">Low</source>
+        <target xml:space="preserve">Low</target>
+        <note annotates="source" from="developer">This is about Water Effects.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/wind-effects-combo:0" approved="yes">
+        <source xml:space="preserve">Wind Effects</source>
+        <target xml:space="preserve">Wind Effects</target>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/wind-effects-disabled-label:0" approved="yes">
+        <source xml:space="preserve">Disabled</source>
+        <target xml:space="preserve">Disabled</target>
+        <note annotates="source" from="developer">This is about Wind Effects.</note>
+      </trans-unit>
+      <trans-unit id="dialog-advanced-graphics-options/wind-effects-enabled-label:0" approved="yes">
+        <source xml:space="preserve">Enabled</source>
+        <target xml:space="preserve">Enabled</target>
+        <note annotates="source" from="developer">This is about Wind Effects.</note>
+      </trans-unit>
+    </group>
+    <group restype="x-trolltech-linguist-context" resname="dialog-rendering">
+      <trans-unit id="dialog-rendering/advanced-options-button:0" approved="yes">
+        <source xml:space="preserve">Advanced Options</source>
+        <target xml:space="preserve">Advanced Options</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/animated-jetways-checkbox:0" approved="yes">
+        <source xml:space="preserve">Animated jetways</source>
+        <target xml:space="preserve">Animated jetways</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/custom-rendering-settings-checkbox:0" approved="yes">
+        <source xml:space="preserve">Custom</source>
+        <target xml:space="preserve">Custom</target>
+        <note annotates="source" from="developer">Whether to use custom rendering settings</note>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/elevation-delta-below-airports-format:0" approved="yes">
+        <source xml:space="preserve">%2d m</source>
+        <target xml:space="preserve">%2d m</target>
+        <note annotates="source" from="developer">%d = number of meters for “Elevation delta below airports”</note>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/elevation-delta-below-airports-slider:0" approved="yes">
+        <source xml:space="preserve">Elevation delta below airports</source>
+        <target xml:space="preserve">Elevation delta below airports</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/enable-texture-cache-checkbox:0" approved="yes">
+        <source xml:space="preserve">Use disk space for faster loading (DDS Texture Cache)</source>
+        <target xml:space="preserve">Use disk space for faster loading (DDS Texture Cache)</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/field-of-view-compensation-checkbox:0" approved="yes">
+        <source xml:space="preserve">Compensate field of view for wider screens</source>
+        <target xml:space="preserve">Compensate field of view for wider screens</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/frame-rate-throttle-hz-format:0" approved="yes">
+        <source xml:space="preserve">%2.0f FPS</source>
+        <target xml:space="preserve">%2.0f FPS</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/graphics-presets-combo:0" approved="yes">
+        <source xml:space="preserve">Graphics Quality</source>
+        <target xml:space="preserve">Graphics Quality</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/max-paged-lod-format:0" approved="yes">
+        <source xml:space="preserve">%d</source>
+        <target xml:space="preserve">%d</target>
+        <note annotates="source" from="developer">Value of /sim/rendering/max-paged-lod</note>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/max-paged-lod-slider:0" approved="yes">
+        <source xml:space="preserve">Maximum number of aircraft and scenery tiles cached</source>
+        <target xml:space="preserve">Maximum number of aircraft and scenery tiles cached</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/max-paged-lod-warning:0" approved="yes">
+        <source xml:space="preserve">Warning: High values use a lot amount of memory and GPU</source>
+        <target xml:space="preserve">Warning: High values use a lot amount of memory and GPU</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/rendering-options-title:0" approved="yes">
+        <source xml:space="preserve">Rendering Options</source>
+        <target xml:space="preserve">Rendering Options</target>
+        <note annotates="source" from="developer">This is the dialog title.</note>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/restart-required-notice:0" approved="yes">
+        <source xml:space="preserve">Some changes require a complete restart to be applied.</source>
+        <target xml:space="preserve">Some changes require a complete restart to be applied.</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/satellite-photoscenery-checkbox:0" approved="yes">
+        <source xml:space="preserve">Satellite Photoscenery</source>
+        <target xml:space="preserve">Satellite Photoscenery</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/save-custom-settings-to-file-button:0" approved="yes">
+        <source xml:space="preserve">Save custom settings to file</source>
+        <target xml:space="preserve">Save custom settings to file</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/shader-warning-label:0" approved="yes">
+        <source xml:space="preserve">Warning: Your graphics card may not support complex graphics.</source>
+        <target xml:space="preserve">Warning: Your graphics card may not support complex graphics.</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/tessellation-checkbox:0" approved="yes">
+        <source xml:space="preserve">Tessellation</source>
+        <target xml:space="preserve">Tessellation</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/throttle-frame-rate-checkbox:0" approved="yes">
+        <source xml:space="preserve">Limit frame rate</source>
+        <target xml:space="preserve">Limit frame rate</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/triangle-directional-lights-checkbox:0" approved="yes">
+        <source xml:space="preserve">Use triangles for directional lights</source>
+        <target xml:space="preserve">Use triangles for directional lights</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/use-point-sprites-checkbox:0" approved="yes">
+        <source xml:space="preserve">Use point sprites for runway lights</source>
+        <target xml:space="preserve">Use point sprites for runway lights</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/use-vpb-checkbox:0" approved="yes">
+        <source xml:space="preserve">WS3.0 (Experimental - requires OSG 3.6)</source>
+        <target xml:space="preserve">WS3.0 (Experimental - requires OSG 3.6)</target>
+      </trans-unit>
+      <trans-unit id="dialog-rendering/wireframe-checkbox:0" approved="yes">
+        <source xml:space="preserve">Wireframe</source>
+        <target xml:space="preserve">Wireframe</target>
+      </trans-unit>
+    </group>
+    <group restype="x-trolltech-linguist-context" resname="dialog-view">
+      <trans-unit id="dialog-view/aircraft-specific-views-heading-label:0" approved="yes">
+        <source xml:space="preserve">&quot;%s&quot; Specific Views</source>
+        <target xml:space="preserve">&quot;%s&quot; Specific Views</target>
+        <note annotates="source" from="developer">%s = name of the selected aircraft</note>
+      </trans-unit>
+      <trans-unit id="dialog-view/autohide-cursor-in-label:0" approved="yes">
+        <source xml:space="preserve">Autohide cursor in</source>
+        <target xml:space="preserve">Autohide cursor in</target>
+        <note annotates="source" from="developer">This is followed by a input field allowing one to enter a number of seconds</note>
+      </trans-unit>
+      <trans-unit id="dialog-view/autohide-menubar-checkkox:0" approved="yes">
+        <source xml:space="preserve">Autohide menubar</source>
+        <target xml:space="preserve">Autohide menubar</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/chatlocation-default:0" approved="yes">
+        <source xml:space="preserve">default</source>
+        <target xml:space="preserve">default</target>
+        <note annotates="source" from="developer">Chat and event log position</note>
+      </trans-unit>
+      <trans-unit id="dialog-view/chatlocation-left:0" approved="yes">
+        <source xml:space="preserve">left</source>
+        <target xml:space="preserve">left</target>
+        <note annotates="source" from="developer">Chat and event log position</note>
+      </trans-unit>
+      <trans-unit id="dialog-view/display-options-heading-label:0" approved="yes">
+        <source xml:space="preserve">Display Options</source>
+        <target xml:space="preserve">Display Options</target>
+      </trans-unit>
+      <group restype="x-gettext-plurals" id="dialog-view/format-string-for-cursor-timeout-sec:0">
+        <trans-unit id="dialog-view/format-string-for-cursor-timeout-sec:0[0]" approved="yes">
+          <source xml:space="preserve">second(s)</source>
+          <target xml:space="preserve">second</target>
+        </trans-unit>
+        <trans-unit id="dialog-view/format-string-for-cursor-timeout-sec:0[1]" approved="yes">
+          <source xml:space="preserve">second(s)</source>
+          <target xml:space="preserve">seconds</target>
+        </trans-unit>
+      </group>
+      <trans-unit id="dialog-view/hide-2D-panel-in-non-centered-view-checkbox:0" approved="yes">
+        <source xml:space="preserve">Hide 2D panel in non-centered view</source>
+        <target xml:space="preserve">Hide 2D panel in non-centered view</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/hide-2D-panel-in-non-cockpit-view-checkbox:0" approved="yes">
+        <source xml:space="preserve">Hide 2D panel in non-cockpit view</source>
+        <target xml:space="preserve">Hide 2D panel in non-cockpit view</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/legacy-multiplayer-view-selector-checkbox:0" approved="yes">
+        <source xml:space="preserve">Legacy multiplayer view selector</source>
+        <target xml:space="preserve">Legacy multiplayer view selector</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/marker-pins-heading-label:0" approved="yes">
+        <source xml:space="preserve">Marker Pins</source>
+        <target xml:space="preserve">Marker Pins</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/other-views-heading-label:0" approved="yes">
+        <source xml:space="preserve">Other Views</source>
+        <target xml:space="preserve">Other Views</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/select-active-views-instruction:0" approved="yes">
+        <source xml:space="preserve">Select Active Views</source>
+        <target xml:space="preserve">Select Active Views</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/selection-of-chat-and-event-log-position:0" approved="yes">
+        <source xml:space="preserve">Chat and event log position (requires restart):</source>
+        <target xml:space="preserve">Chat and event log position (requires restart):</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-2D-panel-checkbox:0" approved="yes">
+        <source xml:space="preserve">Show 2D panel</source>
+        <target xml:space="preserve">Show 2D panel</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-POI-marker-pins-checkbox:0" approved="yes">
+        <source xml:space="preserve">POI</source>
+        <target xml:space="preserve">POI</target>
+        <note annotates="source" from="developer">POI = Points Of Interest</note>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-airport-marker-pins-checkbox:0" approved="yes">
+        <source xml:space="preserve">Airports</source>
+        <target xml:space="preserve">Airports</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-chat-messages-checkbox:0" approved="yes">
+        <source xml:space="preserve">Show chat messages</source>
+        <target xml:space="preserve">Show chat messages</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-fix-marker-pins-checkbox:0" approved="yes">
+        <source xml:space="preserve">Fixes</source>
+        <target xml:space="preserve">Fixes</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-frame-rate-checkbox:0" approved="yes">
+        <source xml:space="preserve">Show frame rate</source>
+        <target xml:space="preserve">Show frame rate</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-frame-spacing-checkbox:0" approved="yes">
+        <source xml:space="preserve">Show frame spacing</source>
+        <target xml:space="preserve">Show frame spacing</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-marker-pins-general-toggle-checkbox:0" approved="yes">
+        <source xml:space="preserve">Show</source>
+        <target xml:space="preserve">Show</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-navaid-marker-pins-checkbox:0" approved="yes">
+        <source xml:space="preserve">Navaids</source>
+        <target xml:space="preserve">Navaids</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-pilot-model-checkbox:0" approved="yes">
+        <source xml:space="preserve">Show Pilot Model</source>
+        <target xml:space="preserve">Show Pilot Model</target>
+        <note annotates="source" from="developer">This option is not always visible (it depends on a property).</note>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-popup-messages-checkbox:0" approved="yes">
+        <source xml:space="preserve">Show popup messages</source>
+        <target xml:space="preserve">Show popup messages</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-popup-when-cycling-mouse-behaviour-checkbox:0" approved="yes">
+        <source xml:space="preserve">Show popup when cycling mouse behaviour</source>
+        <target xml:space="preserve">Show popup when cycling mouse behaviour</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-tooltip-on-mouse-press-checkbox:0" approved="yes">
+        <source xml:space="preserve">Show tooltip on mouse press</source>
+        <target xml:space="preserve">Show tooltip on mouse press</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-tooltips-checkbox:0" approved="yes">
+        <source xml:space="preserve">Show tooltips</source>
+        <target xml:space="preserve">Show tooltips</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/show-traffic-marker-pins-checkbox:0" approved="yes">
+        <source xml:space="preserve">Traffic</source>
+        <target xml:space="preserve">Traffic</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/standard-views-heading-label:0" approved="yes">
+        <source xml:space="preserve">Standard Views</source>
+        <target xml:space="preserve">Standard Views</target>
+      </trans-unit>
+      <trans-unit id="dialog-view/unnamed-view-number-n:0" approved="yes">
+        <source xml:space="preserve">unnamed view %d</source>
+        <target xml:space="preserve">unnamed view %d</target>
+        <note annotates="source" from="developer">%d = view number</note>
+      </trans-unit>
+      <trans-unit id="dialog-view/view-options-title:0" approved="yes">
+        <source xml:space="preserve">View Options</source>
+        <target xml:space="preserve">View Options</target>
+        <note annotates="source" from="developer">This is the dialog title.</note>
+      </trans-unit>
+    </group>
+    <group restype="x-trolltech-linguist-context" resname="graphics-presets-high-quality">
+      <trans-unit id="graphics-presets-high-quality/description:0" approved="yes">
+        <source xml:space="preserve">High quality settings with the most demanding features disabled.</source>
+        <target xml:space="preserve">High quality settings with the most demanding features disabled.</target>
+      </trans-unit>
+      <trans-unit id="graphics-presets-high-quality/name:0" approved="yes">
+        <source xml:space="preserve">High</source>
+        <target xml:space="preserve">High</target>
+        <note annotates="source" from="developer">Name of a graphics preset</note>
+      </trans-unit>
+    </group>
+    <group restype="x-trolltech-linguist-context" resname="graphics-presets-low-quality">
+      <trans-unit id="graphics-presets-low-quality/description:0" approved="yes">
+        <source xml:space="preserve">Prioritize performance over eye candy.</source>
+        <target xml:space="preserve">Prioritize performance over eye candy.</target>
+      </trans-unit>
+      <trans-unit id="graphics-presets-low-quality/name:0" approved="yes">
+        <source xml:space="preserve">Low</source>
+        <target xml:space="preserve">Low</target>
+        <note annotates="source" from="developer">Name of a graphics preset</note>
+      </trans-unit>
+    </group>
+    <group restype="x-trolltech-linguist-context" resname="graphics-presets-medium-quality">
+      <trans-unit id="graphics-presets-medium-quality/description:0" approved="yes">
+        <source xml:space="preserve">A nice tradeoff between performance and eye candy.</source>
+        <target xml:space="preserve">A nice tradeoff between performance and eye candy.</target>
+      </trans-unit>
+      <trans-unit id="graphics-presets-medium-quality/name:0" approved="yes">
+        <source xml:space="preserve">Medium</source>
+        <target xml:space="preserve">Medium</target>
+        <note annotates="source" from="developer">Name of a graphics preset</note>
+      </trans-unit>
+    </group>
+    <group restype="x-trolltech-linguist-context" resname="graphics-presets-minimal-quality">
+      <trans-unit id="graphics-presets-minimal-quality/description:0" approved="yes">
+        <source xml:space="preserve">Minimal settings for low-power laptops or very old systems.</source>
+        <target xml:space="preserve">Minimal settings for low-power laptops or very old systems.</target>
+      </trans-unit>
+      <trans-unit id="graphics-presets-minimal-quality/name:0" approved="yes">
+        <source xml:space="preserve">Minimal</source>
+        <target xml:space="preserve">Minimal</target>
+        <note annotates="source" from="developer">Name of a graphics preset</note>
+      </trans-unit>
+    </group>
+    <group restype="x-trolltech-linguist-context" resname="graphics-presets-ultra-quality">
+      <trans-unit id="graphics-presets-ultra-quality/description:0" approved="yes">
+        <source xml:space="preserve">Maximum settings for very powerful systems.</source>
+        <target xml:space="preserve">Maximum settings for very powerful systems.</target>
+      </trans-unit>
+      <trans-unit id="graphics-presets-ultra-quality/name:0" approved="yes">
+        <source xml:space="preserve">Ultra</source>
+        <target xml:space="preserve">Ultra</target>
+        <note annotates="source" from="developer">Name of a graphics preset</note>
       </trans-unit>
     </group>
   </body></file>
