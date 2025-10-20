@@ -8,7 +8,6 @@ variables:
   TEST_DATA_DIR: $CI_PROJECT_DIR/testFGData
   BUNDLED_DATA_DIR: $CI_PROJECT_DIR/bundledFGData
 
-  FGMETA_DIR: /tmp/fgmeta
   PYTHON_VENV_DIR: /tmp/venv-dir
   PYTHON_VENV_BINDIR: $PYTHON_VENV_DIR/bin
 
@@ -48,28 +47,18 @@ create-test-data:
   rules:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
 
-# Clone FGMeta and create a Python venv in $PYTHON_VENV_DIR with the
-# 'flightgear' package from fgmeta/python3-flightgear' installed in editable
-# mode (FGMeta submodules aren't cloned, so this is tiny).
+# Create a Python venv in $PYTHON_VENV_DIR; inside the venv, install the
+# 'flightgear' package from FGMeta-python.
 .prepare-python-venv: &prepare-python-venv
-  - |
-    if [[ -e "$FGMETA_DIR" ]]; then
-      echo "$FGMETA_DIR already exists before clone!"
-      exit 1
-    fi
   - |
     if [[ -e "$PYTHON_VENV_DIR" ]]; then
       echo "$PYTHON_VENV_DIR already exists before creating the venv!"
       exit 1
     fi
-  - git clone https://gitlab.com/flightgear/fgmeta.git "$FGMETA_DIR"
-  # --system-site-packages allows the venv to use distro packages such as
-  # python3-lxml (which otherwise would be downloaded every time by pip).
-  - python3 -m venv --system-site-packages "$PYTHON_VENV_DIR"
-  # We want PEP 660 support; upgrading all these so as to avoid hitting
-  # https://bugs.launchpad.net/ubuntu/+source/python-pip/+bug/2018288
-  - '"$PYTHON_VENV_BINDIR"/pip install -U build pip setuptools'
-  - '"$PYTHON_VENV_BINDIR"/pip install -e "$FGMETA_DIR/python3-flightgear"'
+  - python3 -m venv "$PYTHON_VENV_DIR"
+  - >
+    "$PYTHON_VENV_BINDIR"/pip install
+    git+https://gitlab.com/flightgear/fgmeta-python.git
 
 validate-shaders:
   stage: test
@@ -79,9 +68,7 @@ validate-shaders:
   before_script:
     - *prepare-python-venv
   script:
-    - >
-      "$PYTHON_VENV_BINDIR"/python "$FGMETA_DIR/fg-validate-shaders"
-      "$CI_PROJECT_DIR" || exit $?
+    - '"$PYTHON_VENV_BINDIR"/fg-validate-shaders "$CI_PROJECT_DIR" || exit $?'
 
 # XML files containing the <?FlightGear-tr?> processing instruction:
 # check that contexts are declared, don't overlap, follow naming rules, etc.
@@ -97,7 +84,7 @@ validate-XML-translations:
       "$CI_PROJECT_DIR" || exit $?
 
 # all the files from FGData which we bunlde with the application / image
-# installers. Keep this small since this impacts file mirrors, code-signing, 
+# installers. Keep this small since this impacts file mirrors, code-signing,
 # etc.
 # create-bundled-data:
 #   stage: deploy
