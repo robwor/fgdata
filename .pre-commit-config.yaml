@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# SPDX-FileCopyrightText: 2025 Florent Rougon
+
+repos:
+  - repo: https://gitlab.com/flightgear/fgmeta-python.git
+    rev: b1655a7b6f5aa865742118087cf9a57af9131801
+    hooks:
+      - id: fg-validate-propertylist-files
