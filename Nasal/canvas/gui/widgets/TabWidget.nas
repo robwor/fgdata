@@ -224,6 +224,20 @@ gui.widgets.TabWidget = {
 		return me.update();
 	},
 
+	getCurrentTabId: func {
+		return me._currentTabId;
+	},
+
+	setLabelForTabId: func(id, label) {
+		if (!me.hasTab(id)) {
+			die("tab with id '" ~ id ~ "' does not exist");
+		}
+
+		me._tabButtons[id].setText(label);
+
+		return me.update();
+	},
+
 	setSize: func {
 		if (size(arg) == 1) {
 			var arg = arg[0];
