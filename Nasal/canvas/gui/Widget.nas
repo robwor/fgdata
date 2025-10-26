@@ -170,6 +170,10 @@ gui.Widget = {
     if( me._focused and me.getCanvas() )
       me.getCanvas()._focused_widget = nil;
   },
+  view: func 
+  {
+    return me._view;
+  },
 # protected:
   _MAX_SIZE: 32768, # size for "no size-limit"
   _onStateChange: func

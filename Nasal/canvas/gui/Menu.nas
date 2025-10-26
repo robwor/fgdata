@@ -176,10 +176,6 @@ gui.MenuItem = {
                 return me._text;
         },
 
-        getTextWidth: func {
-                return me._view.getTextWidth();
-        },
-
         setShortcut: func(shortcut) {
         	if (!shortcut) {
         		me._keyBinding = nil;

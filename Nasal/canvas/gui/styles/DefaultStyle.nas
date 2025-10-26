@@ -1618,7 +1618,7 @@ DefaultStyle.widgets["combo-box"] = {
 
     var maxItemWidth = 80;
     foreach (var menuItem; model._items) {
-      var itemWidth = inset + menuItem.getTextWidth() + inset + arrowIconWidth + inset;
+      var itemWidth = inset + menuItem.view().getTextWidth() + inset + arrowIconWidth + inset;
       if (itemWidth > maxItemWidth) {
         maxItemWidth = itemWidth;
       }
