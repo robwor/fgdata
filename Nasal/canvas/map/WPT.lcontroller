@@ -74,7 +74,7 @@ var WPT_model = {
 	},
 	equals: func(other) {
 		# this is set on symbol init, so use this for equality...
-		me.name == other.name
+		me.name == other.name and me.idx == other.idx
 	},
 };
 
