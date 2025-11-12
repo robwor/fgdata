@@ -24,7 +24,16 @@ define([
         });
       });
 
-      self.textLength = 20;
+      function getCharsPerLine() {
+        const charWidth = 10;
+
+        const div = document.getElementById('metar-data');
+        const divWidth = div.getBoundingClientRect().width;
+
+        return Math.floor(divWidth / charWidth);
+      };
+
+      self.textLength = getCharsPerLine();
       self.timerId = 0;
       self.longTimeout = 1500;
       self.shortTimeout = 50;
