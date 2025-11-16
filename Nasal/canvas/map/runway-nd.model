@@ -9,19 +9,13 @@ var RunwayNDModel = {};
 if (!getprop("/autopilot/route-manager/active")) 
 	print("runway-nd.model: Cannot access flight plan, route manager inactive!") and return;
 
- 
+ var desRwy = flightplan().destination_runway;
+ var depRwy = flightplan().departure_runway;
 
- var desApt = airportinfo(getprop("/autopilot/route-manager/destination/airport"));
- var depApt = airportinfo(getprop("/autopilot/route-manager/departure/airport"));
- var desRwy = desApt.runway(getprop("/autopilot/route-manager/destination/runway"));
- var depRwy = depApt.runway(getprop("/autopilot/route-manager/departure/runway"));
-			
-
- me.push(depRwy);
- me.push(desRwy);
-  
+ if (depRwy != nil)
+	me.push(depRwy);
+ if (desRwy != nil)
+	me.push(desRwy);
 
  me.notifyView();
 }
-
-
