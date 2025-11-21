@@ -1619,17 +1619,29 @@ var load_MapStructure = func {
 			"controller",
 			"overlay"
 		];
+
 		var deps = {};
-		foreach (var d; dep_names) deps[d] = [];
-		foreach (var f; directory(contents_dir)) {
-			var ext = size(var s=split(".", f)) > 1 ? s[-1] : nil;
-			foreach (var d; dep_names) {
-				if (ext == d) {
-					append(deps[d], f);
-					break
+		foreach (var d; dep_names) {
+			deps[d] = [];
+		}
+
+		foreach (var file; directory(contents_dir)) {
+			var parts = split('.', file);
+
+			var ext = size(parts) > 2 and parts[-1] == 'nas'
+				? parts[-2]
+				: nil;
+
+			if (ext != nil) {
+				foreach (var d; dep_names) {
+					if (ext == d) {
+						append(deps[d], file);
+						break;
+					}
 				}
 			}
 		}
+
 		foreach (var d; dep_names) {
 			foreach (var f; deps[d]) {
 				var name = split(".", f)[0];

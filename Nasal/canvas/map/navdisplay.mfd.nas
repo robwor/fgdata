@@ -9,14 +9,14 @@
 # this file contains a hash that declares features in a generic fashion
 # we want to get rid of the bloated update() method sooner than later
 # PLEASE DO NOT ADD any code to update() !! 
-# Instead, help clean up the file and move things over to the navdisplay.styles file
+# Instead, help clean up the file and move things over to the navdisplay.styles.nas file.
 # 
 # This is the only sane way to keep on generalizing the framework, so that we can
 # also support different makes/models of NDs in the future
 #
 # a huge bloated update() method is going to make that basically IMPOSSIBLE
 #
-io.include("Nasal/canvas/map/navdisplay.styles");
+io.include("Nasal/canvas/map/navdisplay.styles.nas");
 
 ##
 # encapsulate hdg/lat/lon source, so that the ND may also display AI/MP aircraft in a pilot-view at some point (aka stress-testing)

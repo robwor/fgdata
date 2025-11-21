@@ -421,6 +421,8 @@ var load_modules = func(vec, ns='canvas')
 
 # read in the file names dynamically: *.draw, *.model, *.layer
 var files_with = func(ext) {
+	ext ~= '.nas';
+
 	var results = [];
 	var all_files = directory(MVC_FOLDER);
 	foreach(var file; all_files) {
