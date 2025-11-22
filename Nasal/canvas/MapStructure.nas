@@ -1349,11 +1349,14 @@ var TileLayer = {
 
 		var ratio = 1 / math.pow(2,me.zoom - ideal_zoom);
 
-		for(var x = 0; x < me.num_tiles[0]; x += 1)
-		{
-		  for(var y = 0; y < me.num_tiles[1]; y += 1) {
-				me.tiles[x][y].setTranslation(int((x - me.center_tile_offset[0]) * me.tile_size * ratio + 0.5),
-				                             int((y - me.center_tile_offset[1]) * me.tile_size * ratio + 0.5));
+		var tileSize = me.tile_size * ratio; # exact tile size on the screen
+
+		for (var x = 0; x < me.num_tiles[0]; x += 1) {
+			for (var y = 0; y < me.num_tiles[1]; y += 1) {
+				me.tiles[x][y].setTranslation(
+					(x - me.center_tile_offset[0]) * tileSize,
+					(y - me.center_tile_offset[1]) * tileSize,
+				);
 				me.tiles[x][y].setScale(ratio);
 				me.tiles[x][y].scale_factor = ratio;
 			}
