@@ -419,7 +419,7 @@ var load_modules = func(vec, ns='canvas')
 	foreach(var file; vec)
 		io.load_nasal(MVC_FOLDER~file, ns); # TODO: should probably be using a different/sub-namespace!
 
-# read in the file names dynamically: *.draw, *.model, *.layer
+# Read in the file names dynamically: *.draw.nas, *.model.nas, *.layer.nas
 var files_with = func(ext) {
 	ext ~= '.nas';
 

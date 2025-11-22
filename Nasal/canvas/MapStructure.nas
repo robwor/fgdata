@@ -1625,19 +1625,33 @@ var load_MapStructure = func {
 			deps[d] = [];
 		}
 
-		foreach (var file; directory(contents_dir)) {
+		#
+		# Get module type name from a Nasal file, e.g. 'lcontroller', 'symbol', 'scontroller', 'controller', 'overlay'. 
+		# Returns nil if the file name does not match the expected pattern.
+		#
+		# @param  string  file  The file name e.g.: 'APT.symbol.nas', 'PARKING.lcontroller.nas', etc.
+		# @return string|nil  The type name e.g.: 'symbol', 'lcontroller', etc. or nil if failed.
+		#
+		var getNasalModuleType = func(file) {
 			var parts = split('.', file);
 
-			var ext = size(parts) > 2 and parts[-1] == 'nas'
-				? parts[-2]
-				: nil;
+			if (size(parts) > 2 and parts[-1] == 'nas') {
+				return parts[-2];
+			}
 
-			if (ext != nil) {
-				foreach (var d; dep_names) {
-					if (ext == d) {
-						append(deps[d], file);
-						break;
-					}
+			return nil;
+		};
+
+		foreach (var file; directory(contents_dir)) {
+			var moduleName = getNasalModuleType(file);
+			if (moduleName == nil) {
+				continue;
+			}
+
+			foreach (var d; dep_names) {
+				if (moduleName == d) {
+					append(deps[d], file);
+					break;
 				}
 			}
 		}
