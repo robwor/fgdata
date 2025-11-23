@@ -262,47 +262,6 @@ var SymbolCache = {
 	}, # get()
 };
 
-# Excerpt from gen module
-var denied_symbols = [
-	"", "func", "if", "else", "var",
-	"elsif", "foreach", "for",
-	"forindex", "while", "nil",
-	"return", "break", "continue",
-];
-var issym = func(str) {
-	foreach (var d; denied_symbols) {
-		if (str == d) {
-			return false;
-		}
-	}
-
-	var s = str[0];
-	if (s != `_` and !string.isalpha(s)) {
-		return false;
-	}
-
-	var sz = size(str);
-	for (var i = 1; i < sz; i += 1) {
-		s = str[i];
-		if (s != `_` and !string.isalnum(s)) {
-			return false;
-		}
-	}
-
-	return true;
-};
-var internsymbol = func(symbol) {
-	#assert("argument not a symbol", issym, symbol);
-	if (!issym(symbol)) die("argument not a symbol");
-	var get_interned = compile("""
-		keys({"~symbol~":})[0]
-	""");
-	return get_interned();
-};
-var tryintern = func(symbol) issym(symbol) ? internsymbol(symbol) : symbol;
-
-# End excerpt
-
 # Helpers for below
 var unescape = func(s) string.replace(s~"", "'", "\\'");
 var hashdup = func(_, rkeys = nil) {
@@ -312,7 +271,7 @@ var hashdup = func(_, rkeys = nil) {
 		: rkeys;
 
 	foreach (var k; k) {
-		h[tryintern(k)] = member(_, k);
+		h[k] = member(_, k);
 	}
 
 	return h;
