@@ -8,7 +8,7 @@
 ## Dev Notes:
 ##
 ## - consider adding two types of SymbolLayers (sub-classes): Static (fixed positions, navaids/fixes) Dynamic (frequently updated, TFC/WXR, regardless of aircraft position)
-## - FLT should be managed by aircraftpos.controller probably (interestign corner case actually)
+## - FLT should be managed by aircraftpos.controller probably (interesting corner case actually)
 ## - consider adding an Overlay, i.e. for things like compass rose, lat/lon coordinate grid, but also tiled map data fetched on line
 ## - consider patching svg.nas to allow elements to be styled via the options hash by rewriting attributes, could even support animations that way
 ## - style handling/defaults should be moved to symbol files probably
@@ -38,7 +38,7 @@ var try_aux_method = func(obj, method_name) {
 	var name = "<test%"~id(caller(0)[0])~">";
 	call(compile("obj."~method_name~"()", name), nil, var err=[]); # try...
 	#debug.dump(err);
-	if (size(err)) # ... and either leave caght or rethrow
+	if (size(err)) # ... and either leave caught or rethrow
 		if (err[1] != name)
 			die(err[0]);
 }
@@ -68,27 +68,52 @@ var MapStructure_selfTest = func() {
 	temp.dlg = canvas.Window.new([600,400],"dialog");
 	temp.canvas = temp.dlg.createCanvas().setColorBackground(1,1,1,0.5);
 	temp.root = temp.canvas.createGroup();
-	var TestMap = temp.root.createChild("map");
-	TestMap.setController("Aircraft position");
-	TestMap.setRange(25); # TODO: implement zooming/panning via mouse/wheel here, for lack of buttons :-/
-	TestMap.setTranslation(
-		temp.canvas.get("view[0]")/2,
-		temp.canvas.get("view[1]")/2
+
+	var testMap = temp.root.createChild("map");
+	testMap.setController("Aircraft position");
+	testMap.setRange(25); # TODO: implement zooming/panning via mouse/wheel here, for lack of buttons :-/
+	testMap.setTranslation(
+		temp.canvas.get("view[0]") / 2,
+		temp.canvas.get("view[1]") / 2,
 	);
-	var r = func(name,vis=1,zindex=nil) return caller(0)[0];
+
+	var r = func(name, vis = true, zindex = nil) return caller(0)[0];
 	# TODO: we'll need some z-indexing here, right now it's just random
-	# TODO: use foreach/keys to show all layers in this case by traversing SymbolLayer.registry direclty ?
+	# TODO: use foreach/keys to show all layers in this case by traversing SymbolLayer.registry directly ?
 	# maybe encode implicit z-indexing for each lcontroller ctor call ? - i.e. preferred above/below order ?
-	foreach(var type; [r('TFC',0),r('APT'),r('DME'),r('VOR'),r('NDB'),r('FIX',0),r('RTE'),r('WPT'),r('FLT'),r('WXR'),r('APS'), ] )
-		TestMap.addLayer(factory: canvas.SymbolLayer, type_arg: type.name,
-					visible: type.vis, priority: type.zindex,
+	var types = [
+		r('TFC', false),
+		r('APT'),
+		r('DME'),
+		r('VOR'),
+		r('NDB'),
+		r('FIX', false),
+		r('RTE'),
+		r('WPT'),
+		r('FLT'),
+		r('WXR'),
+		r('APS'),
+	];
+
+	foreach (var type; types) {
+		testMap.addLayer(
+			factory: canvas.SymbolLayer,
+			type_arg: type.name,
+			visible: type.vis,
+			priority: type.zindex,
 		);
-		foreach(var type; [ r('OSM') ]) {
-				TestMap.addLayer(factory: canvas.OverlayLayer, type_arg: type.name,
-												 visible: type.vis, priority: type.zindex,
-												 style: Styles.get(type.name),
-												 options: Options.get(type.name) );
-		}
+	}
+
+	foreach (var type; [ r('OSM') ]) {
+		testMap.addLayer(
+			factory: canvas.OverlayLayer,
+			type_arg: type.name,
+			visible: type.vis,
+			priority: type.zindex,
+			style: Styles.get(type.name), # FIXME: undefined symbol: Styles
+			options: Options.get(type.name),
+		);
+	}
 }; # MapStructure_selfTest
 
 
@@ -179,9 +204,11 @@ var SymbolCache = {
 	#       and any larger dimensionalities are liable to be cut off.
 	#
 	add: func(name, callback, draw_mode=0) {
-		if (typeof(draw_mode) == 'scalar')
-			var draw_mode0 = var draw_mode1 = draw_mode;
-		else var (draw_mode0,draw_mode1) = draw_mode;
+		if (isscalar(draw_mode)) {
+			draw_mode = [draw_mode, draw_mode];
+		}
+
+		var (draw_mode0, draw_mode1) = draw_mode;
 
 		# get canvas texture that we use as cache
 		# get next free spot in texture (column/row)
@@ -192,8 +219,10 @@ var SymbolCache = {
 
 		gr.update(); # if we need sane output from getTransformedBounds()
 		#debug.dump ( gr.getTransformedBounds() );
-		gr.setTranslation( me.next_free[0] + me.image_sz[0]*draw_mode0,
-		                   me.next_free[1] + me.image_sz[1]*draw_mode1);
+		gr.setTranslation(
+			me.next_free[0] + me.image_sz[0] * draw_mode0,
+			me.next_free[1] + me.image_sz[1] * draw_mode1,
+		);
 
 		# get assumed the bounding box, i.e. coordinates for texture map
 		var coords = me.next_free~me.next_free;
@@ -202,12 +231,18 @@ var SymbolCache = {
 		foreach (var i; [0,1])
 			coords[i*2+1] = me.canvas_sz[i] - coords[i*2+1];
 		# get the offset we used to position correctly in the bounds of the canvas
-		var offset = [-me.image_sz[0]*draw_mode0, -me.image_sz[1]*draw_mode1];
+		var offset = [
+			-me.image_sz[0] * draw_mode0,
+			-me.image_sz[1] * draw_mode1,
+		];
 
 		# update next free position in cache (column/row)
 		me.next_free[0] += me.image_sz[0];
-		if (me.next_free[0] >= me.canvas_sz[0])
-		{ me.next_free[0] = 0; me.next_free[1] += me.image_sz[1] }
+		if (me.next_free[0] >= me.canvas_sz[0]) {
+			me.next_free[0] = 0;
+			me.next_free[1] += me.image_sz[1];
+		}
+
 		if (me.next_free[1] >= me.canvas_sz[1])
 			__die("SymbolCache: ran out of space after adding '"~name~"'");
 
@@ -234,20 +269,27 @@ var denied_symbols = [
 	"forindex", "while", "nil",
 	"return", "break", "continue",
 ];
-var issym = func(string) {
-	foreach (var d; denied_symbols)
-		if (string == d) return 0;
-	var sz = size(string);
-	var s = string[0];
-	if ((s < `a` or s > `z`) and
-		(s < `A` or s > `Z`) and
-		(s != `_`)) return 0;
-	for (var i=1; i<sz; i+=1)
-		if (((s=string[i]) != `_`) and
-			(s < `a` or s > `z`) and
-			(s < `A` or s > `Z`) and
-			(s < `0` or s > `9`)) return 0;
-	return 1;
+var issym = func(str) {
+	foreach (var d; denied_symbols) {
+		if (str == d) {
+			return false;
+		}
+	}
+
+	var s = str[0];
+	if (s != `_` and !string.isalpha(s)) {
+		return false;
+	}
+
+	var sz = size(str);
+	for (var i = 1; i < sz; i += 1) {
+		s = str[i];
+		if (s != `_` and !string.isalnum(s)) {
+			return false;
+		}
+	}
+
+	return true;
 };
 var internsymbol = func(symbol) {
 	#assert("argument not a symbol", issym, symbol);
@@ -263,9 +305,17 @@ var tryintern = func(symbol) issym(symbol) ? internsymbol(symbol) : symbol;
 
 # Helpers for below
 var unescape = func(s) string.replace(s~"", "'", "\\'");
-var hashdup = func(_,rkeys=nil) {
-	var h={}; var k=rkeys!=nil?rkeys:members(_);
-	foreach (var k;k) h[tryintern(k)]=member(_,k); h
+var hashdup = func(_, rkeys = nil) {
+	var h = {};
+	var k = rkeys == nil
+		? members(_)
+		: rkeys;
+
+	foreach (var k; k) {
+		h[tryintern(k)] = member(_, k);
+	}
+
+	return h;
 }
 var opt_member = func(h,k) {
 	if (contains(h, k)) return h[k];
@@ -278,25 +328,33 @@ var opt_member = func(h,k) {
 	}
 	return nil;
 }
-var member = func(h,k) {
-	if (contains(h, k)) return h[k];
+var member = func(h, k) {
+	if (contains(h, k)) {
+		return h[k];
+	}
+
 	if (contains(h, "parents")) {
-		var _=h.parents;
-		for (var i=0;i<size(_);i+=1)
-			if (contains(_[i], k)) return _[i][k];
-			elsif (contains(_[i], "parents") and size(_[i].parents))
-			{_=h.parents~_[i+1:];i=0}
+		var _ = h.parents;
+		for (var i = 0; i < size(_); i += 1) {
+			if (contains(_[i], k)) {
+				return _[i][k];
+			}
+
+			if (contains(_[i], "parents") and size(_[i].parents)) {
+				_ = h.parents ~ _[i + 1:];
+				i = 0;
+			}
+		}
 	}
 	die("member not found: '"~unescape(k)~"'");
 }
-var _in = func(vec,k) { foreach (var _;vec) if(_==k)return 1; 0; }
 var members = func(h,vec=nil) {
 	if (vec == nil) vec = [];
 	foreach (var k; keys(h))
 		if (k == "parents")
 			foreach (var p; h[k])
 				members(p,vec);
-		elsif (!_in(vec,k))
+		elsif (!contains(vec, k))
 			append(vec, k);
 	return vec;
 }
@@ -405,15 +463,19 @@ var Symbol = {
 	registry: {},
 	add: func(type, class)
 		me.registry[type] = class,
-	get: func(type)
-		if ((var class = me.registry[type]) == nil)
-			__die("Symbol.get():unknown type '"~type~"'");
-		else return class,
+	get: func(type) {
+		var class = me.registry[type];
+		if (class == nil) {
+			__die("Symbol.get():unknown type '" ~ type ~ "'");
+		}
+		return class;
+	},
 	# Calls corresonding symbol constructor
 	# @param group #Canvas.Group to place this on.
 	# @param layer The #SymbolLayer this is a child of.
 	new: func(type, group, layer, arg...) {
-		var ret = call((var class = me.get(type)).new, [group, layer]~arg, class);
+		var class = me.get(type);
+		var ret = call(class.new, [group, layer] ~ arg, class);
 		ret.element.set("symbol-type", type);
 		return ret;
 	},
@@ -421,12 +483,13 @@ var Symbol = {
 	_new: func(m) {
 		m.style = m.layer.style;
 		m.options = m.layer.options;
-		if (m.controller != nil) {
-			temp = m.controller.new(m,m.model);
-			if (temp != nil)
-				m.controller = temp;
+		if (m.controller == nil) {
+			__die("Symbol._new(): default controller not found");
 		}
-		else __die("Symbol._new(): default controller not found");
+		temp = m.controller.new(m, m.model);
+		if (temp != nil) {
+			m.controller = temp;
+		}
 	},
 # Non-static:
 	df_controller: nil, # default controller -- Symbol.Controller by default, see below
@@ -472,11 +535,7 @@ var Symbol = {
 		foreach(var prop; model_props){
 			if(contains(me.model, prop)){
 				var val = me.model[prop];
-				var tp = typeof(val);
-				if(tp != 'scalar'){
-					val = '';
-					#logprint(LOG_WARN, "formattedString: invalid type for "~prop~" (" ~ tp ~ ")");
-				} else {
+				if (isscalar(val)){
 					append(args, val);
 				}
 			}
@@ -531,8 +590,9 @@ var Symbol = {
 	},
 	getLabelFromModel: func(default_val = nil){
 		if(me.model == nil) return default_val;
-		if(default_val == nil and contains(me.model, 'id'))
-		default_val = me.model.id;
+		if (default_val == nil and contains(me.model, 'id')) {
+			default_val = me.model.id;
+		}
 		var label_content = me.getOption('label_content');
 		if(label_content == nil) return default_val;
 		if(typeof(label_content) == 'scalar')
@@ -571,21 +631,26 @@ Symbol.Controller = {
 	registry: {},
 	add: func(type, class)
 		me.registry[type] = class,
-	get: func(type)
-		if ((var class = me.registry[type]) == nil)
-			__die("Symbol.Controller.get(): unknown type '"~type~"'");
-		else return class,
+	get: func(type) {
+		var class = me.registry[type];
+		if (class == nil) {
+			__die("Symbol.Controller.get(): unknown type '" ~ type ~ "'");
+		}
+		return class;
+	},
 	# Calls corresonding symbol controller constructor
 	# @param model Model to control this object (position and other attributes).
-	new: func(type, symbol, model, arg...)
-		return call((var class = me.get(type)).new, [symbol, model]~arg, class),
+	new: func(type, symbol, model, arg...) {
+		var class = me.get(type);
+		return call(class.new, [symbol, model] ~ arg, class);
+	},
 # Non-static:
 	# Update anything related to a particular model. Returns whether the object needs updating:
-	update: func(symbol, model) return 1,
+	update: func(symbol, model) return true,
 	# Delete an object from this controller (or delete the controller itself):
 	del: func(symbol, model) ,
 	# Return whether this model/symbol is (should be) visible:
-	isVisible: func(model) return 1,
+	isVisible: func(model) return true,
 	# Get the position of this symbol/object:
 	getpos: func(model) , # default provided below
 }; # of Symbol.Controller
@@ -599,10 +664,12 @@ var getpos_fromghost = func(positioned_g)
 var supported_ghosts = ['positioned','Navaid','Fix','flightplan-leg','FGAirport'];
 var is_positioned_ghost = func(obj) {
 	var gt = ghosttype(obj);
-	foreach(var ghost; supported_ghosts) {
-		if (gt == ghost) return 1; # supported ghost was found
+	foreach (var ghost; supported_ghosts) {
+		if (gt == ghost) {
+			return true; # supported ghost was found
+		}
 	}
-	return 0; # not a known/supported ghost
+	return false; # not a known/supported ghost
 };
 
 var register_supported_ghost = func(name) append(supported_ghosts, name);
@@ -622,28 +689,40 @@ Symbol.Controller.getpos = func(obj, p=nil) {
 		}
 		debug.dump(obj);
 		__die("Symbol.Controller.getpos(): no suitable getpos() found! Of type: "~typeof(obj));
-	} else {
-		if (typeof(p) == 'ghost')
-			if ( is_positioned_ghost(p) )
-				return getpos_fromghost(obj);
-			else
-				__die("Symbol.Controller.getpos(): bad/unsupported ghost of type '"~ghosttype(obj)~"' (see MapStructure.nas Symbol.Controller.getpos() to add new ghosts)");
-		if (typeof(p) == 'hash')
-			if (p == geo.Coord)
-				return subvec(obj.latlon(), 0, 2);
-			if (p == props.Node)
-				return [
-					obj.getValue("position/latitude-deg")  or obj.getValue("latitude-deg"),
-					obj.getValue("position/longitude-deg") or obj.getValue("longitude-deg")
-				];
-			if (contains(p,'lat') and contains(p,'lon'))
-				return [obj.lat, obj.lon];
-		return nil;
 	}
+
+	if (typeof(p) == 'ghost') {
+		if (!is_positioned_ghost(p)) {
+			__die(
+				"Symbol.Controller.getpos(): bad/unsupported ghost of type '" ~ ghosttype(obj)
+				~ "' (see MapStructure.nas Symbol.Controller.getpos() to add new ghosts)"
+			);
+		}
+		return getpos_fromghost(obj);
+	}
+
+	if (typeof(p) == 'hash') {
+		if (p == geo.Coord) {
+			return subvec(obj.latlon(), 0, 2);
+		}
+
+		if (p == props.Node) {
+			return [
+				obj.getValue("position/latitude-deg")  or obj.getValue("latitude-deg"),
+				obj.getValue("position/longitude-deg") or obj.getValue("longitude-deg")
+			];
+		}
+
+		if (contains(p, 'lat') and contains(p, 'lon')) {
+			return [obj.lat, obj.lon];
+		}
+	}
+
+	return nil;
 };
 
 Symbol.Controller.equals = func(l, r, p=nil) {
-	if (l == r) return 1;
+	if (l == r) return true;
 	if (p == nil) {
 		var ret = Symbol.Controller.equals(l, r, l);
 		if (ret != nil) return ret;
@@ -655,20 +734,28 @@ Symbol.Controller.equals = func(l, r, p=nil) {
 		}
 		debug.dump(l);
 		__die("Symbol.Controller: no suitable equals() found! Of type: "~typeof(l));
-	} else {
-		if (typeof(p) == 'ghost')
-			if ( is_positioned_ghost(p) )
-				return l.id == r.id;
-			else
-				__die("Symbol.Controller: bad/unsupported ghost of type '"~ghosttype(l)~"' (see MapStructure.nas Symbol.Controller.getpos() to add new ghosts)");
-		if (typeof(p) == 'hash')
-			# Somewhat arbitrary convention:
-			#   * l.equals(r)         -- instance method, i.e. uses "me" and "arg[0]"
-			#   * parent._equals(l,r) -- class method, i.e. uses "arg[0]" and "arg[1]"
-			if (contains(p, "equals"))
-				return l.equals(r);
-			if (contains(p, "_equals"))
-				return p._equals(l,r);
+	}
+
+	if (typeof(p) == 'ghost') {
+		if (!is_positioned_ghost(p)) {
+			__die(
+				"Symbol.Controller: bad/unsupported ghost of type '" ~ ghosttype(l)
+				~ "' (see MapStructure.nas Symbol.Controller.getpos() to add new ghosts)"
+			);
+		}
+		return l.id == r.id;
+	}
+	if (typeof(p) == 'hash') {
+		# Somewhat arbitrary convention:
+		#   * l.equals(r)         -- instance method, i.e. uses "me" and "arg[0]"
+		#   * parent._equals(l,r) -- class method, i.e. uses "arg[0]" and "arg[1]"
+		if (contains(p, "equals")) {
+			return l.equals(r);
+		}
+
+		if (contains(p, "_equals")) {
+			return p._equals(l ,r);
+		}
 	}
 	return nil; # scio correctum est
 };
@@ -732,21 +819,29 @@ var DotSym = {
 	deinit: func(),
 	update: func() {
 		if (me.controller != nil) {
-			if (!me.controller.update(me, me.model)) return;
-			elsif (!me.controller.isVisible(me.model)) {
+			if (!me.controller.update(me, me.model)) {
+				return;
+			}
+
+			if (!me.controller.isVisible(me.model)) {
 				me.element.hide();
 				return;
 			}
-		} else
-		me.element.show();
+		} else {
+			me.element.show();
+		}
+
 		me.draw();
 		if(me.getOption('disable_position', 0)) return;
 		var pos = me.controller.getpos(me.model);
 		if (size(pos) == 2)
 			pos~=[nil]; # fall through
-		if (size(pos) == 3)
-			var (lat,lon,rotation) = pos;
-		else __die("DotSym.update(): bad position: "~debug.dump(pos));
+
+		if (size(pos) != 3) {
+			__die("DotSym.update(): bad position: " ~ debug.dump(pos));
+		}
+
+		var (lat, lon, rotation) = pos;
 		# print(me.model.id, ": Position lat/lon: ", lat, "/", lon);
 		me.element.setGeoPosition(lat,lon);
 		if (rotation != nil)
@@ -760,23 +855,32 @@ var DotSym = {
 var SVGSymbol = {
 	parents:[DotSym],
 	element_type: "group",
-	cacheable: 0,
+	cacheable: false,
 	init: func() {
 		me.callback('init_before');
 		var opt_path = me.getStyle('svg_path');
-		if(opt_path != nil)
+		if (opt_path != nil) {
 			me.svg_path = opt_path;
-		if (!me.cacheable) {
-			if(me.svg_path != nil and me.svg_path != '')
-				canvas.parsesvg(me.element, me.svg_path);
-			# hack:
-			if (var scale = me.layer.style['scale_factor'])
-				me.element.setScale(scale);
-			if ((var transl = me.layer.style['translate']) != nil)
-				me.element.setTranslation(transl);
-		} else {
+		}
+
+		if (me.cacheable) {
 			__die("cacheable not implemented yet!");
 		}
+
+		if (me.svg_path != nil and me.svg_path != '') {
+			canvas.parsesvg(me.element, me.svg_path);
+		}
+
+		var scale = me.layer.style['scale_factor'];
+		if (scale) {
+			me.element.setScale(scale);
+		}
+
+		var transl = me.layer.style['translate'];
+		if (transl != nil) {
+			me.element.setTranslation(transl);
+		}
+
 		me.callback('init_after');
 		me.draw();
 	},
@@ -793,17 +897,19 @@ var SVGSymbol = {
 var RasterSymbol = {
 	parents:[DotSym],
 	element_type: "group",
-	cacheable: 0,
-	size: [32,32], scale: 1,
+	cacheable: false,
+	size: [32, 32],
+	scale: 1,
 	init: func() {
-		if (!me.cacheable) {
-			me.element.createChild("image", me.name)
+		if (me.cacheable) {
+			__die("cacheable not implemented yet!");
+		}
+
+		me.element.createChild("image", me.name)
 			.setFile(me.file_path)
 			.setSize(me.size)
 			.setScale(me.scale);
-		} else {
-			__die("cacheable not implemented yet!");
-		}
+
 		me.draw();
 	},
 	draw: func,
@@ -815,7 +921,7 @@ var RasterSymbol = {
 var LineSymbol = {
 	parents:[Symbol],
 	element_id: nil,
-	needs_update: 1,
+	needs_update: true,
 # Static/singleton:
 	makeinstance: func(name, hash) {
 		if (!isa(hash, LineSymbol))
@@ -824,13 +930,19 @@ var LineSymbol = {
 	},
 # For the instances returned from makeinstance:
 	new: func(group, layer, model, controller=nil) {
-		if (me == nil) __die("Need me reference for LineSymbol.new()");
-		if (typeof(model) != 'vector') {
-			if(typeof(model) == 'hash'){
-				if(!contains(model, 'path'))
-					__die("LineSymbol.new(): model hash requires path");
+		if (me == nil) {
+			__die("Need me reference for LineSymbol.new()");
+		}
+
+		var type = typeof(model);
+		if (type != 'vector') {
+			if (type != 'hash') {
+				__die("LineSymbol.new(): need a vector of points or a hash");
 			}
-			else __die("LineSymbol.new(): need a vector of points or a hash");
+
+			if (!contains(model, 'path')) {
+				__die("LineSymbol.new(): model hash requires path");
+			}
 		}
 		var m = {
 			parents: [me],
@@ -889,13 +1001,18 @@ var LineSymbol = {
 	deinit: func(),
 	update: func() {
 		if (me.controller != nil) {
-			if (!me.controller.update(me, me.model)) return;
-			elsif (!me.controller.isVisible(me.model)) {
+			if (!me.controller.update(me, me.model)) {
+				return;
+			}
+
+			if (!me.controller.isVisible(me.model)) {
 				me.element.hide();
 				return;
 			}
-		} else
-		me.element.show();
+		} else {
+			me.element.show();
+		}
+
 		me.draw();
 	},
 }; # of LineSymbol
@@ -916,11 +1033,17 @@ var SymbolLayer = {
 	add: func(type, class)
 		me.registry[type] = class,
 	get: func(type) {
-		foreach(var invalid; var invalid_types = [nil,'vector','hash'])
-			if ( (var t=typeof(type)) == invalid) __die(" invalid SymbolLayer type (non-scalar) of type:"~t);
-		if ((var class = me.registry[type]) == nil)
-			__die("SymbolLayer.get(): unknown type '"~type~"'");
-		else return class;
+		var t = typeof(type);
+		if (t == nil or t == 'vector' or t == 'hash') {
+			__die(" invalid SymbolLayer type (non-scalar) of type:" ~ t);
+		}
+
+		var class = me.registry[type];
+		if (class == nil) {
+			__die("SymbolLayer.get(): unknown type '" ~ type ~ "'");
+		}
+
+		return class;
 	},
 	# Calls corresonding layer constructor
 	# @param group #Canvas.Group to place this on.
@@ -929,9 +1052,10 @@ var SymbolLayer = {
 	# @param style An alternate style.
 	# @param options Extra options/configurations.
 	# @param visible Initially set it up as visible or invisible.
-	new: func(type, group, map, controller=nil, style=nil, options=nil, visible=1, arg...) {
+	new: func(type, group, map, controller = nil, style = nil, options = nil, visible = true, arg...) {
 		# XXX: Extra named arguments are (obviously) not preserved well...
-		var ret = call((var class = me.get(type)).new, [group, map, controller, style, options, visible]~arg, class);
+		var class = me.get(type);
+		var ret = call(class.new, [group, map, controller, style, options, visible] ~ arg, class);
 		ret.group.set("layer-type", type);
 		return ret;
 	},
@@ -963,8 +1087,10 @@ var SymbolLayer = {
 					var node = opt_member(options, node_name);
 					if(node == nil)
 						node = node_name;
-					append(controller.listeners,
-						   setlistener(node, func call(m.update,[],m),0,0));
+					append(
+						controller.listeners,
+						setlistener(node, func call(m.update, [], m), 0, 0),
+					);
 				}
 			}
 		}
@@ -984,14 +1110,19 @@ SymbolLayer.Controller = {
 	registry: {},
 	add: func(type, class)
 		me.registry[type] = class,
-	get: func(type)
-		if ((var class = me.registry[type]) == nil)
+	get: func(type) {
+		var class = me.registry[type];
+		if (class == nil) {
 			__die("unknown type '"~type~"'");
-		else return class,
+		}
+		return class;
+	},
 	# Calls corresonding controller constructor
 	# @param layer The #SymbolLayer this controller is responsible for.
-	new: func(type, layer, arg...)
-		return call((var class = me.get(type)).new, [layer]~arg, class),
+	new: func(type, layer, arg...) {
+		var class = me.get(type);
+		return call(class.new, [layer] ~ arg, class);
+	},
 # Default implementations for derived classes:
 	# @return List of positioned objects.
 	searchCmd: func()
@@ -1006,13 +1137,13 @@ SymbolLayer.Controller = {
 		));
 	},
 # Default implementations for derived objects:
-	# For SingleSymbolLayer: retreive the model object
+	# For SingleSymbolLayer: retrieve the model object
 	getModel: func me._model, # assume they store it here - otherwise they can override this
 }; # of SymbolLayer.Controller
 
 ##
 # A layer that manages a list of symbols (using delta positioned handling
-# with a searchCmd to retreive placements).
+# with a searchCmd to retrieve placements).
 #
 var MultiSymbolLayer = {
 	parents: [SymbolLayer],
@@ -1024,7 +1155,7 @@ var MultiSymbolLayer = {
 	# @param style An alternate style.
 	# @param options Extra options/configurations.
 	# @param visible Initially set it up as visible or invisible.
-	new: func(group, map, controller=nil, style=nil, options=nil, visible=1) {
+	new: func(group, map, controller = nil, style = nil, options = nil, visible = true) {
 		#print("Creating new SymbolLayer instance");
 		if (me == nil) __die("MultiSymbolLayer constructor needs to know its parent class");
 		var m = {
@@ -1072,10 +1203,10 @@ var MultiSymbolLayer = {
 				# Remove this element from the list
 				removeat(me.list, i);
 				e.del();
-				return 1;
+				return true;
 			}
 		}
-		return 0;
+		return false;
 	},
 	searchCmd: func() {
 		if (me.map.getPosCoord() == nil or me.map.getRange() == nil) {
@@ -1100,9 +1231,6 @@ var MultiSymbolLayer = {
 		logprint(_MP_dbg_lvl, "Deleting symbol of type "~me.type);
 		if (!me.delsym(model)) __die("model not found");
 		try_aux_method(model, "del");
-		#call(func model.del(), nil, var err = []); # try...
-		#if (size(err) and err[0] != "No such member: del") # ... and either catch or rethrow
-		#	die(err[0]);
 	},
 }; # of MultiSymbolLayer
 
@@ -1142,7 +1270,7 @@ var SingleSymbolLayer = {
 	# @param style An alternate style.
 	# @param options Extra options/configurations.
 	# @param visible Initially set it up as visible or invisible.
-	new: func(group, map, controller=nil, style=nil, options=nil, visible=1) {
+	new: func(group, map, controller = nil, style = nil, options = nil, visible = true) {
 		#print("Creating new SymbolLayer instance");
 		if (me == nil) __die("SingleSymbolLayer constructor needs to know its parent class");
 		var m = {
@@ -1197,11 +1325,17 @@ var OverlayLayer = {
 		me.registry[type] = class;
 	},
 	get: func(type) {
-		foreach(var invalid; var invalid_types = [nil,'vector','hash'])
-			if ( (var t=typeof(type)) == invalid) __die(" invalid OverlayLayer type (non-scalar) of type:"~t);
-		if ((var class = me.registry[type]) == nil)
-			__die("OverlayLayer.get(): unknown type '"~type~"'");
-		else return class;
+		var t = typeof(type);
+		if (t == nil or t == 'vector' or t == 'hash') {
+			__die(" invalid OverlayLayer type (non-scalar) of type:" ~ t);
+		}
+
+		var class = me.registry[type];
+		if (class == nil) {
+			__die("OverlayLayer.get(): unknown type '" ~ type ~ "'");
+		}
+
+		return class;
 	},
 	# Calls corresonding layer constructor
 	# @param group #Canvas.Group to place this on.
@@ -1209,11 +1343,12 @@ var OverlayLayer = {
 	# @param style An alternate style.
 	# @param options Extra options/configurations.
 	# @param visible Initially set it up as visible or invisible.
-	new: func(type, group, map, controller=nil, style=nil, options=nil, visible=1, arg...) {
+	new: func(type, group, map, controller = nil, style = nil, options = nil, visible = true, arg...) {
 		# XXX: Extra named arguments are (obviously) not preserved well...
 		if (me == nil) __die("OverlaySymbolLayer constructor needs to know its parent class");
 
-		var ret = call((var class = me.get(type)).new, [group, map, controller, style, options, visible], class);
+		var class = me.get(type);
+		var ret = call(class.new, [group, map, controller, style, options, visible], class);
 		ret.type = type;
 		ret.group.set("layer-type", type);
 		return ret;
@@ -1250,8 +1385,10 @@ var OverlayLayer = {
 					var node = opt_member(options, node_name);
 					if(node == nil)
 						node = node_name;
-					append(controller.listeners,
-						   setlistener(node, func call(m.update,[],m),0,0));
+					append(
+						controller.listeners,
+						setlistener(node, func call(m.update, [], m), 0, 0),
+					);
 				}
 			}
 		}
@@ -1272,7 +1409,7 @@ var TileLayer = {
 	# @param style An alternate style.
 	# @param options Extra options/configurations.
 	# @param visible Initially set it up as visible or invisible.
-	new: func(group, map, controller=nil, style=nil, options=nil, visible=1) {
+	new: func(group, map, controller = nil, style = nil, options = nil, visible = true) {
 		if (me == nil) __die("TileLayer constructor needs to know its parent class");
 		var m = {
 			parents: [me],
@@ -1304,19 +1441,19 @@ var TileLayer = {
 		m.maps_base = getprop("/sim/fg-home") ~ '/cache/maps';
 		m.tiles = setsize([], m.num_tiles[0]);
 		m.center_tile_offset = [
-		  (m.num_tiles[0] - 1.0) / 2.0,
-		  (m.num_tiles[1] - 1.0) / 2.0
+			(m.num_tiles[0] - 1.0) / 2.0,
+			(m.num_tiles[1] - 1.0) / 2.0,
 		];
 
 		append(m.parents, m.group);
 		m.setVisible(visible);
 		OverlayLayer._new(m, style, controller, options);
 
-		for(var x = 0; x < m.num_tiles[0]; x += 1)
-		{
-		  m.tiles[x] = setsize([], m.num_tiles[1]);
-		  for(var y = 0; y < m.num_tiles[1]; y += 1) {
-		    m.tiles[x][y] = m.group.createChild("image", "map-tile");
+		for (var x = 0; x < m.num_tiles[0]; x += 1) {
+			m.tiles[x] = setsize([], m.num_tiles[1]);
+
+			for (var y = 0; y < m.num_tiles[1]; y += 1) {
+				m.tiles[x][y] = m.group.createChild("image", "map-tile");
 			}
 		}
 
@@ -1327,9 +1464,9 @@ var TileLayer = {
 	{
 		if (me.controller != nil) me.controller.updateLayer();
 
-	  # get current position
-	  var lat = me.map.getLat();
-	  var lon = me.map.getLon();
+		# get current position
+		var lat = me.map.getLat();
+		var lon = me.map.getLon();
 		var range_nm =  me.map.getRange();
 		var screen_range = me.map.getScreenRange();
 
@@ -1343,7 +1480,7 @@ var TileLayer = {
 		# Determine the closest zoom level and scaling ratio.  Each increase in zoom level doubles resolution.
 		var ideal_zoom = math.ln(156543.03 * math.cos(lat * math.pi/180.0) / screen_resolution) / math.ln(2);
 
-	  me.zoom = math.ceil(ideal_zoom);
+		me.zoom = math.ceil(ideal_zoom);
 		if (me.zoom < me.min_zoom) me.zoom = me.min_zoom;
 		if (me.zoom > me.max_zoom) me.zoom = me.max_zoom;
 
@@ -1366,15 +1503,17 @@ var TileLayer = {
 
 		#  Slippy map location of center point
 		var slippy_center = [
-	    math.floor(ymax * ((lon + 180.0) / 360.0)),
-	    math.floor((1 - math.ln(math.tan(lat * math.pi/180.0) + 1 / math.cos(lat * math.pi/180.0)) / math.pi) / 2.0 * ymax)
-	  ];
+			math.floor(ymax * ((lon + 180.0) / 360.0)),
+			math.floor((1 - math.ln(math.tan(lat * math.pi/180.0) + 1 / math.cos(lat * math.pi/180.0)) / math.pi) / 2.0 * ymax),
+	  	];
 
 		# This is the Slippy Map location of the 0,0 tile
-	  var offset = [slippy_center[0] - me.center_tile_offset[0],
-		              slippy_center[1] - me.center_tile_offset[1]];
+		var offset = [
+			slippy_center[0] - me.center_tile_offset[0],
+			slippy_center[1] - me.center_tile_offset[1],
+		];
 
-	  var tile_index = [math.floor(offset[0]), math.floor(offset[1])];
+		var tile_index = [math.floor(offset[0]), math.floor(offset[1])];
 
 		# Find the lon, lat of the center tile
 		var center_tile_lon = slippy_center[0]/ymax * 360.0 - 180.0;
@@ -1383,43 +1522,43 @@ var TileLayer = {
 
 		me.group.setGeoPosition(center_tile_lat, center_tile_lon);
 
-	  if(    tile_index[0] != me.last_tile[0]
-	      or tile_index[1] != me.last_tile[1]
-	      or me.tile_type != me.last_tile_type )
-	  {
-	    for(var x = 0; x < me.num_tiles[0]; x += 1) {
-	      for(var y = 0; y < me.num_tiles[1]; y += 1) {
-	        var pos = {
-	          z: me.zoom,
-	          x: int(tile_index[0] + x),
-	          y: int(tile_index[1] + y),
+		if (   tile_index[0] != me.last_tile[0]
+			or tile_index[1] != me.last_tile[1]
+			or me.tile_type != me.last_tile_type
+		) {
+			for (var x = 0; x < me.num_tiles[0]; x += 1) {
+				for (var y = 0; y < me.num_tiles[1]; y += 1) {
+					var pos = {
+						z: me.zoom,
+						x: int(tile_index[0] + x),
+						y: int(tile_index[1] + y),
 						tms_y: ymax - int(tile_index[1] + y) - 1,
-	          type: me.tile_type
-	        };
+						type: me.tile_type,
+					};
 
-	        (func {
-		        var img_path = me.makePath(pos);
-		        var tile = me.tiles[x][y];
+					(func {
+						var img_path = me.makePath(pos);
+						var tile = me.tiles[x][y];
 
-		        if( io.stat(img_path) == nil ) {
+						if( io.stat(img_path) == nil ) {
 							# image not found, save in $FG_HOME
-		          var img_url = me.makeURL(pos);
-		          #print('requesting ' ~ img_url);
-		          http.save(img_url, img_path)
-		              .done(func { tile.set("src", img_path);})
-		              .fail(func (r) print('Failed to get image ' ~ img_path ~ ' ' ~ r.status ~ ': ' ~ r.reason));
-		        } else {
+							var img_url = me.makeURL(pos);
+							#print('requesting ' ~ img_url);
+							http.save(img_url, img_path)
+								.done(func { tile.set("src", img_path);})
+								.fail(func (r) print('Failed to get image ' ~ img_path ~ ' ' ~ r.status ~ ': ' ~ r.reason));
+						} else {
 							# Re-use cached image
-		          #print('loading ' ~ img_path);
-		          tile.set("src", img_path)
-		        }
-	        })();
-	      }
+							#print('loading ' ~ img_path);
+							tile.set("src", img_path)
+						}
+					})();
+				}
 			}
 
-	    me.last_tile = tile_index;
-	    me.last_type = me.type;
-	  }
+			me.last_tile = tile_index;
+			me.last_type = me.type;
+		}
 	},
 	update: func() {
 		if (!me.getVisible())
@@ -1446,14 +1585,19 @@ OverlayLayer.Controller = {
 	registry: {},
 	add: func(type, class)
 		me.registry[type] = class,
-	get: func(type)
-		if ((var class = me.registry[type]) == nil)
-			__die("unknown type '"~type~"'");
-		else return class,
+	get: func(type) {
+		var class = me.registry[type];
+		if (class == nil) {
+			__die("unknown type '" ~ type ~ "'");
+		}
+		return class;
+	},
 	# Calls corresponding controller constructor
 	# @param layer The #OverlayLayer this controller is responsible for.
-	new: func(type, layer, arg...)
-		return call((var class = me.get(type)).new, [layer]~arg, class),
+	new: func(type, layer, arg...) {
+		var class = me.get(type);
+		return call(class.new, [layer] ~ arg, class);
+	},
 # Default implementations for derived classes:
 	# @return List of positioned objects.
 	updateLayer: func()
@@ -1503,11 +1647,15 @@ var MapStructure = {
         if (size(err)) {
             if (substr(err[0], 0, 12) == "Parse error:") { # hack around Nasal feature
                 var e = split(" at line ", err[0]);
-                if (size(e) == 2)
-                err[0] = string.join("", [e[0], "\n  at ", file, ", line ", e[1], "\n "]);
+                if (size(e) == 2) {
+                    err[0] = string.join("", [e[0], "\n  at ", file, ", line ", e[1], "\n "]);
+                }
             }
-            for (var i = 1; (var c = caller(i)) != nil; i += 1)
-            err ~= subvec(c, 2, 2);
+
+            for (var i = 1; (var c = caller(i)) != nil; i += 1) {
+                err ~= subvec(c, 2, 2);
+            }
+
             debug.printerror(err);
             return;
         }
@@ -1520,9 +1668,9 @@ var MapStructure = {
         var checks = [
             { extension:'symbol', symbol:'update', type:'func', error:' update() must not be overridden:', id:300},
             # Sorry, this one doesn't work with the new LineSymbol
-            #					{ extension:'symbol', symbol:'draw', type:'func', required:1, error:' symbol files need to export a draw()             routine:', id:301},
+            # { extension:'symbol', symbol:'draw', type:'func', required:1, error:' symbol files need to export a draw()             routine:', id:301},
             # Sorry, this one doesn't work with the new SingleSymbolLayer
-            #					{ extension:'lcontroller', symbol:'searchCmd', type:'func', required:1, error:' lcontroller without searchCmd method:', id:100},
+            # { extension:'lcontroller', symbol:'searchCmd', type:'func', required:1, error:' lcontroller without searchCmd method:', id:100},
         ];
 
 
@@ -1562,21 +1710,30 @@ var load_MapStructure = func {
 		registry: {},
 		add: func(type, class)
 			me.registry[type] = class,
-		get: func(type)
-			if ((var class = me.registry[type]) == nil)
-				__die("unknown type '"~type~"'");
-			else return class,
+		get: func(type) {
+			var class = me.registry[type];
+			if (class == nil) {
+				__die("unknown type '" ~ type ~ "'");
+			}
+			return class;
+		},
 		# Calls corresonding controller constructor
 		# @param map The #SymbolMap this controller is responsible for.
 		new: func(type, map, arg...) {
-			var m = call((var class = me.get(type)).new, [map]~arg, class);
-			if (!contains(m, "map"))
+			var class = me.get(type);
+			var m = call(class.new, [map] ~ arg, class);
+			if (!contains(m, "map")) {
 				m.map = map;
-			elsif (m.map != map and !isa(m.map, map) and (
-			        m.get_position != Map.Controller.get_position
-			     or m.query_range != Map.Controller.query_range
-			     or m.in_range != Map.Controller.in_range))
-			{ __die("m must store the map handle as .map if it uses the default method(s)"); }
+			} elsif (m.map != map
+				and !isa(m.map, map)
+				and (
+					m.get_position != Map.Controller.get_position
+					or m.query_range != Map.Controller.query_range
+					or m.in_range != Map.Controller.in_range
+				)
+			) {
+				__die("m must store the map handle as .map if it uses the default method(s)");
+			}
 		},
 	# Default implementations:
 		get_position: func() {
@@ -1596,7 +1753,7 @@ var load_MapStructure = func {
 			pos.set_latlon(lat, lon, alt or 0);
 			var map_pos = me.map.getPosCoord();
 			if (map_pos == nil)
-				return 0; # should happen *ONLY* when map is uninitialized
+				return false; # should happen *ONLY* when map is uninitialized
 			var distance_m = pos.distance_to( map_pos );
 			var is_in_range = distance_m < range * NM2M;
 			# print("Distance:",distance_m*M2NM," nm in range check result:", is_in_range);
@@ -1620,7 +1777,7 @@ var load_MapStructure = func {
 			"symbol",
 			"scontroller",
 			"controller",
-			"overlay"
+			"overlay",
 		];
 
 		var deps = {};
@@ -1629,7 +1786,7 @@ var load_MapStructure = func {
 		}
 
 		#
-		# Get module type name from a Nasal file, e.g. 'lcontroller', 'symbol', 'scontroller', 'controller', 'overlay'. 
+		# Get module type name from a Nasal file, e.g. 'lcontroller', 'symbol', 'scontroller', 'controller', 'overlay'.
 		# Returns nil if the file name does not match the expected pattern.
 		#
 		# @param  string  file  The file name e.g.: 'APT.symbol.nas', 'PARKING.lcontroller.nas', etc.
@@ -1669,5 +1826,7 @@ var load_MapStructure = func {
 
 }; # load_MapStructure
 
-setlistener("/nasal/canvas/loaded", load_MapStructure); # end ugly module init listener hack. FIXME: do smart Nasal bootstrapping, quod est callidus!
-# Actually, it would be even better to support reloading MapStructure files, and maybe even MapStructure itself by calling the dtor/del method for each Map and then re-running the ctor
+setlistener("/nasal/canvas/loaded", load_MapStructure); # end ugly module init listener hack. 
+# FIXME: do smart Nasal bootstrapping, quod est callidus!
+# Actually, it would be even better to support reloading MapStructure files, 
+# and maybe even MapStructure itself by calling the dtor/del method for each Map and then re-running the ctor
