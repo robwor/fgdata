@@ -1655,9 +1655,7 @@ var SymbolCache256x256 = nil;
 
 var MapStructure = {
     # Generalized load methods used to load various symbols, layer controllers,...
-    loadFile : func(file, name) {
-        if (name == nil)
-            var name = split("/", file)[-1];
+    loadFile : func(file) {
         var code = io.readfile(file);
         var code = call(func compile(code, file), [code], var err=[]);
         if (size(err)) {
@@ -1819,8 +1817,7 @@ var load_MapStructure = func {
 
 		foreach (var d; dep_names) {
 			foreach (var f; deps[d]) {
-				var name = split(".", f)[0];
-				MapStructure.loadFile(contents_dir~f, name);
+				MapStructure.loadFile(contents_dir ~ f);
 			}
 		}
 	})();
