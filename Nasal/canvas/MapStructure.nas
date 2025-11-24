@@ -1631,6 +1631,22 @@ OverlayLayer.Controller = {
 	},
 }; # of OverlayLayer.Controller
 
+#
+# Get module type name from a Nasal file, e.g. 'lcontroller', 'symbol', 'scontroller', 'controller', 'overlay'.
+# Returns nil if the file name does not match the expected pattern.
+#
+# @param  string  file  The file name e.g.: 'APT.symbol.nas', 'PARKING.lcontroller.nas', etc.
+# @return string|nil  The type name e.g.: 'symbol', 'lcontroller', etc. or nil if failed.
+#
+var getNasalModuleType = func(file) {
+	var parts = split('.', file);
+
+	if (size(parts) > 2 and parts[-1] == 'nas') {
+		return parts[-2];
+	}
+
+	return nil;
+};
 
 ###
 # set up a cache for 32x32 symbols (initialized below in load_MapStructure)
@@ -1663,7 +1679,7 @@ var MapStructure = {
         call(code, nil, nil, var hash = {});
 
         # validate
-        var url = ' http://wiki.flightgear.org/MapStructure#';
+        var url = ' https://wiki.flightgear.org/MapStructure#';
         # TODO: these rules should be extended for all main files lcontroller/scontroller and symbol
         var checks = [
             { extension:'symbol', symbol:'update', type:'func', error:' update() must not be overridden:', id:300},
@@ -1673,26 +1689,28 @@ var MapStructure = {
             # { extension:'lcontroller', symbol:'searchCmd', type:'func', required:1, error:' lcontroller without searchCmd method:', id:100},
         ];
 
-
         var makeurl = func(scope, id) url ~ scope ~ ':' ~ id;
-        var bailout = func(file, message, scope, id) __die(file~message~"\n"~makeurl(scope,id) );
+        var bailout = func(file, message, scope, id) __die(file ~ message ~ "\n" ~ makeurl(scope, id));
 
-        var current_ext = split('.', file)[-1];
-        foreach(var check; checks) {
+        var current_ext = getNasalModuleType(file);
+        foreach (var check; checks) {
             # check if we have any rules matching the current file extension
             if (current_ext == check.extension) {
                 # check for fields that must not be overridden
-                if (check['error'] != nil and
-                    hash[check.symbol]!=nil and !check['required']  and
-                    typeof(hash[check.symbol])==check.type ) {
-                    bailout(file,check.error,check.extension,check.id);
+                if (check['error'] != nil
+                    and hash[check.symbol] != nil
+                    and !check['required']
+                    and typeof(hash[check.symbol]) == check.type
+                ) {
+                    bailout(file, check.error, check.extension, check.id);
                 }
 
                 # check for required fields
-                if (check['required'] != nil and
-                    hash[check.symbol]==nil and
-                    typeof( hash[check.symbol]) != check.type) {
-                    bailout(file,check.error,check.extension,check.id);
+                if (check['required'] != nil
+                    and hash[check.symbol] == nil
+                    and typeof(hash[check.symbol]) != check.type
+                ) {
+                    bailout(file, check.error, check.extension, check.id);
                 }
             }
         }
@@ -1785,23 +1803,6 @@ var load_MapStructure = func {
 			deps[d] = [];
 		}
 
-		#
-		# Get module type name from a Nasal file, e.g. 'lcontroller', 'symbol', 'scontroller', 'controller', 'overlay'.
-		# Returns nil if the file name does not match the expected pattern.
-		#
-		# @param  string  file  The file name e.g.: 'APT.symbol.nas', 'PARKING.lcontroller.nas', etc.
-		# @return string|nil  The type name e.g.: 'symbol', 'lcontroller', etc. or nil if failed.
-		#
-		var getNasalModuleType = func(file) {
-			var parts = split('.', file);
-
-			if (size(parts) > 2 and parts[-1] == 'nas') {
-				return parts[-2];
-			}
-
-			return nil;
-		};
-
 		foreach (var file; directory(contents_dir)) {
 			var moduleName = getNasalModuleType(file);
 			if (moduleName == nil) {
@@ -1826,7 +1827,7 @@ var load_MapStructure = func {
 
 }; # load_MapStructure
 
-setlistener("/nasal/canvas/loaded", load_MapStructure); # end ugly module init listener hack. 
+setlistener("/nasal/canvas/loaded", load_MapStructure); # end ugly module init listener hack.
 # FIXME: do smart Nasal bootstrapping, quod est callidus!
-# Actually, it would be even better to support reloading MapStructure files, 
+# Actually, it would be even better to support reloading MapStructure files,
 # and maybe even MapStructure itself by calling the dtor/del method for each Map and then re-running the ctor
