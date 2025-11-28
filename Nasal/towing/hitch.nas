@@ -2,7 +2,7 @@
 #			TOWING NASAL CODE
 #
 #		original version by D-NXKT up to version 30.12.2014
-#		updates by Bea Wolf and D-NXKT, version 04/2025
+#		updates by Bea Wolf and D-NXKT, version 11/2025
 #
 #
 # Purpose of this routine:
@@ -826,12 +826,16 @@ var findBestAIObject = func (){
 					aerotow_hash.tow.mp_last_reported_dist.setDoubleValue( 0.0 );
 					
 					# Set some dummy values. In case of an "interactive"-MP plane
-					# the correct values will be transmitted in the following loop
-					aimember.getNode("sim/hitches/aerotow/local-pos-x",1).setValue(-5.);
-					aimember.getNode("sim/hitches/aerotow/local-pos-y",1).setValue(0.);
-					aimember.getNode("sim/hitches/aerotow/local-pos-z",1).setValue(0.);
-					aimember.getNode("sim/hitches/aerotow/tow/dist",1).setValue(-1.);
-					
+					# the correct values will be transmitted in the following loop.
+					# Only set default values if the node does not yet exist.
+					# If the AI aircraft already has a defined hitch location, this prevents
+					# it from being overwritten with default values.
+					if (!aimember.getNode("sim/hitches/aerotow", 0)) {
+						aimember.getNode("sim/hitches/aerotow/local-pos-x", 1).setValue(-5.);
+						aimember.getNode("sim/hitches/aerotow/local-pos-y", 1).setValue(0.);
+						aimember.getNode("sim/hitches/aerotow/local-pos-z", 1).setValue(0.);
+						aimember.getNode("sim/hitches/aerotow/tow/dist", 1).setValue(-1.);
+					}
 					found = 1;
 				}   # end distance_m < bestdist_m
 		}   # end node != nil
@@ -989,17 +993,19 @@ var aerotow = func (open){
 				var aiHitchpitchto = -math.asin((myHitch_pos.alt()-aiHitch_pos.alt())/distance) / 0.01745;
 				#print("  pitch: ", aiHitchpitchto);
 				
+				# NOTE: Update the values via `aerotow_hash` fails if the hitch was opened previously: The node ai/model/aerotowrope 
+				# is present after FG initialization, but it is completely deleted after the hitch release (removeTowrope).
 				# update position of rope
-				aerotow_hash.rope.lat.setDoubleValue( myHitch_pos.lat() );
-				aerotow_hash.rope.lon.setDoubleValue( myHitch_pos.lon() );
-				aerotow_hash.rope.alt.setDoubleValue( myHitch_pos.alt() * M2FT );
-				# update orientation of rope
-				aerotow_hash.rope.hdg.setDoubleValue( aiHitchheadto );
-				aerotow_hash.rope.pitch.setDoubleValue( aiHitchpitchto );
-				
+				setprop("ai/models/aerotowrope/position/latitude-deg", myHitch_pos.lat());
+				setprop("ai/models/aerotowrope/position/longitude-deg", myHitch_pos.lon());
+				setprop("ai/models/aerotowrope/position/altitude-ft", myHitch_pos.alt() * M2FT);
+
+				# update pitch and heading of rope
+				setprop("ai/models/aerotowrope/orientation/true-heading-deg", aiHitchheadto);
+				setprop("ai/models/aerotowrope/orientation/pitch-deg", aiHitchpitchto);
+
 				# update length of rope
-				aerotow_hash.tow.dist.setDoubleValue( distance );
-				
+				setprop("sim/hitches/aerotow/tow/dist", distance);
 				
 				#############################################  calc forces  ##################################################
 				
@@ -1810,10 +1816,15 @@ var setAIObjectDefaults = func (){
 				# Set some dummy values. In case of an "interactive"-MP plane
 				# the correct values will be transmitted in the following loop.
 				# Create this variables if not present.
-				aimember.getNode("sim/hitches/aerotow/local-pos-x",1).setValue(-5.);
-				aimember.getNode("sim/hitches/aerotow/local-pos-y",1).setValue(0.);
-				aimember.getNode("sim/hitches/aerotow/local-pos-z",1).setValue(0.);
-				aimember.getNode("sim/hitches/aerotow/tow/dist",1).setValue(-1.);
+				# Only set default values if the node does not yet exist.
+				# If the AI aircraft already has a defined hitch location, this prevents
+				# it from being overwritten with default values.
+				if (!aimember.getNode("sim/hitches/aerotow", 0)) {
+					aimember.getNode("sim/hitches/aerotow/local-pos-x", 1).setValue(-5.);
+					aimember.getNode("sim/hitches/aerotow/local-pos-y", 1).setValue(0.);
+					aimember.getNode("sim/hitches/aerotow/local-pos-z", 1).setValue(0.);
+				}
+				aimember.getNode("sim/hitches/aerotow/tow/dist", 1).setValue(-1.);
 			}
 		}
 	}
