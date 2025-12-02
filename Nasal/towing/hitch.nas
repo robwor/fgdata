@@ -203,9 +203,36 @@
 #  </winch>
 # </hitches>
 #<sim>
-
-
+#
 # That's it!
+#
+#
+#
+# Setup of hitch position for AI-aircraft:
+# ----------------------------------------------------
+#
+# For the visualization of the tow rope, it is advantageous if a hitch position is defined for the AI tow plane.
+# To set the hitch position for AI aircraft, the following must be added to the AI-Aircraft.xml file at the beginning:
+#
+#<?xml version="1.0"?>
+#<PropertyList>
+# <nasal>
+#  <load>
+#   var rplayer = cmdarg();
+#   rplayer.getNode("sim/hitches/aerotow/local-pos-x", 1).setValue("x-location");  
+#   rplayer.getNode("sim/hitches/aerotow/local-pos-y", 1).setValue("y-location"); 
+#   rplayer.getNode("sim/hitches/aerotow/local-pos-z", 1).setValue("z-location"); 
+#  </load>
+#  <unload>
+#   rplayer.getNode("sim/hitches").remove();
+#  </unload>
+# </nasal>
+# Select suitable values for the location of your hitch position (x/y/z-location).
+# End of modification. From here on, the file continues unchanged.
+# <path>your_AI_Aircraft.ac</path>
+#     ...
+#
+# That's it! The tow towrope ends at the defined position.
 
 
 ##################################################  general info  ############################################
@@ -453,11 +480,12 @@ var aerotow_hash = {
 		exist:		props.globals.initNode("sim/hitches/aerotow/rope/exist", 0, "BOOL"),
 		model_id:		props.globals.initNode("sim/hitches/aerotow/rope/model_id", -1, "INT"),
 		
-		lat:			props.globals.initNode("ai/models/aerotowrope/position/latitude-deg", 0.0, "DOUBLE"),
-		lon:			props.globals.initNode("ai/models/aerotowrope/position/longitude-deg", 0.0, "DOUBLE"),
-		alt:			props.globals.initNode("ai/models/aerotowrope/position/altitude-ft", 0.0, "DOUBLE"),
-		hdg:			props.globals.initNode("ai/models/aerotowrope/orientation/true-heading-deg", 0.0, "DOUBLE"),
-		pitch:		props.globals.initNode("ai/models/aerotowrope/orientation/pitch-deg", 0.0, "DOUBLE"),
+		# Created on demand in the `createTowrope` function:
+		lat  : nil,
+		lon  : nil,
+		alt  : nil,
+		hdg  : nil,
+		pitch: nil,
 	},
 };
 				
@@ -488,11 +516,12 @@ var winch_hash = {
 		exist:		props.globals.initNode("sim/hitches/winch/rope/exist", 0, "BOOL"),
 		model_id:		props.globals.initNode("sim/hitches/winch/rope/model_id", -1, "INT"),
 		
-		lat:			props.globals.initNode("ai/models/winchrope/position/latitude-deg", 0.0, "DOUBLE"),
-		lon:			props.globals.initNode("ai/models/winchrope/position/longitude-deg", 0.0, "DOUBLE"),
-		alt:			props.globals.initNode("ai/models/winchrope/position/altitude-ft", 0.0, "DOUBLE"),
-		hdg:			props.globals.initNode("ai/models/winchrope/orientation/true-heading-deg", 0.0, "DOUBLE"),
-		pitch:		props.globals.initNode("ai/models/winchrope/orientation/pitch-deg", 0.0, "DOUBLE"),
+		# Created on demand in the `createTowrope` function:
+		lat  : nil,
+		lon  : nil,
+		alt  : nil,
+		hdg  : nil,
+		pitch: nil,
 	},
 };
 
@@ -831,10 +860,10 @@ var findBestAIObject = func (){
 					# If the AI aircraft already has a defined hitch location, this prevents
 					# it from being overwritten with default values.
 					if (!aimember.getNode("sim/hitches/aerotow", 0)) {
-						aimember.getNode("sim/hitches/aerotow/local-pos-x", 1).setValue(-5.);
-						aimember.getNode("sim/hitches/aerotow/local-pos-y", 1).setValue(0.);
-						aimember.getNode("sim/hitches/aerotow/local-pos-z", 1).setValue(0.);
-						aimember.getNode("sim/hitches/aerotow/tow/dist", 1).setValue(-1.);
+						aimember.getNode("sim/hitches/aerotow/local-pos-x",1).setValue(-5.);
+						aimember.getNode("sim/hitches/aerotow/local-pos-y",1).setValue(0.);
+						aimember.getNode("sim/hitches/aerotow/local-pos-z",1).setValue(0.);
+						aimember.getNode("sim/hitches/aerotow/tow/dist",1).setValue(-1.);
 					}
 					found = 1;
 				}   # end distance_m < bestdist_m
@@ -993,19 +1022,17 @@ var aerotow = func (open){
 				var aiHitchpitchto = -math.asin((myHitch_pos.alt()-aiHitch_pos.alt())/distance) / 0.01745;
 				#print("  pitch: ", aiHitchpitchto);
 				
-				# NOTE: Update the values via `aerotow_hash` fails if the hitch was opened previously: The node ai/model/aerotowrope 
-				# is present after FG initialization, but it is completely deleted after the hitch release (removeTowrope).
 				# update position of rope
-				setprop("ai/models/aerotowrope/position/latitude-deg", myHitch_pos.lat());
-				setprop("ai/models/aerotowrope/position/longitude-deg", myHitch_pos.lon());
-				setprop("ai/models/aerotowrope/position/altitude-ft", myHitch_pos.alt() * M2FT);
-
-				# update pitch and heading of rope
-				setprop("ai/models/aerotowrope/orientation/true-heading-deg", aiHitchheadto);
-				setprop("ai/models/aerotowrope/orientation/pitch-deg", aiHitchpitchto);
-
+				aerotow_hash.rope.lat.setDoubleValue( myHitch_pos.lat() );
+				aerotow_hash.rope.lon.setDoubleValue( myHitch_pos.lon() );
+				aerotow_hash.rope.alt.setDoubleValue( myHitch_pos.alt() * M2FT );
+				# update orientation of rope
+				aerotow_hash.rope.hdg.setDoubleValue( aiHitchheadto );
+				aerotow_hash.rope.pitch.setDoubleValue( aiHitchpitchto );
+				
 				# update length of rope
-				setprop("sim/hitches/aerotow/tow/dist", distance);
+				aerotow_hash.tow.dist.setDoubleValue( distance );
+				
 				
 				#############################################  calc forces  ##################################################
 				
@@ -1506,16 +1533,22 @@ var createTowrope = func (device){
 		towrope_mod.model.getNode("roll-deg-prop", 1).setValue("ai/models/" ~ device ~ "rope/orientation/roll-deg");
 		towrope_mod.model.getNode("pitch-deg-prop", 1).setValue("ai/models/" ~ device ~ "rope/orientation/pitch-deg");
 		towrope_mod.model.getNode("load", 1).remove();
-		
-		if( device == "winch" ){
-			winch_hash.rope.lat=	check_or_create("ai/models/winchrope/position/latitude-deg", 0.0, "DOUBLE");
-			winch_hash.rope.lon=	check_or_create("ai/models/winchrope/position/longitude-deg", 0.0, "DOUBLE");
-			winch_hash.rope.alt=	check_or_create("ai/models/winchrope/position/altitude-ft", 0.0, "DOUBLE");
-			winch_hash.rope.hdg=	check_or_create("ai/models/winchrope/orientation/true-heading-deg", 0.0, "DOUBLE");
-			winch_hash.rope.pitch=	check_or_create("ai/models/winchrope/orientation/pitch-deg", 0.0, "DOUBLE");
+
+		if (device == "aerotow") {
+			recreateNodes(aerotow_hash, device);
+		} elsif (device == "winch") {
+			recreateNodes(winch_hash, device);
 		}
 	}  # end towrope exist
 }
+
+var recreateNodes = func(hash, device) {
+	hash.rope.lat   = check_or_create("ai/models/" ~ device ~ "rope/position/latitude-deg", 0.0, "DOUBLE");
+	hash.rope.lon   = check_or_create("ai/models/" ~ device ~ "rope/position/longitude-deg", 0.0, "DOUBLE");
+	hash.rope.alt   = check_or_create("ai/models/" ~ device ~ "rope/position/altitude-ft", 0.0, "DOUBLE");
+	hash.rope.hdg   = check_or_create("ai/models/" ~ device ~ "rope/orientation/true-heading-deg", 0.0, "DOUBLE");
+	hash.rope.pitch = check_or_create("ai/models/" ~ device ~ "rope/orientation/pitch-deg", 0.0, "DOUBLE");
+};
 
 
 # ######################################################################################################################
