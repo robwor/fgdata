@@ -13,10 +13,10 @@
 ## - consider patching svg.nas to allow elements to be styled via the options hash by rewriting attributes, could even support animations that way
 ## - style handling/defaults should be moved to symbol files probably
 ## - consider pre-populating layer environments via bind() by providing APIs and fields for sane defaults:
-##	- parents
-##	- __self__
-##	- del (managing all listeners and timers)
-## 	- searchCmd -> filtering
+##    - parents
+##    - __self__
+##    - del (managing all listeners and timers)
+##    - searchCmd -> filtering
 ##
 ##  APIs to be wrapped for each layer:
 ##  logprint(), die(), debug.bt(), benchmark()
@@ -48,7 +48,7 @@ var try_aux_method = func(obj, method_name) {
 # options/df_options and style/df_style in a SymbolLayer.
 #
 var default_hash = func(opt, df) {
-	if (opt != nil and typeof(opt)=='hash') {
+	if (opt != nil and ishash(opt)) {
 		if (df != nil and opt != df and !isa(opt, df)) {
 			if (contains(opt, "parents"))
 				opt.parents ~= [df];
@@ -56,13 +56,14 @@ var default_hash = func(opt, df) {
 				opt.parents = [df];
 		}
 		return opt;
-	} else return df;
+	}
+
+	return df;
 }
 
 ##
 # to be used for prototyping, performance & stress testing (especially with multiple instance driven by AI traffic)
 #
-
 var MapStructure_selfTest = func() {
 	var temp = {};
 	temp.dlg = canvas.Window.new([600,400],"dialog");
@@ -110,8 +111,8 @@ var MapStructure_selfTest = func() {
 			type_arg: type.name,
 			visible: type.vis,
 			priority: type.zindex,
-			style: Styles.get(type.name), # FIXME: undefined symbol: Styles
-			options: Options.get(type.name),
+			style: Styles.get(type.name),    # FIXME: undefined symbol: Styles
+			options: Options.get(type.name), # FIXME: undefined symbol: Options
 		);
 	}
 }; # MapStructure_selfTest
@@ -122,6 +123,14 @@ var MapStructure_selfTest = func() {
 # texture map coordinates for the corresponding raster image.
 #
 var CachedElement = {
+	##
+	# @param  string|hash  canvas_path  Path of canvas or canvas.Canvas object.
+	# @param  string  name
+	# @param  vector  source
+	# @param  vector  size
+	# @param  vector  offset
+	# @return hash
+	#
 	new: func(canvas_path, name, source, size, offset) {
 		var m = {parents:[CachedElement] };
 		if (isa(canvas_path, canvas.Canvas)) {
@@ -135,15 +144,22 @@ var CachedElement = {
 		return m;
 	},
 
-	render: func(group, trans0=0, trans1=0) {
-		# create a raster image child in the render target/group
-		var n = group.createChild("image", me.name)
+	##
+	# Create a raster image child in the render target/group
+	#
+	# @param  hash  group  Canvas group element.
+	# @param  double  transX
+	# @param  double  transY
+	# @return hash  Canvas image element.
+	#
+	render: func(group, transX = 0, transY = 0) {
+		var img = group.createChild("image", me.name)
 			.setFile(me.canvas_src)
 			.setSourceRect(me.source, 0)
 			.setSize(me.size)
-			.setTranslation(trans0,trans1);
-		n.createTransform().setTranslation(me.offset);
-		return n;
+			.setTranslation(transX, transY);
+		img.createTransform().setTranslation(me.offset);
+		return img;
 	},
 }; # of CachedElement
 
@@ -155,27 +171,34 @@ var SymbolCache = {
 	DRAW_LEFT_TOP:     0.0,
 	DRAW_CENTERED:     0.5,
 	DRAW_RIGHT_BOTTOM: 1.0,
+
 	new: func(dim...) {
-		var m = { parents:[SymbolCache] };
+		var m = { parents: [SymbolCache] };
+
 		# to keep track of the next free caching spot (in px)
 		m.next_free = [0, 0];
+
 		# to store each type of symbol
 		m.dict = {};
-		if (size(dim) == 1 and typeof(dim[0]) == 'vector')
+
+		if (size(dim) == 1 and isvec(dim[0]))
 			dim = dim[0];
-		# Two sizes: canvas and symbol
-		if (size(dim) == 2) {
+
+		var dimSize = size(dim);
+		if (dimSize == 2) {
+			# Two sizes: canvas and symbol
 			var canvas_x = var canvas_y = dim[0];
 			var image_x = var image_y = dim[1];
-		# Two widths (canvas and symbol) and then height/width ratio
-		} else if (size(dim) == 3) {
-			var (canvas_x,image_x,ratio) = dim;
+		} elsif (dimSize == 3) {
+			# Two widths (canvas and symbol) and then height/width ratio
+			var (canvas_x, image_x, ratio) = dim;
 			var canvas_y = canvas_x * ratio;
 			var image_y = image_x * ratio;
-		# Explicit canvas and symbol widths/heights
-		} else if (size(dim) == 4) {
-			var (canvas_x,canvas_y,image_x,image_y) = dim;
+		} elsif (dimSize == 4) {
+			# Explicit canvas and symbol widths/heights
+			var (canvas_x, canvas_y, image_x, image_y) = dim;
 		}
+
 		m.canvas_sz = [canvas_x, canvas_y];
 		m.image_sz = [image_x, image_y];
 
@@ -197,13 +220,19 @@ var SymbolCache = {
 
 		return m;
 	},
+
 	##
 	# Add a cached symbol based on a drawing callback.
 	# @note this assumes that the object added by callback
 	#       fits into the dimensions provided to the constructor,
 	#       and any larger dimensionalities are liable to be cut off.
 	#
-	add: func(name, callback, draw_mode=0) {
+	# @param  string  name
+	# @param  func  callback  Draw function.
+	# @param  double  draw_mode
+	# @return hash  CachedElement object.
+	#
+	add: func(name, callback, draw_mode = 0) {
 		if (isscalar(draw_mode)) {
 			draw_mode = [draw_mode, draw_mode];
 		}
@@ -257,6 +286,11 @@ var SymbolCache = {
 			offset: offset,
 		);
 	}, # add()
+
+	##
+	# @param  string  name
+	# @return hash  CachedElement object.
+	#
 	get: func(name) {
 		return me.dict[name];
 	}, # get()
@@ -264,98 +298,187 @@ var SymbolCache = {
 
 # Helpers for below
 var unescape = func(s) string.replace(s~"", "'", "\\'");
-var hashdup = func(_, rkeys = nil) {
+
+##
+# @param  hash  object  Object to copy.
+# @param  vector|nil  rkeys  Keys whose values ​​will be copied.
+# @return hash
+#
+var duplicateHash = func(object, rkeys = nil) {
 	var h = {};
-	var k = rkeys == nil
-		? members(_)
+	var keys = rkeys == nil
+		? members(object)
 		: rkeys;
 
-	foreach (var k; k) {
-		h[k] = member(_, k);
+	foreach (var k; keys) {
+		h[k] = member(object, k);
 	}
 
 	return h;
 }
-var opt_member = func(h,k) {
-	if (contains(h, k)) return h[k];
-	if (contains(h, "parents")) {
-		var _=h.parents;
-		for (var i=0;i<size(_);i+=1){
-			var v = opt_member(_[i], k);
-			if (v != nil) return v;
+
+#
+# Find a key in the hash, including parents, and return its value or nil if not found.
+#
+# @param  hash  object  The hash in which we're looking for the key.
+# @param  string  key   The key value to find.
+# @return mixed|nil  The key's value, or nil if not found.
+#
+var opt_member = func(object, key) {
+	if (contains(object, key)) {
+		return object[key];
+	}
+
+	if (contains(object, "parents")) {
+		var par = object.parents;
+		foreach (var parent; par) {
+			var value = opt_member(parent, key);
+			if (value != nil) {
+				return value;
+			}
 		}
 	}
+
 	return nil;
-}
-var member = func(h, k) {
-	if (contains(h, k)) {
-		return h[k];
+};
+
+#
+# Find a key in the hash, including parents, and return its value or die if not found.
+#
+# @param  hash  object  The hash in which we're looking for the key.
+# @param  string  key  The key value to find.
+# @return mixed  The key's value.
+#
+var member = func(object, key) {
+	if (contains(object, key)) {
+		return object[key];
 	}
 
-	if (contains(h, "parents")) {
-		var _ = h.parents;
-		for (var i = 0; i < size(_); i += 1) {
-			if (contains(_[i], k)) {
-				return _[i][k];
+	if (contains(object, "parents")) {
+		var pars = object.parents;
+		var len = size(pars);
+		for (var i = 0; i < len; i += 1) {
+			if (contains(pars[i], key)) {
+				return pars[i][key];
 			}
 
-			if (contains(_[i], "parents") and size(_[i].parents)) {
-				_ = h.parents ~ _[i + 1:];
+			if (contains(pars[i], "parents") and size(pars[i].parents)) {
+				pars = object.parents ~ pars[i + 1:];
 				i = 0;
+				len = size(pars);
 			}
 		}
 	}
-	die("member not found: '"~unescape(k)~"'");
-}
-var members = func(h,vec=nil) {
-	if (vec == nil) vec = [];
-	foreach (var k; keys(h))
-		if (k == "parents")
-			foreach (var p; h[k])
-				members(p,vec);
-		elsif (!contains(vec, k))
+
+	die("member not found: '" ~ unescape(k) ~ "'");
+};
+
+##
+# Returns a list of all keys (members) present in the given hash, along with keys inherited from parents.
+#
+# @param  hash  object
+# @param  vector|nil  vec
+# @return vector  The vector of key names from the entire inheritance tree.
+#
+var members = func(object, vec = nil) {
+	if (vec == nil) {
+		vec = [];
+	}
+
+	foreach (var k; keys(object)) {
+		if (k == "parents") {
+			foreach (var p; object[k]) {
+				members(p, vec);
+			}
+		} elsif (!contains(vec, k)) {
 			append(vec, k);
+		}
+	}
+
 	return vec;
 }
-var serialize = func(m,others=nil) {
-	var t = typeof(m);
-	if (t == 'scalar')
-		if (num(m) != nil)
-			return m~"";
-		else return "'" ~ unescape(m) ~ "'";
-	if (others == nil) others = {};
-	var i = id(m);
-	if (contains(others, i)) return "...";
-	others[i] = nil;
-	if (t == 'vector') {
-		var ret = "[";
-		foreach (var l; m) {
-			if (ret != "[") ret ~= ",";
-			ret ~= serialize(l,others);
+
+##
+# Serialize given value.
+#
+# @param  scalar|vector  value
+# @param  hash|nil  others
+# @return string
+#
+var serialize = func(value, others = nil) {
+	var type = typeof(value);
+	if (type == 'scalar') {
+		if (num(value) != nil) {
+			return value ~ "";
 		}
-		return ret~"]";
-	} else die("type not supported for style serialization: '"~t~"'");
+
+		return "'" ~ unescape(value) ~ "'";
+	}
+
+	if (others == nil) {
+		others = {};
+	}
+
+	var valueId = id(value);
+	if (contains(others, valueId)) {
+		# Stop infinite recursion.
+		return "...";
+	}
+
+	others[valueId] = nil;
+	if (type == 'vector') {
+		var ret = "[";
+		foreach (var v; value) {
+			if (ret != "[") {
+				ret ~= ",";
+			}
+
+			ret ~= serialize(v, others);
+		}
+		return ret ~ "]";
+	}
+
+	die("type not supported for style serialization: '" ~ type ~ "'");
 }
 
+##
 # Drawing functions have the form:
 #   func(group) { group.createChild(...).set<Option>(<option>); ... }
 # The style is passed as (essentially) their local namespace/variables,
 # while the group is a regular argument.
-var call_draw = func(draw, style, arg=nil, relevant_keys=nil) {
-	return call(draw, arg, nil, hashdup(style,relevant_keys));
+#
+# @param  func  draw
+# @param  hash  style
+# @param  vector|nil  arg  A vector of parameters for the draw function.
+#                          This contains the Canvas group element on which we will draw.
+# @param  vector|nil relevant_keys
+# @return hash  Canvas element.
+#
+var call_draw = func(draw, style, arg = nil, relevant_keys = nil) {
+	return call(draw, arg, nil, duplicateHash(style, relevant_keys));
 }
 
+##
 # Serialize a style into a string.
-var style_string = func(style, relevant_keys=nil) {
-	if (relevant_keys == nil) relevant_keys = members(style);
+#
+# @param  hash  style
+# @param  vector|nil  relevant_keys
+# @return string
+#
+var style_string = func(style, relevant_keys = nil) {
+	if (relevant_keys == nil) {
+		relevant_keys = members(style);
+	}
+
 	relevant_keys = sort(relevant_keys, cmp);
+
 	var str = "";
 	foreach (var k; relevant_keys) {
-		var m = member(style,k);
-		if (m == nil) continue;
+		var value = member(style, k);
+		if (value == nil) continue;
 		if (str) str ~= ";";
 		str ~= k ~ ":";
-		str ~= serialize(m);
+		str ~= serialize(value);
 	}
 	return str;
 }
@@ -367,17 +490,18 @@ var style_string = func(style, relevant_keys=nil) {
 var StyleableCacheable = {
 	##
 	# Construct an object.
-	# @param name Prefix to use for entries in the cache
-	# @param draw_func Function for the cache that will draw the
-	#                  symbol onto a group using the style parameters.
-	# @param cache The #SymbolCache to use for these symbols.
-	# @param draw_mode See #SymbolCache
-	# @param relevant_keys A list of keys for the style used by the
-	#                      draw_func. Although it defaults to all
-	#                      available keys, it is highly recommended
-	#                      that it be specified.
+	# @param  string  name  Prefix to use for entries in the cache
+	# @param  func  draw_func  Function for the cache that will draw the
+	#                          symbol onto a group using the style parameters.
+	# @param  hash  cache  The #SymbolCache to use for these symbols.
+	# @param  double  draw_mode  See #SymbolCache
+	# @param  vector  relevant_keys  A list of keys for the style used by the
+	#                                draw_func. Although it defaults to all
+	#                                available keys, it is highly recommended
+	#                                that it be specified.
+	# @return hash
 	#
-	new: func(name, draw_func, cache, draw_mode=0, relevant_keys=nil) {
+	new: func(name, draw_func, cache, draw_mode = 0, relevant_keys = nil) {
 		return {
 			parents: [StyleableCacheable],
 			_name: name,
@@ -387,24 +511,45 @@ var StyleableCacheable = {
 			relevant_keys: relevant_keys,
 		};
 	},
+
+	##
 	# Note: configuration like active/inactive needs
 	# to also use the passed style hash, unless it is
 	# chosen not to cache symbols that are, e.g., active.
+	#
+	# @param  hash  style
+	# @return hash  CachedElement object.
+	#
 	request: func(style) {
 		var s = style_string(style, me.relevant_keys);
 		#debug.dump(style, s);
-		var s1 = me._name~s;
-		var c = me._cache.get(s1);
-		if (c != nil) return c;
-		return me.draw(style,s1);
+		var cacheName = me._name ~ s;
+		var cachedElement = me._cache.get(cacheName);
+		if (cachedElement == nil) {
+			return me.draw(style, cacheName);
+		}
+
+		return cachedElement;
 	},
+
+	##
+	# @param  hash  element  Canvas group element.
+	# @param  hash  style
+	# @return hash  Canvas image element.
+	#
 	render: func(element, style) {
-		var c = me.request(style);
-		c.render(element);
+		var cachedElement = me.request(style);
+		return cachedElement.render(element);
 	},
-	draw: func(style,s1) {
+
+	##
+	# @param  hash  style
+	# @param  string  cacheName
+	# @return hash  CachedElement object.
+	#
+	draw: func(style, cacheName) {
 		var fn = func call_draw(me._draw_func, style, arg, me.relevant_keys);
-		me._cache.add(s1, fn, me._draw_mode);
+		return me._cache.add(cacheName, fn, me._draw_mode);
 	},
 };
 
@@ -429,7 +574,7 @@ var Symbol = {
 		}
 		return class;
 	},
-	# Calls corresonding symbol constructor
+	# Calls corresponding symbol constructor
 	# @param group #Canvas.Group to place this on.
 	# @param layer The #SymbolLayer this is a child of.
 	new: func(type, group, layer, arg...) {
@@ -541,7 +686,7 @@ var Symbol = {
 			st = me.layer.style;
 		if(st == nil) return default;
 		var val = opt_member(st, name);
-		if(typeof(val) == 'func'){
+		if(isfunc(val)) {
 			val = (call(val,[],me));
 		}
 		if(val == nil) return default;
@@ -554,7 +699,7 @@ var Symbol = {
 		}
 		var label_content = me.getOption('label_content');
 		if(label_content == nil) return default_val;
-		if(typeof(label_content) == 'scalar')
+		if(isscalar(label_content))
 			label_content = [label_content];
 		var format_s = me.getOption('label_format');
 		var label = '';
@@ -578,7 +723,7 @@ var Symbol = {
 	callback: func(name, args...){
 		name = name ~'_callback';
 		var f = me.getOption(name);
-		if(typeof(f) == 'func'){
+		if(isfunc(f)) {
 			return call(f, args, me);
 		}
 	}
@@ -597,7 +742,7 @@ Symbol.Controller = {
 		}
 		return class;
 	},
-	# Calls corresonding symbol controller constructor
+	# Calls corresponding symbol controller constructor
 	# @param model Model to control this object (position and other attributes).
 	new: func(type, symbol, model, arg...) {
 		var class = me.get(type);
@@ -613,11 +758,12 @@ Symbol.Controller = {
 	# Get the position of this symbol/object:
 	getpos: func(model) , # default provided below
 }; # of Symbol.Controller
-# Add this to Symbol as the default controller, but replace the Static .new() method with a blank
-Symbol.df_controller = { parents:[Symbol.Controller], new: func nil };
 
-var getpos_fromghost = func(positioned_g)
-	return [positioned_g.lat, positioned_g.lon];
+# Add this to Symbol as the default controller, but replace the Static .new() method with a blank
+Symbol.df_controller = {
+	parents: [Symbol.Controller],
+	new: func nil,
+};
 
 # to add support for additional ghosts, just append them to the vector below, possibly at runtime:
 var supported_ghosts = ['positioned','Navaid','Fix','flightplan-leg','FGAirport'];
@@ -650,17 +796,17 @@ Symbol.Controller.getpos = func(obj, p=nil) {
 		__die("Symbol.Controller.getpos(): no suitable getpos() found! Of type: "~typeof(obj));
 	}
 
-	if (typeof(p) == 'ghost') {
+	if (isghost(p)) {
 		if (!is_positioned_ghost(p)) {
 			__die(
 				"Symbol.Controller.getpos(): bad/unsupported ghost of type '" ~ ghosttype(obj)
 				~ "' (see MapStructure.nas Symbol.Controller.getpos() to add new ghosts)"
 			);
 		}
-		return getpos_fromghost(obj);
+		return [obj.lat, obj.lon];
 	}
 
-	if (typeof(p) == 'hash') {
+	if (ishash(p)) {
 		if (p == geo.Coord) {
 			return subvec(obj.latlon(), 0, 2);
 		}
@@ -695,7 +841,7 @@ Symbol.Controller.equals = func(l, r, p=nil) {
 		__die("Symbol.Controller: no suitable equals() found! Of type: "~typeof(l));
 	}
 
-	if (typeof(p) == 'ghost') {
+	if (isghost(p)) {
 		if (!is_positioned_ghost(p)) {
 			__die(
 				"Symbol.Controller: bad/unsupported ghost of type '" ~ ghosttype(l)
@@ -704,7 +850,7 @@ Symbol.Controller.equals = func(l, r, p=nil) {
 		}
 		return l.id == r.id;
 	}
-	if (typeof(p) == 'hash') {
+	if (ishash(p)) {
 		# Somewhat arbitrary convention:
 		#   * l.equals(r)         -- instance method, i.e. uses "me" and "arg[0]"
 		#   * parent._equals(l,r) -- class method, i.e. uses "arg[0]" and "arg[1]"
@@ -723,6 +869,7 @@ Symbol.Controller.equals = func(l, r, p=nil) {
 var assert_m = func(hash, member)
 	if (!contains(hash, member))
 		__die("assert_m: required field not found: '"~member~"'");
+
 var assert_ms = func(hash, members...)
 	foreach (var m; members)
 		if (m != nil) assert_m(hash, m);
@@ -741,14 +888,15 @@ var DotSym = {
 		return Symbol.add(name, hash);
 	},
 # For the instances returned from makeinstance:
-	# @param group The #Canvas.Group to add this to.
-	# @param layer The #SymbolLayer this is a child of.
-	# @param model A correct object (e.g. positioned ghost) as
-	#              expected by the .draw file that represents
-	#              metadata like position, speed, etc.
-	# @param controller Optional controller "glue". Each method
-	#                   is called with the model as the only argument.
-	new: func(group, layer, model, controller=nil) {
+	##
+	# @param  hash  group  The #Canvas.Group to add this to.
+	# @param  hash  layer  The #SymbolLayer this is a child of.
+	# @param  ghost|hash  model  A correct object (e.g. positioned ghost) as
+	#                            expected by the .draw file that represents
+	#                            metadata like position, speed, etc.
+	# @param  hash|nil  controller  Optional controller "glue". Each method
+	#                               is called with the model as the only argument.
+	new: func(group, layer, model, controller = nil) {
 		if (me == nil) __die();
 		var m = {
 			parents: [me],
@@ -757,9 +905,7 @@ var DotSym = {
 			model: model,
 			map: layer.map,
 			controller: controller == nil ? me.df_controller : controller,
-			element: group.createChild(
-				me.element_type, me.element_id
-			),
+			element: group.createChild(me.element_type, me.element_id),
 		};
 		append(m.parents, m.element);
 		Symbol._new(m);
@@ -909,9 +1055,7 @@ var LineSymbol = {
 			layer: layer,
 			model: model,
 			controller: controller == nil ? me.df_controller : controller,
-			element: group.createChild(
-				"path", me.element_id
-			),
+			element: group.createChild("path", me.element_id),
 		};
 		append(m.parents, m.element);
 		Symbol._new(m);
@@ -929,7 +1073,7 @@ var LineSymbol = {
 		var coords = [];
 		var cmd = canvas.Path.VG_MOVE_TO;
 		var path = me.model;
-		if(typeof(path) == 'hash'){
+		if (ishash(path)) {
 			path = me.model.path;
 			if(path == nil)
 				__die("LineSymbol model requires a 'path' member (vector)");
@@ -1004,13 +1148,20 @@ var SymbolLayer = {
 
 		return class;
 	},
-	# Calls corresonding layer constructor
-	# @param group #Canvas.Group to place this on.
-	# @param map The #Canvas.Map this is a member of.
-	# @param controller A controller object.
-	# @param style An alternate style.
-	# @param options Extra options/configurations.
-	# @param visible Initially set it up as visible or invisible.
+
+	##
+	# Calls corresponding layer constructor
+	#
+	# @param  string  type  Symbol type name.
+	# @param  hash  group  #Canvas.Group to place this on.
+	# @param  hash  map  The #Canvas.Map this is a member of.
+	# @param  hash|nil  controller  A controller object.
+	# @param  hash|nil  style  An alternate style.
+	# @param  hash|nil  options  Extra options/configurations.
+	# @param  bool  visible  Initially set it up as visible or invisible.
+	# @param  vector  arg  Other optional parameters.
+	# @return hash
+	#
 	new: func(type, group, map, controller = nil, style = nil, options = nil, visible = true, arg...) {
 		# XXX: Extra named arguments are (obviously) not preserved well...
 		var class = me.get(type);
@@ -1037,11 +1188,15 @@ var SymbolLayer = {
 			var listeners = opt_member(controller, 'listeners');
 			var listen = opt_member(options, 'listen');
 			if (listen != nil and listeners != nil){
-				var listen_tp = typeof(listen);
-				if(listen_tp != 'vector' and listen_tp != 'scalar')
-					__die("Options 'listen' cannot be a "~ listen_tp);
-				if(typeof(listen) == 'scalar')
+				var listenType = typeof(listen);
+				if (listenType != 'vector' and listenType != 'scalar') {
+					__die("Options 'listen' cannot be a " ~ listenType);
+				}
+
+				if (listenType == 'scalar') {
 					listen = [listen];
+				}
+
 				foreach(var node_name; listen){
 					var node = opt_member(options, node_name);
 					if(node == nil)
@@ -1076,7 +1231,7 @@ SymbolLayer.Controller = {
 		}
 		return class;
 	},
-	# Calls corresonding controller constructor
+	# Calls corresponding controller constructor
 	# @param layer The #SymbolLayer this controller is responsible for.
 	new: func(type, layer, arg...) {
 		var class = me.get(type);
@@ -1107,13 +1262,16 @@ SymbolLayer.Controller = {
 var MultiSymbolLayer = {
 	parents: [SymbolLayer],
 # Default implementations/values:
-	# @param group A group to place this on.
-	# @param map The #Canvas.Map this is a member of.
-	# @param controller A controller object (parents=[SymbolLayer.Controller])
-	#                   or implementation (parents[0].parents=[SymbolLayer.Controller]).
-	# @param style An alternate style.
-	# @param options Extra options/configurations.
-	# @param visible Initially set it up as visible or invisible.
+	##
+	# @param  hash  group  A group to place this on.
+	# @param  hash  map  The #Canvas.Map this is a member of.
+	# @param  hash|nil  controller  A controller object (parents=[SymbolLayer.Controller])
+	#                               or implementation (parents[0].parents=[SymbolLayer.Controller]).
+	# @param  hash|nil  style  An alternate style.
+	# @param  hash|nil  options  Extra options/configurations.
+	# @param  bool  visible  Initially set it up as visible or invisible.
+	# @return hash
+	#
 	new: func(group, map, controller = nil, style = nil, options = nil, visible = true) {
 		#print("Creating new SymbolLayer instance");
 		if (me == nil) __die("MultiSymbolLayer constructor needs to know its parent class");
@@ -1222,13 +1380,15 @@ var NavaidSymbolLayer = {
 var SingleSymbolLayer = {
 	parents: [SymbolLayer],
 # Default implementations/values:
-	# @param group A group to place this on.
-	# @param map The #Canvas.Map this is a member of.
-	# @param controller A controller object (parents=[SymbolLayer.Controller])
-	#                   or implementation (parents[0].parents=[SymbolLayer.Controller]).
-	# @param style An alternate style.
-	# @param options Extra options/configurations.
-	# @param visible Initially set it up as visible or invisible.
+	##
+	# @param  hash  group  A group to place this on.
+	# @param  hash  map  The #Canvas.Map this is a member of.
+	# @param  hash|nil  controller  A controller object (parents=[SymbolLayer.Controller])
+	#                           or implementation (parents[0].parents=[SymbolLayer.Controller]).
+	# @param  hash|nil  style  An alternate style.
+	# @param  hash|nil  options  Extra options/configurations.
+	# @param  bool  visible  Initially set it up as visible or invisible.
+	# @return hash
 	new: func(group, map, controller = nil, style = nil, options = nil, visible = true) {
 		#print("Creating new SymbolLayer instance");
 		if (me == nil) __die("SingleSymbolLayer constructor needs to know its parent class");
@@ -1250,7 +1410,10 @@ var SingleSymbolLayer = {
 			return;
 
 		var updater = func {
-			if (typeof(me.symbol.model) == 'hash') try_aux_method(me.symbol.model, "update");
+			if (ishash(me.symbol.model)) {
+				try_aux_method(me.symbol.model, "update");
+			}
+
 			me.symbol.update();
 		}
 
@@ -1296,12 +1459,20 @@ var OverlayLayer = {
 
 		return class;
 	},
-	# Calls corresonding layer constructor
-	# @param group #Canvas.Group to place this on.
-	# @param map The #Canvas.Map this is a member of.
-	# @param style An alternate style.
-	# @param options Extra options/configurations.
-	# @param visible Initially set it up as visible or invisible.
+
+	##
+	# Calls corresponding layer constructor
+	#
+	# @param  string  type  Symbol type name.
+	# @param  hash  group  #Canvas.Group to place this on.
+	# @param  hash  map  The #Canvas.Map this is a member of.
+	# @param  hash|nil  controller  A controller object.
+	# @param  hash|nil  style  An alternate style.
+	# @param  hash|nil  options  Extra options/configurations.
+	# @param  bool  visible  Initially set it up as visible or invisible.
+	# @param  vector  arg  Other optional parameters.
+	# @return hash
+	#
 	new: func(type, group, map, controller = nil, style = nil, options = nil, visible = true, arg...) {
 		# XXX: Extra named arguments are (obviously) not preserved well...
 		if (me == nil) __die("OverlaySymbolLayer constructor needs to know its parent class");
@@ -1335,11 +1506,15 @@ var OverlayLayer = {
 			var listeners = opt_member(controller, 'listeners');
 			var listen = opt_member(options, 'listen');
 			if (listen != nil and listeners != nil){
-				var listen_tp = typeof(listen);
-				if(listen_tp != 'vector' and listen_tp != 'scalar')
-					__die("Options 'listen' cannot be a "~ listen_tp);
-				if(typeof(listen) == 'scalar')
+				var listenType = typeof(listen);
+				if (listenType != 'vector' and listenType != 'scalar') {
+					__die("Options 'listen' cannot be a " ~ listenType);
+				}
+
+				if (listenType == 'scalar') {
 					listen = [listen];
+				}
+
 				foreach(var node_name; listen){
 					var node = opt_member(options, node_name);
 					if(node == nil)
@@ -1360,14 +1535,19 @@ var OverlayLayer = {
 
 var TileLayer = {
 	parents: [OverlayLayer],
+	
 	# Default implementations/values:
-	# @param group A group to place this on.
-	# @param map The #Canvas.Map this is a member of.
-	# @param controller A controller object (parents=[OverlayLayer.Controller])
-	#                   or implementation (parents[0].parents=[OverlayLayer.Controller]).
-	# @param style An alternate style.
-	# @param options Extra options/configurations.
-	# @param visible Initially set it up as visible or invisible.
+
+	##
+	# @param  hash  group  A group to place this on.
+	# @param  hash  map  The #Canvas.Map this is a member of.
+	# @param  hash|nil  controller  A controller object (parents=[OverlayLayer.Controller])
+	#                               or implementation (parents[0].parents=[OverlayLayer.Controller]).
+	# @param  hash|nil  style  An alternate style.
+	# @param  hash|nil  options  Extra options/configurations.
+	# @param  bool  visible  Initially set it up as visible or invisible.
+	# @return hash
+	#
 	new: func(group, map, controller = nil, style = nil, options = nil, visible = true) {
 		if (me == nil) __die("TileLayer constructor needs to know its parent class");
 		var m = {
@@ -1464,7 +1644,7 @@ var TileLayer = {
 		var slippy_center = [
 			math.floor(ymax * ((lon + 180.0) / 360.0)),
 			math.floor((1 - math.ln(math.tan(lat * math.pi/180.0) + 1 / math.cos(lat * math.pi/180.0)) / math.pi) / 2.0 * ymax),
-	  	];
+		];
 
 		# This is the Slippy Map location of the 0,0 tile
 		var offset = [
@@ -1692,7 +1872,7 @@ var load_MapStructure = func {
 			}
 			return class;
 		},
-		# Calls corresonding controller constructor
+		# Calls corresponding controller constructor
 		# @param map The #SymbolMap this controller is responsible for.
 		new: func(type, map, arg...) {
 			var class = me.get(type);

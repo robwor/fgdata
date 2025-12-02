@@ -27,7 +27,7 @@
         ]]></open>
 
         <close><![CDATA[
-            TestMap.del();
+            canvasMap.del();
             foreach (var l; listeners)
                 removelistener(l);
             setsize(listeners, 0);
@@ -362,13 +362,9 @@
                     <pref-width>600</pref-width>
                     <pref-height>400</pref-height>
                     <nasal><load><![CDATA[
-
-
-
-
                         var myCanvas = canvas.get( cmdarg() );
                         myCanvas.setColorBackground(0,0,0,0.5); # transparent
-                        var TestMap = myCanvas.createGroup().createChild("map");
+                        var canvasMap = myCanvas.createGroup().createChild("map");
 
                         # Initialize the controller:
                         var ctrl_ns = canvas.Map.Controller.get("Aircraft position");
@@ -378,32 +374,32 @@
                             var source = ctrl_ns.SOURCES["map-dialog"] = {
                                 getPosition: func subvec(geo.aircraft_position().latlon(), 0, 2),
                                 getAltitude: func getprop('/position/altitude-ft'),
-                                getHeading:  func {
-                                    if (me.aircraft_heading)
-                                        getprop('/orientation/heading-deg')
-                                    else 0
-                                },
-                                aircraft_heading: 1,
+                                getHeading:  func me.aircraft_heading ? getprop('/orientation/heading-deg') : 0,
+                                aircraft_heading: true,
                             };
                         }
                         setlistener("/sim/gui/dialogs/map-canvas/aircraft-heading-up", func(n) {
                             source.aircraft_heading = n.getBoolValue();
                         }, 1);
                         # Make it move with our aircraft:
-                        TestMap.setController("Aircraft position", "map-dialog"); # from aircraftpos.controller
+                        canvasMap.setController("Aircraft position", "map-dialog"); # from aircraftpos.controller
 
                         # Initialize a range:
-                        TestMap.setRange(60);
-                        TestMap.setScreenRange(200);
+                        canvasMap.setRange(60);
+                        canvasMap.setScreenRange(200);
 
-                        var range_step = math.log10(TestMap.getRange());
-			# TODO: check if this is valid, IIRC DOM manipulation was fragile when done inside canvas/Nasal region (?)
-                        gui.findElementByName(self, "zoomdisplay").setValue("property", TestMap._node.getNode("range").getPath());
+                        var range_step = math.log10(canvasMap.getRange());
+                        # TODO: check if this is valid, IIRC DOM manipulation was fragile when done inside canvas/Nasal region (?)
+                        gui.findElementByName(self, "zoomdisplay")
+                            .setValue(
+                                "property",
+                                canvasMap._node.getNode("range").getPath(),
+                            );
 
                         # Center the map's origin: FIXME: move to api.nas, i.e. allow maps to have a size/view that differs from the actual canvas ??
-                        TestMap.setTranslation(
-                            myCanvas.get("view[0]")/2,
-                            myCanvas.get("view[1]")/2
+                        canvasMap.setTranslation(
+                            myCanvas.get("view[0]") / 2,
+                            myCanvas.get("view[1]") / 2,
                         );
 
                         ##
@@ -459,68 +455,102 @@
                                 var t = systime();
                                 fn();
                                 t = systime() - t;
-                                printlog(canvas._MP_dbg_lvl, name~" took "~(t*1000)~"ms")
+                                logprint(canvas._MP_dbg_lvl, name ~ " took " ~ (t * 1000) ~ " ms");
                             }
                         }
 
-                        var ToggleLayerVisible = func(name) {
-                            (var l = TestMap.getLayer(name)).setVisible(l.getVisible());
+                        var toggleLayerVisible = func(name) {
+                            var layer = canvasMap.getLayer(name);
+                            layer.setVisible(layer.getVisible());
                         };
-                        var SetLayerVisible = func(name,n=1) {
-                            TestMap.getLayer(name).setVisible(n);
-                        };
-
-                        var SetProjection = func(projection) {
-                          TestMap._node.setValue("projection", projection);
+                        var setLayerVisible = func(name, n = 1) {
+                            canvasMap.getLayer(name).setVisible(n);
                         };
 
-                        setlistener("/sim/gui/dialogs/map-canvas/projection",
-                          func(n) SetProjection(n.getValue());
-                        );
+                        var setProjection = func(projection) {
+                            canvasMap._node.setValue("projection", projection);
+                        };
+
+                        setlistener("/sim/gui/dialogs/map-canvas/projection", func(n) {
+                            setProjection(n.getValue());
+                        });
 
 
-			Styles.APS = {};
-			Styles.APS.scale_factor = 0.25;
+                        Styles.APS = {};
+                        Styles.APS.scale_factor = 0.25;
 
-			# TODO: introduce some meta NAV layer that handles both VORs and NDBs, can we instantiate those layers directly ?
-                        var r = func(name,vis=1,zindex=nil) return caller(0)[0];
+                        # TODO: introduce some meta NAV layer that handles both VORs and NDBs, can we instantiate those layers directly ?
+                        var r = func(name, vis = true, zindex = nil) return caller(0)[0];
                         # TODO: we'll need some z-indexing here, right now it's just random
-                        foreach(var type; [r('TFC',0),r('APT'),r('DME'),r('VOR'),r('NDB'),r('FIX',0),r('RTE'),r('WPT'),r('FLT'),r('WXR',0),r('APS')] ) {
-                            if (1 and type.name != 'APS' and type.name != 'FLT') make_update_wrapper(type.name);
-                            TestMap.addLayer(factory: canvas.SymbolLayer, type_arg: type.name,
-                                             visible: type.vis, priority: 4,
-                                             style: Styles.get(type.name),
-                                             options: Options.get(type.name) );
+
+                        var symbolTypes = [
+                            r('TFC', false),
+                            r('APT'),
+                            r('DME'),
+                            r('VOR'),
+                            r('NDB'),
+                            r('FIX', false),
+                            r('RTE'),
+                            r('WPT'),
+                            r('FLT'),
+                            r('WXR', false),
+                            r('APS'),
+                        ];
+
+                        foreach (var type; symbolTypes) {
+                            if (1 and type.name != 'APS' and type.name != 'FLT') {
+                                make_update_wrapper(type.name);
+                            }
+
+                            canvasMap.addLayer(
+                                factory: canvas.SymbolLayer,
+                                type_arg: type.name,
+                                visible: type.vis,
+                                priority: 4,
+                                style: Styles.get(type.name),
+                                options: Options.get(type.name),
+                            );
+
                             (func {
                                 # Notify MapStructure about layer visibility changes:
                                 var name = type.name;
-                                props.globals.initNode("/sim/gui/dialogs/map-canvas/draw-"~name, type.vis, "BOOL");
+                                props.globals.initNode("/sim/gui/dialogs/map-canvas/draw-" ~ name, type.vis, "BOOL");
                                 append(listeners,
-                                    setlistener("/sim/gui/dialogs/map-canvas/draw-"~name,
-                                        func(n) SetLayerVisible(name,n.getValue()))
+                                    setlistener(
+                                        "/sim/gui/dialogs/map-canvas/draw-" ~ name,
+                                        func(n) setLayerVisible(name, n.getValue()),
+                                    ),
                                 );
-
-
                             })();
                         }
 
-                        foreach(var type; [ r('OSM'), r('VFRChart') ]) {
-                            TestMap.addLayer(factory: canvas.OverlayLayer, type_arg: type.name,
-                                             visible: 0, priority: 1,
-                                             style: Styles.get(type.name),
-                                             options: Options.get(type.name) );
+                        var overlayTypes = [
+                            r('OSM'),
+                            r('VFRChart'),
+                        ];
+
+                        foreach (var type; overlayTypes) {
+                            canvasMap.addLayer(
+                                factory: canvas.OverlayLayer,
+                                type_arg: type.name,
+                                visible: false,
+                                priority: 1,
+                                style: Styles.get(type.name),
+                                options: Options.get(type.name),
+                            );
+
                             (func {
                                 # Notify MapStructure about layer visibility changes:
                                 var name = type.name;
                                 props.globals.initNode("/sim/gui/dialogs/map-canvas/draw-"~name, 0, "BOOL");
                                 append(listeners,
-                                    setlistener("/sim/gui/dialogs/map-canvas/draw-"~name,
-                                        func(n) SetLayerVisible(name,n.getValue()))
+                                    setlistener(
+                                        "/sim/gui/dialogs/map-canvas/draw-" ~ name,
+                                        func(n) setLayerVisible(name, n.getValue()),
+                                    ),
                                 );
                             })();
                         }
-
-
                     ]]></load></nasal>
                 </canvas>
                 <layout>hbox</layout>
@@ -542,11 +572,12 @@
 
                     <binding>
                         <command>nasal</command>
-                        <script>
-                            var range = TestMap.getRange();
-                            if (range &lt; 40)
-                                TestMap.setRange(range*range_step);
-                        </script>
+                        <script><![CDATA[
+                            var range = canvasMap.getRange();
+                            if (range < 40) {
+                                canvasMap.setRange(range * range_step);
+                            }
+                        ]]></script>
                     </binding>
                 </button>
 
@@ -566,11 +597,12 @@
 
                     <binding>
                         <command>nasal</command>
-                        <script>
-                            var range = TestMap.getRange();
-                            if (range &gt; 1)
-                                TestMap.setRange(range/range_step);
-                        </script>
+                        <script><![CDATA[
+                            var range = canvasMap.getRange();
+                            if (range > 1) {
+                                canvasMap.setRange(range / range_step);
+                            }
+                        ]]></script>
                     </binding>
                 </button>
             </group>
