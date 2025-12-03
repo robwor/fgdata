@@ -48,7 +48,7 @@ var try_aux_method = func(obj, method_name) {
 # options/df_options and style/df_style in a SymbolLayer.
 #
 var default_hash = func(opt, df) {
-	if (opt != nil and ishash(opt)) {
+	if (ishash(opt)) {
 		if (df != nil and opt != df and !isa(opt, df)) {
 			if (contains(opt, "parents"))
 				opt.parents ~= [df];
