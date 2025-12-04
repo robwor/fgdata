@@ -57,6 +57,16 @@ var test_add = func() {
     myProp.setValue(136);
     unitTest.assert(myProp.add(2, 137, 20) == 118, "add(2, 137, 20)");
 
+    # test integer prop with float increments - decimals will be cut off, not rounded
+    unitTest.assert(myProp.add(0.1) == 118, "add(0.1)");
+    unitTest.assert(myProp.add(0.6) == 118, "add(0.6)");
+    print(myProp.getValue());
+
+    # test floating point
+    myProp.initNode(nil, nil, "DOUBLE", "force");
+    myProp.setValue(0);
+    unitTest.assert(myProp.add(2.5) == 2.5, "add(2.5)");
+
     # negative tests (tbd)
 }
 
@@ -75,5 +85,15 @@ var test_sub = func() {
     myProp.setValue(118);
     unitTest.assert(myProp.sub(1, 118, 20) == 137, "sub(1, 118, 20)");
 
+    # test integer prop with float increments - decimals will be cut off, not rounded
+    unitTest.assert(myProp.sub(0.1) == 136, "sub(0.1)");
+    unitTest.assert(myProp.sub(0.6) == 135, "sub(0.6)");
+    print(myProp.getValue());
+
+    # test floating point
+    myProp.initNode(nil, nil, "DOUBLE", "force");
+    myProp.setValue(0);
+    unitTest.assert(myProp.sub(2.5) == -2.5, "sub(2.5)");
+    
     # negative tests (tbd)
 }
