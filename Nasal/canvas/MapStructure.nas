@@ -370,7 +370,7 @@ var member = func(object, key) {
 		}
 	}
 
-	die("member not found: '" ~ unescape(k) ~ "'");
+	die("member not found: '" ~ unescape(key) ~ "'");
 };
 
 ##
