@@ -956,7 +956,7 @@ Started September 2000 by David Megginson, david@megginson.com
         <edge-size type="int">5</edge-size>
       </autovisibility>
       <legacy-multiplayer-view-selector>
-        <enabled type="bool" userarchive="y"/>
+        <enabled type="bool" userarchive="y">false</enabled>
       </legacy-multiplayer-view-selector>
     </menubar>
     <gui preserve="y">
@@ -1022,7 +1022,7 @@ Started September 2000 by David Megginson, david@megginson.com
       <tape-directory type="string" userarchive="y"/>
       <recovery-period type="int" userarchive="y">0</recovery-period>
       <record-signals type="bool" userarchive="y">true</record-signals>
-      <record-multiplayer type="bool" userarchive="y"/>
+      <record-multiplayer type="bool" userarchive="y">false</record-multiplayer>
       <record-main-window type="bool" userarchive="y">false</record-main-window>
       <record-main-view type="bool" userarchive="y">false</record-main-view>
       <replay-main-window-position type="bool" userarchive="y">false</replay-main-window-position>
