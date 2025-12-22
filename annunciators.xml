@@ -25,8 +25,8 @@ see also https://wiki.flightgear.org/Aircraft_properties_reference
     <!-- generic door warning: true = at least one door is not save for flight -->
     <doors type="bool">false</doors>
 
-    <master-caution><state type="bool"/></master-caution>
-    <master-warning><state type="bool"/></master-warning>
+    <master-caution><state type="bool">false</state></master-caution>
+    <master-warning><state type="bool">false</state></master-warning>
 
     <!-- autoflight -->
     <autoflight>
