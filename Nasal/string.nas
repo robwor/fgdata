@@ -499,6 +499,7 @@ setlistener("/sim/startup/terminal-ansi-colors", func(n) setcolors(n.getBoolValu
 
 ##
 # shorten sting s to length by replacing characters in the middle by '...'
+# length values < 7 will be ignored
 var squeeze = func(s, length) {
 	if (size(s) <= length or length < 7)
 		return s;
