@@ -924,9 +924,10 @@ var NDStyles = {
 					init: func(nd,symbol),
 					predicate: func(nd) (nd.in_mode('toggle_display_mode', ['MAP'])),
 					is_true: func(nd) {
-						nd.symbols.trendVector.show();
 						var rollDeg = getprop("/orientation/roll-deg") or 0;
-						if (abs(rollDeg) > 0.2 and nd.aircraft_source.get_gnd_spd() > 100) {
+						nd.symbols.trendVector.setVisible(abs(rollDeg) < 90);
+
+						if (abs(rollDeg) > 0.2 and abs(rollDeg) < 90 and nd.aircraft_source.get_gnd_spd() > 100) {
 							var radius = abs(nd.aircraft_source.get_gnd_spd()*nd.aircraft_source.get_gnd_spd()/(68578.83369*math.tan(rollDeg*D2R)));
 							var sec = 90;
 							if (nd.rangeNm() <= 10) sec = 30;
