@@ -50,17 +50,11 @@ var setViewByIndex = func(i) {
         setView(indices[i]);
 }
 
+#
+# @deprecated  Just use directly has_member() from C lib.
+#
 var hasmember = func(class, member) {
-	if (contains(class, member))
-		return 1;
-	if (!contains(class, "parents"))
-		return 0;
-	if (typeof(class.parents) != "vector")
-		return 0;
-	foreach (var parent; class.parents)
-		if (hasmember(parent, member))
-			return 1;
-	return 0;
+	return has_member(class, member);
 }
 
 
@@ -299,7 +293,7 @@ var manager = {
 		me.views[n]["handler"] = handler;
 		var viewnodes = props.globals.getNode("sim").getChildren("view");
                 me.views[n]["node"] = viewnodes[n];
-		if (hasmember(handler, "init"))
+		if (has_member(handler, "init"))
 			handler.init(me.views[n].node);
 		me.set_view();
 	},
@@ -314,15 +308,15 @@ var manager = {
                     if (me.current.multiplayer) {
                         model_view_handler.stop();
                     }
-		    if (hasmember(me.current.handler, "stop"))
+		    if (has_member(me.current.handler, "stop"))
 			me.current.handler.stop();
                 }
 
 		me.current = me.views[which];
 
-		if (hasmember(me.current.handler, "start"))
+		if (has_member(me.current.handler, "start"))
 			me.current.handler.start();
-		if (hasmember(me.current.handler, "update"))
+		if (has_member(me.current.handler, "update"))
 			me._loop_(me.loopid += 1);
                 if (me.current != nil and me.current.multiplayer) {
                     model_view_handler.start();
@@ -334,7 +328,7 @@ var manager = {
                 setprop("/sim/current-view/view-number-raw", views[which].getIndex());
 	},
 	reset : func {
-		if (hasmember(me.current.handler, "reset"))
+		if (has_member(me.current.handler, "reset"))
 			me.current.handler.reset();
 		else
 			default_handler.reset();
@@ -544,7 +538,7 @@ var fly_by_view_handler = {
 };
 
 
-# Helper for views that can show multiplayer aircaft as well as the user's
+# Helper for views that can show multiplayer aircraft as well as the user's
 # aircraft. Used by <manager> above.
 #
 var model_view_handler_class = {
@@ -607,7 +601,7 @@ var model_view_handler_class = {
         # It looks like we can get called (from me.new()) before
         # multiplayer.model.list is created, so need to check whether it
         # exists.
-        if (hasmember(multiplayer.model, 'list')) {
+        if (has_member(multiplayer.model, 'list')) {
             me.list = [self] ~ multiplayer.model.list;
         }
         else {
