@@ -311,7 +311,7 @@ var duplicateHash = func(object, rkeys = nil) {
 		: rkeys;
 
 	foreach (var k; keys) {
-		h[k] = member(object, k);
+		h[k] = member_or_die(object, k);
 	}
 
 	return h;
@@ -324,22 +324,10 @@ var duplicateHash = func(object, rkeys = nil) {
 # @param  string  key   The key value to find.
 # @return mixed|nil  The key's value, or nil if not found.
 #
+# @deprecated  Just use directly member() from C lib.
+#
 var opt_member = func(object, key) {
-	if (contains(object, key)) {
-		return object[key];
-	}
-
-	if (contains(object, "parents")) {
-		var par = object.parents;
-		foreach (var parent; par) {
-			var value = opt_member(parent, key);
-			if (value != nil) {
-				return value;
-			}
-		}
-	}
-
-	return nil;
+	return member(object, key);
 };
 
 #
@@ -349,28 +337,12 @@ var opt_member = func(object, key) {
 # @param  string  key  The key value to find.
 # @return mixed  The key's value.
 #
-var member = func(object, key) {
-	if (contains(object, key)) {
-		return object[key];
+var member_or_die = func(object, key) {
+	if (!has_member(object, key)) {
+		die("member not found: '" ~ unescape(key) ~ "'");
 	}
 
-	if (contains(object, "parents")) {
-		var pars = object.parents;
-		var len = size(pars);
-		for (var i = 0; i < len; i += 1) {
-			if (contains(pars[i], key)) {
-				return pars[i][key];
-			}
-
-			if (contains(pars[i], "parents") and size(pars[i].parents)) {
-				pars = object.parents ~ pars[i + 1:];
-				i = 0;
-				len = size(pars);
-			}
-		}
-	}
-
-	die("member not found: '" ~ unescape(key) ~ "'");
+	return member(object, key);
 };
 
 ##
@@ -474,7 +446,7 @@ var style_string = func(style, relevant_keys = nil) {
 
 	var str = "";
 	foreach (var k; relevant_keys) {
-		var value = member(style, k);
+		var value = member_or_die(style, k);
 		if (value == nil) continue;
 		if (str) str ~= ";";
 		str ~= k ~ ":";
@@ -653,12 +625,12 @@ var Symbol = {
 	# EXAMPLE:
 	#      var ok = (contains(me.options, 'enabled') ? me.options.enabled : 0);
 	#      var ok = me.getOption('enabled', 0);
-	getOption: func(name,  default = nil){
+	getOption: func(name, default = nil){
 		var opt = me.options;
 		if(opt == nil)
 			opt = me.layer.options;
 		if(opt == nil) return default;
-		var val = opt_member(opt, name);
+		var val = member(opt, name);
 		if(val == nil) return default;
 		return val;
 	},
@@ -685,7 +657,7 @@ var Symbol = {
 		if(st == nil)
 			st = me.layer.style;
 		if(st == nil) return default;
-		var val = opt_member(st, name);
+		var val = member(st, name);
 		if(isfunc(val)) {
 			val = (call(val,[],me));
 		}
@@ -1185,8 +1157,8 @@ var SymbolLayer = {
 		if (controller.parents[0].parents[0] != SymbolLayer.Controller)
 			__die("MultiSymbolLayer: OOP error");
 		if(options != nil){
-			var listeners = opt_member(controller, 'listeners');
-			var listen = opt_member(options, 'listen');
+			var listeners = member(controller, 'listeners');
+			var listen = member(options, 'listen');
 			if (listen != nil and listeners != nil){
 				var listenType = typeof(listen);
 				if (listenType != 'vector' and listenType != 'scalar') {
@@ -1198,7 +1170,7 @@ var SymbolLayer = {
 				}
 
 				foreach(var node_name; listen){
-					var node = opt_member(options, node_name);
+					var node = member(options, node_name);
 					if(node == nil)
 						node = node_name;
 					append(
@@ -1503,8 +1475,8 @@ var OverlayLayer = {
 		assert_m(controller, "parents");
 		assert_m(controller.parents[0], "parents");
 		if(options != nil){
-			var listeners = opt_member(controller, 'listeners');
-			var listen = opt_member(options, 'listen');
+			var listeners = member(controller, 'listeners');
+			var listen = member(options, 'listen');
 			if (listen != nil and listeners != nil){
 				var listenType = typeof(listen);
 				if (listenType != 'vector' and listenType != 'scalar') {
@@ -1516,7 +1488,7 @@ var OverlayLayer = {
 				}
 
 				foreach(var node_name; listen){
-					var node = opt_member(options, node_name);
+					var node = member(options, node_name);
 					if(node == nil)
 						node = node_name;
 					append(
@@ -1535,7 +1507,7 @@ var OverlayLayer = {
 
 var TileLayer = {
 	parents: [OverlayLayer],
-	
+
 	# Default implementations/values:
 
 	##

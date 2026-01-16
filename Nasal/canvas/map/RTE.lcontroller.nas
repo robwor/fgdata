@@ -30,7 +30,7 @@ var new = func(layer) {
 		setlistener(layer.options.wp_num, func m.layer.update() ));
 
 	m.addVisibilityListener();
-	var driver = opt_member(m.layer.options, 'route_driver');
+	var driver = member(m.layer.options, 'route_driver');
 	if(driver == nil){
 		driver = RouteDriver.new();
 	}

@@ -54,7 +54,7 @@ var new = func(layer) {
         listeners: [],
     };
     layer.searcher._equals = func(a,b) a.equals(b);
-    var driver = opt_member(m.layer.options, 'route_driver');
+    var driver = member(m.layer.options, 'route_driver');
     if(driver == nil){
         driver = RouteDriver.new();
     }

@@ -27,7 +27,7 @@ var new = func(layer) {
 	layer.searcher._equals = func(l,r) {l.equals(r)}; # TODO: create model objects instead?
 	#append(m.listeners, setlistener(layer.options.active_node, func m.layer.update() ));
 	#m.addVisibilityListener();
-	var driver = opt_member(m.layer.options, 'route_driver');
+	var driver = member(m.layer.options, 'route_driver');
 	if(driver == nil){
 		driver = RouteDriver.new();
 	}
