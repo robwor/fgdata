@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PropertyList>
+  <name>Effects/gui</name>
+  <inherits-from>Effects/model-pbr-transparent</inherits-from>
+
+  <parameters>
+    <base-color-factor type="vec4d">1 1 1 1</base-color-factor>
+    <depth-offset type="float">-0.05</depth-offset>
+    <alpha-cutoff type="float">0.01</alpha-cutoff>
+  </parameters>
+
+  <technique n="128">
+    <pass n="0">
+      <blend n="0">
+        <active>true</active>
+        <!-- source is premultiplied -->
+        <source>one</source>
+        <destination>one-minus-src-alpha</destination>
+      </blend>
+      <depth n="0">
+        <!-- Temporary hack to prevent clouds overwriting -->
+        <write-mask>true</write-mask>
+      </depth>
+      <texture-unit n="5">
+        <unit>5</unit>
+        <type>buffer</type>
+        <buffer>gui</buffer>
+        <wrap-s>clamp-to-edge</wrap-s>
+        <wrap-t>clamp-to-edge</wrap-t>
+      </texture-unit>
+      <!-- base_color_tex -->
+      <uniform n="0">
+        <value type="int">5</value>
+      </uniform>
+    </pass>
+  </technique>
+</PropertyList>
+
