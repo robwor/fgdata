@@ -31,23 +31,23 @@
   </cursor>
 
   <cursor>
+    <cursor>hand</cursor>
+    <model>
+      <path>Models/Cursors/hand-point.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>closed-hand</cursor>
+    <model>
+      <path>Models/Cursors/hand-closed.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
     <cursor>crosshair</cursor>
     <model>
       <path>Models/Cursors/crosshair.xml</path>
-    </model>
-  </cursor>
-
-  <cursor>
-    <cursor>drag-horizontal</cursor>
-    <model>
-      <path>Models/Cursors/left-right.xml</path>
-    </model>
-  </cursor>
-
-  <cursor>
-    <cursor>drag-vertical</cursor>
-    <model>
-      <path>Models/Cursors/up-down.xml</path>
     </model>
   </cursor>
 
@@ -59,16 +59,16 @@
   </cursor>
 
   <cursor>
-    <cursor>hand</cursor>
+    <cursor>left-right</cursor>
     <model>
-      <path>Models/Cursors/hand-point.xml</path>
+      <path>Models/Cursors/left-right.xml</path>
     </model>
   </cursor>
 
   <cursor>
-    <cursor>closed-hand</cursor>
+    <cursor>up-down</cursor>
     <model>
-      <path>Models/Cursors/hand-closed.xml</path>
+      <path>Models/Cursors/up-down.xml</path>
     </model>
   </cursor>
 
