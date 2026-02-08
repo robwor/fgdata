@@ -72,5 +72,60 @@
     </model>
   </cursor>
 
-</PropertyList>
+  <cursor>
+    <cursor>left-side</cursor>
+    <model>
+      <path>Models/Cursors/left-side.xml</path>
+    </model>
+  </cursor>
 
+  <cursor>
+    <cursor>right-side</cursor>
+    <model>
+      <path>Models/Cursors/right-side.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>top-side</cursor>
+    <model>
+      <path>Models/Cursors/top-side.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>bottom-side</cursor>
+    <model>
+      <path>Models/Cursors/bottom-side.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>top-left</cursor>
+    <model>
+      <path>Models/Cursors/top-left.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>top-right</cursor>
+    <model>
+      <path>Models/Cursors/top-right.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>bottom-left</cursor>
+    <model>
+      <path>Models/Cursors/bottom-left.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>bottom-right</cursor>
+    <model>
+      <path>Models/Cursors/bottom-right.xml</path>
+    </model>
+  </cursor>
+
+</PropertyList>
