@@ -20,14 +20,12 @@
   </locale>
 
   <locale>
-    <language-id type="string">es</language-id>
-    <lang type="string">es</lang>
-    <lang type="string">es_AR</lang>
-    <lang type="string">es_MX</lang>
-    <lang type="string">es_ES</lang>
+    <language-id type="string">cs</language-id>
+    <lang type="string">cs</lang>
+    <lang type="string">cs_CZ</lang>
 
     <core>
-      <xliff type="string">Translations/es/FlightGear-nonQt.xlf</xliff>
+      <xliff type="string">Translations/cs/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
@@ -40,6 +38,18 @@
 
     <core>
       <xliff type="string">Translations/de/FlightGear-nonQt.xlf</xliff>
+    </core>
+  </locale>
+
+  <locale>
+    <language-id type="string">es</language-id>
+    <lang type="string">es</lang>
+    <lang type="string">es_AR</lang>
+    <lang type="string">es_MX</lang>
+    <lang type="string">es_ES</lang>
+
+    <core>
+      <xliff type="string">Translations/es/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
@@ -100,26 +110,6 @@
   </locale>
 
   <locale>
-    <language-id type="string">ru</language-id>
-    <lang type="string">ru</lang>
-    <lang type="string">ru_RU</lang>
-
-    <core>
-      <xliff type="string">Translations/ru/FlightGear-nonQt.xlf</xliff>
-    </core>
-  </locale>
-
-  <locale>
-    <language-id type="string">zh_CN</language-id>
-    <lang type="string">zh</lang>
-    <lang type="string">zh_CN</lang>
-
-    <core>
-      <xliff type="string">Translations/zh_CN/FlightGear-nonQt.xlf</xliff>
-    </core>
-  </locale>
-
-  <locale>
     <language-id type="string">pt</language-id>
     <lang type="string">pt</lang>
     <lang type="string">pt_BR</lang>
@@ -131,12 +121,42 @@
   </locale>
 
   <locale>
+    <language-id type="string">ru</language-id>
+    <lang type="string">ru</lang>
+    <lang type="string">ru_RU</lang>
+
+    <core>
+      <xliff type="string">Translations/ru/FlightGear-nonQt.xlf</xliff>
+    </core>
+  </locale>
+
+  <locale>
+    <language-id type="string">sk</language-id>
+    <lang type="string">sk</lang>
+    <lang type="string">sk_SK</lang>
+
+    <core>
+      <xliff type="string">Translations/sk/FlightGear-nonQt.xlf</xliff>
+    </core>
+  </locale>
+
+  <locale>
     <language-id type="string">tr</language-id>
     <lang type="string">tr</lang>
     <lang type="string">tr_TR</lang>
 
     <core>
       <xliff type="string">Translations/tr/FlightGear-nonQt.xlf</xliff>
+    </core>
+  </locale>
+
+  <locale>
+    <language-id type="string">zh_CN</language-id>
+    <lang type="string">zh</lang>
+    <lang type="string">zh_CN</lang>
+
+    <core>
+      <xliff type="string">Translations/zh_CN/FlightGear-nonQt.xlf</xliff>
     </core>
   </locale>
 
