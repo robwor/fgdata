@@ -8,6 +8,8 @@
     <!-- Alpha Coverage -->
     <blend>1</blend>
     <alpha-cutoff>-1.0</alpha-cutoff>
+    <!-- logarithmic_depth.glsl -->
+    <depth-offset type="float">0.0</depth-offset>
     <!-- shadows.glsl -->
     <show-shadow-cascades>
       <use>/sim/rendering/hdr/debug/show-shadow-cascades</use>
@@ -160,6 +162,12 @@
         <name>alpha_cutoff</name>
         <type>float</type>
         <value><use>alpha-cutoff</use></value>
+      </uniform>
+      <!-- logarithmic_depth.glsl -->
+      <uniform>
+        <name>depthOffset</name>
+        <type>float</type>
+        <value><use>depth-offset</use></value>
       </uniform>
       <!-- shadows.glsl -->
       <uniform>
