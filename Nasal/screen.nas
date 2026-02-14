@@ -99,7 +99,7 @@ var Log = {
 		m._layout = canvas.VBoxLayout.new();
 		m._overlay.setLayout(m._layout);
 
-		m._canvas.set("background", sprintf("rgba(%d, %d, %d, %d)", m.bg[0], m.bg[1], m.bg[2], m.bg[3]));
+		m._canvas.set("background", canvas._getColor(m.bg));
 		m._canvas.set("blend-source-rgb", "src-color");
 		m._canvas.set("blend-source-alpha", "src-alpha");
 		m._overlay.hide();
