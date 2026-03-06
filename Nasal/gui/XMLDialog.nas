@@ -25,7 +25,8 @@ var XMLDialog = {
         me._window = canvas.Window.new(sz, "dialog", d.name);
         me._window.setTitle(d.title);
         me._window.set("resize", d.resizeable);
-
+        me._window.set("name", d.name);
+        
         var m = me;
         me._window.del = func {
             m.onWindowClosed();
@@ -34,8 +35,9 @@ var XMLDialog = {
 
     didBuild: func()
     {
-        var ourCanvas = me._window.getCanvas(1); # create, probably
+        var ourCanvas = me._window.getCanvas(true); # create, probably
         ourCanvas.set("background", canvas.style.getColor("bg_color"));
+        ourCanvas.set("name", "dialog-contents-" ~ me.dialog().name);
         var rootCanvasGroup = ourCanvas.createGroup();
         # get the root XMLObject, almost certainly a container of
         # some kind. (eg frame / group / scroll area)
@@ -64,12 +66,8 @@ var XMLDialog = {
     # the dialog, which will end up with us in 'onClosed'
     onWindowClosed: func
     {
-        logprint(LOG_WARN, "XMLDialog window was requested to closed");
+        logprint(LOG_INFO, "XMLDialog window was requested to close");
         me.dialog().close();
-
-        # hack: manually trigger onClose for now. This should happen automatically
-        # in response to dialog().close().
-        me.onClose();
     },
 
     onWindowHelp: func
@@ -107,6 +105,7 @@ var XMLDialog = {
 
     onClose: func
     {
+        logprint(LOG_INFO, me.dialog().name ~ " Dialog is closing");
         # call the base canvas.Window delete method, not
         # our wrapper above.
         call(canvas.Window.del, [], me._window);

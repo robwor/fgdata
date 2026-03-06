@@ -113,6 +113,8 @@ var Window = {
         id: me.get("id")
       },
 
+      name: "window-contents-" ~ me.get("id"),
+
       # Standard alpha blending
       "blend-source-rgb": "src-alpha",
       "blend-destination-rgb": "one-minus-src-alpha",
