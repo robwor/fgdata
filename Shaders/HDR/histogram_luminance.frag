@@ -26,7 +26,7 @@ void main()
     uint light_count = histogram_get_light_count(total_pixels);
 
     int num_bins = textureSize(histogram_tex, 0).x; // [0, 255]
-    uint weighted_sum = 0u;
+    float weighted_sum = 0.0;
     uint pixel_count = 0u;
     uint valid_pixel_count = 0u;
 
@@ -47,12 +47,12 @@ void main()
         // Only consider the bins that contain pixels that are not too bright
         // or too dark for the mean.
         if (pass_dark && pass_light) {
-            weighted_sum += uint(i) * hits;
+            weighted_sum += float(i) * hits;
             valid_pixel_count += hits;
         }
     }
 
-    float mean = float(weighted_sum) / max(float(valid_pixel_count), 1.0);
+    float mean = weighted_sum / max(float(valid_pixel_count), 1.0);
 
     // Get the previous adapted luminance
     float prev_lum = max(texelFetch(prev_lum_tex, ivec2(0), 0).r, 1e-6);
