@@ -19,10 +19,10 @@
 * Button 1: gear up/down
 * Button 4: trim up
 * Button 9: trim down
-* Button 10: flaps up
-* Button 15: flaps down
-* Button 2: trim aileron left
-* Button 3: trim aileron right
+* Button 10: flaps down
+* Button 15: flaps up
+* Button 2: Cycle view back
+* Button 3: Cycle view forward
 * Button 5: Mixture up
 * Button 8: Mixture down
 * Button 6: Propeller up
@@ -268,7 +268,7 @@
   </button>
 
 <button n="8">
-  <desc>mixture up</desc>
+  <desc>mixture down</desc>
   <repeatable type="bool">true</repeatable>
   <binding>
   <command>nasal</command>
@@ -295,7 +295,7 @@
   </button>
 
 <button n="12">
-  <desc>batterie switch</desc>
+  <desc>battery switch</desc>
   <repeatable type="bool">false</repeatable>
   <binding>
   <command>nasal</command>
@@ -336,7 +336,7 @@
   </button>
 
 <button n="11">
-  <desc>selecteur megneto</desc>
+  <desc>magneto selector</desc>
   <repeatable type="bool">false</repeatable>
   <binding>
   <command>nasal</command>
@@ -396,4 +396,4 @@ elsif ( l == 3 )
 </PropertyList>
 
 
-<!-- end of TGF2PROUSB.xml -->
+<!-- end of T16000M.xml -->
