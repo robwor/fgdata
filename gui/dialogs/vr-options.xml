@@ -226,6 +226,33 @@
     </checkbox>
   </group>
 
+  <group>
+    <layout>hbox</layout>
+    <halign>left</halign>
+    <default-padding>1</default-padding>
+    <text>
+      <label>  360 mouse sensitivity</label>
+    </text>
+    <slider>
+      <name>vr-mouse-sensitivity</name>
+      <min>0.01</min>
+      <max>0.20</max>
+      <step>0.01</step>
+      <live>true</live>
+      <property>/sim/vr/config/cursors/px-angle-deg</property>
+      <binding>
+        <command>dialog-apply</command>
+        <object-name>vr-mouse-sensitivity</object-name>
+      </binding>
+    </slider>
+    <text>
+      <label>0.05 deg/px</label>
+      <format>%.2f deg/px</format>
+      <live>true</live>
+      <property>/sim/vr/config/cursors/px-angle-deg</property>
+    </text>
+  </group>
+
   <empty>
     <stretch>true</stretch>
   </empty>
