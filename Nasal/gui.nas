@@ -69,35 +69,22 @@ var menuBind = func(searchname, command) {
 }
 
 ##
-# Set mouse cursor coordinates and shape (number or name), and return
-# current shape (number).
+# Set mouse cursor coordinates and shape (name).
 #
-# Example:  var cursor = gui.setCursor();
-#           gui.setCursor(nil, nil, "wait");
+# See mouse_cursor_map[] in flightgear for cursor shape names.
+#
+# Example:  gui.setCursor(nil, nil, "wait");
 #
 var setCursor = func(x = nil, y = nil, cursor = nil) {
     var args = props.Node.new();
     if (x != nil) args.getNode("x", 1).setIntValue(x);
     if (y != nil) args.getNode("y", 1).setIntValue(y);
     if (cursor != nil) {
-        if (num(cursor) == nil)
-            cursor = cursor_types[cursor];
-        if (cursor == nil)
-            die("cursor must be one of: " ~ string.join(", ", keys(cursor_types)));
-        setprop("/sim/mouse/hide-cursor", cursor);
-        args.getNode("cursor", 1).setIntValue(cursor);
+        setprop("/sim/mouse/hide-cursor", cursor != "none");
+        args.getNode("cursor", 1).setValue(cursor);
     }
     fgcommand("set-cursor", args);
-    return args.getValue("cursor");
 }
-
-##
-# Supported mouse cursor types.
-#
-var cursor_types = { none: 0, pointer: 1, wait: 2, crosshair: 3, leftright: 4,
-    topside: 5, bottomside: 6, leftside: 7, rightside: 8,
-    topleft: 9, topright: 10, bottomleft: 11, bottomright: 12,
-};
 
 ##
 # Find a GUI element by given name.
