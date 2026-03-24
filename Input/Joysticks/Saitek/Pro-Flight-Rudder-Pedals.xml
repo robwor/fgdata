@@ -15,7 +15,6 @@ $Id$
 -->
 
 <PropertyList>
-
  <name>Saitek Pro Flight Rudder Pedals</name>
  <name>Saitek Pro Flight Rudder Pedals (USB)</name>
  <name>Saitek Saitek Pro Flight Rudder Pedals</name>
@@ -25,6 +24,8 @@ $Id$
  <name>ProFlight Cessna Rudder Pedals</name>
  <name>Pro Flight Cessna Rudder Pedals</name>
  <name>Mad Catz Pro Flight Rudder Pedals</name>
+ <name>Flight Rudder Pedals</name>
+ 
  <device-dialog>generic-pedals</device-dialog>
 
  <axis n="0">
