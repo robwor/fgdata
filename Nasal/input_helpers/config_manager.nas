@@ -86,22 +86,26 @@ config_manager = {
         me._mapped_inputs = [];
     },
 
-    getMappings: func(variant_id) {
+    _checkVariantId: func(variant_id) {
         if (!contains(me.variants, variant_id)) {
-            logprint(LOG_WARN, me.vendor~" "~me.model~": unknown config variant '"~variant_id~"'");
-            return {}
+            logprint(LOG_WARN, "config_manager: Unknown config variant '"~variant_id~"' for "~ me.vendor~" "~me.model);
+            return false;
         }
-        return me.mappings[variant_id];
+        return true;
+    },
+
+    getMappings: func(variant_id) {
+        if (me._checkVariantId(variant_id)) 
+            return me.mappings[variant_id];
+        return {}        
     },
 
     # load a config variant
     # input props are aliased with the corresponding control props
     configure: func(variant_id) {
-        if (!contains(me.variants, variant_id)) {
-            logprint(LOG_WARN, me.vendor~" "~me.model~": unknown config variant '"~variant_id~"'");
+        if (!me._checkVariantId(variant_id))            
             return;
-        }
-        logprint(LOG_INFO,"config_manager "~me.vendor~" "~me.model~" configure("~me.variants[variant_id]~")");
+        logprint(LOG_INFO,"config_manager: Configuring "~me.vendor~" "~me.model~" with variant '"~me.variants[variant_id]~"'");
         me._unalias();
         foreach (var mapping; me.prefixN.getNode("mappings", 1).getChildren()) {
             mapping.setValue("");
