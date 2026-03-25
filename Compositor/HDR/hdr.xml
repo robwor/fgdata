@@ -73,9 +73,19 @@
     <format>r11f-g11f-b10f</format>
   </buffer>
 
-  <!-- HDR buffer after demosaicing -->
+  <!-- HDR buffer just containing clouds -->
+  <buffer include="cloud-buffer.xml">
+    <name>clouds</name>
+    <format>rgba16f</format>
+  </buffer>
+  <buffer include="cloud-buffer.xml">
+    <name>clouds-depth-stencil</name>
+    <format>depth24-stencil8</format>
+  </buffer>
+
+  <!-- Final HDR buffer -->
   <buffer include="screen-buffer.xml">
-    <name>hdr-demosaiced</name>
+    <name>hdr-final</name>
     <format>r11f-g11f-b10f</format>
   </buffer>
 
@@ -463,7 +473,7 @@
   <!--
       Environment capture passes
       Render to a cubemap using forward rendering. Only render the skydome and
-      very bare terrain since we want to make as little draw calls as possible.
+      very bare terrain since we want to make as few draw calls as possible.
       We also want to avoid doing an OSG cull traversal on many nodes as our
       scene graph structure isn't too well optimized.
   -->
@@ -1081,6 +1091,39 @@
     </attachment>
   </pass>
 
+
+  <!-- This pass generates a screen buffer containing clouds -->
+  <pass>
+    <name>clouds</name>
+    <type>quad</type>
+    <multiview>true</multiview>
+    <effect>Effects/HDR/cloudquad</effect>
+    <binding>
+      <unit>2</unit>
+      <buffer>depth-stencil</buffer>
+    </binding>
+    <binding>
+      <unit>11</unit>
+      <buffer>aerial-perspective</buffer>
+    </binding>
+    <binding>
+      <unit>12</unit>
+      <buffer>transmittance</buffer>
+    </binding>
+    <binding>
+      <unit>14</unit>
+      <buffer>prev-luminance</buffer>
+    </binding>
+    <attachment>
+      <component>color0</component>
+      <buffer>clouds</buffer>
+    </attachment>
+    <attachment>
+      <component>depth</component>
+      <buffer>clouds-depth-stencil</buffer>
+    </attachment>
+  </pass>
+
   <!--
       This pass essentially performs demosaicing on the bayer pattern produced
       by some semi-transparent objects in the deferred geometry pass.
@@ -1102,9 +1145,17 @@
       <unit>2</unit>
       <buffer>depth-stencil</buffer>
     </binding>
+    <binding>
+      <unit>3</unit>
+      <buffer>clouds</buffer>
+    </binding>
+    <binding>
+      <unit>4</unit>
+      <buffer>clouds-depth-stencil</buffer>
+    </binding>
     <attachment>
       <component>color0</component>
-      <buffer>hdr-demosaiced</buffer>
+      <buffer>hdr-final</buffer>
     </attachment>
   </pass>
 
@@ -1257,7 +1308,7 @@
     <effect>Effects/HDR/bloom-downsample-first</effect>
     <binding>
       <unit>0</unit>
-      <buffer>hdr-demosaiced</buffer>
+      <buffer>hdr-final</buffer>
     </binding>
     <attachment>
       <component>color0</component>
@@ -1434,7 +1485,7 @@
     <effect>Effects/HDR/postprocess</effect>
     <binding>
       <unit>0</unit>
-      <buffer>hdr-demosaiced</buffer>
+      <buffer>hdr-final</buffer>
     </binding>
     <binding>
       <unit>1</unit>
@@ -1643,6 +1694,28 @@
       <buffer>histogram</buffer>
     </binding>
   </pass>
+
+  <pass>
+    <name>debug-cloudquad</name>
+    <type>quad</type>
+    <multiview>true</multiview>
+    <clear-mask>depth</clear-mask>
+    <effect>Effects/HDR/debug-cloudquad</effect>
+    <condition>
+      <property>/sim/rendering/hdr/debug/show-clouds</property>
+    </condition>
+    <geometry>
+      <left>0.8</left>
+      <bottom>0.2</bottom>
+      <width>0.2</width>
+      <height>0.2</height>
+    </geometry>
+    <binding>
+      <unit>0</unit>
+      <buffer>clouds</buffer>
+    </binding>
+  </pass>
+
 
   <pass>
     <name>debug-aerial-perspective</name>

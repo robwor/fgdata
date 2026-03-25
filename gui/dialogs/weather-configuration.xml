@@ -1254,6 +1254,13 @@
         <command>dialog-close</command>
       </binding>
     </button>
+    <button>
+      <legend>Rebuild Cloud Layers</legend>
+      <binding>
+        <command>nasal</command>
+        <script>controller.rebuildCloudLayers();</script>
+      </binding>
+    </button>
     <empty>
       <stretch>true</stretch>
     </empty>
@@ -1315,6 +1322,11 @@
               break;
             }
           }
+        },
+
+        rebuildCloudLayers : func() {
+            var rebuildCount = getprop("/environment/rebuild-layers") + 1;
+            setprop("/environment/rebuild-layers", rebuildCount);
         },
 
         turbulenceNames : { "none" : 0, "light" : 1, "moderate" : 2, "severe" : 3 },

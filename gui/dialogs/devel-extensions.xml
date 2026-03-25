@@ -279,6 +279,291 @@
         <layout>table</layout>
         <halign>left</halign>
 
+        <text>
+            <row>0</row>
+            <col>0</col>
+            <halign>right</halign>
+            <label>Clouds:</label>
+        </text>
+
+        <button>
+            <row>0</row>
+            <col>1</col>
+            <legend>Rebuild Clouds</legend>
+            <equal>true</equal>
+            <binding>
+                <command>nasal</command>
+                <script>
+                    setprop("/environment/weather-scenario", "Fair Weather");
+                </script>
+            </binding>
+        </button>
+
+	    <text>
+            <row>1</row>
+            <col>0</col>
+            <halign>right</halign>
+            <label>Density:</label>
+		</text>
+
+		<slider>
+			<name>density</name>			
+			<row>1</row>
+			<col>1</col>
+			<halign>fill</halign>
+			<min>0.0</min>
+			<max>1.0</max>
+			<live>true</live>
+			<property>/sim/rendering/hdr/clouds/debug/density</property>
+            <binding>
+                <command>dialog-apply</command>
+                <object-name>density</object-name>
+            </binding>
+		</slider>
+
+		<text>
+            <row>1</row>
+            <col>2</col>
+            <halign>left</halign>
+            <format>%.2f</format>
+            <label>1.0</label>
+            <property>/sim/rendering/hdr/clouds/debug/density</property>
+            <live>true</live>
+		</text>
+
+
+	    <text>
+            <row>2</row>
+            <col>0</col>
+            <halign>right</halign>
+            <label>Top Type (wispy to billowy):</label>
+		</text>
+
+		<slider>
+			<name>top-type</name>			
+			<row>2</row>
+			<col>1</col>
+			<halign>fill</halign>
+			<min>0.0</min>
+			<max>1.0</max>
+			<live>true</live>
+			<property>/sim/rendering/hdr/clouds/debug/top-type</property>
+            <binding>
+                <command>dialog-apply</command>
+                <object-name>top-type</object-name>
+            </binding>
+		</slider>
+
+		<text>
+            <row>2</row>
+            <col>2</col>
+            <halign>left</halign>
+            <format>%.2f</format>
+            <label>1.0</label>
+            <property>/sim/rendering/hdr/clouds/debug/top-type</property>
+            <live>true</live>
+		</text>
+
+	    <text>
+            <row>3</row>
+            <col>0</col>
+            <halign>right</halign>
+            <label>Bottom Type (wispy to billowy):</label>
+		</text>
+
+		<slider>
+			<name>bottom-type</name>			
+			<row>3</row>
+			<col>1</col>
+			<halign>fill</halign>
+			<min>0.0</min>
+			<max>1.0</max>
+			<live>true</live>
+			<property>/sim/rendering/hdr/clouds/debug/bottom-type</property>
+            <binding>
+                <command>dialog-apply</command>
+                <object-name>bottom-type</object-name>
+            </binding>
+		</slider>
+
+		<text>
+            <row>3</row>
+            <col>2</col>
+            <halign>left</halign>
+            <format>%.2f</format>
+            <label>1.0</label>
+            <property>/sim/rendering/hdr/clouds/debug/bottom-type</property>
+            <live>true</live>
+		</text>
+
+
+	    <text>
+            <row>4</row>
+            <col>0</col>
+            <halign>right</halign>
+            <label>Height:</label>
+		</text>
+
+		<slider>
+			<name>height</name>			
+			<row>4</row>
+			<col>1</col>
+			<halign>fill</halign>
+			<min>1.0</min>
+			<max>200.0</max>
+			<live>true</live>
+			<property>/sim/rendering/hdr/clouds/debug/height</property>
+            <binding>
+                <command>dialog-apply</command>
+                <object-name>height</object-name>
+            </binding>
+		</slider>
+
+		<text>
+            <row>4</row>
+            <col>2</col>
+            <halign>left</halign>
+            <format>%2.1f</format>
+            <label>4</label>
+            <property>/sim/rendering/hdr/clouds/debug/height</property>
+            <live>true</live>
+		</text>
+
+	    <text>
+            <row>5</row>
+            <col>0</col>
+            <halign>right</halign>
+            <label>Width:</label>
+		</text>
+
+		<slider>
+			<name>width</name>			
+			<row>5</row>
+			<col>1</col>
+			<halign>fill</halign>
+			<min>1.0</min>
+			<max>200.0</max>
+			<live>true</live>
+			<property>/sim/rendering/hdr/clouds/debug/width</property>
+            <binding>
+                <command>dialog-apply</command>
+                <object-name>width</object-name>
+            </binding>
+		</slider>
+
+		<text>
+            <row>5</row>
+            <col>2</col>
+            <halign>left</halign>
+            <format>%2.1f</format>
+            <label>4</label>
+            <property>/sim/rendering/hdr/clouds/debug/width</property>
+            <live>true</live>
+		</text>
+
+	    <text>
+            <row>6</row>
+            <col>0</col>
+            <halign>right</halign>
+            <label>Erosion:</label>
+		</text>
+
+		<slider>
+			<name>erosion</name>			
+			<row>6</row>
+			<col>1</col>
+			<halign>fill</halign>
+			<min>0.0</min>
+			<max>12.0</max>
+			<live>true</live>
+			<property>/sim/rendering/hdr/clouds/debug/erosion</property>
+            <binding>
+                <command>dialog-apply</command>
+                <object-name>erosion</object-name>
+            </binding>
+		</slider>
+
+		<text>
+            <row>6</row>
+            <col>2</col>
+            <halign>left</halign>
+            <format>%2.1f</format>
+            <label>1.0</label>
+            <property>/sim/rendering/hdr/clouds/debug/erosion</property>
+            <live>true</live>
+		</text>
+
+	    <text>
+            <row>7</row>
+            <col>0</col>
+            <halign>right</halign>
+            <label>Ambient Factor:</label>
+		</text>
+
+		<slider>
+			<name>ambient</name>			
+			<row>7</row>
+			<col>1</col>
+			<halign>fill</halign>
+			<min>0.0</min>
+			<max>4.0</max>
+			<live>true</live>
+			<property>/sim/rendering/hdr/clouds/ambient-intensity-scale</property>
+            <binding>
+                <command>dialog-apply</command>
+                <object-name>ambient</object-name>
+            </binding>
+		</slider>
+
+		<text>
+            <row>7</row>
+            <col>2</col>
+            <halign>left</halign>
+            <format>%0.6f</format>
+            <label>0.00</label>
+            <property>/sim/rendering/hdr/clouds/ambient-intensity-scale</property>
+            <live>true</live>
+		</text>
+
+	    <text>
+            <row>8</row>
+            <col>0</col>
+            <halign>right</halign>
+            <label>Direct Factor:</label>
+		</text>
+
+		<slider>
+			<name>direct</name>			
+			<row>8</row>
+			<col>1</col>
+			<halign>fill</halign>
+			<min>0.0</min>
+			<max>4.0</max>
+			<live>true</live>
+			<property>/sim/rendering/hdr/clouds/direct-intensity-scale</property>
+            <binding>
+                <command>dialog-apply</command>
+                <object-name>direct</object-name>
+            </binding>
+		</slider>
+
+		<text>
+            <row>8</row>
+            <col>2</col>
+            <halign>left</halign>
+            <format>%0.6f</format>
+            <label>0.0001</label>
+            <property>/sim/rendering/hdr/clouds/direct-intensity-scale</property>
+            <live>true</live>
+		</text>
+
+    </group>
+
+
+    <group>
+        <layout>table</layout>
+        <halign>left</halign>
+
         <button>
             <row>0</row>
             <col>0</col>

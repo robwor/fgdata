@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PropertyList>
+  <name>Effects/HDR/cloudquad</name>
+
+  <parameters>
+    <cloud-field-center type="vec3f">
+      <use>/sim/rendering/hdr/clouds/cloud-center-x</use>
+      <use>/sim/rendering/hdr/clouds/cloud-center-y</use>
+      <use>/sim/rendering/hdr/clouds/cloud-center-z</use>
+    </cloud-field-center>
+    <cloud-field-repeating>
+    <use>/sim/rendering/hdr/clouds/cloud-field-repeating</use>
+    </cloud-field-repeating>
+    <voxel-resolution-m>
+      <use>/sim/rendering/hdr/clouds/detailed-voxel-size-m</use>
+    </voxel-resolution-m>
+    <voxel-field-width>
+      <use>/sim/rendering/hdr/clouds/detailed-voxel-field-width</use>
+    </voxel-field-width>
+    <voxel-field-height>
+      <use>/sim/rendering/hdr/clouds/detailed-voxel-field-height</use>
+    </voxel-field-height>
+    <active-voxel-field-height-norm>
+      <use>/sim/rendering/hdr/clouds/active-voxel-field-height-norm</use>
+    </active-voxel-field-height-norm>
+    <rough-field-factor>
+      <use>/sim/rendering/hdr/clouds/rough-voxel-field-factor</use>
+    </rough-field-factor>
+    <rough-size-factor>
+      <use>/sim/rendering/hdr/clouds/rough-voxel-size-factor</use>
+    </rough-size-factor>
+    <direct-intensity-scale>
+      <use>/sim/rendering/hdr/clouds/direct-intensity-scale</use>
+    </direct-intensity-scale>
+    <ambient-intensity-scale>
+      <use>/sim/rendering/hdr/clouds/ambient-intensity-scale</use>
+    </ambient-intensity-scale>
+    <!-- exposure.glsl -->
+    <exposure-compensation>
+      <use>/sim/rendering/hdr/exposure-compensation</use>
+    </exposure-compensation>
+    <!-- atmos.glsl -->
+    <aerosol-absorption-cross-section type="vec4d">
+      <use>/sim/rendering/hdr/atmos/aerosol-absorption-cross-section[0]</use>
+      <use>/sim/rendering/hdr/atmos/aerosol-absorption-cross-section[1]</use>
+      <use>/sim/rendering/hdr/atmos/aerosol-absorption-cross-section[2]</use>
+      <use>/sim/rendering/hdr/atmos/aerosol-absorption-cross-section[3]</use>
+    </aerosol-absorption-cross-section>
+    <aerosol-scattering-cross-section type="vec4d">
+      <use>/sim/rendering/hdr/atmos/aerosol-scattering-cross-section[0]</use>
+      <use>/sim/rendering/hdr/atmos/aerosol-scattering-cross-section[1]</use>
+      <use>/sim/rendering/hdr/atmos/aerosol-scattering-cross-section[2]</use>
+      <use>/sim/rendering/hdr/atmos/aerosol-scattering-cross-section[3]</use>
+    </aerosol-scattering-cross-section>
+    <aerosol-base-density>
+      <use>/sim/rendering/hdr/atmos/aerosol-base-density</use>
+    </aerosol-base-density>
+    <aerosol-relative-background-density>
+      <use>/sim/rendering/hdr/atmos/aerosol-relative-background-density</use>
+    </aerosol-relative-background-density>
+    <aerosol-scale-height>
+      <use>/sim/rendering/hdr/atmos/aerosol-scale-height</use>
+    </aerosol-scale-height>
+    <aerosol-turbidity>
+      <use>/sim/rendering/hdr/atmos/aerosol-turbidity</use>
+    </aerosol-turbidity>
+    <fog-density>
+      <use>/sim/rendering/hdr/atmos/fog-density</use>
+    </fog-density>
+    <fog-scale-height>
+      <use>/sim/rendering/hdr/atmos/fog-scale-height</use>
+    </fog-scale-height>
+    <fog-height-offset>
+      <use>/sim/rendering/hdr/atmos/fog-height-offset</use>
+    </fog-height-offset>
+    <ozone-mean-dobson>
+      <use>/sim/rendering/hdr/atmos/ozone-mean-dobson</use>
+    </ozone-mean-dobson>
+    <ground-albedo type="vec4d">
+      <use>/sim/rendering/hdr/atmos/ground-albedo[0]</use>
+      <use>/sim/rendering/hdr/atmos/ground-albedo[1]</use>
+      <use>/sim/rendering/hdr/atmos/ground-albedo[2]</use>
+      <use>/sim/rendering/hdr/atmos/ground-albedo[3]</use>
+    </ground-albedo>
+  </parameters>
+
+  <technique n="1">
+
+    <pass>
+
+      <texture-unit>
+        <unit>0</unit>
+        <type>clouddetailedvoxelspace</type>
+      </texture-unit>
+
+      <texture-unit>
+        <unit>1</unit>
+        <type>cloudvoxelshadespace</type>
+      </texture-unit>
+
+      <!-- texture-unit 2 bound by HDR pipeline as depth buffer-->
+
+      <texture-unit>
+        <unit>3</unit>
+        <type>cloudnoise</type>
+      </texture-unit>
+
+      <texture-unit>
+        <unit>4</unit>
+        <type>cloudroughvoxelspace</type>
+      </texture-unit>
+
+      <program>
+        <vertex-shader>Shaders/HDR/cloudquad.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/pos_from_depth.glsl</vertex-shader>
+        <vertex-shader>Shaders/HDR/logarithmic_depth.glsl</vertex-shader>
+        <fragment-shader>Shaders/HDR/cloudquad.frag</fragment-shader>
+        <fragment-shader>Shaders/HDR/math.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/noise.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/logarithmic_depth.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/pos_from_depth.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/sun.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/aerial_perspective.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/atmos_spectral.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/mvr.frag</fragment-shader>
+      </program>
+
+      <!-- quad.vert -->
+      <define>
+        <name>QUAD_TEXCOORD_RAW</name>
+      </define>
+
+      <!-- cloudquad.vert -->
+      <uniform>
+        <name>detailed_tex</name>
+        <type>sampler-3d</type>
+        <value type="int">0</value>
+      </uniform>
+      <uniform>
+        <name>shade_tex</name>
+        <type>sampler-3d</type>
+        <value type="int">1</value>
+      </uniform>
+      <uniform>
+        <name>depth_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">2</value>
+      </uniform>
+      <uniform>
+        <name>cloud_noise_tex</name>
+        <type>sampler-3d</type>
+        <value type="int">3</value>
+      </uniform>
+      <uniform>
+        <name>rough_tex</name>
+        <type>sampler-3d</type>
+        <value type="int">4</value>
+      </uniform>
+      <uniform>
+        <name>cloud_field_center</name>
+        <type>float-vec3</type>
+        <value><use>cloud-field-center</use></value>
+      </uniform>
+      <uniform>
+        <name>cloud_field_repeating</name>
+        <type>bool</type>
+        <value><use>cloud-field-repeating</use></value>
+      </uniform>
+      <uniform>
+        <name>voxel_resolution_m</name>
+        <type>float</type>
+        <value><use>voxel-resolution-m</use></value>
+      </uniform>
+      <uniform>
+        <name>voxel_field_width</name>
+        <type>int</type>
+        <value><use>voxel-field-width</use></value>
+      </uniform>
+      <uniform>
+        <name>voxel_field_height</name>
+        <type>int</type>
+        <value><use>voxel-field-height</use></value>
+      </uniform>
+      <uniform>
+        <name>active_voxel_field_height_norm</name>
+        <type>float</type>
+        <value><use>active-voxel-field-height-norm</use></value>
+      </uniform>
+      <uniform>
+        <name>rough_field_factor</name>
+        <type>int</type>
+        <value><use>rough-field-factor</use></value>
+      </uniform>
+      <uniform>
+        <name>rough_size_factor</name>
+        <type>int</type>
+        <value><use>rough-size-factor</use></value>
+      </uniform>
+      <uniform>
+        <name>direct_intensity_scale</name>
+        <type>float</type>
+        <value><use>direct-intensity-scale</use></value>
+      </uniform>
+      <uniform>
+        <name>ambient_intensity_scale</name>
+        <type>float</type>
+        <value><use>ambient-intensity-scale</use></value>
+      </uniform>
+      <uniform>
+        <name>ground_albedo</name>
+        <type>float-vec4</type>
+        <value><use>ground-albedo</use></value>
+      </uniform>
+      <!-- aerial_perspective.glsl -->
+      <uniform>
+        <name>aerial_perspective_tex</name>
+        <type>sampler-3d</type>
+        <value type="int">11</value>
+      </uniform>
+      <!-- sun.glsl -->
+      <uniform>
+        <name>transmittance_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">12</value>
+      </uniform>
+      <!-- exposure.glsl -->
+      <uniform>
+        <name>lum_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">14</value>
+      </uniform>
+      <uniform>
+        <name>exposure_compensation</name>
+        <type>float</type>
+        <value><use>exposure-compensation</use></value>
+      </uniform>
+    </pass>
+  </technique>
+</PropertyList>

@@ -7,14 +7,21 @@ in vec2 texcoord;
 uniform sampler2D hdr_tex;
 uniform sampler2D gbuffer1_tex;
 uniform sampler2D depth_tex;
+uniform sampler2D clouds;
+uniform sampler2D clouds_depth_tex;
 
 void main()
 {
     vec3 original_color = texture(hdr_tex, texcoord).rgb;
-
     float depth = texture(depth_tex, texcoord).r;
-    // Ignore the background
-    if (depth == 1.0) {
+    vec4 cloud_color = texture(clouds, texcoord);
+    float cloud_depth = texture(clouds_depth_tex, texcoord).r;
+
+    // First, mix in the cloud texture
+    original_color = mix(original_color, cloud_color.rgb, cloud_color.a);
+
+    // Ignore the background or if occluded by clouds
+    if ((depth == 1.0) || (cloud_depth > depth)) {
         fragColor = original_color;
         return;
     }

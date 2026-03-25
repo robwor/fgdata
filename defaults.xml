@@ -222,7 +222,6 @@ Started September 2000 by David Megginson, david@megginson.com
       <filtering type="int">8</filtering>
       <shaders>
         <tessellation type="bool" userarchive="y">false</tessellation>
-        <clouds type="float" userarchive="y">0.0</clouds>
         <landmass type="float" userarchive="y">1.0</landmass>
         <model type="float" userarchive="y">3.0</model>
         <skydome type="bool" userarchive="y">true</skydome>
@@ -337,9 +336,6 @@ Started September 2000 by David Megginson, david@megginson.com
       </precipitation>
       <specular-highlight type="bool" userarchive="y">false</specular-highlight>
       <clouds3d-enable type="bool" userarchive="y">true</clouds3d-enable>
-      <clouds3d-vis-range type="float" userarchive="y">10000.0</clouds3d-vis-range>
-      <clouds3d-detail-range type="float" userarchive="y">10000.0</clouds3d-detail-range>
-      <clouds3d-density type="float" userarchive="y">0.25</clouds3d-density>
       <!-- legacy property to control drawing 'out the window', i.e
             non-cockpit + aircraft elements. Use draw-mask instead. -->
       <draw-otw type="bool">true</draw-otw>
@@ -568,6 +564,7 @@ Started September 2000 by David Megginson, david@megginson.com
         </night-vision>
         <debug>
           <display-ev100 type="bool">false</display-ev100>
+          <show-clouds type="bool">false</show-clouds>
           <show-gbuffer type="bool">false</show-gbuffer>
           <show-shadow-cascades type="bool">false</show-shadow-cascades>
           <show-histogram type="bool">false</show-histogram>
@@ -575,6 +572,26 @@ Started September 2000 by David Megginson, david@megginson.com
           <histogram-color type="bool">true</histogram-color>
           <show-aerial-perspective type="bool">false</show-aerial-perspective>
         </debug>
+        <clouds>
+          <!-- The detailed cloud field should be 50km x 50km x 12800m to give a 25km range and approx 40,000 ft of troposphere-->
+          <!-- Note that the height of the voxel field is calculated dynamically to save memory, so this value is a maximum. -->
+          <detailed-voxel-field-width type="int">256</detailed-voxel-field-width>
+          <detailed-voxel-field-height type="int">64</detailed-voxel-field-height>
+          <detailed-voxel-size-m type="int">200</detailed-voxel-size-m>
+
+          <!-- How much larger rough field voxels are compared with detailed -->
+          <rough-voxel-size-factor type="int">4</rough-voxel-size-factor>
+
+          <!-- How much larger the rough field is compared with the detailed in voxel units. -->
+          <rough-voxel-field-factor type="int">2</rough-voxel-field-factor>
+
+          <direct-intensity-scale type="float">1.0</direct-intensity-scale>
+          <ambient-intensity-scale type="float">1.0</ambient-intensity-scale>
+          <extinction-factor type="float">1.2</extinction-factor>
+
+          <!-- Cloud buffer scale, as a factor of the screen size.-->
+          <render-scale type="float" userarchive="y">0.5</render-scale>
+        </clouds>
       </hdr>
 
       <database-pager>
