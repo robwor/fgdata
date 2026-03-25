@@ -104,11 +104,11 @@
               var r = runways[rwy];
               longest_runway = math.max(longest_runway, r.length * 3.28);
               avail_runways.getNode("value[" ~ i ~ "]", 1).setValue(rwy);
-              var rwyInfo = sprintf("%5s %12d' / %03d deg", rwy, r.length * 3.28,
-                                    r.magnetic_heading);
+              var rwyInfo = sprintf("%5s | %5dm / %6d' | %03d deg", rwy, r.length, r.length * 3.28,
+                                    math.round(r.magnetic_heading));
 
               if (r.ils != nil) {
-                  rwyInfo = sprintf("%s %20.3f MHz", rwyInfo,
+                  rwyInfo = sprintf("%s | %3.3f MHz", rwyInfo,
                                     r.ils.frequency / 100);
               }
 
