@@ -91,7 +91,9 @@
             }
 
             # init dialog
-            update(devices[current_device.getIntValue()]);
+            if (size(devices)) {
+                update(devices[current_device.getIntValue()]);
+            }
             ]]>
         </open>
     </nasal>
