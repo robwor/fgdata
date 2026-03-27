@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource>
+  <meta>
+    <file-type>FlightGear default translation file</file-type>
+    <format-version>1</format-version>
+    <description>Automatically extracted strings with context 'dialog-vr-options'</description>
+    <language-description>Engineering English</language-description>
+  </meta>
+  <strings>
+    <enable-360-mouse-vr-present comment="Checkbox label - Enables/disables VR/360-degree captured mouse mode automatically depending on VR user presence - normally via a proximity sensor in the headset (VR = virtual reality)">Enable 360 mouse when VR is in use</enable-360-mouse-vr-present>
+    <enable-vr comment="Checkbox label (VR = virtual reality)">Enable VR</enable-vr>
+    <head-tracked-sound comment="Checkbox label - makes surround sound relative to VR tracked head orientation (VR = virtual reality)">Head tracked sound (for headphones)</head-tracked-sound>
+    <openxr-info comment="Subtitle before VR status information (VR = virtual reality)">OpenXR Information</openxr-info>
+    <openxr-runtime-format comment="%s = OpenXR runtime name as provided by the runtime">OpenXR Runtime: %s</openxr-runtime-format>
+    <openxr-system-format comment="%s = OpenXR system name as provided by the OpenXR runtime">OpenXR System: %s</openxr-system-format>
+    <show-3d-mouse-cursor-always comment="Checkbox label - Shows the 3D mouse cursor always, even when VR is not running (VR = virtual reality)">Always show 3D mouse cursor</show-3d-mouse-cursor-always>
+    <show-3d-mouse-cursor-in-vr comment="Checkbox label - Shows the 3D mouse cursor when VR is running (VR = virtual reality)">Show 3D mouse cursor in VR</show-3d-mouse-cursor-in-vr>
+    <vr-desktop-mirror comment="Checkbox label - Enables preview of VR display in desktop window (VR = virtual reality)">Desktop Mirror</vr-desktop-mirror>
+    <vr-desktop-mirror-automatic comment="Combo item label - Choose what to show on desktop preview of VR display automatically (VR = virtual reality)">Automatic</vr-desktop-mirror-automatic>
+    <vr-desktop-mirror-left comment="Combo item label - Show left eye view on desktop preview of VR display (VR = virtual reality)">Left</vr-desktop-mirror-left>
+    <vr-desktop-mirror-left-right comment="Combo item label - Show side-by-side left &amp; right eye views on desktop preview of VR display (VR = virtual reality)">Left &amp; Right</vr-desktop-mirror-left-right>
+    <vr-desktop-mirror-mode comment="Combobox label - Choose what to show on desktop preview of VR display (VR = virtual reality)">Desktop mirror mode</vr-desktop-mirror-mode>
+    <vr-desktop-mirror-none comment="Combo item label - Show nothing on desktop preview of VR display (VR = virtual reality)">None</vr-desktop-mirror-none>
+    <vr-desktop-mirror-right comment="Combo item label - Show right eye view on desktop preview of VR display (VR = virtual reality)">Right</vr-desktop-mirror-right>
+    <vr-mouse-sensitivity comment="Slider label - controls sensitivity of VR/360-degree captured mouse mode (VR = virtual reality)">360 mouse sensitivity</vr-mouse-sensitivity>
+    <vr-mouse-sensitivity-format comment="Slider value format - VR/360-degree captured mouse mode sensitivity, in degrees of angular motion per pixel of mouse motion (VR = virtual reality)">%.2f deg/px</vr-mouse-sensitivity-format>
+    <vr-options-close comment="Dialog button legend">Close</vr-options-close>
+    <vr-options-title comment="Dialog title (VR = virtual reality)">VR Options</vr-options-title>
+    <vr-state-format comment="%s = VR current state string (VR = virtual reality)">VR State: %s</vr-state-format>
+  </strings>
+</resource>
