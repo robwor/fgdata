@@ -8,31 +8,6 @@
   <layout>vbox</layout>
   <default-padding>3</default-padding>
 
-  <group>
-    <layout>hbox</layout>
-    <default-padding>1</default-padding>
-
-    <text>
-      <label>VR Options</label>
-    </text>
-
-    <empty>
-      <stretch>true</stretch>
-    </empty>
-
-    <button>
-      <legend>X</legend>
-      <key>Esc</key>
-      <pref-width>20</pref-width>
-      <pref-height>20</pref-height>
-      <binding>
-        <command>dialog-close</command>
-      </binding>
-    </button>
-  </group>
-
-  <hrule/>
-
   <empty>
     <stretch>true</stretch>
   </empty>
