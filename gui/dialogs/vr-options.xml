@@ -99,11 +99,22 @@
         </script>
       </binding>
     </checkbox>
+  </group>
+
+  <group>
+    <layout>hbox</layout>
+    <halign>left</halign>
+    <default-padding>1</default-padding>
+    <text>
+      <label>Desktop mirror mode</label>
+      <enable><property>/sim/vr/mirror-enabled</property></enable>
+    </text>
     <empty><stretch>true</stretch></empty>
     <combo>
       <pref-width>250</pref-width>
       <live>true</live>
       <property>/sim/vr/mirror-mode</property>
+      <enable><property>/sim/vr/mirror-enabled</property></enable>
       <value>AUTOMATIC</value>
       <value>NONE</value>
       <value>LEFT</value>
