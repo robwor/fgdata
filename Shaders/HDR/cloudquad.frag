@@ -11,6 +11,7 @@ uniform sampler3D rough_tex;
 uniform sampler3D shade_tex;
 uniform sampler2D depth_tex;
 uniform sampler3D cloud_noise_tex;
+uniform sampler1D wind_offset_tex;
 
 uniform vec3 fg_SunDirectionWorld;
 uniform vec3 fg_CameraPositionCart;
@@ -25,6 +26,9 @@ uniform uint osg_FrameNumber;
 
 uniform vec3 cloud_field_center;
 uniform bool cloud_field_repeating;
+uniform bool cloud_field_mirror_u;
+uniform bool cloud_field_mirror_v;
+uniform float cloud_base_z_norm;
 uniform float voxel_resolution_m;
 uniform int voxel_field_width;
 uniform int voxel_field_height;
@@ -112,7 +116,15 @@ vec4 getCloud(vec3 samplePoint, vec3 dir)  {
     if (samplePoint.z < 0.0) return vec4(0.0,0.0,0.0, -samplePoint.z / length(dir));
     if (samplePoint.z > 1.0) return vec4(0.0,0.0,0.0, (samplePoint.z - 1.0) / length(dir));
 
-    if (cloud_field_repeating) return texture(detailed_tex, samplePoint);
+    if (cloud_field_repeating) {
+        // The repeating cloud field uses mirrored repeating textures to ensure the SDF is valid
+        // at the edges.  We also shift the cloud center by integer UV values to handle the curvature 
+        // We need to compensate for that mirroring here.
+        if (cloud_field_mirror_u) samplePoint.x = (1.0 - samplePoint.x);
+        if (cloud_field_mirror_v) samplePoint.y = (1.0 - samplePoint.y);
+        return texture(detailed_tex, samplePoint);
+    }
+
     if ((abs(samplePoint.x - 0.5) < DETAILED_X_Y_BOUNDARY) && (abs(samplePoint.y - 0.5) < DETAILED_X_Y_BOUNDARY)) {
         // We're in the detailed space.  Scale the xy UV to the detailed voxel space
         vec3 uv = vec3((samplePoint.x - DETAILED_X_Y_BOUNDARY) * float(rough_field_factor),
@@ -177,8 +189,9 @@ float getRayDensity(vec3 eye, vec3 marchingDirection, float start, float end) {
     float density = 0.0;
     float distance = start;
     vec3 p = eye + distance * marchingDirection;
+    vec3 windOffset = texture(wind_offset_tex, p.z).xyz;
 
-    float storedTransmittance = texture(shade_tex, p).r;
+    float storedTransmittance = texture(shade_tex, p + windOffset).r;
 
     // If already heavily shadowed, skip local march
     if (storedTransmittance < 0.15)
@@ -190,14 +203,15 @@ float getRayDensity(vec3 eye, vec3 marchingDirection, float start, float end) {
 
     for (int i = 0; i < MAX_LIGHT_STEPS; i++) {
         p = eye + distance * marchingDirection;
+        windOffset = texture(wind_offset_tex, p.z).xyz;
 
         if (p.z > active_voxel_field_height_norm) return density; // Reached the top of the actual cloud space
 
-        vec4 t = getCloud(p, marchingDirection);
+        vec4 t = getCloud(p + windOffset, marchingDirection);
 
         if (t.a < EPSILON) {
             // Inside a cloud, so add density
-            density  += calculateDensity(p, marchingDirection, t);
+            density  += calculateDensity(p + windOffset, marchingDirection, t);
             distance += IN_CLOUD_SUN_RAY_STEP_SIZE;
         } else {
             distance += t.a;
@@ -298,10 +312,11 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end)
         if (distance >= tExit) return lreturn; // Reached the end of the raymarch
 
         vec3 p = eye + distance * marchingDirection;
+        vec3 windOffset = texture(wind_offset_tex, p.z).xyz;
 
         sample_information s;
 
-        vec4 cloud = getCloud(p, marchingDirection);
+        vec4 cloud = getCloud(p + windOffset, marchingDirection);
 
         s.sdf = cloud.a;
         s.density = 0.0;
@@ -310,7 +325,7 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end)
 
         if (s.sdf < EPSILON)
         {
-            s.density = calculateDensity(p, marchingDirection, cloud);
+            s.density = calculateDensity(p + windOffset, marchingDirection, cloud);
             s.sdf = IN_CLOUD_STEP_SIZE;
 
             mat3 zup = mat3(fg_CameraZUpMatrix);
@@ -408,7 +423,8 @@ void main()
     vec3 dir = normalize(zup * wdir) * VOXEL_SCALE; // Take into account that the voxel space is not a cube by increasing the Z-factor
     float zscaleFactor = length(dir);
 
-    vec3 eye = (zup * (fg_CameraPositionCart - cloud_field_center)) / EYE_SCALE + vec3(0.5, 0.5, 0.0);
+    // Get a Z-up eyepoint relative to the center of the cloud field in the X-Y plane, and offset to place the bottom of the field at the cloudbase.
+    vec3 eye = (zup * (fg_CameraPositionCart - cloud_field_center)) / EYE_SCALE + vec3(0.5, 0.5, - cloud_base_z_norm);
     vec4 color = vec4(0.0, 0.0, 0.0, 0.0);
 
     // Convert the logarithmic depth value into metres, and then scale to the voxel resolution 

@@ -379,4 +379,24 @@
     <max>2.0</max>
   </filter>
 
+  <!-- 
+    Link the lowest cloud layer elevation (in feet) with the voxel cloudbase (in meters).
+    This is disabled when local weather is in use, as that will manage the cloudbase directly. 
+  -->
+  <filter>
+    <name>EnvironmentInterpolator:voxel:cloudbase</name>
+    <enable>
+      <condition>
+        <not>
+          <property>/nasal/local_weather/enabled</property>
+          <value>true</value>
+        </not>
+      </condition>
+    </enable>
+    <type>gain</type>
+    <gain>0.3048</gain>
+    <input>/environment/clouds/layer[0]/elevation-ft</input>
+    <output>/sim/rendering/hdr/clouds/cloud-base-m</output>
+  </filter>
+
 </PropertyList>

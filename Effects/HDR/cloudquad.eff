@@ -9,8 +9,14 @@
       <use>/sim/rendering/hdr/clouds/cloud-center-z</use>
     </cloud-field-center>
     <cloud-field-repeating>
-    <use>/sim/rendering/hdr/clouds/cloud-field-repeating</use>
+      <use>/sim/rendering/hdr/clouds/cloud-field-repeating</use>
     </cloud-field-repeating>
+    <cloud-field-mirror-u>
+      <use>/sim/rendering/hdr/clouds/mirror-u</use>
+    </cloud-field-mirror-u>
+    <cloud-field-mirror-v>
+      <use>/sim/rendering/hdr/clouds/mirror-v</use>
+    </cloud-field-mirror-v>
     <voxel-resolution-m>
       <use>/sim/rendering/hdr/clouds/detailed-voxel-size-m</use>
     </voxel-resolution-m>
@@ -20,6 +26,9 @@
     <voxel-field-height>
       <use>/sim/rendering/hdr/clouds/detailed-voxel-field-height</use>
     </voxel-field-height>
+    <cloud-base-z-norm>
+      <use>/sim/rendering/hdr/clouds/cloud-base-z-norm</use>
+    </cloud-base-z-norm>
     <active-voxel-field-height-norm>
       <use>/sim/rendering/hdr/clouds/active-voxel-field-height-norm</use>
     </active-voxel-field-height-norm>
@@ -110,6 +119,11 @@
         <type>cloudroughvoxelspace</type>
       </texture-unit>
 
+      <texture-unit>
+        <unit>5</unit>
+        <type>cloudwindoffset</type>
+      </texture-unit>
+
       <program>
         <vertex-shader>Shaders/HDR/cloudquad.vert</vertex-shader>
         <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
@@ -159,6 +173,11 @@
         <value type="int">4</value>
       </uniform>
       <uniform>
+        <name>wind_offset_tex</name>
+        <type>sampler-1d</type>
+        <value type="int">5</value>
+      </uniform>
+      <uniform>
         <name>cloud_field_center</name>
         <type>float-vec3</type>
         <value><use>cloud-field-center</use></value>
@@ -167,6 +186,16 @@
         <name>cloud_field_repeating</name>
         <type>bool</type>
         <value><use>cloud-field-repeating</use></value>
+      </uniform>
+      <uniform>
+        <name>cloud_field_mirror_u</name>
+        <type>bool</type>
+        <value><use>cloud-field-mirror-u</use></value>
+      </uniform>
+      <uniform>
+        <name>cloud_field_mirror_v</name>
+        <type>bool</type>
+        <value><use>cloud-field-mirror-v</use></value>
       </uniform>
       <uniform>
         <name>voxel_resolution_m</name>
@@ -187,6 +216,11 @@
         <name>active_voxel_field_height_norm</name>
         <type>float</type>
         <value><use>active-voxel-field-height-norm</use></value>
+      </uniform>
+      <uniform>
+        <name>cloud_base_z_norm</name>
+        <type>float</type>
+        <value><use>cloud-base-z-norm</use></value>
       </uniform>
       <uniform>
         <name>rough_field_factor</name>

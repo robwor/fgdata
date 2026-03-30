@@ -99,7 +99,7 @@
       <box>
         <type>cu-small</type>
         <count>1</count>
-        <width>800</width>
+        <width>1600</width>
         <height>0</height>
         <hdist>2</hdist>
         <vdist>2</vdist>
@@ -110,7 +110,7 @@
       <box>
         <type>cu-con</type>
         <count>2</count>
-        <width>1500</width>
+        <width>1600</width>
         <height>0</height>
         <hdist>2</hdist>
         <vdist>1</vdist>
@@ -118,7 +118,7 @@
       <box>
         <type>cu-small</type>
         <count>1</count>
-        <width>1000</width>
+        <width>1200</width>
         <height>0</height>
         <hdist>1</hdist>
         <vdist>2</vdist>
@@ -129,7 +129,7 @@
       <box>
         <type>cb-large</type>
         <count>1</count>
-        <width>1500</width>
+        <width>6400</width>
         <height>1000</height>
         <hdist>2</hdist>
         <vdist>2</vdist>
