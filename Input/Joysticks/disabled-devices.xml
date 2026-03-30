@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+******************************************************************************
+List of devices that shall not be handled by legacy JS code
+******************************************************************************
+-->
+
+<PropertyList>
+    <!-- Laptop accelerometers -->
+    <name type="string">applesmc</name>
+    <name type="string">ST LIS3LV02DL Accelerometer</name>
+    <name type="string">ST LIS3L V02DL Accelerometer</name>
+
+    <!-- Honeycomb Aeronautical -->
+    <name type="string">Honeycomb Aeronautical Alpha Flight Controls</name>
+    <name type="string">Honeycomb Aeronautical Bravo Throttle Quadrant</name>
+    <name type="string">Honeycomb Aeronautical Charlie Rudder Pedal</name>
+    <name type="string">SnakeByte BRAVO LITE</name>
+    <name type="string">Echo Aviation Controller</name>
+    <name type="string">SnakeByte FOXTROT</name>
+    <name type="string">SnakeByte SIERRA</name>
+</PropertyList>
