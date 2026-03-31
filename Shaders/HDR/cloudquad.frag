@@ -62,7 +62,7 @@ vec3 get_view_space_from_depth(vec2 uv, float depth);
 // aerial_perspective.glsl
 vec3 add_aerial_perspective(vec3 color, vec2 raw_coord, vec3 P);
 
-const float MIN_DIST = 0.000;
+const float MIN_DIST = 0.0001;
 const float MAX_DIST = 4.0;
 const float EPSILON = 0.000001;
 const float NOISE_SCALE = 48.0;
@@ -431,7 +431,7 @@ void main()
     // so we know how far to search before we reach something solid.  This needs to take into account that the voxel space is not a cube by adjusting for the
     // actual length of the "normalized" direction.
     float max_depth_m = logdepth_decode(texture(depth_tex, texcoord).r);
-    float max_depth_vx = min(max_depth_m / VOXEL_FIELD_WIDTH_M, MAX_DIST);
+    float max_depth_vx = min(max_depth_m / VOXEL_FIELD_WIDTH_M, MAX_DIST) * zscaleFactor;
 
     ray_data ray = cloudRayMarch(eye, dir, MIN_DIST, max_depth_vx);
     
