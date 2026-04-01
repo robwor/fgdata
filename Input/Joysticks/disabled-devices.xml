@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <!--
-******************************************************************************
 List of devices that shall not be handled by legacy JS code
-******************************************************************************
+but are supported by HID configs.
 -->
 
 <PropertyList>
@@ -19,4 +18,15 @@ List of devices that shall not be handled by legacy JS code
     <name type="string">Echo Aviation Controller</name>
     <name type="string">SnakeByte FOXTROT</name>
     <name type="string">SnakeByte SIERRA</name>
+
+    <!-- Winwing aka Winctrl -->
+    <name type="string">Winwing WINWING AGP</name>
+    <name type="string">Winwing WINWING ECAM</name>
+    <name type="string">Winwing WINWING FCU-320</name>
+    <name type="string">Winwing WINWING FCU-320 + EFIS-32R</name>
+    <name type="string">Winwing WINWING FCU-320 + EFIS-32L</name>
+    <name type="string">Winwing WINWING FCU-32 + EFIS-32L + EFIS-32R</name>
+    <name type="string">Winwing WINWING MCDU-32-CAPTAIN</name>
+    <name type="string">Winwing WINWING URSA MINOR 32 Throttle Metal L</name>
+
 </PropertyList>
