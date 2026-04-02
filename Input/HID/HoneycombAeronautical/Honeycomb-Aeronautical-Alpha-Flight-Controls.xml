@@ -69,8 +69,8 @@
 -->
 
 <PropertyList>
-    <vendor-id>honeycomb</vendor-id>
-    <model-id>alpha</model-id>
+    <vendor-name>honeycomb</vendor-name>
+    <model-name>alpha</model-name>
     <name type="string">Honeycomb Aeronautical Alpha Flight Controls</name>
     <debug-events type="bool">false</debug-events>
     <hid-debug-raw type="bool">false</hid-debug-raw>

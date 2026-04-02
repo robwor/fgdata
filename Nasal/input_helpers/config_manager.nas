@@ -1,11 +1,11 @@
 #
 # Configuration variant manager for input devices
 # Created: 09/2024
+# Updated: 04/2026
 # Author: Henning Stahlke
 #
 # Example: check Honeycomb Bravo XML
 # Todo:
-# -Write documentation in wiki
 # -handle duplicate devices; currently only one device per (vendor, model) is supported
 
 config_manager = {
@@ -19,12 +19,12 @@ config_manager = {
     # creat new config_manager object
     # config: XML config as props; use cmdarg() in the <nasal><open> block of the device config XML
     new: func(config) {
-        var vendor = config.getNode("vendor-id", 1).getValue() or "";
-        var model = config.getNode("model-id", 1).getValue() or "";
+        var vendor = config.getNode("vendor-name", 1).getValue() or "";
+        var model = config.getNode("model-name", 1).getValue() or "";
         var name = config.getNode("name", 1).getValue() or "";
         if (vendor == "" or model == "") {
-            logprint(LOG_ALERT, "input_helpers.config_manager: Error! XML file must contain vendor-id and model-id ("~name~").");
-            gui.popupTip("input_helpers.config_manager: Error!\nXML file must contain vendor-id and model-id.\n"~name, 30);
+            logprint(LOG_ALERT, "input_helpers.config_manager: Error! XML file must contain vendor-name and model-name ("~name~").");
+            gui.popupTip("input_helpers.config_manager: Error!\nXML file must contain vendor-name and model-name.\n"~name, 30);
             return;
         }
         var m = {

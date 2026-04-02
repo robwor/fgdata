@@ -90,8 +90,8 @@ Button 47:  TOGA on Handle 4
 -->
 
 <PropertyList>
-  <vendor-id>honeycomb</vendor-id>
-  <model-id>bravo</model-id>
+  <vendor-name>honeycomb</vendor-name>
+  <model-name>bravo</model-name>
   <name>Honeycomb Aeronautical Bravo Throttle Quadrant</name>
   <device-dialog>honeycomb-bravo</device-dialog>
   <debug-events type="bool">false</debug-events>

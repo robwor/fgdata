@@ -27,8 +27,8 @@
 -->
 
 <PropertyList>
-  <vendor-id>honeycomb</vendor-id>
-  <model-id>charlie</model-id>
+  <vendor-name>honeycomb</vendor-name>
+  <model-name>charlie</model-name>
   <name>Honeycomb Aeronautical Charlie Rudder Pedal</name>
   <device-dialog>generic-pedals</device-dialog>
   <debug-events type="bool">false</debug-events>
