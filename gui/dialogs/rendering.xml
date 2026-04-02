@@ -417,35 +417,8 @@
 
 			<group>
 				<layout>hbox</layout>
-				<checkbox>
-					<halign>left</halign>
-					<label translate="y">
-            use-vpb-checkbox
-            <?FlightGear-tr text="WS3.0 (Experimental - requires OSG 3.6)"?>
-          </label>
-					<name>ws30</name>
-					<property>/scenery/use-vpb</property>
-					<enable>
-						<property>/sim/gui/dialogs/rendering/vpb-available</property>
-					</enable>
-
-					<binding>
-						<command>dialog-apply</command>
-						<object-name>ws30</object-name>
-					</binding>
-				</checkbox>
-			</group>
-
-			<group>
-				<layout>hbox</layout>
 				<halign>right</halign>
 				<text>
-					<enable>
-						<equals>
-							<property>/scenery/use-vpb</property>
-							<value>true</value>
-						</equals>
-					</enable>
 					<label translate="y">
             elevation-delta-below-airports-slider
             <?FlightGear-tr text="Elevation delta below airports"?>
@@ -453,12 +426,6 @@
 				</text>
 				<slider>
 					<name>elev-delta</name>
-					<enable>
-						<equals>
-							<property>/scenery/use-vpb</property>
-							<value>true</value>
-						</equals>
-					</enable>
 					<min>0.0</min>
 					<max>20.0</max>
 					<step>1.0</step>
@@ -471,12 +438,6 @@
 				</slider>
 				<text>
 					<label>1234567890</label>
-					<enable>
-						<equals>
-							<property>/scenery/use-vpb</property>
-							<value>true</value>
-						</equals>
-					</enable>
 					<format translate="y">
             elevation-delta-below-airports-format
             <?FlightGear-tr text="%2d m"

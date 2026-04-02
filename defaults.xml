@@ -504,7 +504,7 @@ Started September 2000 by David Megginson, david@megginson.com
 
       <scenery-path-suffix n="98">
         <name type="string">vpb</name>
-        <enabled type="bool" userarchive="y">false</enabled>
+        <enabled type="bool" userarchive="y">true</enabled>
       </scenery-path-suffix>
 
       <!-- Terrain must be last, as the suffixes are searched in order -->
@@ -1666,7 +1666,6 @@ Started September 2000 by David Megginson, david@megginson.com
   <scenery>
     <share-events type="bool" userarchive="y">false</share-events>
     <events type="string"/>
-    <use-vpb type="bool">false</use-vpb>
     <elevation-mesh>
       <constraint-gap-m type="float" userarchive="y">1.0</constraint-gap-m>
       <sample-ratio type="float" userarchive="y">1.0</sample-ratio>

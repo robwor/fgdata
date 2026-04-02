@@ -58,7 +58,6 @@ particular list.
     </save-to-file>
 
     <scenery-reload-required>
-        <property>/scenery/use-vpb</property>
         <property>/scenery/elevation-mesh/lod-range-factor</property>
         <property>/scenery/elevation-mesh/constraint-gap-m</property>
         <property>/sim/rendering/photoscenery/enabled</property>

@@ -623,36 +623,18 @@
             <text>
                 <row>0</row>
                 <col>0</col>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <label>Detail range</label>
             </text>
 
             <text>
                 <row>1</row>
                 <col>0</col>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <label>Line Feature minimum LOD</label>
             </text>
             <slider>
                 <row>1</row>
                 <col>1</col>
                 <name>line-lod</name>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <min>0.0</min>
                 <max>6.0</max>
                 <step>1.0</step>
@@ -667,12 +649,6 @@
                 <row>1</row>
                 <col>2</col>
                 <label>1</label>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <format>%d</format>
                 <live>true</live>
                 <property>/sim/rendering/static-lod/line-features-lod-level</property>
@@ -681,24 +657,12 @@
             <text>
                 <row>2</row>
                 <col>0</col>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <label>Vegetation minimum LOD</label>
             </text>
             <slider>
                 <row>2</row>
                 <col>1</col>
                 <name>veg-lod</name>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <min>0.0</min>
                 <max>6.0</max>
                 <step>1.0</step>
@@ -713,12 +677,6 @@
                 <row>2</row>
                 <col>2</col>
                 <label>1</label>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <format>%d</format>
                 <live>true</live>
                 <property>/sim/rendering/static-lod/vegetation-lod-level</property>
@@ -756,12 +714,6 @@
                 <row>1</row>
                 <col>1</col>
                 <name>line-width-lod0</name>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <min>1.0</min>
                 <max>50.0</max>
                 <step>1.0</step>
@@ -776,16 +728,10 @@
                 <label>12</label>
                 <row>1</row>
                 <col>2</col>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <format>%d</format>
                 <live>true</live>
                 <property>/sim/rendering/static-lod/lod-level[0]/line-features-min-width</property>
-            </text>        
+            </text>
 
             <text>
                 <row>2</row>
@@ -796,12 +742,6 @@
                 <row>2</row>
                 <col>1</col>
                 <name>line-width-lod1</name>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <min>1.0</min>
                 <max>50.0</max>
                 <step>1.0</step>
@@ -816,16 +756,10 @@
                 <label>12</label>
                 <row>2</row>
                 <col>2</col>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <format>%d</format>
                 <live>true</live>
                 <property>/sim/rendering/static-lod/lod-level[1]/line-features-min-width</property>
-            </text>        
+            </text>
             <text>
                 <row>3</row>
                 <col>0</col>
@@ -835,12 +769,6 @@
                 <row>3</row>
                 <col>1</col>
                 <name>line-width-lod2</name>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <min>1.0</min>
                 <max>50.0</max>
                 <step>1.0</step>
@@ -855,16 +783,10 @@
                 <label>12</label>
                 <row>3</row>
                 <col>2</col>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <format>%d</format>
                 <live>true</live>
                 <property>/sim/rendering/static-lod/lod-level[2]/line-features-min-width</property>
-            </text>        
+            </text>
 
             <text>
                 <row>4</row>
@@ -875,12 +797,6 @@
                 <row>4</row>
                 <col>1</col>
                 <name>line-width-lod3</name>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <min>1.0</min>
                 <max>50.0</max>
                 <step>1.0</step>
@@ -895,16 +811,10 @@
                 <label>12</label>
                 <row>4</row>
                 <col>2</col>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <format>%d</format>
                 <live>true</live>
                 <property>/sim/rendering/static-lod/lod-level[3]/line-features-min-width</property>
-            </text>        
+            </text>
 
             <text>
                 <row>5</row>
@@ -915,12 +825,6 @@
                 <row>5</row>
                 <col>1</col>
                 <name>line-width-lod4</name>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <min>1.0</min>
                 <max>50.0</max>
                 <step>1.0</step>
@@ -935,16 +839,10 @@
                 <label>12</label>
                 <row>5</row>
                 <col>2</col>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <format>%d</format>
                 <live>true</live>
                 <property>/sim/rendering/static-lod/lod-level[4]/line-features-min-width</property>
-            </text>        
+            </text>
 
             <text>
                 <row>6</row>
@@ -955,12 +853,6 @@
                 <row>6</row>
                 <col>1</col>
                 <name>line-width-lod5</name>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <min>1.0</min>
                 <max>50.0</max>
                 <step>1.0</step>
@@ -975,16 +867,10 @@
                 <label>12</label>
                 <row>6</row>
                 <col>2</col>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <format>%d</format>
                 <live>true</live>
                 <property>/sim/rendering/static-lod/lod-level[5]/line-features-min-width</property>
-            </text>                
+            </text>
 
             <text>
                 <row>7</row>
@@ -995,12 +881,6 @@
                 <row>7</row>
                 <col>1</col>
                 <name>line-width-lod6</name>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <min>1.0</min>
                 <max>50.0</max>
                 <step>1.0</step>
@@ -1015,19 +895,13 @@
                 <label>12</label>
                 <row>7</row>
                 <col>2</col>
-                <enable>
-                    <equals>
-                        <property>/scenery/use-vpb</property>
-                        <value>true</value>
-                    </equals>
-                </enable>
                 <format>%d</format>
                 <live>true</live>
                 <property>/sim/rendering/static-lod/lod-level[6]/line-features-min-width</property>
-            </text>        
+            </text>
         </group>
     </group>
-    
+
     <hrule/>
 
     <group>
