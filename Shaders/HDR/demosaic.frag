@@ -26,26 +26,32 @@ void main()
         return;
     }
 
-    float alpha = 0.0;
+    float neighbor_alpha = 0.0;
     // Check if we are dealing with a discarded pixel or an opaque pixel
     float test = fract(dot(gl_FragCoord.xy, vec2(0.5)));
     if (test < 0.5) {
-        // This is discarded pixel. Bilinearly interpolate between the neighbors
-        // to obtain an alpha value.
-        alpha += textureOffset(gbuffer1_tex, texcoord, ivec2(+1,  0)).a;
-        alpha += textureOffset(gbuffer1_tex, texcoord, ivec2( 0, +1)).a;
-        alpha += textureOffset(gbuffer1_tex, texcoord, ivec2(-1,  0)).a;
-        alpha += textureOffset(gbuffer1_tex, texcoord, ivec2( 0, -1)).a;
-        alpha *= 0.25;
+        // This is a discarded (background) pixel. Bilinearly interpolate
+        // between its (foreground) neighbors to obtain an alpha value for the
+        // neighboring (foreground) pixel.
+        neighbor_alpha += textureOffset(gbuffer1_tex, texcoord, ivec2(+1,  0)).a;
+        neighbor_alpha += textureOffset(gbuffer1_tex, texcoord, ivec2( 0, +1)).a;
+        neighbor_alpha += textureOffset(gbuffer1_tex, texcoord, ivec2(-1,  0)).a;
+        neighbor_alpha += textureOffset(gbuffer1_tex, texcoord, ivec2( 0, -1)).a;
+        neighbor_alpha *= 0.25;
     } else {
-        // This is an "opaque" pixel. Get the alpha value directly from it
-        alpha = texture(gbuffer1_tex, texcoord).a;
+        // This is an "opaque" (foreground) pixel, with its own alpha. Invert
+        // it to get an alpha value for the neighboring (background) pixel.
+        neighbor_alpha = 1.0 - texture(gbuffer1_tex, texcoord).a;
+        // However a foreground alpha value of 0.0, i.e. neighbor_alpha == 1.0
+        // represents opaque (see gbuffer_pack.glsl). Force 1.0 to 0.0 so
+        // opaque edges don't get dithered.
+        neighbor_alpha = fract(neighbor_alpha);
     }
 
-    // Linearly interpolate between the neighbor's color and this pixel's color
+    // Linearly interpolate between this pixel's color and the neighbor's color
     // according to the alpha value.
     vec3 neighbor_color = textureOffset(hdr_tex, texcoord, ivec2(1, 0)).rgb;
-    vec3 color = mix(original_color, neighbor_color, alpha);
+    vec3 color = mix(original_color, neighbor_color, neighbor_alpha);
 
     fragColor = color;
 }
