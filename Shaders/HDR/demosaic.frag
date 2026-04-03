@@ -12,9 +12,9 @@ uniform sampler2D clouds_depth_tex;
 
 vec3 addClouds(vec3 color, float depth, vec4 cloud_color, float cloud_depth)
 {
-    // Mix in the cloud texture
+    // Mix in the cloud texture (premultiplied alpha)
     if (cloud_depth <= depth)
-        color = mix(color, cloud_color.rgb, cloud_color.a);
+        color = color * (1.0 - cloud_color.a) + cloud_color.rgb;
 
     return color;
 }
