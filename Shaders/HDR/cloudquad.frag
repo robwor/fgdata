@@ -250,8 +250,7 @@ struct sample_information {
 
 struct ray_data {
     float light_absorption;
-    float direct_intensity;
-    float ambient_intensity;
+    vec3 intensity;
     float first_hit;
 };
 
@@ -259,8 +258,7 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end)
     
     ray_data lreturn;
     lreturn.light_absorption = 0.0;
-    lreturn.direct_intensity = 0.0;
-    lreturn.ambient_intensity = 0.0;
+    lreturn.intensity = vec3(0.0);
     lreturn.first_hit = -1.0;
     
     float dirZ = marchingDirection.z;
@@ -306,6 +304,8 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end)
 
     float cachedSunDensity = -1.0;
     float cachedDensity = -1.0;
+
+    vec3 sunRadiance = get_sun_radiance_sea_level() * direct_intensity_scale;
 
     for (int i = 0; i < dynamicMaxSteps; i++) {
 
@@ -399,8 +399,8 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end)
         if (s.density > 0.0) {
             float occlusion = (1.0 - clamp(lreturn.light_absorption, 0.0, 1.0));
             lreturn.light_absorption  += s.density * occlusion;
-            lreturn.direct_intensity  += s.direct_scattering * occlusion;  // density already in singleScatter
-            lreturn.ambient_intensity += s.ambient_scattering * s.density;
+            lreturn.intensity += sunRadiance * (s.direct_scattering * occlusion)
+                                 + vec3(1.0) * (s.ambient_scattering * s.density * ambient_intensity_scale);
             if (lreturn.first_hit < 0.0) lreturn.first_hit = distance;
         }
 
@@ -436,8 +436,7 @@ void main()
     ray_data ray = cloudRayMarch(eye, dir, MIN_DIST, max_depth_vx);
     
     if (ray.light_absorption > 0.01) {
-        color.rgb = get_sun_radiance_sea_level() * ray.direct_intensity * direct_intensity_scale
-                                     + vec3(1.0) * ray.ambient_intensity * ambient_intensity_scale;
+        color.rgb = ray.intensity;
         color.a = ray.light_absorption;
 
         float z = logdepth_prepare_vs_depth(ray.first_hit * VOXEL_FIELD_WIDTH_M / zscaleFactor);
