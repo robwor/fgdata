@@ -8,6 +8,13 @@ uniform vec2 fg_FOVScale[FG_NUM_VIEWS];
 // logarithmic_depth.glsl
 float logdepth_decode(float z);
 
+vec3 get_view_space_from_vs_depth(vec2 uv, float vs_depth)
+{
+    vec2 half_ndc_pos = fg_FOVCenter[FG_VIEW_ID] - uv;
+    vec3 vs_pos = vec3(half_ndc_pos * fg_FOVScale[FG_VIEW_ID] * (-vs_depth), -vs_depth);
+    return vs_pos;
+}
+
 /*
  * Reconstruct the view space position from the depth buffer. Mostly used by
  * fullscreen post-processing shaders.
@@ -18,9 +25,7 @@ float logdepth_decode(float z);
 vec3 get_view_space_from_depth(vec2 uv, float depth)
 {
     float vs_depth = logdepth_decode(depth);
-    vec2 half_ndc_pos = fg_FOVCenter[FG_VIEW_ID] - uv;
-    vec3 vs_pos = vec3(half_ndc_pos * fg_FOVScale[FG_VIEW_ID] * (-vs_depth), -vs_depth);
-    return vs_pos;
+    return get_view_space_from_vs_depth(uv, vs_depth);
 }
 
 vec3 get_world_space_from_depth(vec2 uv, float depth)

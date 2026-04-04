@@ -85,3 +85,9 @@ vec3 add_aerial_perspective(vec3 color, vec2 raw_coord, vec3 P)
 {
     return mix_aerial_perspective(color, get_aerial_perspective(raw_coord, P));
 }
+
+vec4 diff_aerial_perspective(vec4 apFar, vec4 apNear)
+{
+    return vec4((apFar.rgb - apNear.rgb)/apNear.a,
+                apFar.a / apNear.a);
+}

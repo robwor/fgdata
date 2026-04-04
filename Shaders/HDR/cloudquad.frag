@@ -57,10 +57,11 @@ float logdepth_encode(float z);
 vec3 get_sun_radiance_sea_level();
 
 // pos_from_depth.glsl
-vec3 get_view_space_from_depth(vec2 uv, float depth);
+vec3 get_view_space_from_vs_depth(vec2 uv, float vs_depth);
 
 // aerial_perspective.glsl
-vec3 add_aerial_perspective(vec3 color, vec2 raw_coord, vec3 P);
+vec4 get_aerial_perspective(vec2 raw_coord, vec3 P);
+vec4 diff_aerial_perspective(vec4 apFar, vec4 apNear);
 
 const float MIN_DIST = 0.0001;
 const float MAX_DIST = 4.0;
@@ -254,7 +255,7 @@ struct ray_data {
     float first_hit;
 };
 
-ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end) {
+ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end, float zscaleFactor) {
     
     ray_data lreturn;
     lreturn.light_absorption = 0.0;
@@ -305,6 +306,9 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end)
     float cachedSunDensity = -1.0;
     float cachedDensity = -1.0;
 
+    float lastAir = 0.0;
+    float lastCloud = 0.0;
+    vec4 lastAP = vec4(0.0, 0.0, 0.0, 1.0);
     vec3 sunRadiance = get_sun_radiance_sea_level() * direct_intensity_scale;
 
     for (int i = 0; i < dynamicMaxSteps; i++) {
@@ -397,11 +401,27 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end)
         }
 
         if (s.density > 0.0) {
+            if (lastAir >= lastCloud) {
+                // enter cloud
+                float z = distance * VOXEL_FIELD_WIDTH_M / zscaleFactor;
+                vec3 P = get_view_space_from_vs_depth(texcoord, z);
+                vec4 ap = get_aerial_perspective(raw_texcoord, P);
+                vec4 partialAP = diff_aerial_perspective(ap, lastAP);
+
+                float occlusion = (1.0 - clamp(lreturn.light_absorption, 0.0, 1.0));
+                lreturn.light_absorption += (1.0 - partialAP.a) * occlusion;
+                lreturn.intensity += partialAP.rgb * occlusion;
+
+                lastAP = ap;
+            }
             float occlusion = (1.0 - clamp(lreturn.light_absorption, 0.0, 1.0));
             lreturn.light_absorption  += s.density * occlusion;
             lreturn.intensity += sunRadiance * (s.direct_scattering * occlusion)
                                  + vec3(1.0) * (s.ambient_scattering * s.density * ambient_intensity_scale);
             if (lreturn.first_hit < 0.0) lreturn.first_hit = distance;
+            lastCloud = distance;
+        } else {
+            lastAir = distance;
         }
 
         if (lreturn.light_absorption > 0.98) {
@@ -433,7 +453,7 @@ void main()
     float max_depth_m = logdepth_decode(texture(depth_tex, texcoord).r);
     float max_depth_vx = min(max_depth_m / VOXEL_FIELD_WIDTH_M, MAX_DIST) * zscaleFactor;
 
-    ray_data ray = cloudRayMarch(eye, dir, MIN_DIST, max_depth_vx);
+    ray_data ray = cloudRayMarch(eye, dir, MIN_DIST, max_depth_vx, zscaleFactor);
     
     if (ray.light_absorption > 0.01) {
         color.rgb = ray.intensity;
@@ -441,10 +461,6 @@ void main()
 
         float z = logdepth_prepare_vs_depth(ray.first_hit * VOXEL_FIELD_WIDTH_M / zscaleFactor);
         gl_FragDepth = logdepth_encode(z);
-
-        // Add aerial perspective
-        vec3 P = get_view_space_from_depth(texcoord, gl_FragDepth);
-        color.rgb = add_aerial_perspective(color.rgb, raw_texcoord, P);
     } else {
         gl_FragDepth = 1.0;
     }
