@@ -348,6 +348,26 @@
   </pass>
 
   <!--
+      Clear the G-Buffer dither channel even without debugging, otherwise
+      demosaic will treat the sky as dithered transparency.
+  -->
+  <pass>
+    <name>clear-gbuffer</name>
+    <type>quad</type>
+    <multiview>true</multiview>
+    <effect>Effects/HDR/gbuffer-clear</effect>
+    <condition>
+      <not>
+        <property>/sim/rendering/hdr/debug/show-gbuffer</property>
+      </not>
+    </condition>
+    <attachment>
+      <component>color0</component>
+      <buffer>gbuffer1</buffer>
+    </attachment>
+  </pass>
+
+  <!--
       BRDF convolution for the IBL split sum integral approximation.
   -->
   <pass>
