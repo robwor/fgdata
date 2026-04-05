@@ -27,6 +27,8 @@
 -->
 
 <PropertyList>
+  <vendor-id>294b</vendor-id>
+  <model-id>1903</model-id>
   <vendor-name>honeycomb</vendor-name>
   <model-name>charlie</model-name>
   <name>Honeycomb Aeronautical Charlie Rudder Pedal</name>

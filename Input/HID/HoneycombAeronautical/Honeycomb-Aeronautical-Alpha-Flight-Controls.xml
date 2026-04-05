@@ -69,6 +69,8 @@
 -->
 
 <PropertyList>
+    <vendor-id>294b</vendor-id>
+    <model-id>1900</model-id>
     <vendor-name>honeycomb</vendor-name>
     <model-name>alpha</model-name>
     <name type="string">Honeycomb Aeronautical Alpha Flight Controls</name>
