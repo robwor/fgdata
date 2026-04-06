@@ -33,7 +33,7 @@
         <valign>top</valign>
         <padding>5</padding>
         <text>
-            <label>Specify .nut file in $FG_ROOT/Nasal</label>
+            <label>Specify test_*.nas file in $FG_ROOT/Nasal</label>
         </text>
         <group>
             <layout>hbox</layout>
@@ -42,7 +42,7 @@
                 <pref-width>100</pref-width>
                 <halign>left</halign>
                 <property>/_debug/nas/test/filename</property>
-                <label>.nut</label>
+                <label>.nas</label>
                 <binding>
                     <command>dialog-apply</command>
                 </binding>
@@ -55,7 +55,7 @@
                 <command>nasal</command>
                 <script>
                 var file = getprop("/sim/fg-root")~"/Nasal/"
-                    ~getprop("/_debug/nas/test/filename")~".nut";
+                    ~getprop("/_debug/nas/test/filename")~".nas";
                 print(file);
                 fgcommand("nasal-test", props.Node.new({"path": file}));
                 </script>

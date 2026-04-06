@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------------
 # SPDX-License-Identifier: GPL-2.0-or-later
 #-------------------------------------------------------------------------------
-# props.Node.nut - Nasal Unit Test for props.Node.nas
+# test_props.nas - Nasal Unit Test for props.Node.nas
 # created: 06/2020
 # Copyright (C) 2020 by Henning Stahlke
 #-------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ var test_add = func() {
     # clamp to 12 with wrap around starting at 0
     unitTest.assert(myProp.add(3, 12, 12) == 3, "add()");
     unitTest.assert(myProp.add(48, 12, 12) == 3, "add()");
-    
+
     myProp.setValue(136);
     unitTest.assert(myProp.add(2, 137, 20) == 118, "add(2, 137, 20)");
 
@@ -81,7 +81,7 @@ var test_sub = func() {
     # clamp to 12 with wrap around starting at 0
     unitTest.assert(myProp.sub(3, 0, 12) == 9, "sub(3, 0, 12)");
     unitTest.assert(myProp.sub(48, 0, 12) == 9, "sub(48, 0, 12)");
-    
+
     myProp.setValue(118);
     unitTest.assert(myProp.sub(1, 118, 20) == 137, "sub(1, 118, 20)");
 
@@ -94,6 +94,6 @@ var test_sub = func() {
     myProp.initNode(nil, nil, "DOUBLE", "force");
     myProp.setValue(0);
     unitTest.assert(myProp.sub(2.5) == -2.5, "sub(2.5)");
-    
+
     # negative tests (tbd)
 }

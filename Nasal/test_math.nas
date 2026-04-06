@@ -1,6 +1,6 @@
 
 
-# fgcommand("nasal-test", props.Node.new({"path":"test_math.nut"}));
+# fgcommand("nasal-test", props.Node.new({"path":"test_math.nas"}));
 
 
 # note you can omit this if not needed
@@ -21,7 +21,7 @@ var test_abc = func {
 # fails if first argument is zero
     unitTest.assert(1 == 1, "Math equality");
     unitTest.assert(1 < 2, "Math less than");
-  
+
   # always fails the test
   #  unitTest.fail("broken");
 

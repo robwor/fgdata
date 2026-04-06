@@ -12,7 +12,7 @@
  #
  #---------------------------------------------------------------------------*/
 
-# fgcommand("nasal-test", props.Node.new({"path":"test_emesary.nut"}));
+# fgcommand("nasal-test", props.Node.new({"path":"test_emesary.nas"}));
 
 
 # note you can omit this if not needed
@@ -29,7 +29,7 @@ var tearDown = func {
 var test_emesary_transmit_receive = func {
     logprint(LOG_INFO, "Emesary test transmit receive");
 
-var baseRecipientCount = emesary.GlobalTransmitter.RecipientCount(); 
+var baseRecipientCount = emesary.GlobalTransmitter.RecipientCount();
     logprint(LOG_INFO, " (notice) already have ",baseRecipientCount);
 
     var TestFailCount = 0;
@@ -123,49 +123,49 @@ var baseRecipientCount = emesary.GlobalTransmitter.RecipientCount();
     var tt_radar_recipient = TestRadarRecipient.new("tt_radar_recipient: Radar Test recipient2");
 
     PerformTest("Create Notification", "TestNotification.Test notification",
-                func 
+                func
                 {
-                    var tn = TestNotification.new("Test notification"); 
+                    var tn = TestNotification.new("Test notification");
                     return tn.NotificationType~"."~tn.Ident;
                 });
 
     PerformTest("Register tt", 1 + baseRecipientCount,
-                func 
+                func
                 {
                     emesary.GlobalTransmitter.Register(tt);
-                    return emesary.GlobalTransmitter.RecipientCount(); 
+                    return emesary.GlobalTransmitter.RecipientCount();
                 });
     PerformTest("Register tt1", 2 + baseRecipientCount,
-                func 
+                func
                 {
                     emesary.GlobalTransmitter.Register(tt1);
-                    return emesary.GlobalTransmitter.RecipientCount(); 
+                    return emesary.GlobalTransmitter.RecipientCount();
                 });
     PerformTest("Register tt_radar_recipient", 3 + baseRecipientCount,
-                func 
+                func
                 {
                     emesary.GlobalTransmitter.Register(tt_radar_recipient);
-                    return emesary.GlobalTransmitter.RecipientCount(); 
+                    return emesary.GlobalTransmitter.RecipientCount();
                 });
     PerformTest("Register tt3", 4 + baseRecipientCount,
-                func 
+                func
                 {
                     emesary.GlobalTransmitter.Register(tt3);
-                    return emesary.GlobalTransmitter.RecipientCount(); 
+                    return emesary.GlobalTransmitter.RecipientCount();
                 });
 
     PerformTest("Notify", 1,
                 func
                 {
                     var rv = emesary.GlobalTransmitter.NotifyAll(TestNotification.new("Test notification"));
-                    return !emesary.Transmitter.IsFailed(rv) and rv != emesary.Transmitter.ReceiptStatus_NotProcessed and tt.count == 1; 
+                    return !emesary.Transmitter.IsFailed(rv) and rv != emesary.Transmitter.ReceiptStatus_NotProcessed and tt.count == 1;
                 });
 
     PerformTest("DeRegister tt1", 3 + baseRecipientCount,
                 func
                 {
                     emesary.GlobalTransmitter.DeRegister(tt1);
-                    return emesary.GlobalTransmitter.RecipientCount(); 
+                    return emesary.GlobalTransmitter.RecipientCount();
                 });
 
 #    tt1_count = tt1.count;
@@ -184,7 +184,7 @@ var baseRecipientCount = emesary.GlobalTransmitter.RecipientCount();
                 {
                     var rv = emesary.GlobalTransmitter.NotifyAll(TestNotification.new("Test notification"));
                     if (!emesary.Transmitter.IsFailed(rv) and rv != emesary.Transmitter.ReceiptStatus_NotProcessed)
-                      return tt.count; 
+                      return tt.count;
                     else
                       return -1000;
                 });
@@ -194,14 +194,14 @@ var baseRecipientCount = emesary.GlobalTransmitter.RecipientCount();
                 func
                 {
                     var rv = emesary.GlobalTransmitter.NotifyAll(TestNotProcessedNotification.new("Not Processed"));
-                    return rv; 
+                    return rv;
                 });
 
     PerformTest("NotifyAll", "RadarReturnNotification.x0.y0.z0",
                 func
                 {
                     emesary.GlobalTransmitter.NotifyAll(RadarReturnNotification.new("Radar notification", "x0","y0","z0"));
-                    return tt_radar_recipient.ReturnValue; 
+                    return tt_radar_recipient.ReturnValue;
                 });
 
     PerformTest("Deregister", 0 + baseRecipientCount,
@@ -210,7 +210,7 @@ var baseRecipientCount = emesary.GlobalTransmitter.RecipientCount();
                     emesary.GlobalTransmitter.DeRegister(tt);
                     emesary.GlobalTransmitter.DeRegister(tt3);
                     emesary.GlobalTransmitter.DeRegister(tt_radar_recipient);
-                    return emesary.GlobalTransmitter.RecipientCount(); 
+                    return emesary.GlobalTransmitter.RecipientCount();
                 });
 
 
@@ -314,8 +314,8 @@ test_mp_bridge = func {
                      #print("Check msg ",msg.Kind);
                      var failed = 0;
 
-                     if (math.abs(msg.Position.lat() - notification.Position.lat()) > 0.00001 or 
-                         math.abs(msg.Position.lon() - notification.Position.lon()) > 0.00001 or 
+                     if (math.abs(msg.Position.lat() - notification.Position.lat()) > 0.00001 or
+                         math.abs(msg.Position.lon() - notification.Position.lon()) > 0.00001 or
                          math.abs(msg.Position.alt() - notification.Position.alt()) > 1) {
                          failed = 1;
                          printf("Fail Position:(%d) %s != %s",msg.Kind, msg.Position, notification.Position);
@@ -398,7 +398,7 @@ test_mp_bridge = func {
          },0,0);
 
      # This is what causes the incoming bridge to create a connection between the multiplayer node
-     # and will result in an active incoming bridge 
+     # and will result in an active incoming bridge
      setprop("/ai/models/model-added", testMpPropertyPath);
 
      #
