@@ -3,7 +3,13 @@
   <name>Effects/mouse-cursor</name>
   <inherits-from>Effects/model-default</inherits-from>
 
-  <parameters>
-    <depth-offset type="float">-0.1</depth-offset>
-  </parameters>
+  <technique n="109">
+    <scheme>hdr-geometry</scheme>
+    <pass>
+      <depth>
+        <enabled>true</enabled>
+        <write-mask>true</write-mask>
+      </depth>
+    </pass>
+  </technique>
 </PropertyList>

@@ -42,7 +42,7 @@ using it with AISim.
   "engine"  : [ 
   {
     "pos"     : [ -78.7, 0.0, 22.9 ],	; enginge pos relative to CG (in)
-    "dir"     : [ 0.0, 0.0, 0.0 ],	; thruster direction (degrees)
+    "dir"     : [ 0.0, 0.0, 0.0 ],	; thruster direction (roll, pitch, yaw in degrees)
 
     "FT_max"  : 615.6,			; max thrust at sea level (lbs)
     "MT_max"  : -37.3,			; max thruster torque (lb-ft)

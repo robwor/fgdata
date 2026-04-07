@@ -601,7 +601,6 @@ Started September 2000 by David Megginson, david@megginson.com
     <vr>
       <config>
         <cursors include="VR/cursors.xml"/>
-        <gui include="VR/gui.xml"/>
       </config>
       <cursors>
         <mouse n="0">

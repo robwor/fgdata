@@ -99,11 +99,9 @@ var Log = {
 		m._layout = canvas.VBoxLayout.new();
 		m._overlay.setLayout(m._layout);
 
-		m._canvas.set("background", canvas._getColor(m.bg));
+		m._canvas.set("background", sprintf("rgba(%d, %d, %d, %d)", m.bg[0], m.bg[1], m.bg[2], m.bg[3]));
 		m._canvas.set("blend-source-rgb", "src-color");
-		m._canvas.set("blend-destination-rgb", "one-minus-src-color");
-		m._canvas.set("blend-source-alpha", "one-minus-dst-alpha");
-		m._canvas.set("blend-destination-alpha", "one");
+		m._canvas.set("blend-source-alpha", "src-alpha");
 		m._overlay.hide();
 
 		m._autoscrollTimer = maketimer(m.autoscroll, func { m._autoscrollTimerCallback(); });
@@ -261,9 +259,7 @@ var PropertyDisplay = {
 
 		m._canvas.set("background", canvas._getColor(m.bg));
 		m._canvas.set("blend-source-rgb", "src-color");
-		m._canvas.set("blend-destination-rgb", "one-minus-src-color");
-		m._canvas.set("blend-source-alpha", "one-minus-dst-alpha");
-		m._canvas.set("blend-destination-alpha", "one");
+		m._canvas.set("blend-source-alpha", "src-alpha");
 		m._overlay.hide();
 
 		m._updateTimer = maketimer(m.interval, func { m.update(); });
