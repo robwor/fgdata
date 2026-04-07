@@ -1,37 +1,20 @@
 <?xml version="1.0"?>
 
+<?FlightGear-tr context="dialog-vr-options"?>
+
 <PropertyList>
 
   <name>vr-options</name>
+  <ui-version>2</ui-version>
   <modal>false</modal>
   <resizable>false</resizable>
   <layout>vbox</layout>
   <default-padding>3</default-padding>
-
-  <group>
-    <layout>hbox</layout>
-    <default-padding>1</default-padding>
-
-    <text>
-      <label>VR Options</label>
-    </text>
-
-    <empty>
-      <stretch>true</stretch>
-    </empty>
-
-    <button>
-      <legend>X</legend>
-      <key>Esc</key>
-      <pref-width>20</pref-width>
-      <pref-height>20</pref-height>
-      <binding>
-        <command>dialog-close</command>
-      </binding>
-    </button>
-  </group>
-
-  <hrule/>
+  <title translate="y">
+    vr-options-title
+    <?FlightGear-tr text="VR Options"
+      comment="Dialog title (VR = virtual reality)"?>
+  </title>
 
   <empty>
     <stretch>true</stretch>
@@ -42,7 +25,11 @@
     <padding>6</padding>
     <checkbox>
       <halign>left</halign>
-      <label>Enable VR</label>
+      <label translate="y">
+        enable-vr
+        <?FlightGear-tr text="Enable VR"
+          comment="Checkbox label (VR = virtual reality)"?>
+      </label>
       <property>/sim/vr/enabled</property>
       <live>false</live>
       <binding>
@@ -53,7 +40,11 @@
 
   <text>
     <halign>center</halign>
-    <label>OpenXR Information</label>
+    <label translate="y">
+      openxr-info
+      <?FlightGear-tr text="OpenXR Information"
+        comment="Subtitle before VR status information (VR = virtual reality)"?>
+    </label>
     <enable><property>/sim/vr/present</property></enable>
   </text>
 
@@ -66,8 +57,11 @@
 
     <text>
       <halign>left</halign>
-      <label>OpenXR Runtime: MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</label>
-      <format>OpenXR Runtime: %s</format>
+      <format translate="y">
+        openxr-runtime-format
+        <?FlightGear-tr text="OpenXR Runtime: %s"
+          comment="%s = OpenXR runtime name as provided by the runtime"?>
+      </format>
       <property>/sim/vr/openxr/runtime/name</property>
       <live>true</live>
       <enable><property>/sim/vr/present</property></enable>
@@ -75,8 +69,11 @@
 
     <text>
       <halign>left</halign>
-      <label>OpenXR System: MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</label>
-      <format>OpenXR System: %s</format>
+      <format translate="y">
+        openxr-system-format
+        <?FlightGear-tr text="OpenXR System: %s"
+          comment="%s = OpenXR system name as provided by the OpenXR runtime"?>
+      </format>
       <property>/sim/vr/openxr/system/name</property>
       <live>true</live>
       <enable><property>/sim/vr/present</property></enable>
@@ -84,19 +81,20 @@
 
     <text>
       <halign>left</halign>
-      <label>VR State: MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM</label>
-      <format>VR State: %s</format>
+      <format translate="y">
+        vr-state-format
+        <?FlightGear-tr text="VR State: %s"
+          comment="%s = VR current state string (VR = virtual reality)"?>
+      </format>
       <property>/sim/vr/state-string</property>
       <live>true</live>
       <enable><property>/sim/vr/present</property></enable>
     </text>
     <text>
       <halign>left</halign>
-      <label></label>
     </text>
     <text>
       <halign>left</halign>
-      <label></label>
     </text>
   </group>
 
@@ -104,12 +102,15 @@
     <layout>hbox</layout>
     <halign>left</halign>
     <default-padding>1</default-padding>
-    <text>
-      <label>  </label>
-    </text>
     <checkbox>
       <halign>left</halign>
-      <label>Desktop Mirror</label>
+      <label translate="y">
+        vr-desktop-mirror
+        <?FlightGear-tr text="Desktop Mirror"
+          unwrap-comment="true"
+          comment="Checkbox label - Enables preview of VR display in desktop
+          window (VR = virtual reality)"?>
+      </label>
       <property>/sim/vr/mirror-enabled</property>
       <live>true</live>
       <binding>
@@ -124,16 +125,78 @@
         </script>
       </binding>
     </checkbox>
+  </group>
+
+  <group>
+    <layout>hbox</layout>
+    <halign>left</halign>
+    <default-padding>1</default-padding>
+    <text>
+      <label translate="y">
+        vr-desktop-mirror-mode
+        <?FlightGear-tr text="Desktop mirror mode"
+          unwrap-comment="true"
+          comment="Combobox label - Choose what to show on desktop preview of
+          VR display (VR = virtual reality)"?>
+      </label>
+      <enable><property>/sim/vr/mirror-enabled</property></enable>
+    </text>
     <empty><stretch>true</stretch></empty>
     <combo>
       <pref-width>250</pref-width>
       <live>true</live>
       <property>/sim/vr/mirror-mode</property>
-      <value>AUTOMATIC</value>
-      <value>NONE</value>
-      <value>LEFT</value>
-      <value>RIGHT</value>
-      <value>LEFT_RIGHT</value>
+      <enable><property>/sim/vr/mirror-enabled</property></enable>
+      <item>
+        <label translate="y">
+          vr-desktop-mirror-automatic
+          <?FlightGear-tr text="Automatic"
+            unwrap-comment="true"
+            comment="Combo item label - Choose what to show on desktop preview
+            of VR display automatically (VR = virtual reality)"?>
+        </label>
+        <value>AUTOMATIC</value>
+      </item>
+      <item>
+        <label translate="y">
+          vr-desktop-mirror-none
+          <?FlightGear-tr text="None"
+            unwrap-comment="true"
+            comment="Combo item label - Show nothing on desktop preview of VR
+            display (VR = virtual reality)"?>
+        </label>
+        <value>NONE</value>
+      </item>
+      <item>
+        <label translate="y">
+          vr-desktop-mirror-left
+          <?FlightGear-tr text="Left"
+            unwrap-comment="true"
+            comment="Combo item label - Show left eye view on desktop preview
+            of VR display (VR = virtual reality)"?>
+        </label>
+        <value>LEFT</value>
+      </item>
+      <item>
+        <label translate="y">
+          vr-desktop-mirror-right
+          <?FlightGear-tr text="Right"
+            unwrap-comment="true"
+            comment="Combo item label - Show right eye view on desktop preview
+            of VR display (VR = virtual reality)"?>
+        </label>
+        <value>RIGHT</value>
+      </item>
+      <item>
+        <label translate="y">
+          vr-desktop-mirror-left-right
+          <?FlightGear-tr text="Left & Right"
+            unwrap-comment="true"
+            comment="Combo item label - Show side-by-side left & right eye
+            views on desktop preview of VR display (VR = virtual reality)"?>
+        </label>
+        <value>LEFT_RIGHT</value>
+      </item>
       <binding>
         <command>dialog-apply</command>
       </binding>
@@ -146,23 +209,21 @@
         </script>
       </binding>
     </combo>
-    <!-- gap -->
-    <text>
-      <label> </label>
-    </text>
-
   </group>
 
   <group>
     <layout>hbox</layout>
     <halign>left</halign>
     <default-padding>1</default-padding>
-    <text>
-      <label>  </label>
-    </text>
     <checkbox>
       <halign>left</halign>
-      <label>Head tracked sound (for headphones)</label>
+      <label translate="y">
+        head-tracked-sound
+        <?FlightGear-tr text="Head tracked sound (for headphones)"
+          unwrap-comment="true"
+          comment="Checkbox label - makes surround sound relative to VR tracked
+          head orientation (VR = virtual reality)"?>
+      </label>
       <property>/sim/sound/head-tracked</property>
       <live>true</live>
       <binding>
@@ -175,12 +236,15 @@
     <layout>hbox</layout>
     <halign>left</halign>
     <default-padding>1</default-padding>
-    <text>
-      <label>  </label>
-    </text>
     <checkbox>
       <halign>left</halign>
-      <label>Show 3D mouse cursor in VR</label>
+      <label translate="y">
+        show-3d-mouse-cursor-in-vr
+        <?FlightGear-tr text="Show 3D mouse cursor in VR"
+          unwrap-comment="true"
+          comment="Checkbox label - Shows the 3D mouse cursor when VR is
+          running (VR = virtual reality)"?>
+      </label>
       <property>/sim/vr/cursors/mouse[0]/show-vr-running</property>
       <live>true</live>
       <binding>
@@ -193,12 +257,15 @@
     <layout>hbox</layout>
     <halign>left</halign>
     <default-padding>1</default-padding>
-    <text>
-      <label>  </label>
-    </text>
     <checkbox>
       <halign>left</halign>
-      <label>Always show 3D mouse cursor</label>
+      <label translate="y">
+        show-3d-mouse-cursor-always
+        <?FlightGear-tr text="Always show 3D mouse cursor"
+          unwrap-comment="true"
+          comment="Checkbox label - Shows the 3D mouse cursor always, even when
+          VR is not running (VR = virtual reality)"?>
+      </label>
       <property>/sim/vr/cursors/mouse[0]/show-always</property>
       <live>true</live>
       <binding>
@@ -211,12 +278,16 @@
     <layout>hbox</layout>
     <halign>left</halign>
     <default-padding>1</default-padding>
-    <text>
-      <label>  </label>
-    </text>
     <checkbox>
       <halign>left</halign>
-      <label>Enable 360 mouse when VR in use</label>
+      <label translate="y">
+        enable-360-mouse-vr-present
+        <?FlightGear-tr text="Enable 360 mouse when VR is in use"
+          unwrap-comment="true"
+          comment="Checkbox label - Enables/disables VR/360-degree captured
+          mouse mode automatically depending on VR user presence - normally via
+          a proximity sensor in the headset (VR = virtual reality)"?>
+      </label>
       <property>/sim/vr/cursors/mouse[0]/vr-mode-user-presence</property>
       <enable><property>/sim/vr/openxr/system/supports-user-presence</property></enable>
       <live>true</live>
@@ -226,6 +297,45 @@
     </checkbox>
   </group>
 
+  <group>
+    <layout>hbox</layout>
+    <halign>left</halign>
+    <default-padding>1</default-padding>
+    <text>
+      <label translate="y">
+        vr-mouse-sensitivity
+        <?FlightGear-tr text="360 mouse sensitivity"
+          unwrap-comment="true"
+          comment="Slider label - controls sensitivity of VR/360-degree
+          captured mouse mode (VR = virtual reality)"?>
+      </label>
+    </text>
+    <slider>
+      <name>vr-mouse-sensitivity</name>
+      <min>0.01</min>
+      <max>0.20</max>
+      <step>0.01</step>
+      <live>true</live>
+      <property>/sim/vr/config/cursors/px-angle-deg</property>
+      <binding>
+        <command>dialog-apply</command>
+        <object-name>vr-mouse-sensitivity</object-name>
+      </binding>
+    </slider>
+    <text>
+      <format translate="y">
+        vr-mouse-sensitivity-format
+        <?FlightGear-tr text="%.2f deg/px"
+          unwrap-comment="true"
+          comment="Slider value format - VR/360-degree captured mouse mode
+          sensitivity, in degrees of angular motion per pixel of mouse motion
+          (VR = virtual reality)"?>
+      </format>
+      <live>true</live>
+      <property>/sim/vr/config/cursors/px-angle-deg</property>
+    </text>
+  </group>
+
   <empty>
     <stretch>true</stretch>
   </empty>
@@ -233,7 +343,11 @@
   <hrule/>
 
   <button>
-    <legend>Close</legend>
+    <legend translate="y">
+      vr-options-close
+      <?FlightGear-tr text="Close"
+        comment="Dialog button legend"?>
+    </legend>
     <default>true</default>
     <key>Esc</key>
     <binding>

@@ -12,7 +12,7 @@
  #
  #---------------------------------------------------------------------------*/
 
-# fgcommand("nasal-test", props.Node.new({"path":"test_frame_utils.nut"}));
+# fgcommand("nasal-test", props.Node.new({"path":"test_frame_utils.nas"}));
 
 var setUp = func {
     logprint(LOG_INFO, "frame_utils test started");
@@ -31,7 +31,7 @@ test_partitionProcessorTest = func {
       var obj = xx;
 
       for (ii=0;ii<5;ii+=1) {
-          xx.process(obj, awg_9.tgts_list, 
+          xx.process(obj, awg_9.tgts_list,
                      func(pp, obj, data){
                          print("init");
                          obj.designated = 0;

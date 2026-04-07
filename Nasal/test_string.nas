@@ -1,7 +1,7 @@
 #-------------------------------------------------------------------------------
 # SPDX-License-Identifier: GPL-2.0-or-later
 #-------------------------------------------------------------------------------
-# string.nut - Nasal Unit Test for string.nas
+# test_string.nas - Nasal Unit Test for string.nas
 # author:  Henning Stahlke
 # created: 01/2026
 #-------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ var test_string_squeeze = func {
     var s = "";
     for (var i = 1; i < 15; i += 1) {
         s ~= chr(64 + i);
-        unitTest.assert(size(s) == i, "string.nut is broken");
+        unitTest.assert(size(s) == i, "test_string.nas is broken");
 
         # string should be unchanged for max < 7 (see implementation)
         for (var max = 1; max < 7; max += 1) {

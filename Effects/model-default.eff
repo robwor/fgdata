@@ -16,6 +16,8 @@ See simgear/scene/model/ReaderWriterAC3D.cxx
     <cull-face>back</cull-face>
     <pbr-metallic type="float">0.0</pbr-metallic>
     <pbr-roughness type="float">0.5</pbr-roughness>
+    <!-- logarithmic_depth.glsl -->
+    <depth-offset type="float">0.0</depth-offset>
   </parameters>
 
   <technique n="109">
@@ -60,6 +62,12 @@ See simgear/scene/model/ReaderWriterAC3D.cxx
         <name>pbr_roughness</name>
         <type>float</type>
         <value><use>pbr-roughness</use></value>
+      </uniform>
+      <!-- logarithmic_depth.glsl -->
+      <uniform>
+        <name>depthOffset</name>
+        <type>float</type>
+        <value><use>depth-offset</use></value>
       </uniform>
     </pass>
   </technique>

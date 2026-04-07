@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+3D GUI Configuration.
+-->
+
+<PropertyList>
+
+  <model>
+    <path>Models/VR/gui_3d.xml</path>
+  </model>
+
+</PropertyList>

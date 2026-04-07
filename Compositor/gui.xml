@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    This GUI Compositor is used by default.
+-->
+<PropertyList include="HDR/gui.xml"/>

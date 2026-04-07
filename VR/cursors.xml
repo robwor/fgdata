@@ -5,7 +5,19 @@
 
 <PropertyList>
 
+  <!-- How far the VR mouse cursor can reach objects from the user -->
+  <reach-m type="double">100</reach-m>
+  <!-- The angle the VR mouse cursor moves per pixel of motion -->
+  <px-angle-deg type="double" userarchive="y">0.05</px-angle-deg>
+
   <cue>
+    <!-- Minimum target angle from forward for cue visibility -->
+    <visibility-angle-deg type="double">30</visibility-angle-deg>
+    <!-- Angle from forward to display cue -->
+    <angle-deg type="double">10</angle-deg>
+    <!-- Distance from user to display cue -->
+    <distance-m type="double">0.45</distance-m>
+
     <model>
       <path>Models/Cursors/direction-cue.xml</path>
     </model>
@@ -15,34 +27,6 @@
     <cursor>inherit</cursor>
     <model>
       <path>Models/Cursors/arrow.xml</path>
-    </model>
-  </cursor>
-
-  <cursor>
-    <cursor>crosshair</cursor>
-    <model>
-      <path>Models/Cursors/crosshair.xml</path>
-    </model>
-  </cursor>
-
-  <cursor>
-    <cursor>drag-horizontal</cursor>
-    <model>
-      <path>Models/Cursors/left-right.xml</path>
-    </model>
-  </cursor>
-
-  <cursor>
-    <cursor>drag-vertical</cursor>
-    <model>
-      <path>Models/Cursors/up-down.xml</path>
-    </model>
-  </cursor>
-
-  <cursor>
-    <cursor>text</cursor>
-    <model>
-      <path>Models/Cursors/i-beam.xml</path>
     </model>
   </cursor>
 
@@ -60,5 +44,88 @@
     </model>
   </cursor>
 
-</PropertyList>
+  <cursor>
+    <cursor>crosshair</cursor>
+    <model>
+      <path>Models/Cursors/crosshair.xml</path>
+    </model>
+  </cursor>
 
+  <cursor>
+    <cursor>text</cursor>
+    <model>
+      <path>Models/Cursors/i-beam.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>left-right</cursor>
+    <model>
+      <path>Models/Cursors/left-right.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>up-down</cursor>
+    <model>
+      <path>Models/Cursors/up-down.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>left-side</cursor>
+    <model>
+      <path>Models/Cursors/left-side.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>right-side</cursor>
+    <model>
+      <path>Models/Cursors/right-side.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>top-side</cursor>
+    <model>
+      <path>Models/Cursors/top-side.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>bottom-side</cursor>
+    <model>
+      <path>Models/Cursors/bottom-side.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>top-left</cursor>
+    <model>
+      <path>Models/Cursors/top-left.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>top-right</cursor>
+    <model>
+      <path>Models/Cursors/top-right.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>bottom-left</cursor>
+    <model>
+      <path>Models/Cursors/bottom-left.xml</path>
+    </model>
+  </cursor>
+
+  <cursor>
+    <cursor>bottom-right</cursor>
+    <model>
+      <path>Models/Cursors/bottom-right.xml</path>
+    </model>
+  </cursor>
+
+</PropertyList>

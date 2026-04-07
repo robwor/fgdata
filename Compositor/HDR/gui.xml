@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PropertyList>
+  <name>GUI</name>
+  <!-- XXX: These won't be necessary once we go core profile only -->
+  <use-osg-uniforms>true</use-osg-uniforms>
+  <use-vertex-attribute-aliasing>true</use-vertex-attribute-aliasing>
+
+  <!-- GUI RGBA buffer -->
+  <buffer>
+    <name>gui</name>
+    <type>2d</type>
+    <width>screen</width>
+    <height>screen</height>
+    <format>rgba8</format>
+    <!-- Make available to Effects/gui.eff in a separate compositor -->
+    <export type="bool">true</export>
+  </buffer>
+
+  <!-- GUI depth/stencil buffer -->
+  <buffer>
+    <name>depth-stencil</name>
+    <type>2d</type>
+    <width>screen</width>
+    <height>screen</height>
+    <format>depth24-stencil8</format>
+  </buffer>
+
+  <!--=======================================================================-->
+
+  <!--
+      Render GUI to RGBA GUI buffer
+  -->
+  <pass n="-100">
+    <name>gui</name>
+    <type>gui</type>
+
+    <clear-mask>color</clear-mask>
+    <clear-color type="vec4d">0.0 0.0 0.0 0.0</clear-color>
+
+    <attachment>
+      <component>color0</component>
+      <buffer>gui</buffer>
+    </attachment>
+
+    <attachment>
+      <component>depth</component>
+      <buffer>depth-stencil</buffer>
+    </attachment>
+
+    <attachment>
+      <component>stencil</component>
+      <buffer>depth-stencil</buffer>
+    </attachment>
+  </pass>
+
+  <!--
+      Trivial copy of GUI buffer to screen
+  -->
+  <pass n="10000">
+    <name>gui-display</name>
+    <type>quad</type>
+    <render-condition>
+      <not>
+        <and>
+          <property>/sim/vr/running</property>
+          <property>/sim/vr/cursors/mouse[0]/vr-mode</property>
+        </and>
+      </not>
+    </render-condition>
+
+    <effect>Effects/HDR/trivial-premult</effect>
+    <binding>
+      <unit>0</unit>
+      <buffer>gui</buffer>
+    </binding>
+  </pass>
+</PropertyList>

@@ -19,6 +19,7 @@ $FG_GLSL_VERSION
 
 uniform float fg_Fcoef;
 uniform vec2 fg_NearFar;
+uniform float depthOffset;
 
 /*
  * Prepare a view space depth value for encoding. Normal usage involves calling
@@ -29,7 +30,7 @@ uniform vec2 fg_NearFar;
  */
 float logdepth_prepare_vs_depth(float z)
 {
-    return 1.0 + z;
+    return 1.0 + z + depthOffset;
 }
 
 /*

@@ -911,7 +911,7 @@ setlistener("/sim/vr/user-present", func(prop){
     if (trigger) {
         set360Mouse(prop.getValue());
     }
-}, 0, 0);
+}, 1, 0);
 
 var setMouseFlightControlsSensitivity = func(sensitivity)
 {

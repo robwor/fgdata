@@ -4,7 +4,7 @@
 # services by normal function calls - this is merely considered normal use
 # of the code, and does *not* fall under the heading of "derived work."
 #-------------------------------------------------------------------------------
-# svgcanvas.nut - Nasal unit test vor svgcanvas.nas
+# test_svgcanvas.nas - Nasal unit test for svgcanvas.nas
 # author:       jsb
 # created:      07/2020
 #-------------------------------------------------------------------------------

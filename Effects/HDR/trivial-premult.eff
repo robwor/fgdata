@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PropertyList>
+  <name>Effects/HDR/trivial-premult</name>
+  <inherits-from>Effects/HDR/trivial</inherits-from>
+
+  <technique n="1">
+    <pass n="0">
+      <blend>
+        <active>true</active>
+        <!-- source is premultiplied -->
+        <source>one</source>
+        <destination>one-minus-src-alpha</destination>
+      </blend>
+    </pass>
+  </technique>
+</PropertyList>

@@ -80,9 +80,7 @@ gui.Popup = {
 			# Standard alpha blending
 			"blend-source-rgb": "src-alpha",
 			"blend-destination-rgb": "one-minus-src-alpha",
-
-			# Just keep current alpha (TODO allow using rgb textures instead of rgba?)
-			"blend-source-alpha": "zero",
+			"blend-source-alpha": "one-minus-dst-alpha",
 			"blend-destination-alpha": "one"
 		});
 
@@ -304,7 +302,7 @@ gui.Popup = {
 		canvas_deco.addEventListener("mousedown", func me.raise());
 		canvas_deco.set("blend-source-rgb", "src-alpha");
 		canvas_deco.set("blend-destination-rgb", "one-minus-src-alpha");
-		canvas_deco.set("blend-source-alpha", "one");
+		canvas_deco.set("blend-source-alpha", "one-minus-dst-alpha");
 		canvas_deco.set("blend-destination-alpha", "one");
 
 		var group_deco = canvas_deco.getGroup("decoration");

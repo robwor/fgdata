@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+3D GUI model.
+
+Copyright (C) 2026 James Hogan
+GPL-2.0-or-later
+
+-->
+<PropertyList>
+  <path>gui_3d.ac</path>
+
+  <effect>
+    <inherits-from>Effects/gui-3d</inherits-from>
+    <object-name>GUI</object-name>
+  </effect>
+
+  <animation>
+    <type>select</type>
+    <object-name>GUI</object-name>
+
+    <condition>
+      <and>
+        <property>/sim/vr/running</property>
+        <property>/sim/vr/cursors/mouse[0]/vr-mode</property>
+      </and>
+    </condition>
+  </animation>
+
+  <animation>
+    <type>gui</type>
+    <object-name>GUI</object-name>
+  </animation>
+</PropertyList>
