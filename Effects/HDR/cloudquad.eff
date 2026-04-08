@@ -96,6 +96,11 @@
   <technique n="1">
 
     <pass>
+      <depth>
+        <enabled>true</enabled>
+        <function>always</function>
+        <write-mask>true</write-mask>
+      </depth>
 
       <texture-unit>
         <unit>0</unit>

@@ -446,6 +446,8 @@ void main()
         // Add aerial perspective
         vec3 P = get_view_space_from_depth(texcoord, gl_FragDepth);
         color.rgb = add_aerial_perspective(color.rgb, raw_texcoord, P);
+    } else {
+        gl_FragDepth = 1.0;
     }
     
     // Only pre-expose when not rendering to the environment map.

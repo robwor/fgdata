@@ -21,7 +21,7 @@ void main()
     original_color = mix(original_color, cloud_color.rgb, cloud_color.a);
 
     // Ignore the background or if occluded by clouds
-    if ((depth == 1.0) || (cloud_depth > depth)) {
+    if ((depth == 1.0) || (cloud_depth <= depth)) {
         fragColor = original_color;
         return;
     }
