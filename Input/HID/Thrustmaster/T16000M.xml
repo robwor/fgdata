@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+
+<!--
+************************************************************************
+* Setup for Thrustmaster T.16000M
+*
+* Note there are variants of this joystick, especially the 'Airbus A320'
+*
+*
+************************************************************************
+-->
+
+<PropertyList>
+    <name>Thrustmaster T.16000M</name>
+
+    <vendor-id>44f</vendor-id>
+    <device-id>0x405</device-id>
+
+    <device-dialog>generic-four-axis-joystick</device-dialog>
+    <debug-events type="bool">false</debug-events>
+
+    <event>
+        <desc>Aileron</desc>
+        <name>abs-x-translate</name>
+        <noise-threshold-bits type="int">3</noise-threshold-bits>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/flight/aileron</property>
+        </binding>
+    </event>
+
+    <event>
+        <desc>Elevator</desc>
+        <name>abs-y-translate</name>
+        <noise-threshold-bits type="int">3</noise-threshold-bits>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/flight/elevator</property>
+        </binding>
+    </event>
+
+    <event>
+        <desc>Rudder</desc>
+        <name>abs-slider</name>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/flight/rudder</property>
+        </binding>
+    </event>
+
+  <event>
+        <desc>Throttle</desc>
+        <name>abs-z-rotate</name>
+        <binding>
+            <command>nasal</command>
+            <script>controls.throttleAxis()</script>
+        </binding>
+    </event>
+
+    <event>
+     <name>abs-hat-x</name>
+        <desc>View Direction</desc>
+        <low>
+        <repeatable>true</repeatable>
+        <binding>
+         <command>property-adjust</command>
+         <property>/sim/current-view/goal-heading-offset-deg</property>
+         <step type="double">2.0</step>
+        </binding>
+        </low>
+        <high>
+           <repeatable>true</repeatable>
+                <binding>
+                 <command>property-adjust</command>
+                 <property>/sim/current-view/goal-heading-offset-deg</property>
+                 <step type="double">-2.0</step>
+              </binding>
+         </high>
+   </event>
+
+
+  <event>
+      <desc>View Elevation</desc>
+      <name>abs-hat-y</name>
+       <low>
+        <repeatable>true</repeatable>
+            <binding>
+                <command>nasal</command>
+                <script>logprint(LOG_INFO, "View Elevation Down");</script>
+            </binding>
+           <binding>
+              <command>property-adjust</command>
+              <property>/sim/current-view/goal-pitch-offset-deg</property>
+              <step type="double">2.0</step>
+           </binding>
+       </low>
+       <high>
+       <repeatable>true</repeatable>
+         <binding>
+           <command>property-adjust</command>
+           <property>/sim/current-view/goal-pitch-offset-deg</property>
+           <step type="double">-2.0</step>
+         </binding>
+        </high>
+    </event>
+
+
+</PropertyList>
