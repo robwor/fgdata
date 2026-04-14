@@ -2,7 +2,7 @@ gui.widgets.PropertyTree = {
         _CLASS: "PropertyTree",
         AttributeMapping: {
                 "archive": "A",
-                "alias": "L",
+                #"alias": "L",
                 "preserve": "P",
                 "readable": "R",
                 "tied": "T",
@@ -12,11 +12,16 @@ gui.widgets.PropertyTree = {
                 "writable": "W",
         },
 
+        # In verbose mode we lookup certain child nodes to aid easy
+        # identification of sub-trees.
+        _defautLookupChildNames: ["name", "id"],
+
         new: func(parent, style = nil, cfg = nil) {
                 cfg = Config.new(cfg);
                 var m = gui.widgets.List.new(parent, style, cfg);
                 m.parents = [gui.widgets.PropertyTree] ~ m.parents;
-                m.showAttrs = 0;
+                m._lookupChildName = "";
+                m._verbose = 0;
                 m._node = cfg.get("node", props.globals);
                 m._old_children_count = 0;
                 m.rebuildList();
@@ -30,10 +35,10 @@ gui.widgets.PropertyTree = {
                                 m.setNode(node);
                         }
                 });
-                m.updateTimer = maketimer(0, func m.update());
+                m.updateTimer = maketimer(0.1, func m.update());
                 m.updateTimer.simulatedTime = 0;
                 m.updateTimer.start();
-
+                m._attrkeys = sort(keys(me.AttributeMapping), func(a, b) cmp(a, b));
                 return m;
         },
 
@@ -68,6 +73,18 @@ gui.widgets.PropertyTree = {
                 return me;
         },
 
+        getLookupChild: func() {
+                return me._lookupChildName;
+        },
+
+        setLookupChild: func(name) {
+                me._lookupChildName = name;
+        },
+
+        setVerbose: func(value) {
+                me._verbose = value;
+        },
+
         rebuildList: func {
                 me.clear();
                 if (me._node.getParent()) {
@@ -75,7 +92,7 @@ gui.widgets.PropertyTree = {
                                                         .setData("node", me._node.getParent());
                 }
                 var children = sort(
-                        me._node.getChildren(), 
+                        me._node.getChildren(),
                         func(a, b) { cmp(
                                 sprintf("%s[%010d]", a.getName(), a.getIndex()),
                                 sprintf("%s[%010d]", b.getName(), b.getIndex())
@@ -143,21 +160,36 @@ gui.widgets.PropertyTree = {
                         var type = string.lc(node.getType());
                         var index = node.getIndex();
                         var numChildren = node.getAttribute("children");
-                        var attrString = "";
-                        if (me.showAttrs) {
-                                attrString ~= " (";
-                                if (type != "none") {
-                                        attrString ~= type ~ " ";
-                                }
-                                foreach (var attr; sort(keys(me.AttributeMapping), func(a, b) cmp(a, b))) {
-                                        if (node.getAttribute(attr)) {
-                                                attrString ~= me.AttributeMapping[attr];
+                        var details = "";
+                        if (me._verbose) {
+                                details = " (";
+                                if (node.getAttribute("alias")) {
+                                        details ~= node.getAliasTarget().getPath() ~ " ";
+                                } elsif (type != "none") {
+                                        details ~= type ~ " ";
+                                } else {
+                                        # sub-tree (node with children) usually are type none
+                                        if (me._lookupChildName) {
+                                                var v = node.getValue(me._lookupChildName);
+                                                details ~= (v != nil ? v~" " : "");
+                                        }
+                                        else foreach(var childName; me._defautLookupChildNames) {
+                                                var v = node.getValue(childName);
+                                                if (v != nil) {
+                                                        details ~= v~" ";
+                                                        break;
+                                                }
                                         }
                                 }
-                                attrString ~= " " ~ node.getAttribute("listeners");
-                                attrString ~= ")"
+
+                                foreach (var attr; me._attrkeys) {
+                                        if (node.getAttribute(attr)) {
+                                                details ~= me.AttributeMapping[attr];
+                                        }
+                                }
+                                details ~= " L" ~ node.getAttribute("listeners") ~ ")";
                         } elsif (type != "none") {
-                                attrString = " (" ~ type ~ ")"; 
+                                details = " (" ~ type ~ ")";
                         }
 
                         var name = node.getDisplayName((nameCountMapping[node.getName()] > 1)) ~ (numChildren ? "/" : "");
@@ -170,9 +202,9 @@ gui.widgets.PropertyTree = {
                                 value = node.getValue() ~ "";
                         }
                         if (value != nil) {
-                                item.setText(name ~ " = " ~ value ~ attrString);
+                                item.setText(name ~ " = " ~ value ~ details);
                         } else {
-                               item.setText(name ~ attrString);
+                               item.setText(name ~ details);
                         }
                 }
                 call(me.parents[1].update, [], me);
