@@ -362,7 +362,7 @@ var OverlaySelector = {
         foreach (var dir; me.dirs) {
             files = directory(dir.realpath);
 
-            if (size(files)) {
+            if (files != nil and size(files)) {
                 foreach (var file; files) {
                     path = os.path.new(dir.realpath);
                     path.append(file);
