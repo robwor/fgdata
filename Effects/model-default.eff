@@ -18,6 +18,7 @@ See simgear/scene/model/ReaderWriterAC3D.cxx
     <pbr-roughness type="float">0.5</pbr-roughness>
     <!-- logarithmic_depth.glsl -->
     <depth-offset type="float">0.0</depth-offset>
+    <alpha-cutoff type="float">0.0</alpha-cutoff>
   </parameters>
 
   <technique n="109">
@@ -54,6 +55,11 @@ See simgear/scene/model/ReaderWriterAC3D.cxx
         <value type="int">0</value>
       </uniform>
       <uniform>
+        <name>alpha_cutoff</name>
+        <type>float</type>
+        <value><use>alpha-cutoff</use></value>
+      </uniform>
+      <uniform>
         <name>pbr_metallic</name>
         <type>float</type>
         <value><use>pbr-metallic</use></value>
@@ -82,10 +88,28 @@ See simgear/scene/model/ReaderWriterAC3D.cxx
         <factor>1.1</factor>
         <units>4.0</units>
       </polygon-offset>
+      <texture-unit>
+        <unit>0</unit>
+        <type><use>texture[0]/type</use></type>
+        <image><use>texture[0]/image</use></image>
+        <filter><use>texture[0]/filter</use></filter>
+        <wrap-s><use>texture[0]/wrap-s</use></wrap-s>
+        <wrap-t><use>texture[0]/wrap-t</use></wrap-t>
+      </texture-unit>
       <program>
         <vertex-shader>Shaders/HDR/model_default_shadow.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/model_default_shadow.frag</fragment-shader>
       </program>
+      <uniform>
+        <name>color_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">0</value>
+      </uniform>
+      <uniform>
+        <name>alpha_cutoff</name>
+        <type>float</type>
+        <value><use>alpha-cutoff</use></value>
+      </uniform>
     </pass>
   </technique>
 </PropertyList>

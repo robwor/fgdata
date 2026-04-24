@@ -9,6 +9,7 @@ in VS_OUT {
 
 uniform sampler2D color_tex;
 
+uniform float alpha_cutoff;
 uniform float pbr_metallic;
 uniform float pbr_roughness;
 
@@ -26,8 +27,10 @@ float logdepth_encode(float z);
 
 void main()
 {
-    vec3 texel = texture(color_tex, fs_in.texcoord).rgb;
-    vec3 color = eotf_inverse_sRGB(texel) * fs_in.material_color.rgb;
+    vec4 texel = texture(color_tex, fs_in.texcoord);
+    if (texel.a * fs_in.material_color.a < alpha_cutoff)
+        discard;
+    vec3 color = eotf_inverse_sRGB(texel.rgb) * fs_in.material_color.rgb;
     vec3 N = normalize(fs_in.vertex_normal);
     gbuffer_pack_pbr_opaque(N, color, pbr_metallic, pbr_roughness, 1.0, vec3(0.0));
     gl_FragDepth = logdepth_encode(fs_in.flogz);
