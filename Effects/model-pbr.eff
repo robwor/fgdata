@@ -17,6 +17,7 @@
       <type>white</type>
     </texture>
     <base-color-factor type="vec4d">1.0 1.0 1.0 1.0</base-color-factor>
+    <alpha-cutoff type="float">0.0</alpha-cutoff>
     <!-- Normalmap -->
     <texture n="1">
       <type>null-normalmap</type>
@@ -136,6 +137,11 @@
         <value><use>emissive-factor</use></value>
       </uniform>
       <uniform>
+        <name>alpha_cutoff</name>
+        <type>float</type>
+        <value><use>alpha-cutoff</use></value>
+      </uniform>
+      <uniform>
         <name>flip_vertically</name>
         <type>bool</type>
         <value><use>flip-vertically</use></value>
@@ -153,10 +159,39 @@
         <factor>1.1</factor>
         <units>4.0</units>
       </polygon-offset>
+      <texture-unit>
+        <unit>0</unit>
+        <type><use>texture[0]/type</use></type>
+        <image><use>texture[0]/image</use></image>
+        <filter><use>texture[0]/filter</use></filter>
+        <mag-filter><use>texture[0]/mag-filter</use></mag-filter>
+        <wrap-s><use>texture[0]/wrap-s</use></wrap-s>
+        <wrap-t><use>texture[0]/wrap-t</use></wrap-t>
+      </texture-unit>
       <program>
         <vertex-shader>Shaders/HDR/model_pbr_shadow.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/model_pbr_shadow.frag</fragment-shader>
       </program>
+      <uniform>
+        <name>color_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">0</value>
+      </uniform>
+      <uniform>
+        <name>base_color_factor</name>
+        <type>float-vec4</type>
+        <value><use>base-color-factor</use></value>
+      </uniform>
+      <uniform>
+        <name>alpha_cutoff</name>
+        <type>float</type>
+        <value><use>alpha-cutoff</use></value>
+      </uniform>
+      <uniform>
+        <name>flip_vertically</name>
+        <type>bool</type>
+        <value><use>flip-vertically</use></value>
+      </uniform>
     </pass>
   </technique>
 </PropertyList>

@@ -16,6 +16,7 @@ uniform vec4 base_color_factor;
 uniform float metallic_factor;
 uniform float roughness_factor;
 uniform vec3 emissive_factor;
+uniform float alpha_cutoff;
 
 // gbuffer_pack.glsl
 void gbuffer_pack_pbr_opaque(vec3 normal,
@@ -34,8 +35,11 @@ float logdepth_encode(float z);
 void main()
 {
     vec4 base_color_texel = texture(base_color_tex, fs_in.texcoord);
+    // Only use alpha for discarding based on a threshold
+    // Otherwise we assume this is a completely opaque object
+    if (base_color_texel.a * base_color_factor.a < alpha_cutoff)
+        discard;
     vec3 base_color = eotf_inverse_sRGB(base_color_texel.rgb) * base_color_factor.rgb;
-    // Ignore alpha in base color. We assume this is a completely opaque object
 
     vec3 orm = texture(orm_tex, fs_in.texcoord).rgb;
     float occlusion = orm.r;

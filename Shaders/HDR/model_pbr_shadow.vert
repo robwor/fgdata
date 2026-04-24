@@ -3,12 +3,20 @@ $FG_GLSL_VERSION
 #pragma import_defines(USE_INSTANCING USE_WINGFLEX_DEFORMATION USE_CHUTE_DEFORMATION)
 
 layout(location = 0) in vec4 pos;
+layout(location = 3) in vec4 multitexcoord0;
 #ifdef USE_INSTANCING
 layout(location = 6) in vec3 instance_position; // (x, y, z)
 layout(location = 7) in vec4 instance_rotation_and_scale; // (heading, pitch, roll, scale)
 #endif
 
+out VS_OUT {
+    vec2 texcoord;
+} vs_out;
+
+uniform bool flip_vertically;
+
 uniform mat4 osg_ModelViewProjectionMatrix;
+uniform mat4 fg_TextureMatrix;
 
 #ifdef USE_INSTANCING
 // object_instancing.glsl
@@ -45,4 +53,7 @@ void main()
 #endif
 
     gl_Position = osg_ModelViewProjectionMatrix * new_pos;
+    vs_out.texcoord = vec2(fg_TextureMatrix * multitexcoord0);
+    if (flip_vertically)
+        vs_out.texcoord.y = 1.0 - vs_out.texcoord.y;
 }
