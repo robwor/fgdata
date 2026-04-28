@@ -154,8 +154,8 @@
         <units>4.0</units>
       </polygon-offset>
       <program>
-        <vertex-shader>Shaders/HDR/model_shadow.vert</vertex-shader>
-        <fragment-shader>Shaders/HDR/model_shadow.frag</fragment-shader>
+        <vertex-shader>Shaders/HDR/model_pbr_shadow.vert</vertex-shader>
+        <fragment-shader>Shaders/HDR/model_pbr_shadow.frag</fragment-shader>
       </program>
     </pass>
   </technique>

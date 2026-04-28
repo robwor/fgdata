@@ -83,8 +83,8 @@ See simgear/scene/model/ReaderWriterAC3D.cxx
         <units>4.0</units>
       </polygon-offset>
       <program>
-        <vertex-shader>Shaders/HDR/model_shadow.vert</vertex-shader>
-        <fragment-shader>Shaders/HDR/model_shadow.frag</fragment-shader>
+        <vertex-shader>Shaders/HDR/model_default_shadow.vert</vertex-shader>
+        <fragment-shader>Shaders/HDR/model_default_shadow.frag</fragment-shader>
       </program>
     </pass>
   </technique>
