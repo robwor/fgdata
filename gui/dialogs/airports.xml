@@ -339,7 +339,7 @@
               else {
                 new_value = apt_type ~ search_term;
               }
-              setprop("/sim/gui/dialogs/airports/list", new_value);
+              setprop("/sim/gui/dialogs/airports/list", search_term);
             </script>
           </binding>
           <binding>
@@ -396,7 +396,7 @@
         <layout>table</layout>
         <default-padding>0</default-padding>
 
-        <list>
+        <!-- <list>
           <row>0</row><col>0</col>
           <visible>
             <equals>
@@ -420,16 +420,16 @@
             <command>nasal</command>
             <script>listbox()</script>
           </binding>
-        </list>
+        </list> -->
 
         <airport-list>
           <row>0</row><col>0</col>
-          <visible>
+          <!-- <visible>
             <equals>
               <property>/sim/gui/dialogs/airports/mode</property>
               <value>search</value>
             </equals>
-          </visible>
+          </visible> -->
           <name>airport-list</name>
           <pref-width>260</pref-width>
           <pref-height>220</pref-height>

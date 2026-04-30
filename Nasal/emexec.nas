@@ -74,19 +74,19 @@ var FrameNotification =
                 }
                 if (new_class.properties[notification.property] != nil
                     and new_class.properties[notification.property] != notification.variable)
-                  logprint(1,"FrameNotification: (",notification.module,") FrameNotification: already have variable ",new_class.properties[notification.property]," for ",notification.variable, " referencing property ",notification.property);
+                  logprint(DEV_WARN,"FrameNotification: (",notification.module,") FrameNotification: already have variable ",new_class.properties[notification.property]," for ",notification.variable, " referencing property ",notification.property);
 
                 if (new_class.monitored[notification.variable] != nil
                     and new_class.monitored[notification.variable].getPath() != notification.property
                     and new_class.monitored[notification.variable].getPath() != "/"~notification.property)
-                  logprint(1,"FrameNotification: (",notification.module,") FrameNotification: already have variable ",notification.variable,"=",new_class.monitored[notification.variable].getPath(), " using different property ",notification.property);
+                  logprint(DEV_WARN, "FrameNotification: (",notification.module,") FrameNotification: already have variable ",notification.variable,"=",new_class.monitored[notification.variable].getPath(), " using different property ",notification.property);
                 #                else if (new_class.monitored[notification.variable] == nil)
                 #                  print("[INFO]: (",notification.module,") FrameNotification.",notification.variable, " = ",notification.property);
 
                 new_class.monitored[notification.variable] = root_node.getNode(notification.property,1);
                 new_class.properties[notification.property] = notification.variable;
 
-                logprint(4,"(",notification.module,") FrameNotification.",notification.variable, " = ",notification.property, " -> ", new_class.monitored[notification.variable].getPath() );
+                logprint(LOG_DEBUG,"(",notification.module,") FrameNotification.",notification.variable, " = ",notification.property, " -> ", new_class.monitored[notification.variable].getPath() );
                 return emesary.Transmitter.ReceiptStatus_OK;
             }
             return emesary.Transmitter.ReceiptStatus_NotProcessed;
@@ -98,7 +98,7 @@ var FrameNotification =
         foreach (var mp; keys(me.monitored)){
             if(me.monitored[mp] != nil){
                 if (FrameNotification.debug > 1)
-                    logprint(5," ",mp, " = ",me.monitored[mp].getValue());
+                    logprint(LOG_DEBUG," ",mp, " = ",me.monitored[mp].getValue());
                 me[mp] = me.monitored[mp].getValue();
             }
         }

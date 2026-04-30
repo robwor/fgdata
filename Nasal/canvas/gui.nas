@@ -46,6 +46,7 @@ loadWidget("Dial");
 loadWidget("Label");
 loadWidget("LineEdit");
 loadWidget("List");
+loadWidget("ListView");
 loadWidget("MenuBar");
 loadWidget("PropertyTree");
 loadWidget("PropertyWidgets");

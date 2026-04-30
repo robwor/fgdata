@@ -26,7 +26,7 @@ var XMLDialog = {
         me._window.setTitle(d.title);
         me._window.set("resize", d.resizeable);
         me._window.set("name", d.name);
-        
+
         var m = me;
         me._window.del = func {
             m.onWindowClosed();
@@ -43,10 +43,12 @@ var XMLDialog = {
         # some kind. (eg frame / group / scroll area)
         var rootObject = me.dialog().root;
 
+        debug.dump("DIalog didBuild: calling show with root group:", rootCanvasGroup);
+
         # show the root object inside our Canvas group. We could delay this
         # until we are made visible to make things more efficient/lazy
         rootObject.show(rootCanvasGroup);
-        
+
         if (me._sizeToContents) {
             var rootLayout = rootObject.layoutItem();
             if (rootLayout) {
@@ -98,7 +100,7 @@ var XMLDialog = {
         if (height <= 0) {
             height = rootLayout.sizeHint()[1];
         }
-        
+
         logprint(LOG_INFO, "Setting window size to:", width, ",", height);
         me._window.setSize(width, height);
     },
@@ -166,7 +168,7 @@ var XMLObjectBase =
         };
         return m;
     },
-    
+
     _configValue: func(name, def = nil)
     {
         var node = me.config.getNode(name);
@@ -255,7 +257,7 @@ var XMLObjectBase =
             l.setAlignment(ha + va);
         }
 
-        var layoutGhostType = ghosttype(l); 
+        var layoutGhostType = ghosttype(l);
         if ((layoutGhostType == "canvas.Widget") or (layoutGhostType == "canvas.ImageLayoutItem")) {
             var fixedWidth = me._configValue("width");
             var fixedHeight = me._configValue("height");
@@ -367,7 +369,7 @@ var XMLObjectBase =
     apply: func()
     {
         # we must not apply() on live properties, since me.value is
-        # already in sync, but _localValue might not be, if a binding calls dialog-apply 
+        # already in sync, but _localValue might not be, if a binding calls dialog-apply
         if (!me.property or me.live) {
             return;
         }
@@ -393,7 +395,7 @@ var XMLObjectBase =
         # empty update function
     },
 
-    visibleChanged: func() 
+    visibleChanged: func()
     {
         if (me.visible) {
             me.update();
@@ -472,7 +474,7 @@ var XMLButton =
     {
         # TODO: make platform specific
         var baseWeight = 100;
-        
+
         var r = me.role();
         if (contains(me._roleWeights, r)) {
             baseWeight = me._roleWeights[r];
@@ -498,9 +500,9 @@ var XMLStandardButton =
 
         if (ws == "okay") {
             me._role = "accept";
-            me._action = func { 
+            me._action = func {
                 me.dialog.apply();
-                me.dialog.requestClose(); 
+                me.dialog.requestClose();
             };
         } elsif (ws == "cancel") {
             me._role = ws;
@@ -545,7 +547,7 @@ var XMLStandardButton =
 
         # hook up the button to our bindings
         me._view.listen("clicked", func() {
-            me._onClicked(); 
+            me._onClicked();
         });
         me._applyLayoutConfig(true);
 
@@ -682,6 +684,7 @@ var XMLGroup =
     show: func(viewParent)
     {
         me._view = viewParent.createChild("group");
+
         # copy initial visiblity
         me._view.visible = me.visible;
 
@@ -708,7 +711,7 @@ var XMLGroup =
             # create view for each child
             c.show(me._view);
             if (c.type == "radio") {
-                var radioButton = c.layoutItem(); 
+                var radioButton = c.layoutItem();
                 if (!radioButtonsGroup) {
                     radioButtonsGroup = radioButton.getRadioButtonsGroup();
                 } else {
@@ -802,11 +805,11 @@ var XMLDial =
             "wrap":      me._configBool("wrap", 0),
             "value":     me.value   # essential to avoid triggering our value-changed callback on init
         });
-  
+
         me._layout = me._view;
         me._applyLayoutConfig();
         me.valueChanged();
-      
+
         me._view.listen("value-changed", func(e) {
             me._changeLocalValue(e.detail.value);
             me._activateBindings();
@@ -860,14 +863,10 @@ var XMLEmpty =
 {
     show: func(viewParent)
     {
-        # TODO: add Nasal-Canvas API to create spacer items
-        # explicitly
-        me._view = canvas.createChild("empty", "group");
         me._layout = canvas.Spacer.new();
         me._applyLayoutConfig();
         me.update();
-
-        return me._view;
+        return nil;
     },
 
     update: func()
@@ -964,7 +963,7 @@ var XMLComboBox =
         me._applyLayoutConfig();
         me.valueChanged();
 
-       me._view.listen("selected-item-changed", func(e) {
+        me._view.listen("selected-item-changed", func(e) {
             me._changeLocalValue(e.detail.value);
             me._activateBindings();
         });
@@ -982,7 +981,7 @@ var XMLComboBox =
 
 var XMLList = {
     show: func(viewParent) {
-        me._view = canvas.gui.widgets.List.new(viewParent);
+        me._view = cwidgets.List.new(viewParent);
 
         foreach (var valueNode; me.config.getChildren("value")) {
             me._view.createItem(valueNode);
@@ -1013,7 +1012,7 @@ var XMLText =
     show: func(viewParent)
     {
         me._view = cwidgets.TextBox.new(viewParent, canvas.style, {});
-        
+
         # copy initial visiblity
         me._view.visible = me.visible;
 
@@ -1052,7 +1051,7 @@ var XMLButtonBox =
 {
     init: func(objectProps)
     {
-        
+
     },
 
     show: func(viewParent)
@@ -1085,18 +1084,18 @@ var XMLButtonBox =
         # sort now
         orderedButtons = sort(orderedButtons, by_order);
         var lastOrder = -1000;
-    
+
         foreach (var b; orderedButtons) {
             b.show(me._view);
             var childItem = b.layoutItem();
 
-        # insert the expanding space 
+        # insert the expanding space
             var order = b._orderInButtonBox();
             if (lastOrder < 0 and order >= 0) {
                 layout.addStretch(1);
             }
             lastOrder = order;
-            
+
             # TODO: respect platform ordering based on role
             layout.addItem(childItem);
             layout.setEquals(childItem);
@@ -1196,6 +1195,53 @@ var XMLCanvas = {
     },
 };
 
+# XMLAirportList: a virtual list backed by gui.widgets.ListView + AirportListModel.
+# The bound property drives the search filter; selecting a row writes the ICAO
+# code back to the same property (or a separate target property, if needed).
+var XMLAirportList = {
+    init: func(objectProps) {
+        me._model = nil;
+    },
+
+    show: func(viewParent) {
+        me._view  = cwidgets.ListView.new(viewParent, canvas.style, {});
+        me._model = gui.AirportsModel.new();
+        me._view.setModel(me._model);
+
+        # copy initial visibility
+        me._view.visible = me.visible;
+
+        me._layout = me._view;
+        me._applyLayoutConfig();
+        me.valueChanged();
+
+        # When the user clicks a row, write the selected airport ICAO to the
+        # bound property and activate any configured bindings.
+        var o = me;
+        me._view.listen("selection-changed", func(e) {
+            if (e.detail.modelData != nil) {
+                o._changeLocalValue(e.detail.modelData.icao);
+                o._activateBindings();
+            }
+        });
+
+        return me._view;
+    },
+
+    # The bound property value is used as the model's search term so that a
+    # paired text-input widget can drive filtering live.
+    valueChanged: func() {
+        if (me._model != nil) {
+            logprint(LOG_INFO, "Setting airport search term to:" ~ me.value);
+            me._model.search = me.value;
+        }
+    },
+
+    update: func() {
+        me.valueChanged();
+    },
+};
+
 var _createCompatObjectLookupHash = {
     "button": XMLButton,
     "standard-button": XMLStandardButton,
@@ -1216,7 +1262,8 @@ var _createCompatObjectLookupHash = {
     "textbox": XMLText,
     "button-box": XMLButtonBox,
     "tabs": XMLTabs,
-    "canvas" : XMLCanvas
+    "canvas" : XMLCanvas,
+    "airport-list": XMLAirportList
 };
 
 # this is the callback function invoked by C++ to build Nasal peers
@@ -1244,4 +1291,36 @@ var _createCompatObject = func(type)
     return gui.xml.Object.new(w, type);
 };
 
+gui.xml.Object.registerClass("button", 0);
+gui.xml.Object.registerClass("standard-button", 2);
+gui.xml.Object.registerClass("checkbox", 0);
+gui.xml.Object.registerClass("slider", 0);
+gui.xml.Object.registerClass("dial", 0);
+
+# group can have any widget as children
+gui.xml.Object.registerClass("group", 0, ['*']);
+
+gui.xml.Object.registerClass("input", 0);
+gui.xml.Object.registerClass("empty", 0);
+gui.xml.Object.registerClass("hrule", 0);
+gui.xml.Object.registerClass("vrule", 0);
+gui.xml.Object.registerClass("combo", 0);
+
+gui.xml.Object.registerClass("list", 0);
+gui.xml.Object.registerClass("text", 0);
+gui.xml.Object.registerClass("radio", 0);
+gui.xml.Object.registerClass("textbox", 0);
+
+gui.xml.Object.registerClass("tabs", 2, ['*']);
+gui.xml.Object.registerClass("button-box", 2, ["button", "standard-button"]);
+
+gui.xml.Object.registerClass("canvas", 0);
+gui.xml.Object.registerClass("airport-list", 0);
+
 logprint(LOG_INFO, "Loaded gui.XMLDialog");
+
+var unload = func
+{
+  gui.xml.Object.clearClassInfo();
+  logprint(LOG_INFO, "Unloaded gui.XMLDialog module");
+};
