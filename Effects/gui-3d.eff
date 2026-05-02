@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PropertyList>
-  <name>Effects/gui</name>
+  <name>Effects/gui-3d</name>
   <inherits-from>Effects/model-pbr-transparent</inherits-from>
 
   <parameters>
     <base-color-factor type="vec4d">1 1 1 1</base-color-factor>
+    <emissive-factor type="vec3d">0.2 0.2 0.2</emissive-factor>
     <depth-offset type="float">-0.05</depth-offset>
     <alpha-cutoff type="float">0.01</alpha-cutoff>
     <!-- We add a fifth texture unit for the GUI buffer -->
@@ -28,6 +29,9 @@
       <define n="300">
         <name>BLEND_PREMULTIPLIED</name>
       </define>
+      <define n="301">
+        <name>EMISSION_AFTER_EXPOSURE</name>
+      </define>
       <texture-unit n="5">
         <unit>5</unit>
         <type><use>texture[5]/type</use></type>
@@ -40,6 +44,10 @@
       </texture-unit>
       <!-- base_color_tex -->
       <uniform n="100">
+        <value type="int">5</value>
+      </uniform>
+      <!-- emissive_tex -->
+      <uniform n="103">
         <value type="int">5</value>
       </uniform>
     </pass>

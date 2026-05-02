@@ -134,7 +134,7 @@
         <type>sampler-2d</type>
         <value type="int">2</value>
       </uniform>
-      <uniform>
+      <uniform n="103">
         <name>emissive_tex</name>
         <type>sampler-2d</type>
         <value type="int">3</value>

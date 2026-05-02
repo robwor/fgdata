@@ -1,5 +1,7 @@
 $FG_GLSL_VERSION
 
+#pragma import_defines(EMISSION_AFTER_EXPOSURE)
+
 FG_VIEW_GLOBAL
 uniform vec3 fg_SunDirection[FG_NUM_VIEWS];
 
@@ -58,14 +60,21 @@ vec3 eval_lights_transparent(vec3 base_color,
         base_color, metallic, roughness, f0,
         occlusion, ws_N, ws_refl, NdotV);
 
+#ifndef EMISSION_AFTER_EXPOSURE
     // Add emissive contribution
     color += emissive;
+#endif
 
     // Add aerial perspective
     color = mix_aerial_perspective(color, ap);
 
     // Pre-expose
     color = apply_exposure(color);
+
+#ifdef EMISSION_AFTER_EXPOSURE
+    // Add emissive contribution
+    color += emissive;
+#endif
 
     color = debug_shadow_color(color, P, N, fg_SunDirection[FG_VIEW_ID]);
 
