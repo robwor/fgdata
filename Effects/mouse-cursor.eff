@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PropertyList>
   <name>Effects/mouse-cursor</name>
-  <inherits-from>Effects/model-default</inherits-from>
+  <inherits-from>Effects/model-pbr-ambient</inherits-from>
 
   <parameters>
     <depth-offset type="float">-0.1</depth-offset>
+    <base-color-factor type="vec4d">1 1 1 1</base-color-factor>
+    <emissive-factor type="vec3d">0.2 0.2 0.2</emissive-factor>
   </parameters>
 </PropertyList>
