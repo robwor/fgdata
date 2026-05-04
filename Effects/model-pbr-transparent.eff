@@ -119,7 +119,7 @@
         <fragment-shader>Shaders/HDR/forward_pack.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/mvr.frag</fragment-shader>
       </program>
-      <uniform>
+      <uniform n="100">
         <name>base_color_tex</name>
         <type>sampler-2d</type>
         <value type="int">0</value>
