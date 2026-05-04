@@ -161,7 +161,7 @@
     <scheme>hdr-shadow</scheme>
     <pass>
       <color-mask type="vec4d">0 0 0 0</color-mask>
-      <cull-face>back</cull-face>
+      <cull-face><use>cull-face</use></cull-face>
       <blend>0</blend>
       <polygon-offset>
         <factor>1.1</factor>
@@ -190,7 +190,7 @@
         <type>float-vec4</type>
         <value><use>base-color-factor</use></value>
       </uniform>
-      <uniform>
+      <uniform n="200">
         <name>alpha_cutoff</name>
         <type>float</type>
         <value><use>alpha-cutoff</use></value>

@@ -6,7 +6,8 @@
 
   <parameters>
     <!-- Alpha Coverage -->
-    <alpha-cutoff>-1.0</alpha-cutoff>
+    <alpha-cutoff type="float">0.0</alpha-cutoff>
+    <shadow-alpha-cutoff type="float">0.5</shadow-alpha-cutoff>
     <!-- logarithmic_depth.glsl -->
     <depth-offset type="float">0.0</depth-offset>
     <!-- shadows.glsl -->
@@ -40,8 +41,14 @@
     <scheme>hdr-geometry</scheme>
   </technique>
 
-  <technique n="118">
-    <scheme>hdr-shadow</scheme>
+  <!-- override hdr-shadow in model-pbr -->
+  <technique n="119">
+    <pass>
+      <!-- alpha_cutoff -->
+      <uniform n="200">
+        <value><use>shadow-alpha-cutoff</use></value>
+      </uniform>
+    </pass>
   </technique>
 
   <technique n="128">
