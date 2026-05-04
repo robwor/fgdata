@@ -18,8 +18,15 @@ mat3 cotangent_frame(vec3 N, vec3 p, vec2 uv)
     vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;
     vec3 B = dp2perp * duv1.y + dp1perp * duv2.y;
     // construct a scale-invariant frame
-    float invmax = inversesqrt(max(dot(T,T), dot(B,B)));
-    return mat3(T * invmax, B * invmax, N);
+    float maxsqr = max(dot(T,T), dot(B,B));
+    // if the surface is untextured, T and B will be zero, but the default
+    // normal map still needs to work
+    if (maxsqr > 0.0) {
+        float invmax = inversesqrt(maxsqr);
+        T *= invmax;
+        B *= invmax;
+    }
+    return mat3(T, B, N);
 }
 
 /*
