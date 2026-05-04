@@ -180,7 +180,7 @@
         <vertex-shader>Shaders/HDR/model_pbr_shadow.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/model_pbr_shadow.frag</fragment-shader>
       </program>
-      <uniform>
+      <uniform n="100">
         <name>color_tex</name>
         <type>sampler-2d</type>
         <value type="int">0</value>

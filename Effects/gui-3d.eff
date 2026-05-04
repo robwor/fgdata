@@ -19,6 +19,26 @@
     </texture>
   </parameters>
 
+  <!-- override hdr-shadow in model-pbr -->
+  <technique n="119">
+    <pass>
+      <texture-unit n="5">
+        <unit>5</unit>
+        <type><use>texture[5]/type</use></type>
+        <image><use>texture[5]/image</use></image>
+        <buffer><use>texture[5]/buffer</use></buffer>
+        <filter><use>texture[5]/filter</use></filter>
+        <mag-filter><use>texture[5]/mag-filter</use></mag-filter>
+        <wrap-s><use>texture[5]/wrap-s</use></wrap-s>
+        <wrap-t><use>texture[5]/wrap-t</use></wrap-t>
+      </texture-unit>
+      <!-- color_tex -->
+      <uniform n="100">
+        <value type="int">5</value>
+      </uniform>
+    </pass>
+  </technique>
+
   <!-- override hdr-forward in model-pbr-transparent -->
   <technique n="128">
     <pass>
