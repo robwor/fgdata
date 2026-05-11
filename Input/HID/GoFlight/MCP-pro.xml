@@ -8,15 +8,26 @@
     <open>
       <![CDATA[
 
-      var altitudeAlphanumeric = func() { return goflight.mcp.altitudeData(); }
-      var headingAlphanumeric = func() { return goflight.mcp.headingData(); }
-      var courseAlphanumeric = func() { return goflight.mcp.course1Data(); }
-      var course2Alphanumeric = func() { return goflight.mcp.course2Data(); }
-      var speedAlphanumeric = func() { return goflight.mcp.speedData(); }
-      var vspeedAlphanumeric = func() { return goflight.mcp.vsData(); }
+      var gfMCP = input_helpers.goflight.mcp;
+      gfMCP.init();
+
+      logprint(LOG_INFO ,"GoFlight MCP Pro script loaded");
+
+      var courseAlphanumeric = func() { return gfMCP.course1Data(); }
+      var course2Alphanumeric = func() { return gfMCP.course2Data(); }
+      var speedAlphanumeric = func() { return gfMCP.speedData(); }
+      var vspeedAlphanumeric = func() { return gfMCP.vsData(); }
 
         ]]>
     </open>
+
+  <!-- example update hook, not usually needed -->
+    <!-- <update>
+      <![CDATA[
+        logprint(LOG_INFO, "GoFlight MCP Pro update");
+        gfMCP.update(device);
+      ]]>
+      </update> -->
   </nasal>
 
   <event>
@@ -29,6 +40,7 @@
 
   <event>
     <name>rel-dial-0</name>
+    <output-mode>direct</output-mode>
     <binding>
       <command>property-adjust</command>
       <property>/autopilot/settings/heading-bug-deg</property>
@@ -63,6 +75,7 @@
 
   <event>
     <name>rel-dial-1</name>
+    <output-mode>direct</output-mode>
     <binding>
       <command>property-adjust</command>
       <property>/instrumentation/nav[0]/radials/selected-deg</property>
@@ -97,6 +110,7 @@
 
   <event>
     <name>rel-dial-2</name>
+    <output-mode>direct</output-mode>
     <binding>
       <command>property-adjust</command>
       <property>/autopilot/settings/vertical-speed-fpm</property>
@@ -132,9 +146,10 @@
 
   <event>
     <name>rel-dial-3</name>
+    <output-mode>direct</output-mode>
     <binding>
       <command>nasal</command>
-      <script>goflight.mcp.adjustSpeed(cmdarg().getNode("offset").getValue())</script>
+      <script>input_helpers.goflight.mcp.adjustSpeed(cmdarg().getNode("offset").getValue())</script>
     </binding>
     <interpolater>
           <mirrored type="bool">true</mirrored>
@@ -165,6 +180,8 @@
 
   <event>
     <name>rel-dial-4</name>
+    <output-mode>direct</output-mode>
+
     <binding>
       <command>property-adjust</command>
       <property>/instrumentation/nav[1]/radials/selected-deg</property>
@@ -200,6 +217,7 @@
 
   <event>
     <name>rel-dial-5</name>
+    <output-mode>direct</output-mode>
     <interpolater>
           <mirrored type="bool">true</mirrored>
 
@@ -228,7 +246,7 @@
       <command>nasal</command>
       <script>
         var x = cmdarg().getNode("offset").getValue();
-        goflight.mcp.adjustAltitude(x * 50);
+        input_helpers.goflight.mcp.adjustAltitude(x * 50);
       </script>
     </binding>
   </event>
@@ -236,25 +254,25 @@
   <report>
     <report-id type="int">9</report-id>
     <watch>/input/goflight/mcp/refresh</watch>
-    <nasal-function>altitudeAlphanumeric</nasal-function>
+    <nasal>gfMCP.altitudeData();</nasal>
   </report>
 
   <report>
     <report-id type="int">7</report-id>
     <watch>/input/goflight/mcp/refresh-headings</watch>
-    <nasal-function>headingAlphanumeric</nasal-function>
+    <nasal>gfMCP.headingData();</nasal>
   </report>
 
   <report>
     <report-id type="int">3</report-id>
     <watch>/input/goflight/mcp/refresh-headings</watch>
-    <nasal-function>courseAlphanumeric</nasal-function>
+    <nasal>gfMCP.course1Data();</nasal>
   </report>
 
   <report>
     <report-id type="int">11</report-id>
     <watch>/input/goflight/mcp/refresh</watch>
-    <nasal-function>vspeedAlphanumeric</nasal-function>
+    <nasal>gfMCP.vsData();</nasal>
   </report>
 
   <report>
@@ -269,31 +287,31 @@
     <nasal-function>course2Alphanumeric</nasal-function>
   </report>
 
-  <!-- LED driver properties - these are generated from individual 
+  <!-- LED driver properties - these are generated from individual
  bool properties by the LEDWatcher helper class above -->
   <event>
-    <name>led-misc-0</name>
+    <name>generic-led-0</name>
     <setting>
       <property>/input/goflight/mcp/led[0]</property>
     </setting>
   </event>
 
   <event>
-    <name>led-misc-1</name>
+    <name>generic-led-1</name>
     <setting>
       <property>/input/goflight/mcp/led[1]</property>
     </setting>
   </event>
 
   <event>
-    <name>led-misc-2</name>
+    <name>generic-led-2</name>
     <setting>
       <property>/input/goflight/mcp/led[2]</property>
     </setting>
   </event>
 
   <event>
-    <name>led-misc-3</name>
+    <name>generic-led-3</name>
     <setting>
       <property>/input/goflight/mcp/led[3]</property>
     </setting>

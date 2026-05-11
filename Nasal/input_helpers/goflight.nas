@@ -3,17 +3,20 @@
 # map decimal digits 0..9 to standard 7-segment LCD pattern
 var translateDigitToSevenSegment = [0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x67];
 
-var formatFrequencyMHz = func(freqMhz, fieldWidth)
+var goflight =
+{
+
+formatFrequencyMHz: func(freqMhz, fieldWidth)
 {
     return bytesForString(sprintf("%.3f", freqMhz), fieldWidth);
-}
+},
 
-var formatFrequencyKHz = func(freqKhz, fieldWidth)
+formatFrequencyKHz: func(freqKhz, fieldWidth)
 {
     return bytesForString(sprintf("%6.2f", freqKhz), fieldWidth);
-}
+},
 
-var bytesForString = func(s, fieldWidth)
+bytesForString: func(s, fieldWidth)
 {
     var padCount = fieldWidth - size(s);
     var r = "";
@@ -32,24 +35,18 @@ var bytesForString = func(s, fieldWidth)
             r ~= chr(0);
         } else if (s[i] == `-`) { # negative
             r ~= chr(0x40);
-        } else {
+        } else if ((s[i] >= `0`) and (s[i] <= `9`)) {
             var digitCode = s[i] - `0`;
             r ~= chr(translateDigitToSevenSegment[digitCode]);
+        } else {
+            logprint(LOG_INFO, "bytesForString: unhandled:" ~ s[i] ~ "; raw string:" ~ s);
         }
     }
 
     return r;
-}
+},
 
-# TEST
-# STBY
-# OFF 
-# XPDR
-# TA
-# TA/RA
-
-
-var translateTo14Segment = {
+translateTo14Segment: {
     32: [0x0, 0x0],        # space
     65: [0x22, 0x37],     # A
     66: [0x0A, 0x8f],
@@ -66,9 +63,9 @@ var translateTo14Segment = {
     84: [0x08, 0x81],   # T
     88: [0x15, 0x40],   # X
     89: [0x09, 0x40]   # Y
-};
+},
 
-var formatFourteenSegment = func(s, fieldWidth)
+formatFourteenSegment: func(s, fieldWidth)
 {
     var r = [];
     for (var i=0; i < size(s); i += 1) {
@@ -82,18 +79,18 @@ var formatFourteenSegment = func(s, fieldWidth)
         }
     }
     return r;
-}
+},
 
-var reverseBytes = func(bytes)
+reverseBytes: func(bytes)
 {
     var r=[];
     for (var i = size(bytes) - 1; i >=0; i -=1) {
         append(r, bytes[i]);
     }
     return r;
-}
+},
 
-var MFRController = {
+MFRController: {
 
   new: func(prefix)
   {
@@ -106,9 +103,11 @@ var MFRController = {
 
     return m;
   }
+}
 };
 
-var mcp = {
+goflight.mcp =
+{
     init: func()
     {
         me._speedKnotsProp = props.globals.getNode("/autopilot/settings/target-speed-kt", 1);
@@ -142,6 +141,8 @@ var mcp = {
         setlistener(me._course1Prop, func { me.doRefreshHeading(); });
         setlistener(me._course2Prop, func { me.doRefreshHeading(); });
 
+        me._refresh = 0;
+
         me.doRefresh();
         me.doRefreshHeading();
 
@@ -157,12 +158,12 @@ var mcp = {
 
     doRefresh: func()
     {
-        me._refreshProp.setIntValue(0);
+        me._refreshProp.setIntValue(me._refresh+=1);
     },
 
     doRefreshHeading: func()
     {
-        me._refreshHeadingProp.setIntValue(0);
+        me._refreshHeadingProp.setIntValue(me._refresh+=1);
     },
 
     setMachMode: func(useMach)
@@ -175,29 +176,29 @@ var mcp = {
     {
         # if window is blanked, return empty data
         var alt = me._altitudeFtProp.getValue();
-        return bytesForString(sprintf("%d", alt), 5);
+        return goflight.bytesForString(sprintf("%d", alt), 5);
     },
 
     vsData: func()
     {
         # if window is blanked, return empty data
         if (me._blankVSWindow.getValue()) {
-            return bytesForString("     ", 5);
+            return goflight.bytesForString("     ", 5);
         }
 
         var vs = me._vsFPMProp.getValue();
-        return bytesForString(sprintf("%d", vs), 5);
+        return goflight.bytesForString(sprintf("%d", vs), 5);
     },
 
     speedData: func()
     {
         if (me._useMach) {
             var mach = me._speedMachProp.getValue();
-            return bytesForString(sprintf("%0.3f ", mach), 5);
+            return goflight.bytesForString(sprintf("%0.3f ", mach), 5);
         }
 
         var spd = me._speedKnotsProp.getValue();
-        return bytesForString(sprintf("%d", spd), 5);
+        return goflight.bytesForString(sprintf("%d", spd), 5);
     },
 
     adjustSpeed: func(val)
@@ -221,22 +222,22 @@ var mcp = {
     headingData: func()
     {
         var h = me._headingProp.getValue();
-        return bytesForString(sprintf("%0d", h), 3);
+        return goflight.bytesForString(sprintf("%0d", h), 3);
     },
 
     course1Data: func()
     {
         var h = me._course1Prop.getValue();
-        return bytesForString(sprintf("%0d", h), 3);
+        return goflight.bytesForString(sprintf("%0d", h), 3);
     },
 
     course2Data: func()
     {
         var h = me._course2Prop.getValue();
-        return bytesForString(sprintf("%0d", h), 3);
+        return goflight.bytesForString(sprintf("%0d", h), 3);
     },
 
-    _ledNames: { 
+    _ledNames: {
         'SPEED': [1, 0],
         'LVL-CHG': [1, 1],
         'HDG-SEL': [1, 2],
@@ -244,7 +245,7 @@ var mcp = {
         'ALT-HLD': [1,4],
         'V/S': [1,5],
         'F/O F/D': [1,7],
-    # bank 2    
+    # bank 2
         'CWS A': [2,1],
         'CWS B': [2,2],
         'CAP F/D': [2,6],
@@ -275,5 +276,13 @@ var mcp = {
         var node =  me._ledProps[data[0]];
         var ledBits = node.getValue();
         node.setIntValue(bits.switch(ledBits, data[1], b));
+    },
+
+    update: func(device)
+    {
+        logprint(LOG_INFO, "MCP update hook called");
+        #device.sentOutputReport([0, 0, 0, 0]);
     }
 };
+
+logprint(LOG_INFO, "Loaded GoFlight helpers");
