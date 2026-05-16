@@ -11,16 +11,13 @@
 
   <technique n="128">
     <pass n="0">
+      <!-- source is premultiplied -->
       <blend n="0">
-        <active>true</active>
-        <!-- source is premultiplied -->
-        <source>one</source>
-        <destination>one-minus-src-alpha</destination>
+        <source-rgb>one</source-rgb>
       </blend>
-      <depth n="0">
-        <!-- Temporary hack to prevent clouds overwriting -->
-        <write-mask>true</write-mask>
-      </depth>
+      <define n="300">
+        <name>BLEND_PREMULTIPLIED</name>
+      </define>
       <texture-unit n="5">
         <unit>5</unit>
         <type>buffer</type>

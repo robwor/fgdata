@@ -1,7 +1,5 @@
 $FG_GLSL_VERSION
 
-layout(location = 0) out vec4 fragColor;
-
 in VS_OUT {
     vec3 view_vector;
     vec4 spectral_irradiance;
@@ -16,6 +14,8 @@ float sqr(float x);
 float cub(float x);
 // celestial_body.glsl
 vec3 celestial_body_eval_color_spectral(vec4 radiance, vec3 V);
+// forward_pack.glsl
+void forward_pack_background(vec4 color);
 
 /*
  * Returns the solid angle subtended by a pixel.
@@ -50,5 +50,5 @@ void main()
 
     vec4 spectral_radiance = fs_in.spectral_irradiance / max(omega, 1e-8);
 
-    fragColor = vec4(celestial_body_eval_color_spectral(spectral_radiance, V), 1.0);
+    forward_pack_background(vec4(celestial_body_eval_color_spectral(spectral_radiance, V), 1.0));
 }

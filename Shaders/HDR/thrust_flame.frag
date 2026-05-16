@@ -5,8 +5,6 @@ $FG_GLSL_VERSION
  * Ported to HDR by Fernando García Liñán.
  */
 
-layout(location = 0) out vec4 fragColor;
-
 in VS_OUT {
     float flogz;
     vec3 ls_pos;
@@ -39,6 +37,8 @@ const int N_STEPS = 15;
 float noise_2d(vec2 coord, float wavelength);
 // logarithmic_depth.glsl
 float logdepth_encode(float z);
+// forward_pack.glsl
+void forward_pack(vec4 color, float flogz);
 
 float spherical_smoothstep(vec3 pos)
 {
@@ -117,6 +117,6 @@ void main()
     vec3 color = mix(flame_color_low, flame_color_high, density2);
     color = mix(color, base_flame, density1);
 
-    fragColor = vec4(color * flame_brightness, density);
+    forward_pack(vec4(color, flame_brightness * density), fs_in.flogz);
     gl_FragDepth = logdepth_encode(fs_in.flogz);
 }

@@ -1,7 +1,5 @@
 $FG_GLSL_VERSION
 
-layout(location = 0) out vec4 fragColor;
-
 in VS_OUT {
     float flogz;
     vec2 texcoord;
@@ -39,6 +37,8 @@ vec3 eval_lights_transparent(vec3 base_color,
 vec3 perturb_normal(vec3 N, vec3 V, vec2 texcoord, sampler2D tex);
 // logarithmic_depth.glsl
 float logdepth_encode(float z);
+// forward_pack.glsl
+void forward_pack(vec4 color, float flogz);
 
 void main()
 {
@@ -70,6 +70,6 @@ void main()
                                          fs_in.ap_color,
                                          fg_ViewMatrixInverse[FG_VIEW_ID]);
 
-    fragColor = vec4(color, base_color.a);
+    forward_pack(vec4(color, base_color.a), fs_in.flogz);
     gl_FragDepth = logdepth_encode(fs_in.flogz);
 }

@@ -1,7 +1,5 @@
 $FG_GLSL_VERSION
 
-layout(location = 0) out vec4 fragColor;
-
 in VS_OUT {
     vec2 texcoord;
     vec3 vertex_normal;
@@ -26,6 +24,8 @@ vec4 get_sun_outerspace_spectral_irradiance();
 vec4 celestial_body_transmittance(vec3 V);
 // exposure.glsl
 vec3 apply_exposure(vec3 color);
+// forward_pack.glsl
+void forward_pack_background(vec4 color);
 
 void main()
 {
@@ -68,5 +68,5 @@ void main()
     // Pre-expose
     color = apply_exposure(color);
 
-    fragColor = vec4(color, 1.0);
+    forward_pack_background(vec4(color, 1.0));
 }

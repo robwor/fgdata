@@ -83,6 +83,12 @@
     <format>depth24-stencil8</format>
   </buffer>
 
+  <!-- Forward HDR buffer for front of clouds -->
+  <buffer include="screen-buffer.xml">
+    <name>hdr-forward</name>
+    <format>rgba16f</format>
+  </buffer>
+
   <!-- Final HDR buffer -->
   <buffer include="screen-buffer.xml">
     <name>hdr-final</name>
@@ -1044,6 +1050,38 @@
     </attachment>
   </pass>
 
+  <!-- This pass generates a screen buffer containing clouds -->
+  <pass>
+    <name>clouds</name>
+    <type>quad</type>
+    <multiview>true</multiview>
+    <effect>Effects/HDR/cloudquad</effect>
+    <binding>
+      <unit>2</unit>
+      <buffer>depth-stencil</buffer>
+    </binding>
+    <binding>
+      <unit>11</unit>
+      <buffer>aerial-perspective</buffer>
+    </binding>
+    <binding>
+      <unit>12</unit>
+      <buffer>transmittance</buffer>
+    </binding>
+    <binding>
+      <unit>14</unit>
+      <buffer>prev-luminance</buffer>
+    </binding>
+    <attachment>
+      <component>color0</component>
+      <buffer>clouds</buffer>
+    </attachment>
+    <attachment>
+      <component>depth</component>
+      <buffer>clouds-depth-stencil</buffer>
+    </attachment>
+  </pass>
+
   <!--
       Main forward pass
       Render all objects that couldn't be rendered on the G-Buffer, mainly
@@ -1051,6 +1089,16 @@
       We reuse the depth buffer from the G-Buffer stage so we can take advantage
       of early depth testing.
   -->
+  <pass>
+    <name>clear-forward</name>
+    <type>quad</type>
+    <multiview>true</multiview>
+    <effect>Effects/HDR/gbuffer-clear</effect>
+    <attachment>
+      <component>color0</component>
+      <buffer>hdr-forward</buffer>
+    </attachment>
+  </pass>
   <pass>
     <name>forward</name>
     <type>scene</type>
@@ -1097,9 +1145,17 @@
       <unit>14</unit>
       <buffer>prev-luminance</buffer>
     </binding>
+    <binding>
+      <unit>15</unit>
+      <buffer>clouds-depth-stencil</buffer>
+    </binding>
     <attachment>
       <component>color0</component>
       <buffer>hdr-result</buffer>
+    </attachment>
+    <attachment>
+      <component>color1</component>
+      <buffer>hdr-forward</buffer>
     </attachment>
     <attachment>
       <component>depth</component>
@@ -1108,39 +1164,6 @@
     <attachment>
       <component>stencil</component>
       <buffer>depth-stencil</buffer>
-    </attachment>
-  </pass>
-
-
-  <!-- This pass generates a screen buffer containing clouds -->
-  <pass>
-    <name>clouds</name>
-    <type>quad</type>
-    <multiview>true</multiview>
-    <effect>Effects/HDR/cloudquad</effect>
-    <binding>
-      <unit>2</unit>
-      <buffer>depth-stencil</buffer>
-    </binding>
-    <binding>
-      <unit>11</unit>
-      <buffer>aerial-perspective</buffer>
-    </binding>
-    <binding>
-      <unit>12</unit>
-      <buffer>transmittance</buffer>
-    </binding>
-    <binding>
-      <unit>14</unit>
-      <buffer>prev-luminance</buffer>
-    </binding>
-    <attachment>
-      <component>color0</component>
-      <buffer>clouds</buffer>
-    </attachment>
-    <attachment>
-      <component>depth</component>
-      <buffer>clouds-depth-stencil</buffer>
     </attachment>
   </pass>
 
@@ -1172,6 +1195,10 @@
     <binding>
       <unit>4</unit>
       <buffer>clouds-depth-stencil</buffer>
+    </binding>
+    <binding>
+      <unit>5</unit>
+      <buffer>hdr-forward</buffer>
     </binding>
     <attachment>
       <component>color0</component>

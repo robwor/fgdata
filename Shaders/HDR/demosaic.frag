@@ -9,12 +9,16 @@ uniform sampler2D gbuffer1_tex;
 uniform sampler2D depth_tex;
 uniform sampler2D clouds;
 uniform sampler2D clouds_depth_tex;
+uniform sampler2D hdr_forward_tex;
 
-vec3 addClouds(vec3 color, float depth, vec4 cloud_color, float cloud_depth)
+vec3 composite(vec3 color, float depth, vec4 cloud_color, float cloud_depth, vec4 forward_color)
 {
     // Mix in the cloud texture (premultiplied alpha)
     if (cloud_depth <= depth)
         color = color * (1.0 - cloud_color.a) + cloud_color.rgb;
+
+    // Mix in the forward pass (premultiplied alpha).
+    color = color * (1.0 - forward_color.a) + forward_color.rgb;
 
     return color;
 }
@@ -48,14 +52,20 @@ void main()
     float depth = texture(depth_tex, texcoord).r;
     vec4 cloud_color = texture(clouds, texcoord);
     float cloud_depth = texture(clouds_depth_tex, texcoord).r;
-    color = addClouds(color, depth, cloud_color, cloud_depth);
+    vec4 forward_color = texture(hdr_forward_tex, texcoord);
+    color = composite(color, depth,
+                      cloud_color, cloud_depth,
+                      forward_color);
 
     // Calculate the neighboring pixel's color
     vec3 neighbor_color = textureOffset(hdr_tex, texcoord, ivec2(1, 0)).rgb;
     float neighbor_depth = textureOffset(depth_tex, texcoord, ivec2(1, 0)).r;
     vec4 neighbor_cloud_color = textureOffset(clouds, texcoord, ivec2(1, 0));
     float neighbor_cloud_depth = textureOffset(clouds_depth_tex, texcoord, ivec2(1, 0)).r;
-    neighbor_color = addClouds(neighbor_color, neighbor_depth, neighbor_cloud_color, neighbor_cloud_depth);
+    vec4 neighbor_forward_color = textureOffset(hdr_forward_tex, texcoord, ivec2(1, 0));
+    neighbor_color = composite(neighbor_color, neighbor_depth,
+                               neighbor_cloud_color, neighbor_cloud_depth,
+                               neighbor_forward_color);
 
     // Linearly interpolate between this pixel's color and the neighbor's color
     // according to the alpha value.

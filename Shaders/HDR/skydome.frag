@@ -1,7 +1,5 @@
 $FG_GLSL_VERSION
 
-layout(location = 0) out vec4 fragColor;
-
 in vec3 ray_dir;
 in vec3 ray_dir_view;
 
@@ -16,6 +14,8 @@ vec4 get_sun_outerspace_spectral_irradiance();
 vec3 linear_srgb_from_spectral_samples(vec4 L);
 // exposure.glsl
 vec3 apply_exposure(vec3 color);
+// forward_pack.glsl
+void forward_pack_background(vec4 color);
 
 void main()
 {
@@ -38,5 +38,5 @@ void main()
         sky_color = apply_exposure(sky_color);
     }
 
-    fragColor = vec4(sky_color, 1.0);
+    forward_pack_background(vec4(sky_color, 1.0));
 }

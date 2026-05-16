@@ -46,9 +46,15 @@
       </depth>
       <blend>
         <active>true</active>
-        <source>src-alpha</source>
-        <destination>one-minus-src-alpha</destination>
+        <!-- additive blending with RGB multiplication -->
+        <source-rgb>src-alpha</source-rgb>
+        <destination-rgb>one</destination-rgb>
+        <source-alpha>zero</source-alpha>
+        <destination-alpha>one</destination-alpha>
       </blend>
+      <define n="300">
+        <name>BLEND_ADDITIVE</name>
+      </define>
       <rendering-hint>transparent</rendering-hint>
       <cull-face>back</cull-face>
       <program>
@@ -57,6 +63,7 @@
         <fragment-shader>Shaders/HDR/thrust_flame.frag</fragment-shader>
         <fragment-shader>Shaders/HDR/logarithmic_depth.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/noise.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/forward_pack.glsl</fragment-shader>
       </program>
       <uniform>
         <name>flame_radius_fraction</name>
@@ -132,6 +139,12 @@
         <name>base_flame</name>
         <type>float-vec3</type>
         <value><use>base_flame</use></value>
+      </uniform>
+      <!-- forward_pack.glsl -->
+      <uniform>
+        <name>clouds_depth_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">15</value>
       </uniform>
     </pass>
   </technique>

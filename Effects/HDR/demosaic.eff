@@ -33,6 +33,11 @@
         <type>sampler-2d</type>
         <value type="int">4</value>
       </uniform>
+      <uniform>
+        <name>hdr_forward_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">5</value>
+      </uniform>
     </pass>
   </technique>
 </PropertyList>

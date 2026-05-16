@@ -1,7 +1,5 @@
 $FG_GLSL_VERSION
 
-layout(location = 0) out vec4 fragColor;
-
 in VS_OUT {
     vec2 texcoord;
     vec3 view_vector;
@@ -16,6 +14,8 @@ float saturate(float x);
 vec4 get_sun_outerspace_spectral_irradiance();
 // celestial_body.glsl
 vec3 celestial_body_eval_color_spectral(vec4 radiance, vec3 V);
+// forward_pack.glsl
+void forward_pack_background(vec4 color);
 
 /*
  * Limb darkening
@@ -46,5 +46,5 @@ void main()
     // Darkening factor
     sun_radiance *= get_sun_darkening_factor(center_to_edge);
 
-    fragColor = vec4(celestial_body_eval_color_spectral(sun_radiance, V), 1.0);
+    forward_pack_background(vec4(celestial_body_eval_color_spectral(sun_radiance, V), 1.0));
 }

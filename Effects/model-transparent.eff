@@ -65,8 +65,10 @@ See simgear/scene/model/ReaderWriterAC3D.cxx
       </texture-unit>
       <blend>
         <active>true</active>
-        <source>src-alpha</source>
-        <destination>one-minus-src-alpha</destination>
+        <source-rgb>src-alpha</source-rgb>
+        <destination-rgb>one-minus-src-alpha</destination-rgb>
+        <source-alpha>one-minus-dst-alpha</source-alpha>
+        <destination-alpha>one</destination-alpha>
       </blend>
       <rendering-hint>transparent</rendering-hint>
       <cull-face><use>cull-face</use></cull-face>
@@ -88,6 +90,7 @@ See simgear/scene/model/ReaderWriterAC3D.cxx
         <fragment-shader>Shaders/HDR/atmos_spectral.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/clustered.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/forward_pack.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/mvr.frag</fragment-shader>
       </program>
       <uniform>
@@ -174,6 +177,12 @@ See simgear/scene/model/ReaderWriterAC3D.cxx
         <name>exposure_compensation</name>
         <type>float</type>
         <value><use>exposure-compensation</use></value>
+      </uniform>
+      <!-- forward_pack.glsl -->
+      <uniform>
+        <name>clouds_depth_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">15</value>
       </uniform>
     </pass>
   </technique>

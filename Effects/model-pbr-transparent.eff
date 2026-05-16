@@ -6,7 +6,6 @@
 
   <parameters>
     <!-- Alpha Coverage -->
-    <blend>1</blend>
     <alpha-cutoff>-1.0</alpha-cutoff>
     <!-- logarithmic_depth.glsl -->
     <depth-offset type="float">0.0</depth-offset>
@@ -89,7 +88,13 @@
         <wrap-s><use>texture[3]/wrap-s</use></wrap-s>
         <wrap-t><use>texture[3]/wrap-t</use></wrap-t>
       </texture-unit>
-      <blend><use>blend</use></blend>
+      <blend>
+        <active>true</active>
+        <source-rgb>src-alpha</source-rgb>
+        <destination-rgb>one-minus-src-alpha</destination-rgb>
+        <source-alpha>one-minus-dst-alpha</source-alpha>
+        <destination-alpha>one</destination-alpha>
+      </blend>
       <rendering-hint>transparent</rendering-hint>
       <cull-face><use>cull-face</use></cull-face>
       <program>
@@ -111,6 +116,7 @@
         <fragment-shader>Shaders/HDR/atmos_spectral.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/clustered.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/exposure.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/forward_pack.glsl</fragment-shader>
         <fragment-shader>Shaders/HDR/mvr.frag</fragment-shader>
       </program>
       <uniform>
@@ -238,6 +244,12 @@
         <name>exposure_compensation</name>
         <type>float</type>
         <value><use>exposure-compensation</use></value>
+      </uniform>
+      <!-- forward_pack.glsl -->
+      <uniform>
+        <name>clouds_depth_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">15</value>
       </uniform>
     </pass>
   </technique>
