@@ -1657,6 +1657,20 @@
     </binding>
   </pass>
   <pass include="debug-pass.xml">
+    <name>debug-forward</name>
+    <effect>Effects/HDR/gbuffer-debug-color</effect>
+    <geometry>
+      <left>0.2</left>
+      <bottom>0.0</bottom>
+      <width>0.2</width>
+      <height>0.2</height>
+    </geometry>
+    <binding>
+      <unit>0</unit>
+      <buffer>hdr-forward</buffer>
+    </binding>
+  </pass>
+  <pass include="debug-pass.xml">
     <name>debug-normals</name>
     <effect>Effects/HDR/gbuffer-debug-normal</effect>
     <geometry>
