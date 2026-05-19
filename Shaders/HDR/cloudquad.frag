@@ -15,6 +15,7 @@ uniform sampler1D wind_offset_tex;
 
 uniform vec3 fg_SunDirectionWorld;
 uniform vec3 fg_CameraPositionCart;
+uniform float fg_EarthRadius;
 uniform float fg_AspectRatio;
 uniform mat4 fg_CameraZUpMatrix;
 uniform mat4 fg_ViewMatrix[FG_NUM_VIEWS];
@@ -75,6 +76,7 @@ float IN_CLOUD_STEP_SIZE = 0.1f / float(voxel_field_width);
 float IN_CLOUD_SUN_RAY_STEP_SIZE = 1.0 / float(voxel_field_width);
 float VOXEL_FIELD_WIDTH_M = float(voxel_field_width * voxel_resolution_m);
 float VOXEL_FIELD_HEIGHT_M = float(voxel_field_height * voxel_resolution_m);
+float CURVATURE_DENOM = 2.0 * fg_EarthRadius * VOXEL_FIELD_HEIGHT_M;
 
 // Scaling factor to account for the voxel space not being a cube.
 vec3 VOXEL_SCALE = vec3(1.0, 1.0, float(voxel_field_width) / float(voxel_field_height));
@@ -98,6 +100,20 @@ float ValueErosion(float inValue, float inOldMin)
 	return clamp((inValue - inOldMin) / old_min_max_range, 0.0, 1.0);
 }
 
+// Get a position in a curved reference frame to make the voxel space curve
+// around the earth. We achieve this by adjusting the position upwards by the sagitta
+// appromixation of the earth's curvature.
+// This should be used for all lookups into the voxel spaces.
+// eye is the eyepoint in voxel coordinates, and p is the position to be adjusted
+// in voxel space.
+vec3 getCurvedP(vec3 eye, vec3 p)
+{
+    vec2 l = p.xy - eye.xy;
+    float horiz_dist_m_2 = dot(l, l) * VOXEL_FIELD_WIDTH_M  * VOXEL_FIELD_WIDTH_M;
+    float sagitta_norm = horiz_dist_m_2 / CURVATURE_DENOM;
+    return vec3(p.xy, p.z + sagitta_norm);    
+}
+
 // HenyeyGreenstein forward phase scattering
 float HenyeyGreenstein(float inCosAngle, float inG)
 {
@@ -108,33 +124,38 @@ float HenyeyGreenstein(float inCosAngle, float inG)
 }
 
 /**
- * Get cloud information for a given sample point, using either the detailed
- * or rough data as appropriate
+ * Get cloud information for a given sample point.  This could be 
+ * outside the voxel space entirely, or inside a repeating or non-repeating
+ * space.
  */
-vec4 getCloud(vec3 samplePoint, vec3 dir)  {
+vec4 getCloud(vec3 cameraEye, vec3 samplePoint, vec3 dir)  {
     // If outside the voxel space then calculate an SDF directly.  This is basically the
-    // z coordinate - 1.0, plus a little bit to ensure it ends up within the voxel space.
-    if (samplePoint.z < 0.0) return vec4(0.0,0.0,0.0, -samplePoint.z / length(dir));
-    if (samplePoint.z > 1.0) return vec4(0.0,0.0,0.0, (samplePoint.z - 1.0) / length(dir));
+    // z coordinate plus a little bit to ensure it ends up within the voxel space,
+    vec3 curvedPoint = getCurvedP(cameraEye, samplePoint);
+    if (curvedPoint.z < 0.0) return vec4(0.0, 0.0, 0.0, -curvedPoint.z / length(dir));
+    if (curvedPoint.z > active_voxel_field_height_norm) 
+        return vec4(0.0, 0.0, 0.0, (curvedPoint.z - active_voxel_field_height_norm) / length(dir));
 
     if (cloud_field_repeating) {
-        // The repeating cloud field uses mirrored repeating textures to ensure the SDF is valid
-        // at the edges.  We also shift the cloud center by integer UV values to handle the curvature 
-        // We need to compensate for that mirroring here.
-        if (cloud_field_mirror_u) samplePoint.x = (1.0 - samplePoint.x);
-        if (cloud_field_mirror_v) samplePoint.y = (1.0 - samplePoint.y);
-        return texture(detailed_tex, samplePoint);
+        // Within a repeating cloud field we need to adjust the UV coordinates manually
+        // to mirror through the voxel space.
+        if (cloud_field_mirror_u) curvedPoint.x = (1.0 - curvedPoint.x);
+        if (cloud_field_mirror_v) curvedPoint.y = (1.0 - curvedPoint.y);
+        return texture(detailed_tex, curvedPoint);
     }
+
+    // If we get to here, we are in a non-repeating cloud field.  This consists of a detailed voxel space and rough voxel space.
 
     if ((abs(samplePoint.x - 0.5) < DETAILED_X_Y_BOUNDARY) && (abs(samplePoint.y - 0.5) < DETAILED_X_Y_BOUNDARY)) {
         // We're in the detailed space.  Scale the xy UV to the detailed voxel space
         vec3 uv = vec3((samplePoint.x - DETAILED_X_Y_BOUNDARY) * float(rough_field_factor),
-                       (samplePoint.y - DETAILED_X_Y_BOUNDARY) * float(rough_field_factor),
-                        samplePoint.z);
-        return texture(detailed_tex, uv);
+                    (samplePoint.y - DETAILED_X_Y_BOUNDARY) * float(rough_field_factor),
+                    samplePoint.z);
+        float sagitta = curvedPoint.z - samplePoint.z; // just the z offset
+        return texture(detailed_tex, vec3(uv.xy, uv.z + sagitta));
     } else {
         // We're in the rough space, so just use it as-is
-        return texture(rough_tex, samplePoint);
+        return texture(rough_tex, curvedPoint);
     }
 }
 
@@ -186,21 +207,23 @@ float calculateDensity(vec3 samplePoint, vec3 dir, vec4 cloud) {
     }
 }
 
-float getRayDensity(vec3 eye, vec3 marchingDirection, float start, float end) {
+float getRayDensity(vec3 cameraEye, vec3 eye, vec3 marchingDirection, float start, float end) {
     float density = 0.0;
     float distance = start;
     vec3 p = eye + distance * marchingDirection;
-    vec3 windOffset = texture(wind_offset_tex, p.z).xyz;
 
-    float storedTransmittance = texture(shade_tex, p + windOffset).r;
+    // Sample shade_tex at the ray origin (eye), not at start offset
+    vec3 windOffset = texture(wind_offset_tex, eye.z).xyz;    
+
+    float storedTransmittance = texture(shade_tex, getCurvedP(cameraEye, eye + windOffset)).r;
 
     // If already heavily shadowed, skip local march
     if (storedTransmittance < 0.15)
     {
+        // The shade texture contains the transmittance value, whereas we
+        // need to return the density.
         return -log(max(storedTransmittance, 0.0001));
     }
-
-    //return texture(shade_tex, p).r;
 
     for (int i = 0; i < MAX_LIGHT_STEPS; i++) {
         p = eye + distance * marchingDirection;
@@ -208,7 +231,7 @@ float getRayDensity(vec3 eye, vec3 marchingDirection, float start, float end) {
 
         if (p.z > active_voxel_field_height_norm) return density; // Reached the top of the actual cloud space
 
-        vec4 t = getCloud(p + windOffset, marchingDirection);
+        vec4 t = getCloud(cameraEye, p + windOffset, marchingDirection);
 
         if (t.a < EPSILON) {
             // Inside a cloud, so add density
@@ -231,10 +254,12 @@ float getRayDensity(vec3 eye, vec3 marchingDirection, float start, float end) {
     // At this point just look up the pre-calculated shade texture
     p = eye + (distance + IN_CLOUD_SUN_RAY_STEP_SIZE) * marchingDirection;
 
-    density = clamp(1.0 - storedTransmittance + density, 0.0, 1.0);    
+    // The shade texture contains the transmittance value, whereas we
+    // need to return the density.
+    storedTransmittance = texture(shade_tex, getCurvedP(cameraEye, p)).r;    
+    density =  density - log(max(storedTransmittance, 0.0001));
     return density;
 }
-
 
 /**
  * Absolute value of the SDF value indicates the distance to the surface.
@@ -270,30 +295,38 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
     float tEnter = start;
     float tExit  = end;
 
-    if (abs(dirZ) > EPSILON) {
-        float t0 = (0.0 - eye.z) / dirZ;
-        float t1 = (active_voxel_field_height_norm - eye.z) / dirZ;
+    // For rays above the slab pointing upward, nothing to render.
+    if (dirZ > EPSILON && eye.z > active_voxel_field_height_norm) return lreturn;
 
-        float slabEnter = min(t0, t1);
-        float slabExit  = max(t0, t1);
+    // For rays with meaningful dirZ, clamp tExit to avoid marching forever above the slab.
+    if (dirZ > EPSILON && eye.z < active_voxel_field_height_norm) {
+        float tTop = (active_voxel_field_height_norm - eye.z) / dirZ;
+        tExit = min(tExit, tTop);
+    }    
 
-        tEnter = max(start, slabEnter);
-        tExit  = min(end, slabExit);
-    } else {
-        if (eye.z < 0.0 || eye.z > active_voxel_field_height_norm)
-            return lreturn;
+    // Fast-forward tEnter to approximate curved cloud base entry point
+    // to avoid wasting march steps on empty space below the slab.
+    float h_norm_2 = dot(marchingDirection.xy, marchingDirection.xy);
+    if (h_norm_2 > EPSILON && eye.z < 0.0) {
+        float curve_coeff = h_norm_2 * VOXEL_FIELD_WIDTH_M * VOXEL_FIELD_WIDTH_M / CURVATURE_DENOM;
+        float tCurvedBase = safe_sqrt(-eye.z / curve_coeff);
+
+        // Also compute the flat-geometry entry (via dirZ climbing to z=0)
+        float tFlatBase = (dirZ > EPSILON) ? (-eye.z / dirZ) : tExit;
+
+        // Use whichever gets us to the cloud base sooner
+        float tFastForward = min(tCurvedBase, tFlatBase) * 0.9;
+        tEnter = max(tEnter, tFastForward);
+        if (tEnter >= tExit) return lreturn;
     }
-
-    if (tExit <= tEnter)
-        return lreturn;
 
     // -------------------------------------------------------
     // Standard raymarch, now guaranteed inside slab.
     // Calculate some dynamic limits and step sizes.
     // -------------------------------------------------------        
 
-    // Stable per-pixel jitter (screen-space stable)
-    float jitter = hash12(gl_FragCoord.xy);
+    // Stable per-pixel jitter (world-space stable)
+    float jitter = hash12(eye.xy);
     float stepSize = IN_CLOUD_STEP_SIZE;
     // Offset initial march position slightly
     float distance = tEnter + jitter * stepSize;
@@ -316,11 +349,11 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
         if (distance >= tExit) return lreturn; // Reached the end of the raymarch
 
         vec3 p = eye + distance * marchingDirection;
-        vec3 windOffset = texture(wind_offset_tex, p.z).xyz;
+        vec3 windOffset = texture(wind_offset_tex, getCurvedP(eye, p).z ).xyz;
 
         sample_information s;
 
-        vec4 cloud = getCloud(p + windOffset, marchingDirection);
+        vec4 cloud = getCloud(eye, p + windOffset, marchingDirection);
 
         s.sdf = cloud.a;
         s.density = 0.0;
@@ -329,6 +362,7 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
 
         if (s.sdf < EPSILON)
         {
+            // We're inside a cloud, so calculate the density etc.
             s.density = calculateDensity(p + windOffset, marchingDirection, cloud);
             s.sdf = IN_CLOUD_STEP_SIZE;
 
@@ -356,7 +390,7 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
             // Cache density information and save on expensive ray cast when the cloud density hasn't
             // changed much.  This is a major performance bottleneck.
             if (cachedSunDensity < 0.0 || abs(s.density - cachedDensity) > 0.02) {
-                densityToSun = getRayDensity(p, sunDirMarch,
+                densityToSun = getRayDensity(eye, p, sunDirMarch,
                                             IN_CLOUD_SUN_RAY_STEP_SIZE,
                                             1.0);
 
@@ -390,7 +424,7 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
 
             s.direct_scattering = singleScatter;  // sun colored - only direct scatter
 
-            float skyTransmittance = texture(shade_tex, p).g;
+            float skyTransmittance = texture(shade_tex, getCurvedP(eye, p + windOffset)).g;
             float dimensionalProfile = cloud.r;
 
             // ambient gets both sky terms AND the indirect multiple scatter
@@ -444,7 +478,7 @@ void main()
     float zscaleFactor = length(dir);
 
     // Get a Z-up eyepoint relative to the center of the cloud field in the X-Y plane, and offset to place the bottom of the field at the cloudbase.
-    vec3 eye = (zup * (fg_CameraPositionCart - cloud_field_center)) / EYE_SCALE + vec3(0.5, 0.5, - cloud_base_z_norm);
+    vec3 cameraEye = (zup * (fg_CameraPositionCart - cloud_field_center)) / EYE_SCALE + vec3(0.5, 0.5, - cloud_base_z_norm);
     vec4 color = vec4(0.0, 0.0, 0.0, 0.0);
 
     // Convert the logarithmic depth value into metres, and then scale to the voxel resolution 
@@ -453,7 +487,7 @@ void main()
     float max_depth_m = logdepth_decode(texture(depth_tex, texcoord).r);
     float max_depth_vx = min(max_depth_m / VOXEL_FIELD_WIDTH_M, MAX_DIST) * zscaleFactor;
 
-    ray_data ray = cloudRayMarch(eye, dir, MIN_DIST, max_depth_vx, zscaleFactor);
+    ray_data ray = cloudRayMarch(cameraEye, dir, MIN_DIST, max_depth_vx, zscaleFactor);
     
     if (ray.light_absorption > 0.01) {
         color.rgb = ray.intensity;
