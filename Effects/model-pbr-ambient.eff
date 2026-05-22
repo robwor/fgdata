@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+This effect extends model-pbr with a forward pass to add the emission color
+post-exposure, a bit like ambient lighting in the Phong reflection model.
+
+This is meant for important opaque user-interaction models (such as the VR
+mouse pointer) which must be visible at a variety of light levels including
+pitch dark, without glare from exposure as we would get with standard PBR.
+-->
+<PropertyList>
+  <name>Effects/model-pbr-ambient</name>
+  <inherits-from>Effects/model-pbr</inherits-from>
+
+  <!-- override hdr-geometry in model-pbr -->
+  <technique n="109">
+    <pass>
+      <!-- emissive-factor -->
+      <uniform n="203">
+        <!-- prevent hdr-geometry emission, as we add it after exposure in
+             the forward pass -->
+        <value type="vec3d">0 0 0</value>
+      </uniform>
+    </pass>
+  </technique>
+
+  <technique n="128">
+    <scheme>hdr-forward</scheme>
+    <pass>
+      <!-- Match exact depth written during hdr-geometry -->
+      <depth>
+        <enabled>true</enabled>
+        <function>equal</function>
+        <write-mask>false</write-mask>
+      </depth>
+      <texture-unit>
+        <unit>0</unit>
+        <type><use>texture[0]/type</use></type>
+        <image><use>texture[0]/image</use></image>
+        <filter><use>texture[0]/filter</use></filter>
+        <mag-filter><use>texture[0]/mag-filter</use></mag-filter>
+        <wrap-s><use>texture[0]/wrap-s</use></wrap-s>
+        <wrap-t><use>texture[0]/wrap-t</use></wrap-t>
+      </texture-unit>
+      <texture-unit>
+        <unit>1</unit>
+        <type><use>texture[3]/type</use></type>
+        <image><use>texture[3]/image</use></image>
+        <filter><use>texture[3]/filter</use></filter>
+        <mag-filter><use>texture[3]/mag-filter</use></mag-filter>
+        <wrap-s><use>texture[3]/wrap-s</use></wrap-s>
+        <wrap-t><use>texture[3]/wrap-t</use></wrap-t>
+      </texture-unit>
+      <blend>
+        <active>true</active>
+        <source-rgb>src-alpha</source-rgb>
+        <destination-rgb>one</destination-rgb>
+        <source-alpha>zero</source-alpha>
+        <destination-alpha>one</destination-alpha>
+      </blend>
+      <define>
+        <name>BLEND_ADDITIVE</name>
+      </define>
+      <rendering-hint>opaque</rendering-hint>
+      <cull-face><use>cull-face</use></cull-face>
+      <program>
+        <vertex-shader>Shaders/HDR/model_pbr_ambient.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/logarithmic_depth.glsl</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
+        <fragment-shader>Shaders/HDR/model_pbr_ambient.frag</fragment-shader>
+        <fragment-shader>Shaders/HDR/color.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/logarithmic_depth.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/forward_pack.glsl</fragment-shader>
+        <fragment-shader>Shaders/HDR/mvr.frag</fragment-shader>
+      </program>
+      <uniform>
+        <name>base_color_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">0</value>
+      </uniform>
+      <uniform>
+        <name>emissive_tex</name>
+        <type>sampler-2d</type>
+        <value type="int">1</value>
+      </uniform>
+      <uniform>
+        <name>base_color_factor</name>
+        <type>float-vec4</type>
+        <value><use>base-color-factor</use></value>
+      </uniform>
+      <uniform>
+        <name>emissive_factor</name>
+        <type>float-vec3</type>
+        <value><use>emissive-factor</use></value>
+      </uniform>
+      <uniform>
+        <name>flip_vertically</name>
+        <type>bool</type>
+        <value><use>flip-vertically</use></value>
+      </uniform>
+      <uniform>
+        <name>alpha_cutoff</name>
+        <type>float</type>
+        <value><use>alpha-cutoff</use></value>
+      </uniform>
+      <!-- logarithmic_depth.glsl -->
+      <uniform>
+        <name>depthOffset</name>
+        <type>float</type>
+        <value><use>depth-offset</use></value>
+      </uniform>
+    </pass>
+  </technique>
+</PropertyList>

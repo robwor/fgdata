@@ -131,7 +131,7 @@
         <type>float</type>
         <value><use>roughness-factor</use></value>
       </uniform>
-      <uniform>
+      <uniform n="203">
         <name>emissive_factor</name>
         <type>float-vec3</type>
         <value><use>emissive-factor</use></value>
