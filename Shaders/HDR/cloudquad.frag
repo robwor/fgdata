@@ -363,7 +363,8 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
         if (s.sdf < EPSILON)
         {
             // We're inside a cloud, so calculate the density etc.
-            s.density = calculateDensity(p + windOffset, marchingDirection, cloud);
+            s.density = calculateDensity(p + windOffset, marchingDirection, cloud)
+                        * min(1.0, (tExit - distance) / IN_CLOUD_STEP_SIZE);
             s.sdf = IN_CLOUD_STEP_SIZE;
 
             mat3 zup = mat3(fg_CameraZUpMatrix);
@@ -489,7 +490,7 @@ void main()
 
     ray_data ray = cloudRayMarch(cameraEye, dir, MIN_DIST, max_depth_vx, zscaleFactor);
     
-    if (ray.light_absorption > 0.01) {
+    if (ray.light_absorption > 0.001) {
         color.rgb = ray.intensity;
         color.a = ray.light_absorption;
 
