@@ -71,8 +71,6 @@ var Log = {
 			bg: [0, 0, 0, 0],
 			fg: [0.9, 0.4, 0.2, 1],
 			_pos: [x, y],
-			_lines: [],
-			_skipAutoscroll: 0,
 			_align: "center",  # "left", "right", "center"
 		};
 
@@ -106,13 +104,18 @@ var Log = {
 		m._canvas.set("blend-destination-alpha", "one");
 		m._overlay.hide();
 
-		m._autoscrollTimer = maketimer(m.autoscroll, func { m._autoscrollTimerCallback(); });
-		m._autoscrollTimer.simulatedTime = 1;
+		if (m.autoscroll > 0) {
+			m._autoscrollTimer = maketimer(1, func { m._autoscrollTimerCallback(); });
+			m._autoscrollTimer.simulatedTime = 0;
+		}
 
 		return m;
 	},
 	del: func {
-		me._autoscrollTimer.stop();
+		if (me._autoscrollTimer != nil) {
+			me._autoscrollTimer.stop();
+			me._autoscrollTimer = nil;
+		}
 		me._overlay.del();
 	},
 	setBackgroundColor: func(color) {
@@ -132,8 +135,9 @@ var Log = {
 			b = me.fg[2];
 		if (a == nil)
 			a = me.fg[3];
+		var now = systime();
 		foreach (var line; split("\n", string.trim(msg ~ ""))) {
-			while (me._layout.count() > me.maxlines) {
+			while (me._layout.count() >= me.maxlines) {
 				me._layout.takeAt(0);
 			}
 			line = sanitize(string.trim(line));
@@ -145,7 +149,9 @@ var Log = {
 				"font": canvas.style.getFont("message-display"),
 			});
 			me._layout.addItem(label);
-			me._skipAutoscroll += 1;
+			if (me.autoscroll > 0) {
+				label._expiryTime = now + me.autoscroll;
+			}
 		}
 		var s = me._layout.minimumSize();
 		s[0] += 20;
@@ -157,23 +163,25 @@ var Log = {
 		me.hide();
 	},
 	hide: func {
-		me._autoscrollTimer.stop();
+		if (me._autoscrollTimer != nil) {
+			me._autoscrollTimer.stop();
+		}
 		me._overlay.hide();
 	},
 	show: func {
 		me.setBackgroundColor(me.bg);
-		me._autoscrollTimer.start();
+		if (me._autoscrollTimer != nil) {
+			me._autoscrollTimer.start();
+		}
 		me._overlay.show();
 	},
 	_autoscrollTimerCallback: func {
-		if (me._skipAutoscroll > 0) {
-			me._skipAutoscroll -= 1;
-			return;
-		}
-		if (me._layout.count() > 0) {
+		var now = systime();
+		while (me._layout.count() > 0 and me._layout.itemAt(0)._expiryTime <= now) {
 			me._layout.takeAt(0);
-		} else {
-			me._overlay.hide();
+		}
+		if (me._layout.count() == 0) {
+			me.hide();
 		}
 	},
 };
