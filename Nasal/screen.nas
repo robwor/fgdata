@@ -237,7 +237,7 @@ var PropertyDisplay = {
 			bg: [0, 0, 0, 0],
 			tagformat: "%s",
 			format: "%.12g",
-			interval: 0,
+			interval: 0.1,
 			base: props.globals.getNode("/sim/gui/dialogs/property-display-" ~ (display.id += 1), 1),
 			_pos: [x, y],
 			_lines: [],
@@ -298,7 +298,7 @@ var PropertyDisplay = {
 	},
 	show : func {
 		me.setBackgroundColor(me.bg);
-		me._updateTimerCallback.start();
+		me._updateTimer.start();
 		me._overlay.show();
 	},
 	setcolor: func(r, g, b, a = 1) {
