@@ -53,9 +53,6 @@
       <!-- texture unit 1 direct from VPBBuilder.cxx -->
 
       <program>
-        <!-- https://gitlab.com/flightgear/fgdata/-/issues/45 -->
-        <fails-validation type="bool">true</fails-validation>
-
         <vertex-shader>Shaders/HDR/ws30.vert</vertex-shader>
         <tesscontrol-shader>Shaders/HDR/ws30.tesc</tesscontrol-shader>
         <tessevaluation-shader>Shaders/HDR/ws30.tese</tessevaluation-shader>
