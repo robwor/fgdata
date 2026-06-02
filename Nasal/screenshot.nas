@@ -62,7 +62,7 @@ var cube_screen_ticks = func()
 	{
 		pitch_deg=0;
 		heading_deg=headingvalue-90*j;
-		roll_deg = -270+j*90;
+		roll_deg = 0;
 	}
 	if (k==0)
 	{
