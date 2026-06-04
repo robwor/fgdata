@@ -1,0 +1,283 @@
+<?xml version="1.0"?>
+<!--
+SPDX-License-Identifier: GPL-2.0-or-later
+SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
+
+********************************************************************
+*
+* Bindings for WINCRTL 32 AGP
+* 4098:bb80
+* reminder for light next to gear down lever
+* red arrow in FCOM
+*        RED ARROW
+*        This red arrow lights up if the landing gear is not locked down when the aircraft is in the landing
+*        configuration, and a red warning appears on ECAM.
+* a320.flightdeck.xml implies: ECAM/warnings/landing-gear-warning-light
+*
+********************************************************************
+-->
+
+<PropertyList>
+    <vendor-name>winctrl</vendor-name>
+    <model-name>agp32</model-name>
+    <vendor-id>4098</vendor-id>
+    <model-id>bb80</model-id>
+    <name type="string">Winwing WINWING AGP</name>
+    <debug-events type="bool">false</debug-events>
+    <nasal>
+        <open>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL AGP Nasal (event) open");
+                agp32 = input_helpers.winctrl.new("agp32",cmdarg(),device);
+            ]]>
+        </open>
+        <close>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL AGP32 Nasal (event) close");
+                #if (ishash(agp32) and isfunc(agp32['close']))
+                agp32.close(cmdarg());
+            ]]>
+        </close>
+    </nasal>
+    <event>
+        <desc>AGP lux</desc>
+        <name>abs-x-rotate</name>
+        <output-mode>direct</output-mode>
+        <binding>
+            <command>property-scale</command>
+            <property>/input/winctrl/agp32/lux</property>
+        </binding>
+    </event>
+    <event>
+        <desc>brake fan</desc>
+        <name>button-1</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/gear/brake-fans</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <desc>brake fan</desc>
+        <name>button-2</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/gear/brake-fans</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <desc>auto brk lo</desc>
+        <name>button-3</name>
+        <binding>
+            <command>nasal</command>
+            <script>
+                if (getprop("/controls/autobrake/mode") == 1) {
+                    setprop("/controls/autobrake/mode",0);
+                } else {
+                    setprop("/controls/autobrake/mode",1);
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <desc>auto brk med</desc>
+        <name>button-4</name>
+        <binding>
+            <command>nasal</command>
+            <script>
+                if (getprop("/controls/autobrake/mode") == 2) {
+                    setprop("/controls/autobrake/mode",0);
+                } else {
+                    setprop("/controls/autobrake/mode",2);
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <desc>auto brk max</desc>
+        <name>button-5</name>
+        <binding>
+            <command>nasal</command>
+            <script>
+                if (getprop("/controls/autobrake/mode") == 3) {
+                    setprop("/controls/autobrake/mode",0);
+                } else {
+                    setprop("/controls/autobrake/mode",3);
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <desc>a/skid on</desc>
+        <name>button-6</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/gear/nws-switch</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <desc>a/skid off</desc>
+        <name>button-7</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/gear/nws-switch</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <!-- RST: -8, push 9, +10, rotations not used -->
+    <event>
+        <name>button-9</name>
+        <desc>chrono reset btn</desc>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/clock/chrono/chrono-reset-btn</property>
+            <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/instrumentation/clock/chrono/chrono-reset-btn</property>
+                <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <!-- CHR: -11, push 12, +13, rotations not used -->
+    <event>
+        <name>button-12</name>
+        <desc>chrono btn</desc>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/clock/chrono/chrono-btn</property>
+            <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/instrumentation/clock/chrono/chrono-btn</property>
+                <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-14</name>
+        <desc>date set left</desc>
+        <binding>
+            <!-- SET KNOB ROTATES BUT DOESN'T ALTER CLOCKS -->
+            <command>property-adjust</command>
+            <property>/instrumentation/clock/set-knb-pos</property>
+            <step>-1</step>
+            <min>0</min>
+            <max>31</max>
+            <wrap>true</wrap>
+        </binding>
+    </event>
+    <event>
+        <name>button-15</name>
+        <desc>date set knob</desc>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/clock/set-knob</property>
+            <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/instrumentation/clock/set-knob</property>
+                <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-16</name>
+        <desc>date set right</desc>
+        <binding>
+            <!-- SET KNOB ROTATES BUT DOESN'T ALTER CLOCKS -->
+            <command>property-adjust</command>
+            <property>/instrumentation/clock/set-knb-pos</property>
+            <step>1</step>
+            <min>0</min>
+            <max>31</max>
+            <wrap>true</wrap>
+        </binding>
+    </event>
+    <event>
+        <name>button-17</name>
+        <desc>utc-selector gps</desc>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/clock/utc-selector</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-18</name>
+        <desc>utc-selector int</desc>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/clock/utc-selector</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-19</name>
+        <desc>utc-selector set</desc>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/clock/utc-selector</property>
+            <value>2</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-20</name>
+        <desc>elapsed time run</desc>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/clock/et/et-selector</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-21</name>
+        <desc>elapsed time stp</desc>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/clock/et/et-selector</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-22</name>
+        <desc>elapsed time rst</desc>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/clock/et/et-selector</property>
+            <value>2</value>
+        </binding>
+    </event>
+    <event>
+        <desc>terr_on_nd</desc>
+        <name>button-23</name>
+        <binding>
+            <command>property-toggle</command>
+            <property>/controls/switches/terr_on_nd_r</property>
+        </binding>
+    </event>
+    <event>
+        <desc>Gear UP</desc>
+        <name>button-24</name>
+        <binding>
+            <command>nasal</command>
+            <script>controls.gearDown(-1)</script>
+        </binding>
+    </event>
+    <event>
+        <desc>Gear DOWN</desc>
+        <name>button-25</name>
+        <binding>
+            <command>nasal</command>
+            <script>controls.gearDown(1)</script>
+        </binding>
+    </event>
+</PropertyList>

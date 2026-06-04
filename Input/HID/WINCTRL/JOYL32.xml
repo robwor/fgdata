@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+<!--
+SPDX-License-Identifier: GPL-2.0-or-later
+SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
+
+********************************************************************
+*
+* Bindings for Winwing WINCTRL URSA MINOR 32 Joystick L
+*
+* 4098:bc27
+*
+* it has an LED and vibrator which are addressable
+*
+* joystick axes XYZ are 0-65535
+* Z axis is lockable with a screw
+* slider is from 4095-0
+* hat switch - neutral 675, 0 up, 90 right, 180 down, 270 left
+*   - press btn-20
+* left buttons increase from left side across right then down
+* right buttons increase from right side across left then down
+* btn-21: trigger (PTT)
+* btn-22: AP disconnect
+*
+********************************************************************
+-->
+<PropertyList>
+    <vendor-name>winctrl</vendor-name>
+    <model-name>joyl32</model-name>
+    <!--<vendor-id>winctrl</vendor-id>
+    <model-id>joyl32</model-id>-->
+    <vendor-id>4098</vendor-id>
+    <model-id>bc27</model-id>
+    <device-dialog>winctrl-joyl32</device-dialog>
+    <name type="string">Winwing WINCTRL URSA MINOR 32 Joystick L</name>
+    <debug-events type="bool">false</debug-events>
+    <hid-debug-raw type="bool">false</hid-debug-raw>
+    <nasal>
+        <open>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL JOYL Nasal (event) open");
+                joyl32 = input_helpers.winctrl.new("joyl32",cmdarg(),device);
+            ]]>
+        </open>
+        <close>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL JOYL Nasal (event) close");
+                joyl32.close(cmdarg());
+            ]]>
+        </close>
+    </nasal>
+    <event>
+        <desc>Aileron</desc>
+        <name>abs-x-translate</name>
+        <output-mode>signed-normalized</output-mode>
+        <tolerance>0.0</tolerance>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/flight/aileron</property>
+        </binding>
+    </event>
+    <event>
+        <desc>Elevator</desc>
+        <name>abs-y-translate</name>
+        <output-mode>signed-normalized</output-mode>
+        <invert type="bool">true</invert>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/flight/elevator</property>
+        </binding>
+    </event>
+    <event>
+        <desc>Rudder</desc>
+        <name>abs-z-translate</name>
+        <output-mode>signed-normalized</output-mode>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/flight/rudder</property>
+        </binding>
+    </event>
+    <event>
+        <desc>slider</desc>
+        <name>abs-slider</name>
+        <tolerance>0.0</tolerance>
+        <output-mode>unsigned-normalized</output-mode>
+        <invert type="bool">true</invert>
+        <binding>
+            <command>property-scale</command>
+            <property>/input/winctrl/joyl32/slider</property>
+        </binding>
+    </event>
+    <!--<event>
+        <desc>hat</desc>
+        <name>abs-hat</name>
+        <output-mode>direct</output-mode>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+            <command>property-scale</command>
+            <property>/input/winctrl/joyl32/hat</property>
+            <factor type="double">45</factor>
+            <offset type="double">0</offset>
+            <power type="double">1</power>
+        </binding>
+    </event> -->
+    <event>
+        <desc>hat-view-x</desc>
+        <name>abs-hat-x</name>
+        <output-mode>direct</output-mode>
+        <low>
+            <binding>
+                <command type="string">nasal</command>
+                <script type="string">setprop("/sim/current-view/goal-heading-offset-deg", getprop("/sim/current-view/goal-heading-offset-deg") + 2);</script>
+            </binding>
+            <repeatable type="bool">true</repeatable>
+        </low>
+        <high>
+            <binding>
+                <command type="string">nasal</command>
+                <script type="string">setprop("/sim/current-view/goal-heading-offset-deg", getprop("/sim/current-view/goal-heading-offset-deg") - 2);</script>
+            </binding>
+            <repeatable type="bool">true</repeatable>
+        </high>
+    </event>
+    <event>
+        <desc>hat-view-y</desc>
+        <name>abs-hat-y</name>
+        <output-mode>direct</output-mode>
+        <invert type="bool">true</invert>
+        <low>
+            <binding>
+                <command type="string">nasal</command>
+                <script type="string">setprop("/sim/current-view/goal-pitch-offset-deg", getprop("/sim/current-view/goal-pitch-offset-deg") + 1);</script>
+            </binding>
+            <repeatable type="bool">true</repeatable>
+        </low>
+        <high>
+            <binding>
+                <command type="string">nasal</command>
+                <script type="string">setprop("/sim/current-view/goal-pitch-offset-deg", getprop("/sim/current-view/goal-pitch-offset-deg") - 1);</script>
+            </binding>
+            <repeatable type="bool">true</repeatable>
+        </high>
+    </event>
+    <event>
+        <desc>trim reset</desc>
+        <name>button-5</name>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.setElevatorTrimToPosition();</script>
+        </binding>
+    </event>
+    <event>
+        <desc>trim up</desc>
+        <name>button-6</name>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.elevatorTrim(1);</script>
+        </binding>
+    </event>
+    <event>
+        <desc>trim down</desc>
+        <name>button-7</name>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.elevatorTrim(-1);</script>
+        </binding>
+    </event>
+    <event>
+        <desc>trim reset</desc>
+        <name>button-12</name>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.setElevatorTrimToPosition();</script>
+        </binding>
+    </event>
+    <event>
+        <desc>trim up</desc>
+        <name>button-13</name>
+        <binding>
+            <command>nasal</command>
+            <script>controls.elevatorTrim(1);</script>
+        </binding>
+        <repeatable type="bool">true</repeatable>
+    </event>
+    <event>
+        <desc>trim down</desc>
+        <name>button-14</name>
+        <repeatable type="bool">true</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.elevatorTrim(-1);</script>
+        </binding>
+    </event>
+    <event>
+        <desc>view reset</desc>
+        <name>button-20</name>
+        <repeatable type="bool">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/sim/current-view/goal-pitch-offset-deg</property>
+            <value>0</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/sim/current-view/goal-heading-offset-deg</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <desc>FgCom PTT</desc>
+        <name>button-21</name>
+        <repeatable type="bool">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.ptt(1);</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>controls.ptt(0);</script>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <desc>AP disconnect</desc>
+        <name>button-22</name>
+        <repeatable type="bool">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>controls.autopilotDisconnect();</script>
+        </binding>
+    </event>
+</PropertyList>

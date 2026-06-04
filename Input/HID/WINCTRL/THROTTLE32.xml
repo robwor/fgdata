@@ -1,0 +1,788 @@
+<?xml version="1.0"?>
+<!--
+SPDX-License-Identifier: GPL-2.0-or-later
+SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
+
+********************************************************************
+*
+* Bindings for Winwing WINWING URSA MINOR 32 Throttle Metal L
+* 4098:b920
+*
+* Throttle descriptions
+*  toga normal 65535 bt 12,18
+*  mct noraml 55453 bt 13,19
+*  cl normal 45371 bt 14,20
+*  0 normal 20165 bt 15,21
+*  0 reverse 14115 bt 16,22 40,41
+*  max reverse 0 bt 17,23 40,41
+* 
+*  axis property scales
+*  range of 0-65536 maps to -32767+32768 to -1 to 1 double
+*  offset  = -32767 + 20165 / 32767
+*  factor is close to 2*offset/32767
+*
+*  set detents in $FGHOME/Export/A320-family-config.xml
+*  under <fadec> -b bottom, -t top
+* 
+*  still requires offsets for now
+*
+* LED Mappings
+*    '_dev1': 0x10,
+*    '_devB': 0x01, # PAC
+*    '_dev2': 0xB9,
+*    'panel': 0x00,
+*    'panel2': 0x00,
+*    'lcd': 0x02,
+*    'fault1': 0x03,
+*    'fire1': 0x04,
+*    'fault2': 0x05,
+*    'fire2': 0x06,
+*    'vibR1': 0x10,
+*    'vibR2': 0x11,
+*    'vibL1': 0x12,
+*    'vibL2': 0x13,
+********************************************************************
+-->
+
+<PropertyList>
+    <vendor-name>winctrl</vendor-name>
+    <model-name>throttle32</model-name>
+    <vendor-id>4098</vendor-id>
+    <model-id>b920</model-id>
+    <name type="string">Winwing WINWING URSA MINOR 32 Throttle Metal L</name>
+    <debug-events type="bool">false</debug-events>
+    <nasal>
+        <open>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL Throttle32 Nasal (event) open");
+                throttle32 = input_helpers.winctrl.new("throttle32",cmdarg(),device);
+            ]]>
+        </open>
+        <close>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL THROTTLE32 Nasal (event) close");
+                throttle32.close(cmdarg());
+            ]]>
+        </close>
+    </nasal>
+    <config-variants>
+        <variant>
+            <id>twinjet</id>
+            <description>Twin engine jet</description>
+            <mapping>
+                <id>thr0</id>
+                <input>/input/winctrl/throttle32/thr0</input>
+                <output>/controls/engines/engine[0]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>thr1</id>
+                <input>/input/winctrl/throttle32/thr1</input>
+                <output>/controls/engines/engine[1]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>rev0</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[0]</input>
+                <output>/controls/engines/engine[0]/reverser</output>
+            </mapping>
+            <mapping>
+                <id>rev1</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[1]</input>
+                <output>/controls/engines/engine[1]/reverser</output>
+            </mapping>
+            <mapping>
+                <id>spoilers</id>
+                <input>/input/winctrl/throttle32/spoilers</input>
+                <output>/controls/flight/speedbrake</output>
+            </mapping>
+            <mapping>
+                <id>spoilers-armed</id>
+                <input>/input/winctrl/throttle32/buttons/spoilers-armed</input>
+                <output>/controls/flight/speedbrake-arm</output>
+            </mapping>
+            <mapping>
+                <id>cutoff1</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff1</input>
+                <output>/controls/engines/engine[0]/cutoff</output>
+            </mapping>
+            <mapping>
+                <id>cutoff2</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff2</input>
+                <output>/controls/engines/engine[1]/cutoff</output>
+            </mapping>
+        </variant>
+        <variant>
+            <id>A320</id>
+            <description>Airbus A320</description>
+            <mapping>
+                <id>thr0</id>
+                <input>/input/winctrl/throttle32/thr0</input>
+                <output>/controls/engines/engine[0]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>thr1</id>
+                <input>/input/winctrl/throttle32/thr1</input>
+                <output>/controls/engines/engine[1]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>spoilers</id>
+                <input>/input/winctrl/throttle32/spoilers</input>
+                <output>/controls/flight/speedbrake</output>
+            </mapping>
+            <mapping>
+                <id>spoilers-armed</id>
+                <input>/input/winctrl/throttle32/buttons/spoilers-armed</input>
+                <output>/controls/flight/speedbrake-arm</output>
+            </mapping>
+            <mapping>
+                <id>rev0</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[0]</input>
+                <output>/systems/fadec/reverse-1/engage</output>
+            </mapping>
+            <mapping>
+                <id>rev1</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[1]</input>
+                <output>/systems/fadec/reverse-2/engage</output>
+            </mapping>
+            <mapping>
+                <id>cutoff1</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff1</input>
+                <output>/controls/engines/engine[0]/cutoff-switch</output>
+            </mapping>
+            <mapping>
+                <id>cutoff2</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff2</input>
+                <output>/controls/engines/engine[1]/cutoff-switch</output>
+            </mapping>
+        </variant>
+        <variant>
+            <id>SEL</id>
+            <description>Single Engine Land</description>
+            <mapping>
+                <id>thr0</id>
+                <input>/input/winctrl/throttle32/thr0</input>
+                <output>/controls/engines/engine[0]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>thr1</id>
+                <input>/input/winctrl/throttle32/thr1</input>
+                <output>/controls/engines/engine[0]/mixture</output>
+            </mapping>
+            <mapping>
+                <id>starter</id>
+                <input>/input/winctrl/throttle32/buttons/ign-push</input>
+                <output>/controls/engines/engine[0]/starter</output>
+            </mapping>
+            <mapping>
+                <id>carb-heat</id>
+                <input>/input/winctrl/throttle32/spoilers</input>
+                <output>/controls/engines/engine[0]/carb-heat</output>
+            </mapping>
+        </variant>
+        <variant>
+            <id>C172</id>
+            <description>Cessna 172 (default)</description>
+            <mapping>
+                <id>thr0</id>
+                <input>/input/winctrl/throttle32/thr0</input>
+                <output>/controls/engines/engine[1]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>thr1</id>
+                <input>/input/winctrl/throttle32/thr1</input>
+                <output>/controls/engines/current-engine[0]/mixture</output>
+            </mapping>
+            <mapping>
+                <id>starter</id>
+                <input>/input/winctrl/throttle32/buttons/ign-push</input>
+                <output>/controls/engines/current-engine[0]/starter</output>
+            </mapping>
+            <!--<mapping>
+                <id>cutoff1</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff1</input>
+                <output>/controls/switches/power1</output>
+            </mapping>
+            <mapping>
+                <id>cutoff2</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff2</input>
+                <output>/controls/switches/power2</output>
+            </mapping>-->
+            <mapping>
+                <id>carb-heat</id>
+                <input>/input/winctrl/throttle32/spoilers</input>
+                <output>/controls/engines/current-engine[0]/carb-heat</output>
+            </mapping>
+        </variant>
+        <variant>
+            <id>j3cub</id>
+            <description>Piper J3 Cub</description>
+            <mapping>
+                <id>thr0</id>
+                <input>/input/winctrl/throttle32/thr0</input>
+                <output>/controls/engines/current-engine[0]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>thr1</id>
+                <input>/input/winctrl/throttle32/thr1</input>
+                <output>/controls/engines/current-engine[0]/mixture</output>
+            </mapping>
+            <mapping>
+                <id>starter</id>
+                <input>/input/winctrl/throttle32/buttons/ign-push</input>
+                <output>/controls/engines/current-engine[0]/starter</output>
+            </mapping>
+            <mapping>
+                <id>carb-heat</id>
+                <input>/input/winctrl/throttle32/spoilers</input>
+                <output>/controls/engines/current-engine[0]/carb-heat</output>
+            </mapping>
+        </variant>
+        <variant>
+            <id>multijet</id>
+            <description>Tri/quad-engine Jet</description>
+            <mapping>
+                <id>thr0</id>
+                <input>/input/winctrl/throttle32/thr0</input>
+                <output>/controls/engines/engine[0]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>thr2</id>
+                <input>/input/winctrl/throttle32/thr2</input>
+                <output>/controls/engines/engine[1]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>thr1</id>
+                <input>/input/winctrl/throttle32/thr1</input>
+                <output>/controls/engines/engine[2]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>thr3</id>
+                <input>/input/winctrl/throttle32/thr3</input>
+                <output>/controls/engines/engine[3]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>rev0</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[0]</input>
+                <output>/controls/engines/engine[0]/reverser</output>
+            </mapping>
+            <mapping>
+                <id>rev2</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[2]</input>
+                <output>/controls/engines/engine[1]/reverser</output>
+            </mapping>
+            <mapping>
+                <id>rev3</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[1]</input>
+                <output>/controls/engines/engine[2]/reverser</output>
+            </mapping>
+            <mapping>
+                <id>rev4</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[3]</input>
+                <output>/controls/engines/engine[3]/reverser</output>
+            </mapping>
+            <mapping>
+                <id>spoilers</id>
+                <input>/input/winctrl/throttle32/spoilers</input>
+                <output>/controls/flight/spoilers</output>
+            </mapping>
+            <mapping>
+                <id>spoilers-armed</id>
+                <input>/input/winctrl/throttle32/buttons/spoilers-armed</input>
+                <output>/controls/flight/speedbrake-arm</output>
+            </mapping>
+            <mapping>
+                <id>cutoff1</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff1</input>
+                <output>/controls/engines/engine[0]/cutoff</output>
+            </mapping>
+            <mapping>
+                <id>cutoff3</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff2</input>
+                <output>/controls/engines/engine[2]/cutoff</output>
+            </mapping>
+            <mapping>
+                <id>cutoff2</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff3</input>
+                <output>/controls/engines/engine[1]/cutoff</output>
+            </mapping>
+            <mapping>
+                <id>cutoff4</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff4</input>
+                <output>/controls/engines/engine[3]/cutoff</output>
+            </mapping>
+        </variant>
+        <variant>
+            <id>trijet</id>
+            <description>Tri-engine Jet (octal)</description>
+            <mapping>
+                <id>thr0</id>
+                <input>/input/winctrl/throttle32/thr0</input>
+                <output>/controls/engines/engine[0]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>thr2</id>
+                <input>/input/winctrl/throttle32/thr2</input>
+                <output>/controls/engines/engine[1]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>thr1</id>
+                <input>/input/winctrl/throttle32/thr1</input>
+                <output>/controls/engines/engine[2]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>thr3</id>
+                <input>/input/winctrl/throttle32/thr3</input>
+                <output>/controls/engines/engine[3]/throttle</output>
+            </mapping>
+            <mapping>
+                <id>rev0</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[0]</input>
+                <output>/systems/fadec/reverse-1/engage</output>
+            </mapping>
+            <mapping>
+                <id>rev2</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[2]</input>
+                <output>/systems/fadec/reverse-2/engage</output>
+            </mapping>
+            <mapping>
+                <id>rev3</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[1]</input>
+                <output>/systems/fadec/reverse-3/engage</output>
+            </mapping>
+            <mapping>
+                <id>rev4</id>
+                <input>/input/winctrl/throttle32/buttons/reverser[3]</input>
+                <output>/systems/fadec/reverse-4/engage</output>
+            </mapping>
+            <mapping>
+                <id>spoilers</id>
+                <input>/input/winctrl/throttle32/spoilers</input>
+                <output>/controls/flight/speedbrake</output>
+            </mapping>
+            <mapping>
+                <id>spoilers-armed</id>
+                <input>/input/winctrl/throttle32/buttons/spoilers-armed</input>
+                <output>/controls/flight/speedbrake-arm</output>
+            </mapping>
+            <mapping>
+                <id>cutoff1</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff1</input>
+                <output>/controls/engines/engine[0]/cutoff-switch</output>
+            </mapping>
+            <mapping>
+                <id>cutoff3</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff2</input>
+                <output>/controls/engines/engine[2]/cutoff-switch</output>
+            </mapping>
+            <mapping>
+                <id>cutoff2</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff3</input>
+                <output>/controls/engines/engine[1]/cutoff-switch</output>
+            </mapping>
+            <mapping>
+                <id>cutoff4</id>
+                <input>/input/winctrl/throttle32/buttons/cutoff4</input>
+                <output>/controls/engines/engine[3]/cutoff-switch</output>
+            </mapping>
+        </variant>
+    </config-variants>
+    <event>
+        <desc>ENG1 throttle</desc>
+        <name>abs-x-rotate</name>
+        <output-mode>signed-normalized</output-mode>
+        <binding>
+            <condition>
+                <not>
+                    <property>/input/winctrl/throttle32/buttons/reverser[0]</property>
+                </not>
+            </condition>
+            <command>property-scale</command>
+            <property>/input/winctrl/throttle32/thr0</property>
+            <factor type="double">0.72210</factor>
+            <offset type="double">0.38489</offset>
+            <power type="double">1.0</power>
+        </binding>
+        <binding>
+            <condition>
+                <property>/input/winctrl/throttle32/buttons/reverser[0]</property>
+            </condition>
+            <command>property-scale</command>
+            <property>/input/winctrl/throttle32/thr0</property>
+            <factor type="double">-2.44</factor>
+            <offset type="double">0.589</offset>
+            <power type="double">1.0</power>
+        </binding>
+        <binding>
+            <condition>
+                <not>
+                    <property>/input/winctrl/throttle32/buttons/reverser[2]</property>
+                </not>
+            </condition>
+            <command>property-scale</command>
+            <property>/input/winctrl/throttle32/thr2</property>
+            <factor type="double">0.72210</factor>
+            <offset type="double">0.38489</offset>
+            <power type="double">1.0</power>
+        </binding>
+        <binding>
+            <condition>
+                <property>/input/winctrl/throttle32/buttons/reverser[2]</property>
+            </condition>
+            <command>property-scale</command>
+            <property>/input/winctrl/throttle32/thr2</property>
+            <factor type="double">-2.44</factor>
+            <offset type="double">0.589</offset>
+            <power type="double">1.0</power>
+        </binding>
+    </event>
+    <event>
+        <desc>ENG2 throttle</desc>
+        <name>abs-y-rotate</name>
+        <output-mode>signed-normalized</output-mode>
+        <binding>
+            <condition>
+                <not>
+                    <property>/input/winctrl/throttle32/buttons/reverser[1]</property>
+                </not>
+            </condition>
+            <command>property-scale</command>
+            <property>/input/winctrl/throttle32/thr1</property>
+            <factor type="double">0.72210</factor>
+            <offset type="double">0.38489</offset>
+            <power type="double">1.0</power>
+        </binding>
+        <binding>
+            <condition>
+                <property>/input/winctrl/throttle32/buttons/reverser[1]</property>
+            </condition>
+            <command>property-scale</command>
+            <property>/input/winctrl/throttle32/thr1</property>
+            <factor type="double">-2.44</factor>
+            <offset type="double">0.589</offset>
+            <power type="double">1.0</power>
+        </binding>
+        <binding>
+            <condition>
+                <not>
+                    <property>/input/winctrl/throttle32/buttons/reverser[3]</property>
+                </not>
+            </condition>
+            <command>property-scale</command>
+            <property>/input/winctrl/throttle32/thr3</property>
+            <factor type="double">0.72210</factor>
+            <offset type="double">0.38489</offset>
+            <power type="double">1.0</power>
+        </binding>
+        <binding>
+            <condition>
+                <property>/input/winctrl/throttle32/buttons/reverser[3]</property>
+            </condition>
+            <command>property-scale</command>
+            <property>/input/winctrl/throttle32/thr3</property>
+            <factor type="double">-2.44</factor>
+            <offset type="double">0.589</offset>
+            <power type="double">1.0</power>
+        </binding>
+    </event>
+    <event>
+        <desc>spoilers</desc>
+        <name>abs-slider</name>
+        <output-mode>unsigned-normalized</output-mode>
+        <!-- FIXME: deadband/noise-threshold-bits are applicable to keep this from overtriggering  -->
+        <binding>
+            <command>property-scale</command>
+            <property>/input/winctrl/throttle32/spoilers</property>
+        </binding>
+    </event>
+    <event>
+        <desc>flaps</desc>
+        <name>abs-dial</name>
+        <output-mode>unsigned-normalized</output-mode>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/flight/flaps</property>
+        </binding>
+    </event>
+    <event>
+        <desc>ENG0 ON</desc>
+        <name>button-1</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/cutoff1</property>
+            <value>0</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/cutoff3</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <desc>ENG0 CUTOFF</desc>
+        <name>button-2</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/cutoff1</property>
+            <value>1</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/cutoff3</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <desc>ENG1 ON</desc>
+        <name>button-3</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/cutoff2</property>
+            <value>0</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/cutoff4</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <desc>ENG1 CUTOFF</desc>
+        <name>button-4</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/cutoff2</property>
+            <value>1</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/cutoff4</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <desc>eng0 fire</desc>
+        <name>button-5</name>
+        <output-mode>switch</output-mode>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/fire1</property>
+            <state>1</state>
+        </binding>
+        <!--<mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/throttle32/buttons/fire1</property>
+                <value type="bool">false</value>
+            </binding>
+        </mod-up>-->
+    </event>
+    <event>
+        <desc>eng1 fire</desc>
+        <name>button-6</name>
+        <output-mode>button</output-mode>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/fire2</property>
+            <value type="bool">true</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/throttle32/buttons/fire2</property>
+                <value type="bool">false</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <desc>eng crank</desc>
+        <name>button-7</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/ignition/start-sw</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <desc>eng norm</desc>
+        <name>button-8</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/ignition/start-sw</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <desc>eng ign</desc>
+        <name>button-9</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/ignition/start-sw</property>
+            <value>2</value>
+        </binding>
+    </event>
+    <event>
+        <desc>A/THR Disc</desc>
+        <name>button-10</name>
+        <binding>
+                <command type="string">nasal</command>
+                <script type="string">
+                        fcu.FCUController.ATDisc();
+                </script>
+        </binding>
+    </event>
+    <event>
+        <desc>A/THR Disc</desc>
+        <name>button-11</name>
+        <binding>
+                <command type="string">nasal</command>
+                <script type="string">
+                        fcu.FCUController.ATDisc();
+                </script>
+        </binding>
+    </event>
+    <!-- 12-17 throttle 1, 18-23 throttle 2 -->
+    <event>
+        <desc>ign-push</desc>
+        <name>button-24</name>
+        <repeatable type="string">true</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/ign-push</property>
+            <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/throttle32/buttons/ign-push</property>
+                <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <desc>Reset trim</desc>
+        <name>button-25</name>
+        <repeatable type="string">true</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/flight/rudder-trim</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <desc>Rudder trim left</desc>
+        <name>button-26</name>
+        <repeatable type="string">true</repeatable>
+        <binding>
+            <command>property-adjust</command>
+            <property>/controls/flight/rudder-trim</property>
+            <step>-0.005</step>
+            <min>-20</min>
+            <max>20</max>
+            <wrap>false</wrap>
+        </binding>
+    </event>
+    <event>
+        <desc>trim neutral</desc>
+        <name>button-27</name>
+    </event>
+    <event>
+        <desc>Rudder trim right</desc>
+        <name>button-28</name>
+        <repeatable type="string">true</repeatable>
+        <binding>
+            <command>property-adjust</command>
+            <property>/controls/flight/rudder-trim</property>
+            <step>0.005</step>
+            <min>-20</min>
+            <max>20</max>
+            <wrap>false</wrap>
+        </binding>
+    </event>
+    <event>
+        <desc>parking brake released</desc>
+        <name>button-29</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/gear/brake-parking</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <desc>parking brake set</desc>
+        <name>button-30</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/gear/brake-parking</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <desc>splrs disarmed</desc>
+        <name>button-38</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/spoilers-armed</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <desc>gnd splrs armed</desc>
+        <name>button-39</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/spoilers-armed</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <desc>eng1 reverse</desc>
+        <name>button-40</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/reverser[0]</property>
+            <value type="bool">true</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/reverser[2]</property>
+            <value type="bool">true</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/throttle32/buttons/reverser[0]</property>
+                <value type="bool">false</value>
+            </binding>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/throttle32/buttons/reverser[2]</property>
+                <value type="bool">false</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <desc>eng2 reverse</desc>
+        <name>button-41</name>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/reverser[1]</property>
+            <value type="bool">true</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/throttle32/buttons/reverser[3]</property>
+            <value type="bool">true</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/throttle32/buttons/reverser[1]</property>
+                <value type="bool">false</value>
+            </binding>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/throttle32/buttons/reverser[3]</property>
+                <value type="bool">false</value>
+            </binding>
+        </mod-up>
+    </event>
+</PropertyList>

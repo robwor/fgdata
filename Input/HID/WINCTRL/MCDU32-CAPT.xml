@@ -1,0 +1,713 @@
+<?xml version="1.0"?>
+<!--
+SPDX-License-Identifier: GPL-2.0-or-later
+SPDX-FileCopyrightText: 2026 nia
+SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
+
+********************************************
+*
+* Bindings for WINCRTL MCDU-32 CAPTAIN
+*
+********************************************
+-->
+<PropertyList>
+    <vendor-name>winctrl</vendor-name>
+    <model-name>mcdu32</model-name>
+    <vendor-id>4098</vendor-id>
+    <model-id>bb36</model-id>
+    <name type="string">Winwing WINWING MCDU-32-CAPTAIN</name>
+    <nasal>
+        <open>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL MCDU Nasal (event) open");
+                var mcdu32 = input_helpers.winctrl.new("mcdu32",cmdarg(),device);
+            ]]>
+        </open>
+        <close>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL MCDU Nasal (event) close");
+                mcdu32.close(cmdarg());
+            ]]>
+        </close>
+    </nasal>
+    <event>
+        <name>button-1</name>
+        <desc type="string">Left LSK 1</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.lskbutton("1", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-2</name>
+        <desc type="string">Left LSK 2</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.lskbutton("2", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-3</name>
+        <desc type="string">Left LSK 3</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.lskbutton("3", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-4</name>
+        <desc type="string">Left LSK 4</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.lskbutton("4", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-5</name>
+        <desc type="string">Left LSK 5</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.lskbutton("5", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-6</name>
+        <desc type="string">Left LSK 6</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.lskbutton("6", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-7</name>
+        <desc type="string">Right LSK 1</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.rskbutton("1", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-8</name>
+        <desc type="string">Right LSK 2</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.rskbutton("2", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-9</name>
+        <desc type="string">Right LSK 3</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.rskbutton("3", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-10</name>
+        <desc type="string">Right LSK 4</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.rskbutton("4", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-11</name>
+        <desc type="string">Right LSK 5</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.rskbutton("5", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-12</name>
+        <desc type="string">Right LSK 6</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.rskbutton("6", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-13</name>
+        <desc type="string">DIR</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.pagebutton("dirto", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-14</name>
+        <desc type="string">PROG</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.pagebutton("prog", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-15</name>
+        <desc type="string">PERF</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.pagebutton("perf", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-16</name>
+        <desc type="string">INIT</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.pagebutton("init", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-17</name>
+        <desc type="string">DATA</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.pagebutton("data", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-19</name>
+        <desc type="string">Brightness Increase</desc>
+        <repeatable type="string">true</repeatable>
+        <binding>
+            <command>property-adjust</command>
+            <property>controls/lighting/DU/mcdu1</property>
+            <min>0.0</min>
+            <max>1.0</max>
+            <step>0.05</step>
+            <wrap>false</wrap>
+        </binding>
+    </event>
+    <event>
+        <name>button-20</name>
+        <desc type="string">FPLN</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.pagebutton("f-pln", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-21</name>
+        <desc type="string">RAD NAV</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.pagebutton("radnav", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-22</name>
+        <desc type="string">FUEL PRED</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.pagebutton("fuel-pred", 0);</script>
+        </binding>
+    </event>
+    <!--event> TODO once implemented aircraft side
+        <name>button-23</name>
+        <desc type="string">SEC FPLN</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script></script>
+        </binding>
+    </event-->
+    <event>
+        <name>button-24</name>
+        <desc type="string">ATC COMM</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.pagebutton("atc", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-25</name>
+        <desc type="string">MCDU MENU</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.pagebutton("mcdu", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-26</name>
+        <desc type="string">Brightness Decrease</desc>
+        <repeatable type="string">true</repeatable>
+        <binding>
+            <command>property-adjust</command>
+            <property>controls/lighting/DU/mcdu1</property>
+            <min>0.0</min>
+            <max>1.0</max>
+            <step>-0.05</step>
+            <wrap>false</wrap>
+        </binding>
+    </event>
+    <event>
+        <name>button-27</name>
+        <desc type="string">AIRPORT</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.pagebutton("airport", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-29</name>
+        <desc type="string">Left</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.arrowbutton("left", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-30</name>
+        <desc type="string">Up</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.arrowbutton("up", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-31</name>
+        <desc type="string">Right</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.arrowbutton("right", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-32</name>
+        <desc type="string">Down</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.arrowbutton("down", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-33</name>
+        <desc type="string">1</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("1", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-34</name>
+        <desc type="string">2</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("2", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-35</name>
+        <desc type="string">3</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("3", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-36</name>
+        <desc type="string">4</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("4", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-37</name>
+        <desc type="string">5</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("5", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-38</name>
+        <desc type="string">6</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("6", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-39</name>
+        <desc type="string">7</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("7", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-40</name>
+        <desc type="string">8</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("8", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-41</name>
+        <desc type="string">9</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("9", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-42</name>
+        <desc type="string">.</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("DOT", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-43</name>
+        <desc type="string">0</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("0", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-44</name>
+        <desc type="string">+/-</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("PLUSMINUS", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-45</name>
+        <desc type="string">A</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("A", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-46</name>
+        <desc type="string">B</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("B", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-47</name>
+        <desc type="string">C</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("C", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-48</name>
+        <desc type="string">D</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("D", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-49</name>
+        <desc type="string">E</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("E", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-50</name>
+        <desc type="string">F</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("F", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-51</name>
+        <desc type="string">G</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("G", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-52</name>
+        <desc type="string">H</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("H", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-53</name>
+        <desc type="string">I</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("I", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-54</name>
+        <desc type="string">J</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("J", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-55</name>
+        <desc type="string">K</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("K", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-56</name>
+        <desc type="string">L</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("L", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-57</name>
+        <desc type="string">M</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("M", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-58</name>
+        <desc type="string">N</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("N", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-59</name>
+        <desc type="string">O</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("O", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-60</name>
+        <desc type="string">P</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("P", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-61</name>
+        <desc type="string">Q</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("Q", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-62</name>
+        <desc type="string">R</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("R", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-63</name>
+        <desc type="string">S</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("S", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-64</name>
+        <desc type="string">T</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("T", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-65</name>
+        <desc type="string">U</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("U", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-66</name>
+        <desc type="string">V</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("V", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-67</name>
+        <desc type="string">W</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("W", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-68</name>
+        <desc type="string">X</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("X", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-69</name>
+        <desc type="string">Y</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("Y", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-70</name>
+        <desc type="string">Z</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("Z", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-71</name>
+        <desc type="string">/</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("SLASH", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-72</name>
+        <desc type="string">SP</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("SP", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-73</name>
+        <desc type="string">OVERFLY</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("OVFY", 0);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-74</name>
+        <desc type="string">CLR</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>mcdu.button("CLR", 0, "down");</script>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>nasal</command>
+                <script>mcdu.button("CLR", 0, "up");</script>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <desc>MCDU lux1</desc>
+        <name>abs-x-rotate</name>
+        <output-mode>direct</output-mode>
+        <binding>
+            <command>property-scale</command>
+            <property>/input/winctrl/mcdu32/capt/lux1</property>
+        </binding>
+    </event>
+    <event>
+        <desc>MCDU lux2</desc>
+        <name>abs-y-rotate</name>
+        <output-mode>direct</output-mode>
+        <binding>
+            <command>property-scale</command>
+            <property>/input/winctrl/mcdu32/capt/lux2</property>
+        </binding>
+    </event>
+</PropertyList>

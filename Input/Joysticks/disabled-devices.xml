@@ -25,8 +25,13 @@ but are supported by HID configs.
     <name type="string">Winwing WINWING FCU-320</name>
     <name type="string">Winwing WINWING FCU-320 + EFIS-32R</name>
     <name type="string">Winwing WINWING FCU-320 + EFIS-32L</name>
+    <name type="string">Winwing WINWING FCU-320 + EFIS-32L + EFIS-32R</name>
+    <name type="string">Winwing WINWING FCU-32</name>
+    <name type="string">Winwing WINWING FCU-32 + EFIS-32R</name>
+    <name type="string">Winwing WINWING FCU-32 + EFIS-32L</name>
     <name type="string">Winwing WINWING FCU-32 + EFIS-32L + EFIS-32R</name>
     <name type="string">Winwing WINWING MCDU-32-CAPTAIN</name>
     <name type="string">Winwing WINWING URSA MINOR 32 Throttle Metal L</name>
+    <name type="string">Winwing WINCTRL 32 TCAS</name>
 
 </PropertyList>

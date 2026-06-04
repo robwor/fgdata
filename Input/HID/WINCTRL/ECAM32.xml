@@ -1,0 +1,819 @@
+<?xml version="1.0"?>
+<!--
+SPDX-License-Identifier: GPL-2.0-or-later
+SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
+
+********************************************************************
+*
+* Bindings for WINCRTL 32 ECAM
+*
+* Button-1: blank
+* Button-2: TOCFG
+* Button-3: blank
+* Button-4: EMER CANC
+* Button-5: ENG
+* Button-6: BLEED
+* Button-7: PRESS
+* Button-8: ELEC
+* Button-9: HYD
+* Button-10: FUEL
+* Button-11: APU
+* Button-12: COND
+* Button-13: DOOR
+* Button-14: WHEEL
+* Button-15: F/CTL
+* Button-16: ALL
+* Button-17: LCLR
+* Button-18: blank
+* Button-19: STS
+* Button-20: RCL
+* Button-21: blank
+* Button-22: CLR
+*
+********************************************
+-->
+<PropertyList>
+    <vendor-id>4098</vendor-id>
+    <vendor-name>winctrl</vendor-name>
+    <model-name>ecam32</model-name>
+    <model-id>bb70</model-id>
+    <name>Winwing WINWING ECAM</name>
+    <debug-events type="bool">false</debug-events>
+    <hid-debug-raw type="bool">false</hid-debug-raw>
+    <nasal>
+        <open>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL ECAM Nasal (event) open");
+                ecam32 = input_helpers.winctrl.new("ecam32",cmdarg(),device);
+            ]]>
+        </open>
+        <close>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL ECAM Nasal (event) close");
+                #if (ishash(ecam32) and isfunc(ecam32['close']))
+                ecam32.close(cmdarg());
+            ]]>
+        </close>
+    </nasal>
+    <!-- config variants
+    <config-variants>
+        <variant>
+            <id>A320</id>
+            <description>Airbus A320</description>
+            <mapping>
+                <id>tocfg</id>
+                <input>/input/winctrl/ecam32/buttons/tocfg</input>
+                <output>/ECAM/to-config-test</output>
+            </mapping>
+            <mapping>
+                <id>eng</id>
+                <input>/input/winctrl/ecam32/buttons/eng</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>bleed</id>
+                <input>/input/winctrl/ecam32/buttons/bleed</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>press</id>
+                <input>/input/winctrl/ecam32/buttons/press</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>elec</id>
+                <input>/input/winctrl/ecam32/buttons/elec</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>hyd</id>
+                <input>/input/winctrl/ecam32/buttons/hyd</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>fuel</id>
+                <input>/input/winctrl/ecam32/buttons/fuel</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>apu</id>
+                <input>/input/winctrl/ecam32/buttons/apu</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>cond</id>
+                <input>/input/winctrl/ecam32/buttons/cond</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>door</id>
+                <input>/input/winctrl/ecam32/buttons/door</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>wheel</id>
+                <input>/input/winctrl/ecam32/buttons/wheel</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>fctl</id>
+                <input>/input/winctrl/ecam32/buttons/fctl</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>all</id>
+                <input>/input/winctrl/ecam32/buttons/all</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>lclr</id>
+                <input>/input/winctrl/ecam32/buttons/lclr</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>sts</id>
+                <input>/input/winctrl/ecam32/buttons/sts</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>rcl</id>
+                <input>/input/winctrl/ecam32/buttons/rcl</input>
+                <output></output>
+            </mapping>
+            <mapping>
+                <id>rclr</id>
+                <input>/input/winctrl/ecam32/buttons/rclr</input>
+                <output></output>
+            </mapping>
+        </variant>
+        <variant>
+            <id>other</id>
+            <description>Other aircraft</description>
+        </variant>
+    </config-variants>-->
+    <!-- HID BUTTONS  -->
+    <event>
+        <name>button-1</name>
+        <desc>ECAM blank 1</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/blank01</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/blank01</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-2</name>
+        <desc>ECAM TO CONFIG</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/ECAM/to-config-test</property>
+            <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/ECAM/to-config-test</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-3</name>
+        <desc>ECAM blank 3</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/blank03</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/blank03</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-4</name>
+        <desc>ECAM EMER CANC</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/emercanc</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/emercanc</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <!-- virtual maping template, use 320 implementation for now
+    <event>
+        <name>button-5</name>
+        <desc>ECAM ENG</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/eng</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/eng</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-6</name>
+        <desc>ECAM BLEED</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/bleed</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/bleed</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-7</name>
+        <desc>ECAM PRESS</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/press</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/press</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-8</name>
+        <desc>ECAM ELEC</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/elec</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/elec</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-9</name>
+        <desc>ECAM HYD</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/hyd</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/hyd</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-10</name>
+        <desc>ECAM FUEL</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/fuel</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/fuel</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-11</name>
+        <desc>ECAM APU</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/apu</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/apu</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-12</name>
+        <desc>ECAM COND</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/cond</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/cond</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-13</name>
+        <desc>ECAM DOOR</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/door</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/door</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-14</name>
+        <desc>ECAM WHEEL</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/wheel</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/wheel</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-15</name>
+        <desc>ECAM FCTL</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/fctl</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/fctl</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-16</name>
+        <desc>ECAM ALL</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/all</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/all</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-17</name>
+        <desc>ECAM LCLR</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/lclr</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/lclr</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-18</name>
+        <desc>ECAM blank 18</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/blank18</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/blank18</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-19</name>
+        <desc>ECAM STS</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/sts</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/sts</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-20</name>
+        <desc>ECAM RCL</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/rcl</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/rcl</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-21</name>
+        <desc>ECAM blank21</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/blank21</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/blank21</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-22</name>
+        <desc>ECAM RCLR</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/ecam32/buttons/rclr</property>
+        <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/ecam32/buttons/rclr</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    -->
+    <event>
+        <name>button-5</name>
+        <desc type="string">ECAM ENG page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.sysPageBtn("enginePage");
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.sysPageBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+	</event>
+    <event>
+        <name>button-6</name>
+        <desc type="string">ECAM BLEED page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.sysPageBtn("bleedPage");
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.sysPageBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+	</event>
+    <event>
+        <name>button-7</name>
+        <desc type="string">ECAM PRESS page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.sysPageBtn("cabPressPage");
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.sysPageBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+	</event>
+    <event>
+        <name>button-8</name>
+        <desc type="string">ECAM ELEC page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.sysPageBtn("elecPage");
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.sysPageBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+	</event>
+    <event>
+        <name>button-9</name>
+        <desc type="string">ECAM HYD page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.sysPageBtn("hydraulicPage");
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.sysPageBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+	</event>
+    <event>
+        <name>button-10</name>
+        <desc type="string">ECAM FUEL page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.sysPageBtn("fuelPage");
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.sysPageBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+    </event>
+    <event>
+        <name>button-11</name>
+        <desc type="string">ECAM APU page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.sysPageBtn("apuPage");
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.sysPageBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+    </event>
+    <event>
+        <name>button-12</name>
+        <desc type="string">ECAM COND page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.sysPageBtn("condPage");
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.sysPageBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+    </event>
+    <event>
+        <name>button-13</name>
+        <desc type="string">ECAM DOOR page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.sysPageBtn("doorPage");
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.sysPageBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+    </event>
+    <event>
+        <name>button-14</name>
+        <desc type="string">ECAM WHEEL page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.sysPageBtn("wheelPage");
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.sysPageBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+    </event>
+    <event>
+        <name>button-15</name>
+        <desc type="string">ECAM FCTL page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.sysPageBtn("fctlPage");
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.sysPageBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+    </event>
+    <event>
+        <name>button-17</name>
+        <desc type="string">ECAM CLR LEFT</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.clrBtn();
+				ecam.FWC.Btn.clr.setValue(1);
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.FWC.Btn.clr.setValue(0);
+				</script>
+			</binding>
+		</mod-up>
+    </event>
+    <event>
+        <name>button-19</name>
+        <desc type="string">ECAM STS page</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.stsBtn(nil);
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.ECAMControlPanel.stsBtn("REL");
+				</script>
+			</binding>
+		</mod-up>
+    </event>
+    <event>
+        <name>button-20</name>
+        <desc type="string">ECAM RCL</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.rclBtn();
+				ecam.FWC.Btn.recall.setValue(1);
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.FWC.Btn.recall.setValue(0);
+				</script>
+			</binding>
+		</mod-up>
+    </event>
+    <event>
+        <name>button-22</name>
+        <desc type="string">ECAM CLR RIGHT</desc>
+		<repeatable type="string">false</repeatable>
+		<binding>
+			<command type="string">nasal</command>
+			<script>
+				ecam.ECAMControlPanel.clrBtn();
+				ecam.FWC.Btn.clr.setValue(1);
+			</script>
+		</binding>
+		<mod-up>
+			<binding>
+				<command type="string">nasal</command>
+				<script>
+					ecam.FWC.Btn.clr.setValue(0);
+				</script>
+			</binding>
+		</mod-up>
+    </event>
+</PropertyList>

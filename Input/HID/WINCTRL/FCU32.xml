@@ -1,0 +1,1212 @@
+<?xml version="1.0"?>
+<!--
+SPDX-License-Identifier: GPL-2.0-or-later
+SPDX-FileCopyrightText: 2025 nia
+SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
+
+********************************************************************
+*
+* Bindings for WINCRTL FCU32
+*
+********************************************************************
+-->
+<PropertyList>
+    <vendor-name>winctrl</vendor-name>
+    <model-name>fcu32</model-name>
+    <vendor-id>4098</vendor-id>
+    <model-id>ba01</model-id>
+    <name type="string">Winwing WINWING FCU-320</name>
+    <name type="string">Winwing WINWING FCU-320 + EFIS-32R</name>
+    <name type="string">Winwing WINWING FCU-320 + EFIS-32L</name>
+    <name type="string">Winwing WINWING FCU-320 + EFIS-32L + EFIS-32R</name>
+    <name type="string">Winwing WINWING FCU-32</name>
+    <name type="string">Winwing WINWING FCU-32 + EFIS-32R</name>
+    <name type="string">Winwing WINWING FCU-32 + EFIS-32L</name>
+    <name type="string">Winwing WINWING FCU-32 + EFIS-32L + EFIS-32R</name>
+    <debug-events type="bool">false</debug-events>
+    <nasal>
+        <open>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL FCU32 Nasal (event) open");
+                var fcu32 = input_helpers.winctrl.new("fcu32",cmdarg(),device);
+            ]]>
+        </open>
+        <close>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL FCU32 Nasal (event) close");
+                fcu32.close(cmdarg());
+            ]]>
+        </close>
+    </nasal>
+    <event>
+        <name>button-1</name>
+        <desc type="string">IAS/Mach</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.IASMach();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-2</name>
+        <desc type="string">LOC</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.LOCButton();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-3</name>
+        <desc type="string">Track/Fligtht Path Angle</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.TRKFPA();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-4</name>
+        <desc type="string">Autopilot 1</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.AP1();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-5</name>
+        <desc type="string">Autopilot 2</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.AP2();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-6</name>
+        <desc type="string">Autothrust</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.ATHR();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-7</name>
+        <desc type="string">Expedite</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-8</name>
+        <desc type="string">Metric ALT</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.MetricAlt();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-9</name>
+        <desc type="string">Approach</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.APPRButton();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-10</name>
+        <desc type="string">Speed decrease</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.SPDAdjust(-1);
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-11</name>
+        <desc type="string">Speed increase</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.SPDAdjust(1);
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-12</name>
+        <desc type="string">Speed Push</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.SPDPush();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-13</name>
+        <desc type="string">Speed Pull</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.SPDPull();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-14</name>
+        <desc type="string">Heading decrease</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.HDGAdjust(-1);
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-15</name>
+        <desc type="string">Heading increase</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.HDGAdjust(1);
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-16</name>
+        <desc type="string">Heading push</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.HDGPush();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-17</name>
+        <desc type="string">Heading pull</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.HDGPull();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-18</name>
+        <desc type="string">Altitude decrease</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.ALTAdjust(-1);
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-19</name>
+        <desc type="string">Altitude increase</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.ALTAdjust(1);
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-20</name>
+        <desc type="string">Altitude Push</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.ALTPush();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-21</name>
+        <desc type="string">Altitude pull</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.ALTPull();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-22</name>
+        <desc type="string">Vertical Speed decrease</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.VSAdjust(-1);
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-23</name>
+        <desc type="string">Vertical Speed increase</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.VSAdjust(1);
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-24</name>
+        <desc type="string">Vertical Speed push</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.VSPush();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-25</name>
+        <desc type="string">Vertical Speed pull</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.VSPull();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-26</name>
+        <desc type="string">Altitude mode 100</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>it-autoflight/config/altitude-dial-mode</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-27</name>
+        <desc type="string">Altitude mode 1000</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>it-autoflight/config/altitude-dial-mode</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-33</name>
+        <desc type="string">Capt FD</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.FD1();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-34</name>
+        <desc type="string">Capt LS</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">property-toggle</command>
+            <property>modes/pfd/ILS1</property>
+        </binding>
+    </event>
+    <event>
+        <name>button-35</name>
+        <desc type="string">Capt ND CSTR</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                if (getprop("/instrumentation/efis/inputs/CSTR") != 1) {
+                    fcu.cpt_efis_btns("cstr");
+                } else {
+                    fcu.cpt_efis_btns("off");
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-36</name>
+        <desc type="string">Capt ND WPT</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                if (getprop("/instrumentation/efis/inputs/WPT") != 1) {
+                    fcu.cpt_efis_btns("wpt");
+                } else {
+                    fcu.cpt_efis_btns("off");
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-37</name>
+        <desc type="string">Capt ND VORD</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                if (getprop("/instrumentation/efis/inputs/VORD") != 1) {
+                    fcu.cpt_efis_btns("vord");
+                } else {
+                    fcu.cpt_efis_btns("off");
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-38</name>
+        <desc type="string">Capt ND NDB</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                if (getprop("/instrumentation/efis/inputs/NDB") != 1) {
+                    fcu.cpt_efis_btns("ndb");
+                } else {
+                    fcu.cpt_efis_btns("off");
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-39</name>
+        <desc type="string">Capt ND ARPT</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                if (getprop("/instrumentation/efis/inputs/arpt") != 1) {
+                    fcu.cpt_efis_btns("arpt");
+                } else {
+                    fcu.cpt_efis_btns("off");
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-40</name>
+        <desc type="string">Capt QNH push</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                core.toggleSTD();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-41</name>
+        <desc type="string">Capt QNH pull</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                core.toggleSTD();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-42</name>
+        <desc type="string">Capt QNH decrease</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-adjust</command>
+            <property>/instrumentation/altimeter/setting-inhg</property>
+            <step>-0.01</step>
+            <min>22.00</min>
+            <max>32.47</max>
+            <wrap>false</wrap>
+            <condition>
+                <and>
+                    <equals>
+                        <property>instrumentation/altimeter/inhg-left</property>
+                        <value>1</value>
+                    </equals>
+                    <equals>
+                        <property>instrumentation/altimeter/std</property>
+                        <value>0</value>
+                    </equals>
+                    <greater-than-equals>
+                        <property>systems/electrical/bus/dc-ess</property>
+                        <value>25</value>
+                    </greater-than-equals>
+                </and>
+            </condition>
+        </binding>
+        <binding>
+            <command>property-adjust</command>
+            <property>/instrumentation/altimeter/setting-hpa</property>
+            <step>-1</step>
+            <min>745</min>
+            <max>1100</max>
+            <wrap>false</wrap>
+            <condition>
+                <and>
+                    <equals>
+                        <property>instrumentation/altimeter/inhg-left</property>
+                        <value>0</value>
+                    </equals>
+                    <equals>
+                        <property>instrumentation/altimeter/std</property>
+                        <value>0</value>
+                    </equals>
+                    <greater-than-equals>
+                        <property>systems/electrical/bus/dc-ess</property>
+                        <value>25</value>
+                    </greater-than-equals>
+                </and>
+            </condition>
+        </binding>
+    </event>
+    <event>
+        <name>button-43</name>
+        <desc type="string">Capt QNH increase</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-adjust</command>
+            <property>/instrumentation/altimeter/setting-inhg</property>
+            <step>0.01</step>
+            <min>22.00</min>
+            <max>32.47</max>
+            <wrap>false</wrap>
+            <condition>
+                <and>
+                    <equals>
+                        <property>instrumentation/altimeter/inhg-left</property>
+                        <value>1</value>
+                    </equals>
+                    <equals>
+                        <property>instrumentation/altimeter/std</property>
+                        <value>0</value>
+                    </equals>
+                    <greater-than-equals>
+                        <property>systems/electrical/bus/dc-ess</property>
+                        <value>25</value>
+                    </greater-than-equals>
+                </and>
+            </condition>
+        </binding>
+        <binding>
+            <command>property-adjust</command>
+            <property>/instrumentation/altimeter/setting-hpa</property>
+            <step>1</step>
+            <min>745</min>
+            <max>1100</max>
+            <wrap>false</wrap>
+            <condition>
+                <and>
+                    <equals>
+                        <property>instrumentation/altimeter/inhg-left</property>
+                        <value>0</value>
+                    </equals>
+                    <equals>
+                        <property>instrumentation/altimeter/std</property>
+                        <value>0</value>
+                    </equals>
+                    <greater-than-equals>
+                        <property>systems/electrical/bus/dc-ess</property>
+                        <value>25</value>
+                    </greater-than-equals>
+                </and>
+            </condition>
+        </binding>
+    </event>
+    <event>
+        <name>button-44</name>
+        <desc type="string">Capt QNH inHg</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/altimeter/inhg-left</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-45</name>
+        <desc type="string">Capt QNH hPa</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/altimeter/inhg-left</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-46</name>
+        <desc type="string">Capt ND LS</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/nd/display-mode</property>
+            <value>ILS</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/mfd/pnl_mode-num</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-47</name>
+        <desc type="string">Capt ND VOR</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/nd/display-mode</property>
+            <value>VOR</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/mfd/pnl_mode-num</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-48</name>
+        <desc type="string">Capt ND NAV</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/nd/display-mode</property>
+            <value>NAV</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/mfd/pnl_mode-num</property>
+            <value>2</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-49</name>
+        <desc type="string">Capt ND ARC</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/nd/display-mode</property>
+            <value>ARC</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/mfd/pnl_mode-num</property>
+            <value>3</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-50</name>
+        <desc type="string">Capt ND PLAN</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/nd/display-mode</property>
+            <value>PLAN</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/mfd/pnl_mode-num</property>
+            <value>4</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-51</name>
+        <desc type="string">Capt ND Range 10nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis/inputs/range-nm</property>
+            <value>10</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-52</name>
+        <desc type="string">Capt ND Range 20nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis/inputs/range-nm</property>
+            <value>20</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-53</name>
+        <desc type="string">Capt ND Range 40nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis/inputs/range-nm</property>
+            <value>40</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-54</name>
+        <desc type="string">Capt ND Range 80nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis/inputs/range-nm</property>
+            <value>80</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-55</name>
+        <desc type="string">Capt ND Range 160nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis/inputs/range-nm</property>
+            <value>160</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-56</name>
+        <desc type="string">Capt ND Range 320nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis/inputs/range-nm</property>
+            <value>320</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-57</name>
+        <desc type="string">Capt ND ADF1</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/input/lh-vor-adf</property>
+            <value>-1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-58</name>
+        <desc type="string">Capt ND ADF/VOR1 OFF</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/input/lh-vor-adf</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-59</name>
+        <desc type="string">Capt ND VOR1</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/input/lh-vor-adf</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-60</name>
+        <desc type="string">Capt ND ADF2</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/input/rh-vor-adf</property>
+            <value>-1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-61</name>
+        <desc type="string">Capt ND ADF/VOR2 OFF</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/input/rh-vor-adf</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-62</name>
+        <desc type="string">Capt ND VOR2</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[0]/input/rh-vor-adf</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-65</name>
+        <desc type="string">FO FD</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                fcu.FCUController.FD2();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-66</name>
+        <desc type="string">FO LS</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">property-toggle</command>
+            <property>modes/pfd/ILS2</property>
+        </binding>
+    </event>
+    <event>
+        <name>button-67</name>
+        <desc type="string">FO ND CSTR</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                if (getprop("/instrumentation/efis[1]/inputs/CSTR") != 1) {
+                    fcu.fo_efis_btns("cstr");
+                } else {
+                    fcu.fo_efis_btns("off");
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-68</name>
+        <desc type="string">FO ND WPT</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                if (getprop("/instrumentation/efis[1]/inputs/WPT") != 1) {
+                    fcu.fo_efis_btns("wpt");
+                } else {
+                    fcu.fo_efis_btns("off");
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-69</name>
+        <desc type="string">FO ND VORD</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                if (getprop("/instrumentation/efis[1]/inputs/VORD") != 1) {
+                    fcu.fo_efis_btns("vord");
+                } else {
+                    fcu.fo_efis_btns("off");
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-70</name>
+        <desc type="string">FO ND NDB</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                if (getprop("/instrumentation/efis[1]/inputs/NDB") != 1) {
+                    fcu.fo_efis_btns("ndb");
+                } else {
+                    fcu.fo_efis_btns("off");
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-71</name>
+        <desc type="string">FO ND ARPT</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                if (getprop("/instrumentation/efis[1]/inputs/arpt") != 1) {
+                    fcu.fo_efis_btns("arpt");
+                } else {
+                    fcu.fo_efis_btns("off");
+                }
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-72</name>
+        <desc type="string">FO QNH push</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                core.toggleSTD();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-73</name>
+        <desc type="string">FO QNH pull</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command type="string">nasal</command>
+            <script>
+                core.toggleSTD();
+            </script>
+        </binding>
+    </event>
+    <event>
+        <name>button-74</name>
+        <desc type="string">FO QNH decrease</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-adjust</command>
+            <property>/instrumentation/altimeter/setting-inhg</property>
+            <step>-0.01</step>
+            <min>22.00</min>
+            <max>32.47</max>
+            <wrap>false</wrap>
+            <condition>
+                <and>
+                    <equals>
+                        <property>instrumentation/altimeter/inhg-right</property>
+                        <value>1</value>
+                    </equals>
+                    <equals>
+                        <property>instrumentation/altimeter/std</property>
+                        <value>0</value>
+                    </equals>
+                    <greater-than-equals>
+                        <property>systems/electrical/bus/dc-ess</property>
+                        <value>25</value>
+                    </greater-than-equals>
+                </and>
+            </condition>
+        </binding>
+        <binding>
+            <command>property-adjust</command>
+            <property>/instrumentation/altimeter/setting-hpa</property>
+            <step>-1</step>
+            <min>745</min>
+            <max>1100</max>
+            <wrap>false</wrap>
+            <condition>
+                <and>
+                    <equals>
+                        <property>instrumentation/altimeter/inhg-right</property>
+                        <value>0</value>
+                    </equals>
+                    <equals>
+                        <property>instrumentation/altimeter/std</property>
+                        <value>0</value>
+                    </equals>
+                    <greater-than-equals>
+                        <property>systems/electrical/bus/dc-ess</property>
+                        <value>25</value>
+                    </greater-than-equals>
+                </and>
+            </condition>
+        </binding>
+    </event>
+    <event>
+        <name>button-75</name>
+        <desc type="string">FO QNH increase</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-adjust</command>
+            <property>/instrumentation/altimeter/setting-inhg</property>
+            <step>0.01</step>
+            <min>22.00</min>
+            <max>32.47</max>
+            <wrap>false</wrap>
+            <condition>
+                <and>
+                    <equals>
+                        <property>instrumentation/altimeter/inhg-right</property>
+                        <value>1</value>
+                    </equals>
+                    <equals>
+                        <property>instrumentation/altimeter/std</property>
+                        <value>0</value>
+                    </equals>
+                    <greater-than-equals>
+                        <property>systems/electrical/bus/dc-ess</property>
+                        <value>25</value>
+                    </greater-than-equals>
+                </and>
+            </condition>
+        </binding>
+        <binding>
+            <command>property-adjust</command>
+            <property>/instrumentation/altimeter/setting-hpa</property>
+            <step>1</step>
+            <min>745</min>
+            <max>1100</max>
+            <wrap>false</wrap>
+            <condition>
+                <and>
+                    <equals>
+                        <property>instrumentation/altimeter/inhg-right</property>
+                        <value>0</value>
+                    </equals>
+                    <equals>
+                        <property>instrumentation/altimeter/std</property>
+                        <value>0</value>
+                    </equals>
+                    <greater-than-equals>
+                        <property>systems/electrical/bus/dc-ess</property>
+                        <value>25</value>
+                    </greater-than-equals>
+                </and>
+            </condition>
+        </binding>
+    </event>
+    <event>
+        <name>button-76</name>
+        <desc type="string">FO QNH inHg</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/altimeter/inhg-right</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-77</name>
+        <desc type="string">FO QNH hPa</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/altimeter/inhg-right</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-78</name>
+        <desc type="string">FO ND LS</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/nd/display-mode</property>
+            <value>ILS</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/mfd/pnl_mode-num</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-79</name>
+        <desc type="string">FO ND VOR</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/nd/display-mode</property>
+            <value>VOR</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/mfd/pnl_mode-num</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-80</name>
+        <desc type="string">FO ND NAV</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/nd/display-mode</property>
+            <value>NAV</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/mfd/pnl_mode-num</property>
+            <value>2</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-81</name>
+        <desc type="string">FO ND ARC</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/nd/display-mode</property>
+            <value>ARC</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/mfd/pnl_mode-num</property>
+            <value>3</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-82</name>
+        <desc type="string">FO ND PLAN</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/nd/display-mode</property>
+            <value>PLAN</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/mfd/pnl_mode-num</property>
+            <value>4</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-83</name>
+        <desc type="string">FO ND Range 10nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis[1]/inputs/range-nm</property>
+            <value>10</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-84</name>
+        <desc type="string">FO ND Range 20nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis[1]/inputs/range-nm</property>
+            <value>20</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-85</name>
+        <desc type="string">FO ND Range 40nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis[1]/inputs/range-nm</property>
+            <value>40</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-86</name>
+        <desc type="string">FO ND Range 80nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis[1]/inputs/range-nm</property>
+            <value>80</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-87</name>
+        <desc type="string">FO ND Range 160nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis[1]/inputs/range-nm</property>
+            <value>160</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-88</name>
+        <desc type="string">FO ND Range 320nm</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>instrumentation/efis[1]/inputs/range-nm</property>
+            <value>320</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-89</name>
+        <desc type="string">FO ND VOR1</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/input/lh-vor-adf</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-90</name>
+        <desc type="string">FO ND ADF/VOR1 OFF</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/input/lh-vor-adf</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-91</name>
+        <desc type="string">FO ND ADF1</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/input/lh-vor-adf</property>
+            <value>-1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-92</name>
+        <desc type="string">FO ND VOR2</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/input/rh-vor-adf</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-93</name>
+        <desc type="string">FO ND ADF/VOR2 OFF</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/input/rh-vor-adf</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-94</name>
+        <desc type="string">FO ND ADF2</desc>
+        <repeatable type="string">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/efis[1]/input/rh-vor-adf</property>
+            <value>-1</value>
+        </binding>
+    </event>
+</PropertyList>

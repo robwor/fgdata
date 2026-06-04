@@ -1,0 +1,421 @@
+<?xml version="1.0"?>
+<!--
+SPDX-License-Identifier: GPL-2.0-or-later
+SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
+
+********************************************
+*
+* Bindings for WINCRTL 32 TCAS
+*
+********************************************
+-->
+<PropertyList>
+    <vendor-id>4098</vendor-id>
+    <vendor-name>winctrl</vendor-name>
+    <model-name>tcas32</model-name>
+    <model-id>bb81</model-id>
+    <name>Winwing WINCTRL 32 TCAS</name>
+    <debug-events type="bool">false</debug-events>
+    <hid-debug-raw type="bool">false</hid-debug-raw>
+    <nasal>
+        <open>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL TCAS Nasal (event) open");
+                tcas32 = input_helpers.winctrl.new("tcas32",cmdarg(),device);
+            ]]>
+        </open>
+        <close>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL TCAS Nasal (event) close");
+                tcas32.close(cmdarg());
+            ]]>
+        </close>
+    </nasal>
+    <!-- HID BUTTONS  -->
+    <event>
+        <name>button-1</name>
+        <desc>TCAS 1</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.keypad(1);</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/tcas32/buttons/squawk1</property>
+           <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/tcas32/buttons/squawk1</property>
+                <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-2</name>
+        <desc>TCAS 2</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.keypad(2);</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/tcas32/buttons/squawk2</property>
+           <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/tcas32/buttons/squawk2</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-3</name>
+        <desc>TCAS 3</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.keypad(3);</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/tcas32/buttons/squawk3</property>
+           <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/tcas32/buttons/squawk3</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-4</name>
+        <desc>TCAS 4</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.keypad(4);</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/tcas32/buttons/squawk4</property>
+           <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/tcas32/buttons/squawk4</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-5</name>
+        <desc>TCAS 5</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.keypad(5);</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/tcas32/buttons/squawk5</property>
+           <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/tcas32/buttons/squawk5</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-6</name>
+        <desc>TCAS 6</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.keypad(6);</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/tcas32/buttons/squawk6</property>
+           <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/tcas32/buttons/squawk6</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-7</name>
+        <desc>TCAS 7</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.keypad(7);</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/tcas32/buttons/squawk7</property>
+           <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/tcas32/buttons/squawk7</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-8</name>
+        <desc>TCAS 0</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.keypad(0);</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/tcas32/buttons/squawk0</property>
+           <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/tcas32/buttons/squawk0</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-9</name>
+        <desc>TCAS CLR</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.clearKey();</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/input/winctrl/tcas32/buttons/squawkClr</property>
+           <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/input/winctrl/tcas32/buttons/squawkClr</property>
+               <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-10</name>
+        <desc>TCAS ident</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/transponder/inputs/ident-btn</property>
+            <value>1</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/instrumentation/transponder/inputs/ident-btn</property>
+                <value>0</value>
+            </binding>
+        </mod-up>
+    </event>
+    <event>
+        <name>button-11</name>
+        <desc>XPDR stby</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/transponder/inputs/knob-pos</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-12</name>
+        <desc>XPDR auto</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/transponder/inputs/knob-pos</property>
+            <value>3</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-13</name>
+        <desc>XPDR on</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/transponder/inputs/knob-pos</property>
+            <value>5</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-14</name>
+        <desc>ATC 1</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.atcSwitch(1);</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/atc/system-knob</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-15</name>
+        <desc>ATC 2</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.atcSwitch(2);</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/atc/system-knob</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-16</name>
+        <desc>ALT RPTG off</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/tcas32/buttons/altrptg</property>
+        <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-17</name>
+        <desc>ALT RPTG on</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+        <property>/input/winctrl/tcas32/buttons/altrptg</property>
+        <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-18</name>
+        <desc>TCAS THRT</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/atc/thrt-all</property>
+        <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-19</name>
+        <desc>TCAS ALL</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/atc/thrt-all</property>
+            <value>0</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/atc/abv-blw</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-20</name>
+        <desc>TCAS ABV</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/atc/abv-blw</property>
+            <value>-1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-21</name>
+        <desc>TCAS BLW</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/atc/abv-blw</property>
+            <value>1</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-22</name>
+        <desc>TCAS STBY</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.modeSwitch(1);</script>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/tcas/inputs/mode</property>
+            <value>0</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/atc/mode-knob</property>
+            <value>0</value>
+        </binding>
+    </event>
+    <event>
+        <name>button-23</name>
+        <desc>TCAS TA</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/tcas/inputs/mode</property>
+            <value>1</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/atc/mode-knob</property>
+            <value>3</value>
+        </binding>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.modeSwitch(4);</script>
+        </binding>
+    </event>
+    <event>
+        <name>button-24</name>
+        <desc>TCAS TARA</desc>
+        <repeatable>false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/instrumentation/tcas/inputs/mode</property>
+            <value>2</value>
+        </binding>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/atc/mode-knob</property>
+            <value>4</value>
+        </binding>
+        <binding>
+            <command>nasal</command>
+            <script>atc.transponderPanel.modeSwitch(5);</script>
+        </binding>
+    </event>
+</PropertyList>
