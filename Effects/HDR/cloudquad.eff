@@ -38,12 +38,9 @@
     <rough-size-factor>
       <use>/sim/rendering/hdr/clouds/rough-voxel-size-factor</use>
     </rough-size-factor>
-    <direct-intensity-scale>
-      <use>/sim/rendering/hdr/clouds/direct-intensity-scale</use>
-    </direct-intensity-scale>
-    <ambient-intensity-scale>
-      <use>/sim/rendering/hdr/clouds/ambient-intensity-scale</use>
-    </ambient-intensity-scale>
+    <voxel-optical-depth>
+      <use>/sim/rendering/hdr/clouds/voxel-optical-depth</use>
+    </voxel-optical-depth>
     <!-- exposure.glsl -->
     <exposure-compensation>
       <use>/sim/rendering/hdr/exposure-compensation</use>
@@ -238,14 +235,9 @@
         <value><use>rough-size-factor</use></value>
       </uniform>
       <uniform>
-        <name>direct_intensity_scale</name>
+        <name>voxel_optical_depth</name>
         <type>float</type>
-        <value><use>direct-intensity-scale</use></value>
-      </uniform>
-      <uniform>
-        <name>ambient_intensity_scale</name>
-        <type>float</type>
-        <value><use>ambient-intensity-scale</use></value>
+        <value><use>voxel-optical-depth</use></value>
       </uniform>
       <uniform>
         <name>ground_albedo</name>

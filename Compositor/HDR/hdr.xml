@@ -1237,7 +1237,7 @@
     <effect>Effects/HDR/histogram-bin</effect>
     <binding>
       <unit>0</unit>
-      <buffer>hdr-result</buffer>
+      <buffer>hdr-final</buffer>
     </binding>
     <binding>
       <unit>14</unit>
