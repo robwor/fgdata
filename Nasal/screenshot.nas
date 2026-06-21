@@ -46,6 +46,7 @@ var freezecvalue=getprop("/sim/freeze/clock");
 var headingvalue=getprop("/sim/current-view/heading-offset-deg");
 var pitchvalue=getprop("/sim/current-view/pitch-offset-deg");
 var rollvalue=getprop("/sim/current-view/roll-offset-deg");
+var guivalue=getprop("/sim/gui/visibility");
 
 var cube_screen_ticks = func()
 {
@@ -99,6 +100,7 @@ var cube_screen_ticks = func()
 			setprop("/sim/current-view/pitch-offset-deg", pitchvalue);
 			setprop("/sim/freeze/master", freezemvalue);
 			setprop("/sim/freeze/clock", freezecvalue);
+			setprop("/sim/gui/visibility", guivalue);
 		}
 	}
 }
@@ -150,6 +152,7 @@ var panorama_screen_ticks = func()
 		setprop("/sim/current-view/roll-offset-deg", rollvalue);
 		setprop("/sim/freeze/master", freezemvalue);
 		setprop("/sim/freeze/clock", freezecvalue);
+		setprop("/sim/gui/visibility", guivalue);
 	}
 }
 
@@ -165,12 +168,14 @@ var make_cubemap = func()
 	headingvalue=getprop("/sim/current-view/heading-offset-deg");
 	pitchvalue=getprop("/sim/current-view/pitch-offset-deg");
 	rollvalue=getprop("/sim/current-view/roll-offset-deg");
+	guivalue=getprop("/sim/gui/visibility");
 
 	setprop("/sim/menubar/visibility", 'false');
 	setprop("/sim/rendering/camera-group/znear",0.03);
 	setprop("/sim/current-view/field-of-view", 90);
 	setprop("/sim/freeze/master",'true');
 	setprop("/sim/freeze/clock",'true');
+	setprop("/sim/gui/visibility", 'false');
 
 	i=0;
 	j=0;
@@ -188,12 +193,14 @@ var make_panorama = func()
 	headingvalue=getprop("/sim/current-view/heading-offset-deg");
 	pitchvalue=getprop("/sim/current-view/pitch-offset-deg");
 	rollvalue=getprop("/sim/current-view/roll-offset-deg");
+	guivalue=getprop("/sim/gui/visibility");
 
 	setprop("/sim/menubar/visibility", 'false');
 	setprop("/sim/rendering/camera-group/znear",0.03);
 	setprop("/sim/current-view/field-of-view", 120);
 	setprop("/sim/freeze/master",'true');
 	setprop("/sim/freeze/clock",'true');
+	setprop("/sim/gui/visibility", 'false');
 
 	i=0;
 	j=0;

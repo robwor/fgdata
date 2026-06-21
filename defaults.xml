@@ -993,6 +993,7 @@ Started September 2000 by David Megginson, david@megginson.com
       </legacy-multiplayer-view-selector>
     </menubar>
     <gui preserve="y">
+      <visibility type="bool">true</visibility>
       <current-style type="int" userarchive="y">1</current-style>
       <style n="0" include="gui/styles/tortola.xml"/>
       <style n="1" include="gui/styles/anthrax.xml"/>

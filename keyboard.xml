@@ -1364,6 +1364,12 @@ top down before the key bindings are parsed.
    <command>property-toggle</command>
    <property>/sim/menubar/visibility</property>
   </binding>
+  <!-- Make GUI visible again, in case accidentally hidden -->
+  <binding>
+   <command>property-assign</command>
+   <property>/sim/gui/visibility</property>
+   <value type="bool">true</value>
+  </binding>
   <mod-shift>
     <desc>Toggle fullscreen</desc>
     <binding>

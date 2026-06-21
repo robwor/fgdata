@@ -61,12 +61,15 @@
     <name>gui-display</name>
     <type>quad</type>
     <render-condition>
-      <not>
-        <and>
-          <property>/sim/vr/running</property>
-          <property>/sim/vr/cursors/mouse[0]/vr-mode</property>
-        </and>
-      </not>
+      <and>
+        <property>/sim/gui/visibility</property>
+        <not>
+          <and>
+            <property>/sim/vr/running</property>
+            <property>/sim/vr/cursors/mouse[0]/vr-mode</property>
+          </and>
+        </not>
+      </and>
     </render-condition>
 
     <effect>Effects/HDR/trivial-premult</effect>
