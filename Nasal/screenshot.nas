@@ -51,7 +51,7 @@ var cube_screen_ticks = func()
 {
 	if (i==0 or i==2)
 	{
-                roll_deg=0;
+		roll_deg=0;
 		heading_deg=headingvalue;
 		if (i==0) pitch_deg=-90;
 		else pitch_deg=90;
@@ -62,7 +62,7 @@ var cube_screen_ticks = func()
 		heading_deg=headingvalue-90*j;
 		roll_deg = -270+j*90;
 	}
-        if (k==0)
+	if (k==0)
 	{
 		k = 1;
 		rotatescreen(heading_deg, pitch_deg, roll_deg);
@@ -136,7 +136,7 @@ var panorama_screen_ticks = func()
 			}
 			else
 			{
-                                k=2;
+				k=2;
 				settimer(panorama_screen_ticks, tick_time, tick_time);
 			}
 		}
@@ -166,16 +166,16 @@ var make_cubemap = func()
 	pitchvalue=getprop("/sim/current-view/pitch-offset-deg");
 	rollvalue=getprop("/sim/current-view/roll-offset-deg");
 
-        setprop("/sim/menubar/visibility", 'false');
-        setprop("/sim/rendering/camera-group/znear",0.03);
-        setprop("/sim/current-view/field-of-view", 170);
-        setprop("/sim/freeze/master",'true');
-        setprop("/sim/freeze/clock",'true');
+	setprop("/sim/menubar/visibility", 'false');
+	setprop("/sim/rendering/camera-group/znear",0.03);
+	setprop("/sim/current-view/field-of-view", 90);
+	setprop("/sim/freeze/master",'true');
+	setprop("/sim/freeze/clock",'true');
 
 	i=0;
 	j=0;
 	k=0;
-        cube_screen_ticks();
+	cube_screen_ticks();
 }
 
 var make_panorama = func()
