@@ -1235,6 +1235,9 @@
     <type>quad</type>
     <multiview>true</multiview>
     <effect>Effects/HDR/histogram-bin</effect>
+    <render-condition>
+      <property>/sim/rendering/hdr/exposure-update</property>
+    </render-condition>
     <binding>
       <unit>0</unit>
       <buffer>hdr-final</buffer>
@@ -1254,6 +1257,9 @@
     <type>quad</type>
     <multiview>true</multiview>
     <effect>Effects/HDR/histogram-column</effect>
+    <render-condition>
+      <property>/sim/rendering/hdr/exposure-update</property>
+    </render-condition>
     <binding>
       <unit>0</unit>
       <buffer>histogram-bins</buffer>
@@ -1267,6 +1273,9 @@
     <name>histogram-aggregate</name>
     <type>quad</type>
     <effect>Effects/HDR/histogram-aggregate</effect>
+    <render-condition>
+      <property>/sim/rendering/hdr/exposure-update</property>
+    </render-condition>
     <binding>
       <unit>0</unit>
       <buffer>histogram-partial</buffer>
@@ -1281,6 +1290,9 @@
     <name>histogram-clear</name>
     <type>quad</type>
     <effect>Effects/HDR/histogram-clear</effect>
+    <render-condition>
+      <property>/sim/rendering/hdr/exposure-update</property>
+    </render-condition>
     <attachment>
       <component>color0</component>
       <buffer>histogram</buffer>
@@ -1300,6 +1312,9 @@
       <y-screen-scale>0.0625</y-screen-scale>
     </global-size>
     <effect>Effects/HDR/histogram-compute</effect>
+    <render-condition>
+      <property>/sim/rendering/hdr/exposure-update</property>
+    </render-condition>
     <binding>
       <unit>0</unit>
       <buffer>histogram-bins</buffer>
@@ -1316,6 +1331,9 @@
     <name>histogram-luminance</name>
     <type>quad</type>
     <effect>Effects/HDR/histogram-luminance</effect>
+    <render-condition>
+      <property>/sim/rendering/hdr/exposure-update</property>
+    </render-condition>
     <binding>
       <unit>0</unit>
       <buffer>histogram</buffer>
@@ -1333,6 +1351,9 @@
     <name>copy-prev-luminance</name>
     <type>quad</type>
     <effect>Effects/HDR/copy-prev-luminance</effect>
+    <render-condition>
+      <property>/sim/rendering/hdr/exposure-update</property>
+    </render-condition>
     <binding>
       <unit>0</unit>
       <buffer>histogram-luminance</buffer>

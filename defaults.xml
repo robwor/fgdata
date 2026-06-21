@@ -531,6 +531,7 @@ Started September 2000 by David Megginson, david@megginson.com
         <render-scale type="float" userarchive="y">1.0</render-scale>
         <antialiasing-technique type="int" userarchive="y">2</antialiasing-technique>
         <exposure-compensation type="float">0.0</exposure-compensation>
+        <exposure-update type="bool">true</exposure-update>
         <envmap>
           <cubemap-size type="int" userarchive="y">128</cubemap-size>
           <update-continuously type="bool">false</update-continuously>

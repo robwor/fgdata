@@ -47,6 +47,7 @@ var headingvalue=getprop("/sim/current-view/heading-offset-deg");
 var pitchvalue=getprop("/sim/current-view/pitch-offset-deg");
 var rollvalue=getprop("/sim/current-view/roll-offset-deg");
 var guivalue=getprop("/sim/gui/visibility");
+var exposureupdvalue=getprop("/sim/rendering/hdr/exposure-update");
 
 var cube_screen_ticks = func()
 {
@@ -101,6 +102,7 @@ var cube_screen_ticks = func()
 			setprop("/sim/freeze/master", freezemvalue);
 			setprop("/sim/freeze/clock", freezecvalue);
 			setprop("/sim/gui/visibility", guivalue);
+			setprop("/sim/rendering/hdr/exposure-update", exposureupdvalue);
 		}
 	}
 }
@@ -153,6 +155,7 @@ var panorama_screen_ticks = func()
 		setprop("/sim/freeze/master", freezemvalue);
 		setprop("/sim/freeze/clock", freezecvalue);
 		setprop("/sim/gui/visibility", guivalue);
+		setprop("/sim/rendering/hdr/exposure-update", exposureupdvalue);
 	}
 }
 
@@ -169,6 +172,7 @@ var make_cubemap = func()
 	pitchvalue=getprop("/sim/current-view/pitch-offset-deg");
 	rollvalue=getprop("/sim/current-view/roll-offset-deg");
 	guivalue=getprop("/sim/gui/visibility");
+	exposureupdvalue=getprop("/sim/rendering/hdr/exposure-update");
 
 	setprop("/sim/menubar/visibility", 'false');
 	setprop("/sim/rendering/camera-group/znear",0.03);
@@ -176,6 +180,7 @@ var make_cubemap = func()
 	setprop("/sim/freeze/master",'true');
 	setprop("/sim/freeze/clock",'true');
 	setprop("/sim/gui/visibility", 'false');
+	setprop("/sim/rendering/hdr/exposure-update", 'false');
 
 	i=0;
 	j=0;
@@ -194,6 +199,7 @@ var make_panorama = func()
 	pitchvalue=getprop("/sim/current-view/pitch-offset-deg");
 	rollvalue=getprop("/sim/current-view/roll-offset-deg");
 	guivalue=getprop("/sim/gui/visibility");
+	exposureupdvalue=getprop("/sim/rendering/hdr/exposure-update");
 
 	setprop("/sim/menubar/visibility", 'false');
 	setprop("/sim/rendering/camera-group/znear",0.03);
@@ -201,6 +207,7 @@ var make_panorama = func()
 	setprop("/sim/freeze/master",'true');
 	setprop("/sim/freeze/clock",'true');
 	setprop("/sim/gui/visibility", 'false');
+	setprop("/sim/rendering/hdr/exposure-update", 'false');
 
 	i=0;
 	j=0;
