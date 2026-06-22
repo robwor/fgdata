@@ -590,6 +590,9 @@ Started September 2000 by David Megginson, david@megginson.com
 
           <!-- Cloud buffer scale, as a factor of the screen size.-->
           <render-scale type="float" userarchive="y">0.5</render-scale>
+
+          <!-- Change in sun angle required to trigger a rebuild of the shade texture -->
+          <shade-update-angle-deg type="float" userarchive="y">15.0</shade-update-angle-deg>
         </clouds>
       </hdr>
 
