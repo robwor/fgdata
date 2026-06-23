@@ -142,9 +142,9 @@ float getSilverLining(const float light_absorption, const float cosTheta)
 {
     const float MIN_DENSITY         = 0.1;   // The minimum density of cloud we will generate a lining for.  Anything less than this is assumed transparent.
     const float SUN_DIRECTIONALITY  = 40.0;  // How directional the silver lining is to the sun.  Higher values limit it closer to the sun.
-    const float cloudPresence = clamp((light_absorption - MIN_DENSITY) * 4.0, 0.0, 1.0); // ramps up quickly
-    const float cloudEdge = cloudPresence * (1.0 - light_absorption);     // falls to opaque
-    const float rim = pow(clamp((1.0 + cosTheta) * 0.5, 0.0, 1.0), SUN_DIRECTIONALITY);
+    float cloudPresence = clamp((light_absorption - MIN_DENSITY) * 4.0, 0.0, 1.0); // ramps up quickly
+    float cloudEdge = cloudPresence * (1.0 - light_absorption);     // falls to opaque
+    float rim = pow(clamp((1.0 + cosTheta) * 0.5, 0.0, 1.0), SUN_DIRECTIONALITY);
     return rim * 0.8 * cloudEdge;    
 }
 
