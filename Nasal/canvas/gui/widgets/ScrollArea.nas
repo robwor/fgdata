@@ -10,6 +10,7 @@ gui.widgets.ScrollArea = {
     m._content_pos = [0, 0];
     m._scroller_pos = [0, 0];
     m._max_scroll = [0, 0];
+    m._scrollStep = cfg.get("scroll-step", 30);
     m._layout = nil;
 
     if( style != nil )
@@ -74,6 +75,12 @@ gui.widgets.ScrollArea = {
   {
     return me.scrollTo( me._content_pos[0] + x,
                         me._content_pos[1] + y );
+  },
+  # Set scroll sensitivity
+  setScrollStep: func(step)
+  {
+    me._scrollStep = step;
+    return me;
   },
   # Set horizontal scrollbar position
   horizScrollBarTo: func(x)
@@ -179,7 +186,7 @@ gui.widgets.ScrollArea = {
         if( !me._enabled )
           return;
 
-        me.scrollBy(0, 30 * -e.deltaY); # TODO make step size configurable
+        me.scrollBy(me._scrollStep * -e.deltaX, me._scrollStep * -e.deltaY);
         e.stopPropagation();
       }
     );
