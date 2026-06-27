@@ -7,6 +7,8 @@
   <format>r8</format>
   <min-filter>linear</min-filter>
   <mag-filter>linear</mag-filter>
+  <wrap-s>clamp-to-edge</wrap-s>
+  <wrap-t>clamp-to-edge</wrap-t>
   <condition>
     <property>/sim/rendering/hdr/ambient-occlusion/enabled</property>
   </condition>

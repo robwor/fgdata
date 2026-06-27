@@ -4,7 +4,8 @@
   <technique n="1">
     <pass>
       <program>
-        <vertex-shader>Shaders/HDR/quad_notexcoord.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/quad.vert</vertex-shader>
+        <vertex-shader>Shaders/HDR/mvr.vert</vertex-shader>
         <fragment-shader>Shaders/HDR/gtao_denoiser.frag</fragment-shader>
       </program>
       <uniform>
