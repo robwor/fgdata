@@ -144,7 +144,7 @@ var PartitionProcessor =
 
             if (me.end_time > 0 and me.timestamp.elapsedUSec() > me.end_time) {
                 if (PartitionProcessor.debug_output)
-                    printf("PartitionProcessor: [%s] out of time %dus (processed# %d)",me.name, me.timestamp.elapsedUSec() - me.start_time, me.ppos);
+                    logprint(LOG_DEBUG, sprintf("PartitionProcessor: [%s] out of time %dus (processed# %d)",me.name, me.timestamp.elapsedUSec() - me.start_time, me.ppos));
                 return;
             }
         }

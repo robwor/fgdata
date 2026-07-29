@@ -147,9 +147,9 @@ var Transmitter =
 
     PrintRecipients: func
     {
-        print("Emesary: Recipient list for ",me.Ident,"(",me.UniqueId,")");
+        logprint(LOG_INFO,"Emesary: Recipient list for ",me.Ident,"(",me.UniqueId,")");
         for (var idx = 0; idx < size(me.Recipients); idx += 1)
-            print("Emesary: Recipient[",idx,"] ",me.Recipients[idx].Ident," (",me.Recipients[idx].UniqueId,")");
+            logprint(LOG_INFO,"Emesary: Recipient[",idx,"] ",me.Recipients[idx].Ident," (",me.Recipients[idx].UniqueId,")");
     },
 
     # Notify all registered recipients. Stop when receipt status of abort or finished are received.
@@ -181,7 +181,7 @@ var Transmitter =
 
                 if (size(err)){
                     foreach(var line; err) {
-                        print(line);
+                        logprint(LOG_ALERT, line);
                     }
                     logprint(LOG_ALERT, "Recipient ",recipient.Ident,
                         " has been removed from transmitter (", me.Ident,
@@ -502,7 +502,7 @@ var BinaryAsciiTransfer =
                 var cc = find(c,BinaryAsciiTransfer.alphabet);
                 if (cc < 0)
                   {
-                      print("Emesary: BinaryAsciiTransfer.decodeNumeric: Bad encoding ");
+                      logprint(DEV_ALERT,"Emesary: BinaryAsciiTransfer.decodeNumeric: Bad encoding ");
                       return BinaryAsciiTransfer.retval;
                   }
                BinaryAsciiTransfer.retval.value += int(cc * math.exp(math.ln(BinaryAsciiTransfer._base) * power));

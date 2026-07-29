@@ -205,7 +205,7 @@ var EmesaryExecutive =  {
         # - start timer now, as the listener will effectively block module calls until sim init
         new_class.frameNotification.running = 0;
         setlistener("sim/signals/fdm-initialized", func(v) {
-            logprint(1,"started ",new_class.Ident);
+            logprint(LOG_DEBUG,"started ",new_class.Ident);
             new_class.frameNotification.dT = 0; # seconds
             new_class.frameNotification.curT = 0;
             new_class.frameNotification.running = 1;
@@ -271,7 +271,7 @@ var EmesaryExecutive =  {
   timerCallback : func {
 
          if (!me.frameNotification.running){
-            logprint(3, me.Ident~": Waiting for start");
+            logprint(LOG_DEBUG, me.Ident~": Waiting for start");
             return;
         }
         me.frameNotification.fetchvars();
@@ -320,7 +320,7 @@ var EmesaryExecutive =  {
 
 OperationTimer = {
     _CLASS: "emexec.OperationTimer",
-    new : func (ident="timer", level=3) {
+    new : func (ident="timer", level=LOG_DEBUG) {
         {
             parents: [OperationTimer],
             timestamp: maketimestamp(),

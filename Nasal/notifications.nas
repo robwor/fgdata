@@ -155,7 +155,7 @@ var AircraftControlNotification =
              },
              {
             getValue:func{return emesary.TransferFixedDouble.encode(new_class.EventValue,4,1000);},
-            setValue:func(v,bridge,pos){var dv=emesary.TransferFixedDouble.decode(v,4,1000,pos);new_class.EventValue=dv.value;print("dec ",dv.value);return dv;},
+            setValue:func(v,bridge,pos){var dv=emesary.TransferFixedDouble.decode(v,4,1000,pos);new_class.EventValue=dv.value;return dv;},
              },
             ];
         };

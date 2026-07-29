@@ -24,7 +24,7 @@ var __setup = func {
         }
         # ignore FrameNotification as it would flood the log/console at frame rate
         if (ntf.NotificationType != "FrameNotification") {
-            print("debugRecipient: type=", ntf.NotificationType, " id=", ntf.Ident);
+            logprint(LOG_DEBUG, "debugRecipient: type=", ntf.NotificationType, " id=", ntf.Ident);
             debug.dump(keys(ntf));
             # count notifications
             if (isstr(ntf.NotificationType)) {
