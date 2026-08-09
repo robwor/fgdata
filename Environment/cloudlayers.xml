@@ -53,30 +53,30 @@
       <voxel-texture>/Textures/Sky/cu.tiny.voxels.png</voxel-texture>
     </cu-small>
     <ns>
-      <min-density>0.5</min-density>
-      <max-density>0.8</max-density>
-      <min-type>0.0</min-type>
-      <max-type>0.5</max-type>
+      <min-density-norm>0.5</min-density-norm>
+      <max-density-norm>0.8</max-density-norm>
+      <min-type-norm>0.0</min-type-norm>
+      <max-type-norm>0.5</max-type-norm>
       <perlin-noise-frequency>4</perlin-noise-frequency>
       <perlin-alpha>0.7</perlin-alpha>
       <perlin-beta>2.5</perlin-beta>
       <perlin-n>4</perlin-n>
     </ns>
     <sc>
-      <min-density>0.6</min-density>
-      <max-density>1.0</max-density>
-      <min-type>0.7</min-type>
-      <max-type>1.0</max-type>
+      <min-density-norm>0.6</min-density-norm>
+      <max-density-norm>1.0</max-density-norm>
+      <min-type-norm>0.7</min-type-norm>
+      <max-type-norm>1.0</max-type-norm>
       <perlin-noise-frequency>4</perlin-noise-frequency>
       <perlin-alpha>0.7</perlin-alpha>
       <perlin-beta>3.0</perlin-beta>
       <perlin-n>4</perlin-n>
     </sc>
     <st>
-      <min-density>0.1</min-density>
-      <max-density>0.4</max-density>
-      <min-type>0.0</min-type>
-      <max-type>0.3</max-type>
+      <min-density-norm>0.1</min-density-norm>
+      <max-density-norm>0.4</max-density-norm>
+      <min-type-norm>0.0</min-type-norm>
+      <max-type-norm>0.3</max-type-norm>
       <perlin-noise-frequency>4</perlin-noise-frequency>
       <perlin-alpha>1.0</perlin-alpha>
       <perlin-beta>2.0</perlin-beta>
