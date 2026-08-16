@@ -399,13 +399,8 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
 
     for (int i = 0; i < dynamicMaxSteps; i++) {
 
-        if (distance >= tExit) {
-            // Reached the end of the raymarch.  Add any required silver lining to the edge and return
-            float sl = getSilverLining(lreturn.light_absorption, cosTheta);
-            lreturn.intensity        += sunRadiance * sl;
-            lreturn.light_absorption += sl * 0.3;            
-            return lreturn;
-        }
+        if (distance >= tExit)
+            break;
 
         vec3 p = eye + distance * marchingDirection;
         vec3 windOffset = texture(wind_offset_tex, getCurvedP(eye, p).z ).xyz;
@@ -533,10 +528,20 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
         distance += s.sdf;
     }
 
-    // We've reached the end of the ray march, so add any silver lining effect and return.
+    // We've reached the end of the ray march, so add any silver lining effect.
     float sl = getSilverLining(lreturn.light_absorption, cosTheta);
     lreturn.intensity        += sunRadiance * sl;
     lreturn.light_absorption += sl * 0.3;
+
+    // Cancel any aerial perspective showing through from the background that
+    // we've already applied between clouds.
+    if (lastAP.a > 0.0) {
+        vec4 partialAP = diff_aerial_perspective(vec4(0.0, 0.0, 0.0, 1.0), lastAP);
+        float occlusion = (1.0 - clamp(lreturn.light_absorption, 0.0, 1.0));
+        lreturn.light_absorption += (1.0 - partialAP.a) * occlusion;
+        lreturn.intensity += partialAP.rgb * occlusion;
+    }
+
     return lreturn;
 }
 
