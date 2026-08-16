@@ -108,8 +108,8 @@ float hash12(vec2 p) {
 //
 float ValueErosion(float inValue, float inOldMin)
 {
-	float old_min_max_range = (1.0 - inOldMin);
-	return clamp((inValue - inOldMin) / old_min_max_range, 0.0, 1.0);
+    float old_min_max_range = (1.0 - inOldMin);
+    return clamp((inValue - inOldMin) / old_min_max_range, 0.0, 1.0);
 }
 
 // Get a position in a curved reference frame to make the voxel space curve
@@ -123,7 +123,7 @@ vec3 getCurvedP(vec3 eye, vec3 p)
     vec2 l = p.xy - eye.xy;
     float horiz_dist_m_2 = dot(l, l) * VOXEL_FIELD_WIDTH_M  * VOXEL_FIELD_WIDTH_M;
     float sagitta_norm = horiz_dist_m_2 / CURVATURE_DENOM;
-    return vec3(p.xy, p.z + sagitta_norm);    
+    return vec3(p.xy, p.z + sagitta_norm);
 }
 
 // HenyeyGreenstein forward phase scattering
@@ -145,11 +145,11 @@ float getSilverLining(const float light_absorption, const float cosTheta)
     float cloudPresence = clamp((light_absorption - MIN_DENSITY) * 4.0, 0.0, 1.0); // ramps up quickly
     float cloudEdge = cloudPresence * (1.0 - light_absorption);     // falls to opaque
     float rim = pow(clamp((1.0 + cosTheta) * 0.5, 0.0, 1.0), SUN_DIRECTIONALITY);
-    return rim * 0.8 * cloudEdge;    
+    return rim * 0.8 * cloudEdge;
 }
 
 /**
- * Get cloud information for a given sample point.  This could be 
+ * Get cloud information for a given sample point.  This could be
  * outside the voxel space entirely, or inside a repeating or non-repeating
  * space.
  */
@@ -158,7 +158,7 @@ vec4 getCloud(vec3 cameraEye, vec3 samplePoint, vec3 dir)  {
     // z coordinate plus a little bit to ensure it ends up within the voxel space,
     vec3 curvedPoint = getCurvedP(cameraEye, samplePoint);
     if (curvedPoint.z < 0.0) return vec4(0.0, 0.0, 0.0, -curvedPoint.z / length(dir));
-    if (curvedPoint.z > active_voxel_field_height_norm) 
+    if (curvedPoint.z > active_voxel_field_height_norm)
         return vec4(0.0, 0.0, 0.0, (curvedPoint.z - active_voxel_field_height_norm) / length(dir));
 
     if (cloud_field_repeating) {
@@ -193,7 +193,7 @@ float calculateDensity(vec3 samplePoint, vec3 dir, vec4 cloud) {
     float cloudDensity = cloud.z;
 
     if (cloudDimension > NOISE_SKIP_THRESHOLD) {
-        // Skip expensive noise if we're deep inside cloud, but apply the sharpening. 
+        // Skip expensive noise if we're deep inside cloud, but apply the sharpening.
         float uprezzed_density = cloudDensity * cloudDimension * voxel_optical_depth;
         float powered_density_scale = pow(clamp(cloudDensity, 0.0, 1.0), 4.0);
         return pow(uprezzed_density, mix(0.3, 0.6, max(EPSILON, powered_density_scale)));
@@ -202,20 +202,20 @@ float calculateDensity(vec3 samplePoint, vec3 dir, vec4 cloud) {
     vec4 noise = texture(cloud_noise_tex, samplePoint * NOISE_SCALE / VOXEL_SCALE);
     float wispy_noise = mix(noise.r, noise.g, cloudDimension);
 
-    // Define billowy noise 
+    // Define billowy noise
     float billowy_type_gradient = sqrt(sqrt(cloudDimension));
     float billowy_noise = mix(noise.b * 0.3, noise.a * 0.3, billowy_type_gradient);
 
     // Define Noise composite: blend to wispy depending on the cloud type
-    float noise_composite = mix(wispy_noise, billowy_noise, cloudType);        
+    float noise_composite = mix(wispy_noise, billowy_noise, cloudType);
 
     // Ultra-HF noise.
     //float hhf_wisps = 1.0 - pow(abs(abs(noise.g * 2.0 - 1.0) * 2.0 - 1.0), 4.0);
-    //float hhf_billows = pow(abs(abs(noise.a * 2.0 - 1.0) * 2.0 - 1.0), 2.0);        
-    //float hhf_noise_composite = mix(hhf_wisps, hhf_billows, cloudType);        
+    //float hhf_billows = pow(abs(abs(noise.a * 2.0 - 1.0) * 2.0 - 1.0), 2.0);
+    //float hhf_noise_composite = mix(hhf_wisps, hhf_billows, cloudType);
     //noise_composite = mix(hhf_noise_composite, noise_composite, depth * 10.0);
 
-    float uprezzed_density = noise_composite;        
+    float uprezzed_density = noise_composite;
 
     // Composite Noises and use as a Value Erosion
     float dim = cloudDimension;
@@ -223,8 +223,8 @@ float calculateDensity(vec3 samplePoint, vec3 dir, vec4 cloud) {
     uprezzed_density = ValueErosion(dim, noise_composite);
 
     // Apply Density Scale Data to Result
-    uprezzed_density *= cloudDensity * voxel_optical_depth; 
-        
+    uprezzed_density *= cloudDensity * voxel_optical_depth;
+
     // Sharpen result
     float powered_density_scale = pow(clamp(cloudDensity, 0.0, 1.0), 4.0);
     uprezzed_density = pow(uprezzed_density, mix(0.3, 0.6, max(EPSILON, powered_density_scale)));
@@ -238,7 +238,7 @@ float getRayDensity(vec3 cameraEye, vec3 eye, vec3 marchingDirection, float star
     vec3 p = eye + distance * marchingDirection;
 
     // Sample shade_tex at the ray origin (eye), not at start offset
-    vec3 windOffset = texture(wind_offset_tex, eye.z).xyz;    
+    vec3 windOffset = texture(wind_offset_tex, eye.z).xyz;
 
     float storedDensity = texture(shade_tex, getCurvedP(cameraEye, eye + windOffset)).r;
 
@@ -266,7 +266,7 @@ float getRayDensity(vec3 cameraEye, vec3 eye, vec3 marchingDirection, float star
 
         if (density > MAX_CLOUD_DENSITY) {
             // Reached maximum density, so no point in marching further.
-			return density;
+            return density;
         }
 
         if (distance > end) {
@@ -302,12 +302,12 @@ struct ray_data {
 };
 
 ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end, float zscaleFactor) {
-    
+
     ray_data lreturn;
     lreturn.light_absorption = 0.0;
     lreturn.intensity = vec3(0.0);
     lreturn.first_hit = -1.0;
-    
+
     float dirZ = marchingDirection.z;
 
     // -------------------------------------------------------
@@ -323,7 +323,7 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
     if (dirZ > EPSILON && eye.z < active_voxel_field_height_norm) {
         float tTop = (active_voxel_field_height_norm - eye.z) / dirZ;
         tExit = min(tExit, tTop);
-    }    
+    }
 
     // Fast-forward tEnter to approximate curved cloud base entry point
     // to avoid wasting march steps on empty space below the slab.
@@ -344,11 +344,11 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
     // -------------------------------------------------------
     // Standard raymarch, now guaranteed inside slab.
     // Calculate some dynamic limits and step sizes.
-    // -------------------------------------------------------        
+    // -------------------------------------------------------
 
     // Stable per-pixel jitter (world-space stable)
     vec3 entryPoint = eye + tEnter * marchingDirection;
-    float jitter = hash12(entryPoint.xy);    
+    float jitter = hash12(entryPoint.xy);
     float stepSize = IN_CLOUD_STEP_SIZE;
     // Offset initial march position slightly
     float distance = tEnter + jitter * stepSize;
@@ -369,14 +369,14 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
     vec3 sunRadiance = get_sun_radiance_sea_level();
     vec3 sunLuminance = vec3(dot(sunRadiance, vec3(0.2126, 0.7152, 0.0722)));
 
-    // For direct scatter: keep almost the full warm colour of sunRadiance, 
+    // For direct scatter: keep almost the full warm colour of sunRadiance,
     // desaturating very slightly to simulate the eye adjusting.
-    vec3 directColor = mix(sunRadiance, sunLuminance, DIRECT_DESATURATION);    
+    vec3 directColor = mix(sunRadiance, sunLuminance, DIRECT_DESATURATION);
 
     // For ambient scale: use magnitude only, colour comes from skyAmbientColor.
     // Clamped to 1.0: at any normal sunRadiance magnitude (~100-300) this is
     // equivalent to dropping the multiplier entirely; it only lets the real
-    // value through below 1.0, preserving ambient dimming near twilight.    
+    // value through below 1.0, preserving ambient dimming near twilight.
     float sunMagnitude = min(length(sunRadiance),1.0);
 
     // Multi-scatter desaturates toward white so we don't use raw sunRadiance colour
@@ -386,7 +386,7 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
     // fg_SunDirectionWorld points FROM world TOWARD sun
     mat3 zup = mat3(fg_CameraZUpMatrix);
     vec3 toSunDir = zup * fg_SunDirectionWorld;
-    float dayFactor = smoothstep(-0.2, 0.1, toSunDir.z);            
+    float dayFactor = smoothstep(-0.2, 0.1, toSunDir.z);
 
     // cosTheta > 0 = looking toward sun (forward scatter)
     // cosTheta < 0 = looking away from sun (back scatter)
@@ -438,10 +438,10 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
                 vec3 worldP = p * EYE_SCALE;  // convert from voxel-norm to metres
                 float jitter = texture(cloud_noise_tex, worldP * 0.0001).r * IN_CLOUD_SUN_RAY_STEP_SIZE;
                 densityToSun = getRayDensity(eye, p + sunDirMarch * jitter, sunDirMarch,
-                                            IN_CLOUD_SUN_RAY_STEP_SIZE, 1.0);                
+                                            IN_CLOUD_SUN_RAY_STEP_SIZE, 1.0);
 
                 cachedSunDensity = densityToSun;
-                cachedDensity = s.density;            
+                cachedDensity = s.density;
             } else {
                 densityToSun = cachedSunDensity;
             }
@@ -478,7 +478,7 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
                 * (1.0 - skyTransmittance)
                 * groundBounceFalloff
                 * 0.1
-                * dayFactor;            
+                * dayFactor;
 
             s.ambient_scattering = (skyAmbient + multiScatterAmbient) * dayFactor;
             multiScatterTerm = multiScatter * dayFactor;
@@ -500,7 +500,7 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
 
                 lastAP = ap;
             }
-            
+
             float occlusion = (1.0 - clamp(lreturn.light_absorption, 0.0, 1.0));
             lreturn.light_absorption  += s.density * occlusion * DENSITY_SCALE;
 
@@ -527,7 +527,7 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
         if (lreturn.light_absorption > 0.98) {
             // Reached maximum density, so don't march further.  An opaque cloud will have no silver lining, so no need to add it here.
             lreturn.light_absorption = 1.0;
-			return lreturn;
+            return lreturn;
         }
 
         distance += s.sdf;
@@ -536,8 +536,8 @@ ray_data cloudRayMarch(vec3 eye, vec3 marchingDirection, float start, float end,
     // We've reached the end of the ray march, so add any silver lining effect and return.
     float sl = getSilverLining(lreturn.light_absorption, cosTheta);
     lreturn.intensity        += sunRadiance * sl;
-    lreturn.light_absorption += sl * 0.3;    
-	return lreturn;
+    lreturn.light_absorption += sl * 0.3;
+    return lreturn;
 }
 
 void main()
@@ -551,14 +551,14 @@ void main()
     vec3 cameraEye = (zup * (fg_CameraPositionCart - cloud_field_center)) / EYE_SCALE + vec3(0.5, 0.5, - cloud_base_z_norm);
     vec4 color = vec4(0.0, 0.0, 0.0, 0.0);
 
-    // Convert the logarithmic depth value into metres, and then scale to the voxel resolution 
+    // Convert the logarithmic depth value into metres, and then scale to the voxel resolution
     // so we know how far to search before we reach something solid.  This needs to take into account that the voxel space is not a cube by adjusting for the
     // actual length of the "normalized" direction.
     float max_depth_m = logdepth_decode(texture(depth_tex, texcoord).r);
     float max_depth_vx = min(max_depth_m / VOXEL_FIELD_WIDTH_M, MAX_DIST) * zscaleFactor;
 
     ray_data ray = cloudRayMarch(cameraEye, dir, MIN_DIST, max_depth_vx, zscaleFactor);
-    
+
     if (ray.light_absorption > 0.001) {
         color.rgb = ray.intensity;
         color.a = ray.light_absorption;
@@ -568,7 +568,7 @@ void main()
     } else {
         gl_FragDepth = 1.0;
     }
-    
+
     // Only pre-expose when not rendering to the environment map.
     // We want the non-exposed radiance values for IBL.
     color.rgb = apply_exposure(color.rgb);
