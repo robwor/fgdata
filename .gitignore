@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2012 ThorstenB
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 # Swap and temporary files
 *~
 *.swp
@@ -12,3 +15,6 @@
 
 # FlightGear-specific files
 Atlas/
+
+# Claude Code AI assistant
+CLAUDE.md
