@@ -16,42 +16,84 @@
  General Public License for more details.
 -->
 <!--
-  Cloud shapes and layers. See Docs/README.3DClouds for details.
+  Cloud shapes and layers. See Docs/README.3DClouds and https://cloudatlas.wmo.int/
 
-  short Explanation:
+  Short explanation of the 10 cloud types:
+
+  High altitude
+  ci = Cirrus (wispy clouds at high altitude - not implemented here)
+  cs = Cirrostratus (thin layer of high altitude clouds)
+  cc = Cirrocumulus (thin patterned layer of high altitude clouds)
+
+  Medium Altitude
+  ns = Nimbostratus (rain cloud)
+  ac = Altocumulus (regular pattern of cumulus)
+  as = Altostratus (thin layer of cloud, sun just visible)
+
+  Low altitude
   cb = Cumulonimbus (Thunderstorm cloud)
-      cb-cal = Cumulonimbus Calvus (without amboss)
-      cb-inc = Cumulonimbus Incus (with amboss)
+      cb-cal = Cumulonimbus Calvus (without amboss/anvil)
+      cb-inc = Cumulonimbus Incus (with amboss/anvil)
   cu = Cumulus
       cu hum = Cumulus humilis (smallest one, only at fair, nice weather)
       cu med = Cumulus mediocris (middle)
       cu con = Cumulus congestus (the largest one, pre-stage of Cumulonimbus)
-  ns = Nimbostratus (Rain cloud)
   st = Stratus
   sc = Stratocumulus
-  ac = Altocumulus
 -->
 <PropertyList>
   <clouds>
-    <cb-large>
-      <voxel-texture>/Textures/Sky/cb.large.voxels.png</voxel-texture>
-    </cb-large>
-    <cb-small>
-      <voxel-texture>/Textures/Sky/cb.large.voxels.png</voxel-texture>
-      <voxel-texture>/Textures/Sky/cu.large.voxels.png</voxel-texture>
-    </cb-small>
+    <cb-cal>
+      <voxel-texture>/Textures/Sky/cb-cal.44.40.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cb-cal.44.40.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cb-cal.44.40.2.voxels.png</voxel-texture>
+    </cb-cal>
+    <cb-inc>
+      <voxel-texture>/Textures/Sky/cb-inc.120.46.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cb-inc.120.46.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cb-inc.120.46.2.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cb-inc.120.46.3.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cb-inc.120.46.4.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cb-inc.120.46.5.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cb-inc.120.46.6.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cb-inc.120.46.7.voxels.png</voxel-texture>
+    </cb-inc>
     <cu-con>
-      <voxel-texture>/Textures/Sky/cu.large.voxels.png</voxel-texture>
-      <voxel-texture>/Textures/Sky/cu.medium.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-con.16.14.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-con.16.14.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-con.16.14.2.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-con.26.20.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-con.26.20.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-con.26.20.2.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-con.36.26.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-con.36.26.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-con.36.26.2.voxels.png</voxel-texture>
     </cu-con>
-    <cu-large>
-      <voxel-texture>/Textures/Sky/cu.large.voxels.png</voxel-texture>
-      <voxel-texture>/Textures/Sky/cu.medium.voxels.png</voxel-texture>
-    </cu-large>
-    <cu-small>
-      <voxel-texture>/Textures/Sky/cu.small.voxels.png</voxel-texture>
-      <voxel-texture>/Textures/Sky/cu.tiny.voxels.png</voxel-texture>
-    </cu-small>
+    <cu-hum>
+      <voxel-texture>/Textures/Sky/cu-hum.2.2.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-hum.2.2.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-hum.2.2.2.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-hum.3.3.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-hum.3.3.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-hum.3.3.2.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-hum.4.4.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-hum.4.4.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-hum.4.4.2.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-hum.5.5.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-hum.5.5.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-hum.5.5.2.voxels.png</voxel-texture>
+    </cu-hum>
+    <cu-med>
+      <voxel-texture>/Textures/Sky/cu-med.6.3.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-med.6.3.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-med.6.3.2.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-med.10.4.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-med.10.4.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-med.10.4.2.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-med.14.5.0.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-med.14.5.1.voxels.png</voxel-texture>
+      <voxel-texture>/Textures/Sky/cu-med.14.5.2.voxels.png</voxel-texture>
+    </cu-med>
     <ns>
       <min-density-norm>0.5</min-density-norm>
       <max-density-norm>0.8</max-density-norm>
@@ -82,11 +124,42 @@
       <perlin-beta>2.0</perlin-beta>
       <perlin-n>6</perlin-n>
     </st>
+    <as>
+      <min-density-norm>0.1</min-density-norm>
+      <max-density-norm>0.2</max-density-norm>
+      <min-type-norm>0.0</min-type-norm>
+      <max-type-norm>0.1</max-type-norm>
+      <perlin-noise-frequency>4</perlin-noise-frequency>
+      <perlin-alpha>1.0</perlin-alpha>
+      <perlin-beta>2.0</perlin-beta>
+      <perlin-n>6</perlin-n>
+    </as>
+    <cs>
+      <min-density-norm>0.05</min-density-norm>
+      <max-density-norm>0.1</max-density-norm>
+      <min-type-norm>0.0</min-type-norm>
+      <max-type-norm>0.0</max-type-norm>
+      <perlin-noise-frequency>4</perlin-noise-frequency>
+      <perlin-alpha>1.0</perlin-alpha>
+      <perlin-beta>2.0</perlin-beta>
+      <perlin-n>6</perlin-n>
+    </cs>
+    <cc>
+      <min-density-norm>0.5</min-density-norm>
+      <max-density-norm>0.8</max-density-norm>
+      <min-type-norm>0.5</min-type-norm>
+      <max-type-norm>1.0</max-type-norm>
+      <perlin-noise-frequency>4</perlin-noise-frequency>
+      <perlin-alpha>1.0</perlin-alpha>
+      <perlin-beta>2.0</perlin-beta>
+      <perlin-n>6</perlin-n>
+    </cc>
   </clouds>
+
   <boxes>
     <ac>
       <box>
-        <type>cu-large</type>
+        <type>cu-hum</type>
         <count>2</count>
         <width>4000</width>
         <height>0</height>
@@ -97,39 +170,66 @@
 
     <cu-hum>
       <box>
-        <type>cu-small</type>
+        <type>cu-hum</type>
         <count>1</count>
-        <width>1600</width>
+        <width>600</width>
         <height>0</height>
         <hdist>2</hdist>
         <vdist>2</vdist>
       </box>
     </cu-hum>
 
+    <cu-med>
+      <box>
+        <type>cu-med</type>
+        <count>2</count>
+        <width>1600</width>
+        <height>0</height>
+        <hdist>2</hdist>
+        <vdist>2</vdist>
+      </box>
+      <box>
+        <type>cu-hum</type>
+        <count>1</count>
+        <width>600</width>
+        <height>0</height>
+        <hdist>1</hdist>
+        <vdist>1</vdist>
+      </box>
+    </cu-med>
+
     <cu-con>
       <box>
         <type>cu-con</type>
-        <count>2</count>
+        <count>1</count>
+        <width>8000</width>
+        <height>0</height>
+        <hdist>1</hdist>
+        <vdist>1</vdist>
+      </box>
+      <box>
+        <type>cu-med</type>
+        <count>1</count>
         <width>1600</width>
         <height>0</height>
         <hdist>2</hdist>
         <vdist>1</vdist>
       </box>
       <box>
-        <type>cu-small</type>
+        <type>cu-hum</type>
         <count>1</count>
-        <width>1200</width>
+        <width>600</width>
         <height>0</height>
         <hdist>1</hdist>
-        <vdist>2</vdist>
+        <vdist>1</vdist>
       </box>
     </cu-con>
 
     <cb-cal>
       <box>
-        <type>cb-large</type>
+        <type>cb-cal</type>
         <count>1</count>
-        <width>6400</width>
+        <width>8000</width>
         <height>1000</height>
         <hdist>2</hdist>
         <vdist>2</vdist>
@@ -138,18 +238,18 @@
 
     <cb-inc>
       <box>
-        <type>cb-large</type>
+        <type>cb-inc</type>
         <count>1</count>
-        <width>2500</width>
+        <width>8000</width>
         <height>1000</height>
       </box>
     </cb-inc>
 
     <xx>
       <box>
-        <type>cu-large</type>
+        <type>cu-con</type>
         <count>30</count>
-        <width>2500</width>
+        <width>8000</width>
         <height>300</height>
         <dist>1</dist>
       </box>
@@ -158,16 +258,18 @@
 
 
   <layers>
-    <cu>
+    <ac>
       <cloud>
-        <name>cu-hum</name>
+        <name>ac</name>
         <count>1</count>
       </cloud>
-      <cloud>
-        <name>cu-con</name>
-        <count>1</count>
-      </cloud>
-    </cu>
+      <grid-z-rand type="double">100.0</grid-z-rand>
+    </ac>
+    <as>
+      <layer>
+        <name>as</name>
+      </layer>
+    </as>
     <cb>
       <cloud>
         <name>cb-cal</name>
@@ -175,10 +277,10 @@
       </cloud>
       <cloud>
         <name>cb-inc</name>
-        <count>3</count>
+        <count>2</count>
       </cloud>
       <cloud>
-        <name>cu-hum</name>
+        <name>cu-med</name>
         <count>1</count>
       </cloud>
       <cloud>
@@ -187,28 +289,71 @@
       </cloud>
       <grid-z-rand type="double">200.0</grid-z-rand>
     </cb>
-    <ac>
+    <cc>
+      <layer>
+        <name>cc</name>
+      </layer>
+    </cc>
+    <cs>
+      <layer>
+        <name>cs</name>
+      </layer>
+    </cs>
+    <cu>
       <cloud>
-        <name>ac</name>
+        <name>cu-hum</name>
         <count>1</count>
       </cloud>
-      <grid-z-rand type="double">100.0</grid-z-rand>
-    </ac>
-    <st>
-      <layer>
-        <name>st</name>
-      </layer>
-    </st>
-    <sc>
-      <layer>
-        <name>sc</name>
-      </layer>
-    </sc>
+      <cloud>
+        <name>cu-med</name>
+        <count>1</count>
+      </cloud>
+    </cu>
+    <cu-hum>
+      <cloud>
+        <name>cu-hum</name>
+        <count>1</count>
+      </cloud>
+    </cu-hum>
+    <cu-med>
+      <cloud>
+        <name>cu-med</name>
+        <count>1</count>
+      </cloud>
+      <cloud>
+        <name>cu-hum</name>
+        <count>6</count>
+      </cloud>
+    </cu-med>
+    <cu-con>
+      <cloud>
+        <name>cu-con</name>
+        <count>1</count>
+      </cloud>
+      <cloud>
+        <name>cu-med</name>
+        <count>6</count>
+      </cloud>
+      <cloud>
+        <name>cu-hum</name>
+        <count>6</count>
+      </cloud>
+    </cu-con>
     <ns>
       <layer>
         <name>ns</name>
       </layer>
     </ns>
+    <sc>
+      <layer>
+        <name>sc</name>
+      </layer>
+    </sc>
+    <st>
+      <layer>
+        <name>st</name>
+      </layer>
+    </st>
   </layers>
 </PropertyList>
 <!-- end of cloudlayers.xml -->

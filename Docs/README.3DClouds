@@ -48,6 +48,15 @@ A - Signed Distance Field in UV space.  The maximum radius sphere centered on th
 However, the PNG file should only set the G and B channels, as the R and A channels are calculated
 by FlightGear itself.
 
+Voxel texture files in Textures/Sky/ follow the naming scheme: <type>.<width>.<height>.<variant>.voxels.png
+
+<type>    - the cloud type acronym (e.g cu-hum, cb -see Environment/cloudlayers.xml).
+<width>   - horizontal grid dimension in voxels (the W in the WxWxH texture described above).
+<height>  - vertical grid dimension in voxels (the H above).
+<variant> - zero-indexed variant number (0, 1, 2, ...)
+
+e.g. cu-hum.3.3.0.voxels.png is the first variant of a 3x3x3 cumulus humilis texture.
+
 A layer cloud is defined by the following properties:
 
 <thickness-m>   - the maximum layer thickness in m.
@@ -70,7 +79,7 @@ var p = props.Node.new({ "layer" : 0,
                          "lat-deg": getprop("/position/latitude-deg"),
                          "lon-deg": getprop("/position/longitude-deg"),
                          "alt-ft" : 1000,
-                         "voxel-texture" : "Textures/Sky/cu.medium.detailed.voxels.png" });
+                         "voxel-texture" : "Textures/Sky/cu-hum.3.3.0.voxels.png" });
 fgcommand("add-cloud", p);
 
 Moving Individual Clouds
