@@ -8,30 +8,23 @@ winctrl["ecam32"] = {
         var m = {
             parents: [me, input_helpers.config_manager.new(cfgnode)],
         };
-        me._device = device;
-        me.type = check_family();
-        me.path = "/input/winctrl/ecam32";
-        # this seemed really slow
-        #me._buttonProps = [];
-        #foreach (var b; keys(me._buttons)) {
-        #    var node = me._buttons[b];
-        #    node.setIntValue(0);
-        #    append(me._buttonProps, node);
-        #}
-        me.listeners = [];
-        me.leds = {};
-        foreach (var l; keys(me._led)) {
-            var devs = [me._dev.dev1,me._dev.dev2];
+        m._device = device;
+        m.type = check_family();
+        m.path = "/input/winctrl/ecam32";
+        m.listeners = [];
+        m.leds = {};
+        foreach (var l; keys(m._led)) {
+            var devs = [m._dev.dev1,m._dev.dev2];
             var prop = m.path~"/leds/"~l;
-            me.leds[l] = leddy.new(l,devs,me._led[l],prop);
-            append(me.listeners,me.leds[l].autoReport(me._device));
+            m.leds[l] = leddy.new(l,devs,m._led[l],prop);
+            append(m.listeners,m.leds[l].autoReport(m._device));
         }
-        me.leds.ledBrt.set(255);
-        if (me.type == 'A320') {
-            me.doAirbus();
+        m.leds.ledBrt.set(255);
+        if (m.type == 'A320') {
+            m.doAirbus();
         }
         logprint(LOG_INFO,"WINCRL ECAM32 ONLINE");
-        return me;
+        return m;
     },
     _buttons: {
         "tocfg": props.globals.getNode("/input/winctrl/ecam32/buttons/tocfg", 1),

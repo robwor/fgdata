@@ -31,7 +31,22 @@ but are supported by HID configs.
     <name type="string">Winwing WINWING FCU-32 + EFIS-32L</name>
     <name type="string">Winwing WINWING FCU-32 + EFIS-32L + EFIS-32R</name>
     <name type="string">Winwing WINWING MCDU-32-CAPTAIN</name>
+    <name type="string">Winwing WINWING MCDU-32-OBSERVER</name>
+    <name type="string">Winwing WINWING MCDU-32-CO-PILOT</name>
     <name type="string">Winwing WINWING URSA MINOR 32 Throttle Metal L</name>
+    <name type="string">Winwing WINCTRL 32 AGP Metal</name>
+    <name type="string">Winwing WINCTRL 32 ECAM</name>
     <name type="string">Winwing WINCTRL 32 TCAS</name>
+    <name type="string">Winwing WINCTRL 32 RMP C</name>
+    <name type="string">Winwing WINCTRL 32 FCU</name>
+    <name type="string">Winwing WINCTRL 32 FCU + 32 EFIS R</name>
+    <name type="string">Winwing WINCTRL 32 FCU + 32 EFIS L</name>
+    <name type="string">Winwing WINCTRL 32 FCU + 32 EFIS L + 32 EFIS R</name>
+    <name type="string">Winwing WINCTRL 32 MCDU CAPTAIN</name>
+    <name type="string">Winwing WINCTRL 32 MCDU CO-PILOT</name>
+    <name type="string">Winwing WINCTRL 32 MCDU OBSERVER</name>
+    <name type="string">Winwing WINCTRL URSA MINOR 32 Throttle Metal L</name>
+    <name type="string">Winwing WINCTRL 32 NWS L</name>
+    <name type="string">Winwing WINCTRL 32 NWS R</name>
 
 </PropertyList>

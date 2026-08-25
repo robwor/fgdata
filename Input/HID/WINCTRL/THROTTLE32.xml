@@ -49,7 +49,8 @@ SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
     <model-name>throttle32</model-name>
     <vendor-id>4098</vendor-id>
     <model-id>b920</model-id>
-    <name type="string">Winwing WINWING URSA MINOR 32 Throttle Metal L</name>
+    <name>Winwing WINWING URSA MINOR 32 Throttle Metal L</name>
+    <name>Winwing WINCTRL URSA MINOR 32 Throttle Metal L</name>
     <debug-events type="bool">false</debug-events>
     <nasal>
         <open>
@@ -486,8 +487,10 @@ SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
     <event>
         <desc>spoilers</desc>
         <name>abs-slider</name>
-        <output-mode>unsigned-normalized</output-mode>
-        <!-- FIXME: deadband/noise-threshold-bits are applicable to keep this from overtriggering  -->
+        <output-mode>signed-normalized</output-mode>
+        <min-range>-65535</min-range>
+        <max-range>65536</max-range>
+        <dead-band type="double">0.02</dead-band>
         <binding>
             <command>property-scale</command>
             <property>/input/winctrl/throttle32/spoilers</property>
@@ -561,19 +564,19 @@ SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
     <event>
         <desc>eng0 fire</desc>
         <name>button-5</name>
-        <output-mode>switch</output-mode>
+        <output-mode>button</output-mode>
         <binding>
             <command>property-assign</command>
             <property>/input/winctrl/throttle32/buttons/fire1</property>
-            <state>1</state>
+            <value type="bool">true</value>
         </binding>
-        <!--<mod-up>
+        <mod-up>
             <binding>
                 <command>property-assign</command>
                 <property>/input/winctrl/throttle32/buttons/fire1</property>
                 <value type="bool">false</value>
             </binding>
-        </mod-up>-->
+        </mod-up>
     </event>
     <event>
         <desc>eng1 fire</desc>

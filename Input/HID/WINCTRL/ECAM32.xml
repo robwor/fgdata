@@ -38,6 +38,7 @@ SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
     <model-name>ecam32</model-name>
     <model-id>bb70</model-id>
     <name>Winwing WINWING ECAM</name>
+    <name>Winwing WINCTRL 32 ECAM</name>
     <debug-events type="bool">false</debug-events>
     <hid-debug-raw type="bool">false</hid-debug-raw>
     <nasal>

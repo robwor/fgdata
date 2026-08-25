@@ -22,7 +22,8 @@ SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
     <model-name>agp32</model-name>
     <vendor-id>4098</vendor-id>
     <model-id>bb80</model-id>
-    <name type="string">Winwing WINWING AGP</name>
+    <name>Winwing WINWING AGP</name>
+    <name>Winwing WINCTRL 32 AGP Metal</name>
     <debug-events type="bool">false</debug-events>
     <nasal>
         <open>

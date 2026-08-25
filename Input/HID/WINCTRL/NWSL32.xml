@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--
+SPDX-License-Identifier: GPL-2.0-or-later
+SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
+
+********************************************************************
+*
+* Bindings for Winwing WINCTRL 32 NWS L
+*
+* 4098:b961
+*
+* it has a backlight LED and a single button
+*
+********************************************************************
+-->
+<PropertyList>
+    <vendor-name>winctrl</vendor-name>
+    <model-name>nwsl32</model-name>
+    <!--<vendor-id>winctrl</vendor-id>
+    <model-id>nwsl32</model-id>-->
+    <vendor-id>4098</vendor-id>
+    <model-id>b961</model-id>
+    <device-dialog>winctrl-nwsl32</device-dialog>
+    <name type="string">Winwing WINCTRL 32 NWS L</name>
+    <name type="string">Winwing WINCTRL 32 NWS R</name>
+    <debug-events type="bool">false</debug-events>
+    <hid-debug-raw type="bool">false</hid-debug-raw>
+    <nasal>
+        <open>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL NWSL Nasal (event) open");
+                nwsl32 = input_helpers.winctrl.new("nwsl32",cmdarg(),device);
+            ]]>
+        </open>
+        <close>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL NWSL Nasal (event) close");
+                nwsl32.close(cmdarg());
+            ]]>
+        </close>
+    </nasal>
+    <event>
+        <desc>Tiller</desc>
+        <name>abs-x-rotate</name>
+        <output-mode>signed-normalized</output-mode>
+        <tolerance>0.0</tolerance>
+        <dead-band type="double">0.02</dead-band>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/gear/steering</property>
+        </binding>
+        <binding>
+            <command>property-scale</command>
+            <property>/controls/gear/tiller-cmd-norm</property>
+        </binding>
+    </event>
+    <event>
+        <desc>PEDAL DISC</desc>
+        <name>button-1</name>
+        <repeatable type="bool">false</repeatable>
+        <binding>
+            <command>property-assign</command>
+            <property>/controls/gear/pedal-disc</property>
+            <value type="bool">true</value>
+        </binding>
+        <mod-up>
+            <binding>
+                <command>property-assign</command>
+                <property>/controls/gear/pedal-disc</property>
+                <value type="bool">false</value>
+            </binding>
+        </mod-up>
+    </event>
+</PropertyList>

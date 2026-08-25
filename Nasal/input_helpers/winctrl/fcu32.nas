@@ -9,52 +9,52 @@ winctrl["fcu32"] = {
         var m = {
             parents: [me, input_helpers.config_manager.new(cfgnode)],
         };
-        me._device = device;
-        me.type = check_family();
-        me.path = "/input/winctrl/fcu32";
-        me.listeners = [];
-        me.leds = {};
-        foreach (var l; keys(me._led)) {
+        m._device = device;
+        m.type = check_family();
+        m.path = "/input/winctrl/fcu32";
+        m.listeners = [];
+        m.leds = {};
+        foreach (var l; keys(m._led)) {
             if (chr(l[size(l)-1]) == 'L') {
-                var devs = [me._dev.dev1L,me._dev.dev2L];
+                var devs = [m._dev.dev1L,m._dev.dev2L];
             } else if (chr(l[size(l)-1]) == 'R') {
-                var devs = [me._dev.dev1R,me._dev.dev2R];
+                var devs = [m._dev.dev1R,m._dev.dev2R];
             } else {
-                var devs = [me._dev.dev1,me._dev.dev2];
+                var devs = [m._dev.dev1,m._dev.dev2];
             }
-            var prop = me.path~"/leds/"~l;
-            me.leds[l] = leddy.new(l,devs,me._led[l],prop);
-            append(me.listeners,me.leds[l].autoReport(me._device));
+            var prop = m.path~"/leds/"~l;
+            m.leds[l] = leddy.new(l,devs,m._led[l],prop);
+            append(m.listeners,m.leds[l].autoReport(m._device));
         }
         # annun brightness not implmeneted so ensure leds illuminate
-        me.leds.ledBrt.set(255);
-        me.leds.ledBrtL.set(255);
-        me.leds.ledBrtR.set(255);
-        foreach (var k; keys(me._fcuProps)) {
+        m.leds.ledBrt.set(255);
+        m.leds.ledBrtL.set(255);
+        m.leds.ledBrtR.set(255);
+        foreach (var k; keys(m._fcuProps)) {
             if(!contains(['spd','hdg','alt','vs','efisL','efisR'],k)) {
-                me._fcuProps[k].setIntValue(0);
+                m._fcuProps[k].setIntValue(0);
             }
         }
-        me._fcuProps.spd.setValue('---');
-        me._fcuProps.hdg.setValue('---');
-        me._fcuProps.alt.setValue('-----');
-        me._fcuProps.vs.setValue('----');
-        me._fcuProps.efisL.setValue('----');
-        me._fcuProps.efisR.setValue('----');
-        foreach (var k; keys(me._fcuProps)) {
+        m._fcuProps.spd.setValue('---');
+        m._fcuProps.hdg.setValue('---');
+        m._fcuProps.alt.setValue('-----');
+        m._fcuProps.vs.setValue('----');
+        m._fcuProps.efisL.setValue('----');
+        m._fcuProps.efisR.setValue('----');
+        foreach (var k; keys(m._fcuProps)) {
             if(!contains(['efisL','efisR','qnh','qfe'],k)) {
-                append(me.listeners,setlistener(me._fcuProps[k], func() { me.updateFCUDisplay(); },1,0));
+                append(m.listeners,setlistener(m._fcuProps[k], func() { m.updateFCUDisplay(); },1,0));
             } else {
-                append(me.listeners,setlistener(me._fcuProps[k], func() { me.updateEFISDisplay('L'); me.updateEFISDisplay('R'); },1,0));
+                append(m.listeners,setlistener(m._fcuProps[k], func() { m.updateEFISDisplay('L'); m.updateEFISDisplay('R'); },1,0));
             }
         }
-        if (me.type == 'A320') {
-            me.doAirbus();
+        if (m.type == 'A320') {
+            m.doAirbus();
         } else {
-            me.doBasic();
+            m.doBasic();
         }
         logprint(LOG_INFO,"WINCRL FCU32 ONLINE");
-        return me;
+        return m;
     },
     close: func(cfgnode) {
         logprint(LOG_DEBUG,"removing "~size(me.listeners)~" listeners");
@@ -571,5 +571,7 @@ winctrl["fcu32"] = {
         var digits = me.dataFromStringEFIS(node.getValue());
         var report = [0x00, 0xab, 0x1a, devs[0], devs[1], 0x00, 0x00, 0x2, 0x1, 0x00, 0x00, 0xff, 0xff, 0x1d, 0x00, 0x00, 0x9, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, digits[0], digits[1], digits[2], digits[3], qnhQfe, 0x0e, 0xbf, 0x00, 0x00, 0x3, 0x1, 0x00, 0x00, 0x4c, 0xc, 0x1d, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
         me._device.sendOutputReport(240,report);
+        var refreshReport = [0x0, 0xab, 0x11, devs[0], devs[1], 0x0, 0x0, 0x3, 0x1, 0x0, 0x0, 0xff, 0xff, 0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0];
+        me._device.sendOutputReport(240,refreshReport);
     },
 };

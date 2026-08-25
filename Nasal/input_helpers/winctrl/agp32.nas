@@ -8,59 +8,59 @@ winctrl["agp32"] = {
         var m = {
             parents: [me, input_helpers.config_manager.new(cfgnode)],
         };
-        me._device = device;
-        me.type = check_family();
-        me.path = "/input/winctrl/agp32";
-        me.listeners = [];
-        me.leds = {};
-        foreach (var l; keys(me._led)) {
-            var devs = [me._dev.dev1,me._dev.dev2];
+        m._device = device;
+        m.type = check_family();
+        m.path = "/input/winctrl/agp32";
+        m.listeners = [];
+        m.leds = {};
+        foreach (var l; keys(m._led)) {
+            var devs = [m._dev.dev1,m._dev.dev2];
             var prop = m.path~"/leds/"~l;
-            me.leds[l] = leddy.new(l,devs,me._led[l],prop);
-            append(me.listeners,me.leds[l].autoReport(me._device));
+            m.leds[l] = leddy.new(l,devs,m._led[l],prop);
+            append(m.listeners,m.leds[l].autoReport(m._device));
         }
-        me.leds.ledBrt.set(255);
-        me.leds.lcd.set(255);
+        m.leds.ledBrt.set(255);
+        m.leds.lcd.set(255);
         # init some props
-        me._agpProps.chrono.setValue("");
-        me._agpProps.utc.setValue("--:--:--");
-        me._agpProps.et.setValue("");
+        m._agpProps.chrono.setValue("");
+        m._agpProps.utc.setValue("--:--:--");
+        m._agpProps.et.setValue("");
         # these should be set elsewhere but we init them anyways
-        foreach (var k; keys(me._clockProps)) {
+        foreach (var k; keys(m._clockProps)) {
             if (contains(['setKnob','utcSelector','setCont'],k)) {
-                me._clockProps[k].setIntValue(0);
+                m._clockProps[k].setIntValue(0);
             } else if (contains(['chrStarted','intBlinkYear','intBlinkMonth','intBlinkDay','intBlinkHH','intBlinkMM'],k)) {
-                me._clockProps[k].setBoolValue(false);
+                m._clockProps[k].setBoolValue(false);
             } else if (contains(['utcTime','utcDate','intDate'],k)) {
-                me._clockProps[k].setValue("        ");
+                m._clockProps[k].setValue("        ");
             } else if (contains(['intHH','intMM','intSS','intYear','intMonth','intDay'],k)) {
-                me._clockProps[k].setValue("  ");
+                m._clockProps[k].setValue("  ");
             }
         }
-        me._chronoProps.chrStarted.setBoolValue(false);
+        m._chronoProps.chrStarted.setBoolValue(false);
         # 5 values __:__
-        me._chronoProps.chrEt.setValue("     ");
-        me._elapsedProps.elapsed.setValue("     ");
+        m._chronoProps.chrEt.setValue("     ");
+        m._elapsedProps.elapsed.setValue("     ");
         # add some listeners
-        foreach (var k; keys(me._agpProps)) {
-            append(me.listeners,setlistener(me._agpProps[k], func() { me.updateDisplay(); },0,0));
+        foreach (var k; keys(m._agpProps)) {
+            append(m.listeners,setlistener(m._agpProps[k], func() { m.updateDisplay(); },0,0));
         }
-        foreach ( var prop; keys(me._clockProps)) {
-            append(me.listeners,setlistener(me._clockProps[prop], func() { me.setUtcDisp(); },0,0));
+        foreach ( var prop; keys(m._clockProps)) {
+            append(m.listeners,setlistener(m._clockProps[prop], func() { m.setUtcDisp(); },0,0));
         }
-        foreach ( var prop; keys(me._chronoProps)) {
-            append(me.listeners,setlistener(me._chronoProps[prop], func() { me.setChronoDisp(); },0,0));
+        foreach ( var prop; keys(m._chronoProps)) {
+            append(m.listeners,setlistener(m._chronoProps[prop], func() { m.setChronoDisp(); },0,0));
         }
-        foreach ( var prop; keys(me._elapsedProps)) {
-            append(me.listeners,setlistener(me._elapsedProps[prop], func() { me.setElapsedDisp(); },0,0));
+        foreach ( var prop; keys(m._elapsedProps)) {
+            append(m.listeners,setlistener(m._elapsedProps[prop], func() { m.setElapsedDisp(); },0,0));
         }
-        if (me.type == 'A320') {
-            me.doAirbus();
+        if (m.type == 'A320') {
+            m.doAirbus();
         } else {
-            me.watchAnnunLEDs();
+            m.watchAnnunLEDs();
         }
         logprint(LOG_INFO,"WINCRL AGP32 ONLINE");
-        return me;
+        return m;
     },
     close: func(cfgnode) {
         logprint(LOG_DEBUG,"removing "~size(me.listeners)~" listeners");

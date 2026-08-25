@@ -15,14 +15,19 @@ SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
     <model-name>fcu32</model-name>
     <vendor-id>4098</vendor-id>
     <model-id>ba01</model-id>
-    <name type="string">Winwing WINWING FCU-320</name>
-    <name type="string">Winwing WINWING FCU-320 + EFIS-32R</name>
-    <name type="string">Winwing WINWING FCU-320 + EFIS-32L</name>
-    <name type="string">Winwing WINWING FCU-320 + EFIS-32L + EFIS-32R</name>
-    <name type="string">Winwing WINWING FCU-32</name>
-    <name type="string">Winwing WINWING FCU-32 + EFIS-32R</name>
-    <name type="string">Winwing WINWING FCU-32 + EFIS-32L</name>
-    <name type="string">Winwing WINWING FCU-32 + EFIS-32L + EFIS-32R</name>
+    <name>Winwing WINWING FCU-320</name>
+    <name>Winwing WINWING FCU-320 + EFIS-32R</name>
+    <name>Winwing WINWING FCU-320 + EFIS-32L</name>
+    <name>Winwing WINWING FCU-320 + EFIS-32L + EFIS-32R</name>
+    <name>Winwing WINWING FCU-32</name>
+    <name>Winwing WINWING FCU-32 + EFIS-32R</name>
+    <name>Winwing WINWING FCU-32 + EFIS-32L</name>
+    <name>Winwing WINWING FCU-32 + EFIS-32L + EFIS-32R</name>
+    <name>Winwing WINCTRL 32 FCU</name>
+    <name>Winwing WINCTRL 32 FCU + 32 EFIS R</name>
+    <name>Winwing WINCTRL 32 FCU + 32 EFIS L</name>
+    <name>Winwing WINCTRL 32 FCU + 32 EFIS L + 32 EFIS R</name>
+
     <debug-events type="bool">false</debug-events>
     <nasal>
         <open>

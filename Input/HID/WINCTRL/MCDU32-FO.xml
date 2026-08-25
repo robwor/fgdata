@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+SPDX-License-Identifier: GPL-2.0-or-later
+SPDX-FileCopyrightText: 2026 nia
+SPDX-FileCopyrightText: 2026 Kent Stevens (timeplt)
+
+********************************************
+*
+* Bindings for WINCRTL MCDU-32 CO-PILOT
+*
+********************************************
+-->
+<PropertyList include="MCDU32-common.xml">
+    <vendor-name>winctrl</vendor-name>
+    <model-name>mcdu32</model-name>
+    <vendor-id>4098</vendor-id>
+    <model-id>bb3e</model-id>
+    <name>Winwing WINWING MCDU-32-CO-PILOT</name>
+    <name>Winwing WINCTRL 32 MCDU CO-PILOT</name>
+    <nasal>
+        <open>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL MCDU Nasal (event) open");
+                var mcdu32 = input_helpers.winctrl.new("mcdu32",cmdarg(),device,"fo");
+                var MIDX = 1;
+            ]]>
+        </open>
+        <close>
+            <![CDATA[
+                logprint(LOG_DEBUG,"WINCTRL MCDU Nasal (event) close");
+                mcdu32.close(cmdarg());
+            ]]>
+        </close>
+    </nasal>
+</PropertyList>

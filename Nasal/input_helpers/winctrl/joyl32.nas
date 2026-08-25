@@ -8,29 +8,29 @@ winctrl["joyl32"] = {
         var m = {
             parents: [me, input_helpers.config_manager.new(cfgnode)],
         };
-        me._device = device;
-        me.type = check_family();
-        me.path = "/input/winctrl/joyl32";
-        me.listeners = [];
-        me.leds = {};
-        foreach (var l; keys(me._led)) {
+        m._device = device;
+        m.type = check_family();
+        m.path = "/input/winctrl/joyl32";
+        m.listeners = [];
+        m.leds = {};
+        foreach (var l; keys(m._led)) {
             if (l == "vib") {
-                var devs = [me._dev.vibdev1,me._dev.vibdev2];
+                var devs = [m._dev.vibdev1,m._dev.vibdev2];
             } else {
-                var devs = [me._dev.dev1,me._dev.dev2];
+                var devs = [m._dev.dev1,m._dev.dev2];
             }
             var prop = m.path~"/leds/"~l;
-            me.leds[l] = leddy.new(l,devs,me._led[l],prop);
-            append(me.listeners,me.leds[l].autoReport(me._device));
+            m.leds[l] = leddy.new(l,devs,m._led[l],prop);
+            append(m.listeners,m.leds[l].autoReport(m._device));
         }
-        if (me.type == 'A320') {
-            me.doAirbus();
+        if (m.type == 'A320') {
+            m.doAirbus();
         }
-        foreach ( var prop; keys(me._vibProps)) {
-            append(me.listeners,setlistener(me._vibProps[prop], func() { me.shaker(); },0,0));
+        foreach ( var prop; keys(m._vibProps)) {
+            append(m.listeners,setlistener(m._vibProps[prop], func() { m.shaker(); },0,0));
         }
         logprint(LOG_INFO,"WINCRL JOYSTICK-L ONLINE");
-        return me;
+        return m;
     },
     close: func(cfgnode) {
         logprint(LOG_DEBUG,"removing "~size(me.listeners)~" listeners");

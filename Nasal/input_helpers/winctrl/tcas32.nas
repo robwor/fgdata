@@ -8,30 +8,30 @@ winctrl["tcas32"] = {
         var m = {
             parents: [me, input_helpers.config_manager.new(cfgnode)],
         };
-        me._device = device;
-        me.type = check_family();
-        me.path = "/input/winctrl/tcas32";
-        me.listeners = [];
-        me.leds = {};
-        foreach (var l; keys(me._led)) {
-            var devs = [me._dev.dev1,me._dev.dev2];
+        m._device = device;
+        m.type = check_family();
+        m.path = "/input/winctrl/tcas32";
+        m.listeners = [];
+        m.leds = {};
+        foreach (var l; keys(m._led)) {
+            var devs = [m._dev.dev1,m._dev.dev2];
             var prop = m.path~"/leds/"~l;
-            me.leds[l] = leddy.new(l,devs,me._led[l],prop);
-            append(me.listeners,me.leds[l].autoReport(me._device));
+            m.leds[l] = leddy.new(l,devs,m._led[l],prop);
+            append(m.listeners,m.leds[l].autoReport(m._device));
         }
-        me.leds.ledBrt.set(255);
-        me._tcasProps.squawkMsg.setValue("----");
-        foreach (var k; keys(me._tcasProps)) {
-            append(me.listeners,setlistener(me._tcasProps[k], func() { me.updateDisplay(); },1,0));
+        m.leds.ledBrt.set(255);
+        m._tcasProps.squawkMsg.setValue("----");
+        foreach (var k; keys(m._tcasProps)) {
+            append(m.listeners,setlistener(m._tcasProps[k], func() { m.updateDisplay(); },1,0));
         }
-        if (me.type == 'A320') {
-            me.doAirbus();
+        if (m.type == 'A320') {
+            m.doAirbus();
         } else {
-            me.doGeneric();
-            me.leds.lcd.set(255);
+            m.doGeneric();
+            m.leds.lcd.set(255);
         }
         logprint(LOG_INFO,"WINCRL TCAS32 ONLINE");
-        return me;
+        return m;
     },
     close: func(cfgnode) {
         logprint(LOG_DEBUG,"removing "~size(me.listeners)~" listeners");

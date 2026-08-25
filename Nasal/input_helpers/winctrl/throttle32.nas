@@ -8,34 +8,34 @@ winctrl["throttle32"] = {
         var m = {
             parents: [me, input_helpers.config_manager.new(cfgnode)],
         };
-        me._device = device;
-        me.type = check_family();
-        me.path = "/input/winctrl/throttle32";
-        me.listeners = [];
-        me.leds = {};
-        foreach (var l; keys(me._led)) {
-            var devs = [me._dev.dev1,me._dev.dev2];
+        m._device = device;
+        m.type = check_family();
+        m.path = "/input/winctrl/throttle32";
+        m.listeners = [];
+        m.leds = {};
+        foreach (var l; keys(m._led)) {
+            var devs = [m._dev.dev1,m._dev.dev2];
             #if (l=="lcd" or  l=="panel2") {
             if (contains(["lcd","panel2"],l)) {
-                devs[0] = me._dev.devB;
+                devs[0] = m._dev.devB;
             }
             var prop = m.path~"/leds/"~l;
-            me.leds[l] = leddy.new(l,devs,me._led[l],prop);
-            append(me.listeners,me.leds[l].autoReport(me._device));
+            m.leds[l] = leddy.new(l,devs,m._led[l],prop);
+            append(m.listeners,m.leds[l].autoReport(m._device));
         }
         # may not actually work on the throttle
-        me.leds.ledBrt.set(255);
-        me._thrProps.rudderMsg.setValue("----");
-        foreach (var k; keys(me._thrProps)) {
-            append(me.listeners,setlistener(me._thrProps[k], func() { me.updateDisplay(); },1,0));
+        m.leds.ledBrt.set(255);
+        m._thrProps.rudderMsg.setValue("----");
+        foreach (var k; keys(m._thrProps)) {
+            append(m.listeners,setlistener(m._thrProps[k], func() { m.updateDisplay(); },1,0));
         }
-        if (me.type == 'A320') {
-            me.doAirbus();
+        if (m.type == 'A320') {
+            m.doAirbus();
         } else {
-            me.doGeneric();
+            m.doGeneric();
         }
         logprint(LOG_INFO,"WINCRL THROTTLE32 ONLINE");
-        return me;
+        return m;
     },
     close: func(cfgnode) {
         logprint(LOG_DEBUG,"removing "~size(me.listeners)~" listeners");
@@ -99,7 +99,7 @@ winctrl["throttle32"] = {
         "wow2": props.globals.getNode("/gear/gear[2]/wow",1),
         "cockRoll": props.globals.getNode("/sim/sound/other/cockpit-roll-v",1),
     },
-    _vibs: [ "vibL1", "vibR1", "vibL2", "vibR2" ],
+    _vibs: [ "vibL", "vibR", ],
     _dev: {
         'dev1': 0x10,
         'devB': 0x01, # PAC
@@ -114,10 +114,11 @@ winctrl["throttle32"] = {
         'fire1': 0x04,
         'fault2': 0x05,
         'fire2': 0x06,
-        'vibR1': 0x10,
-        'vibR2': 0x11,
-        'vibL1': 0x12,
-        'vibL2': 0x13,
+        'vibL': 0x0e,
+        'vibR': 0x10,
+        #'vibR2': 0x11,
+        #'vibL1': 0x12,
+        #'vibL2': 0x13,
     },
     # rudder LCD stuff below
     watchRudder: func() {
@@ -202,10 +203,9 @@ winctrl["throttle32"] = {
             var shake = (me._vibProps.cockRoll.getValue() or 0);
             # starts to vibrate around 22kt with ^2
             shake = int(math.pow(shake,2)*255);
-            me.leds['vibL1'].set(shake);
-            #foreach (var vib; me._vibs) {
-            #    me.leds[vib].set(shake);
-            #}
+            foreach (var vib; me._vibs) {
+                me.leds[vib].set(shake);
+            }
         } else {
             foreach (var vib; me._vibs) {
                 me.leds[vib].set(0);

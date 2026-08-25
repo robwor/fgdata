@@ -27,13 +27,13 @@ var check_family = func() {
     return family;
 };
 var winctrl = {
-    new: func(name, cmdarg, dev = nil) {
-        if (contains(['agp32','mcdu32','joyl32','fcu32','throttle32','ecam32','tcas32'], name)) {
+    new: func(name, cmdarg, dev = nil, variant = nil) {
+        if (contains(['agp32','mcdu32','joyl32','fcu32','throttle32','ecam32','tcas32','rmpc32','nwsl32'], name)) {
         # check if the winctrl namespace already contains the helper
             if (!contains(winctrl, name))
                 io.include("winctrl/"~name~".nas");
                 #io.load_nasal("winctrl/"~name~".nas","input_helpers.winctrl");
-            return winctrl[name].new(cmdarg,dev);
+            return winctrl[name].new(cmdarg,dev,variant);
         }
     },
 };
