@@ -174,7 +174,7 @@
         <count>1</count>
         <width>600</width>
         <height>0</height>
-        <hdist>2</hdist>
+        <hdist>1</hdist>
         <vdist>2</vdist>
       </box>
     </cu-hum>
@@ -190,8 +190,8 @@
       </box>
       <box>
         <type>cu-hum</type>
-        <count>1</count>
-        <width>600</width>
+        <count>6</count>
+        <width>1600</width>
         <height>0</height>
         <hdist>1</hdist>
         <vdist>1</vdist>
@@ -204,22 +204,22 @@
         <count>1</count>
         <width>8000</width>
         <height>0</height>
-        <hdist>1</hdist>
+        <hdist>2</hdist>
         <vdist>1</vdist>
       </box>
       <box>
         <type>cu-med</type>
         <count>1</count>
-        <width>1600</width>
-        <height>0</height>
-        <hdist>2</hdist>
+        <width>8000</width>
+        <height>400</height>
+        <hdist>1</hdist>
         <vdist>1</vdist>
       </box>
       <box>
         <type>cu-hum</type>
         <count>1</count>
-        <width>600</width>
-        <height>0</height>
+        <width>8000</width>
+        <height>800</height>
         <hdist>1</hdist>
         <vdist>1</vdist>
       </box>
@@ -322,7 +322,7 @@
       </cloud>
       <cloud>
         <name>cu-hum</name>
-        <count>6</count>
+        <count>3</count>
       </cloud>
     </cu-med>
     <cu-con>
@@ -338,6 +338,7 @@
         <name>cu-hum</name>
         <count>6</count>
       </cloud>
+      <grid-z-rand type="double">200.0</grid-z-rand>
     </cu-con>
     <ns>
       <layer>
