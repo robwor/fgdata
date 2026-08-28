@@ -730,14 +730,6 @@
 		</item>
 
 		<item>
-			<name>reload-hud</name>
-			<binding>
-				<command>reinit</command>
-				<subsystem>hud</subsystem>
-			</binding>
-		</item>
-
-		<item>
 			<name>reload-panel</name>
 			<binding>
 				<command>panel-load</command>
@@ -845,6 +837,13 @@
 			</binding>
 		</item>
 
+		<item>
+			<name>dump-active-plods</name>
+			<binding>
+				<command>dump-active-plods</command>
+			</binding>
+		</item>
+		
 		<item>
 			<name>print-rendering-statistics</name>
 			<binding>
@@ -966,24 +965,6 @@
 			<binding>
 				<command>print-visible-scene</command>
 			</binding>
-		</item>
-
-		<item>
-			<name>rendering-buffers</name>
-			<binding>
-				<command>property-toggle</command>
-				<property>/sim/rendering/rembrandt/show-buffers</property>
-			</binding>
-			<enabled>false</enabled>
-		</item>
-
-		<item>
-			<name>rembrandt-buffers-choice</name>
-			<binding>
-				<command>dialog-show</command>
-				<dialog-name>rembrandt-buffers</dialog-name>
-			</binding>
-			<enabled>false</enabled>
 		</item>
 
 		<item>

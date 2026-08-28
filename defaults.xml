@@ -250,16 +250,8 @@ Started September 2000 by David Megginson, david@megginson.com
                CullThreadPerCameraDrawThreadPerContext
       -->
       <plod-minimum-expiry-time-secs type="double" userarchive="y">180.0</plod-minimum-expiry-time-secs>
+      <vpb-plod-minimum-expiry-time-secs type="double" userarchive="y">300.0</vpb-plod-minimum-expiry-time-secs>
       <static-lod>
-        <!--
-        2018.3 changes to the way the LOD work
-               - reworked UI
-               - use the detailed with deltas to prevent silly values;
-               - removed the pixel range mode and added distance (the previous
-                 code and UI had both pixel mode and range mode, need only one)
-               - For the AI/MP meters is the distance from the view point, wherease
-                 pixels is the size on screen.
-        -->
         <detailed type="double" userarchive="y">1500</detailed>
         <rough-delta type="double" userarchive="y">7500</rough-delta>
         <bare-delta type="double" userarchive="y">21000</bare-delta>
