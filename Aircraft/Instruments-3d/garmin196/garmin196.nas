@@ -224,7 +224,9 @@ var load_parameters = func{
 setlistener("/sim/signals/fdm-initialized",load_parameters);
 
 var save_parameters = func{
-    props.globals.getNode("/instrumentation/garmin196/save").remove();
+
+    var save_branch = props.globals.getNode("/instruments/garmin196");
+    if (save_branch != nil )save_branch.removeChild("save");
 
     ##preparation
     if(getprop("/instrumentation/garmin196/antenne-deg")!=nil){
@@ -2466,9 +2468,9 @@ var update_map = func{
       setprop("/instrumentation/garmin196/symbols/paths/range_wp_"~i~"_"~(i+1)~"/x",x_wp_fpl);
       setprop("/instrumentation/garmin196/symbols/paths/range_wp_"~i~"_"~(i+1)~"/y",y_wp_fpl);
 
-      var wp_bearing = 360 - getprop("/instrumentation/gps/indicated-track-true-deg") + getprop("/autopilot/route-manager/route/wp["~i~"]/leg-bearing-true-deg");
-      var wp_distance = offset_range_wp_direct * getprop("/autopilot/route-manager/route/wp["~i~"]/leg-distance-nm") / symbol_map_range;
-      
+      var wp_bearing = 360 - getprop("/instrumentation/gps/indicated-track-true-deg") + getprop("/autopilot/route-manager/route/wp["~(i+1)~"]/leg-bearing-true-deg");
+      var wp_distance = offset_range_wp_direct * getprop("/autopilot/route-manager/route/wp["~(i+1)~"]/leg-distance-nm") / symbol_map_range;
+
       var x_range_wp =(math.cos(wp_bearing*math.pi/180) * wp_distance) + ((x_wp_fpl/0.026)*0.15); #max 0.15
       if(math.abs(x_range_wp)>0.15){
         wp_distance = math.abs(((0.15*math.sgn(math.cos(wp_bearing*math.pi/180))) - ((x_wp_fpl/0.026)*0.15))/math.cos(wp_bearing*math.pi/180));
