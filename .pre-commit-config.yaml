@@ -3,6 +3,6 @@
 
 repos:
   - repo: https://gitlab.com/flightgear/fgmeta-python.git
-    rev: 32d79743e9fde77ead750f69b140a16eee8a65dd
+    rev: 1.3.0
     hooks:
       - id: validate-fgdata-propertylist-files
