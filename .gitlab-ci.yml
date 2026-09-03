@@ -111,7 +111,7 @@ validate-XML-translations:
     - *prepare-python-venv
   script:
     - >
-      "$PYTHON_VENV_BINDIR"/fg-extract-translatable-strings check
+      "$PYTHON_VENV_BINDIR"/fg-extract-translatable-strings --color=always check
       "$CI_PROJECT_DIR" || exit $?
 
 # all the files from FGData which we bunlde with the application / image
