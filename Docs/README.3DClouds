@@ -14,10 +14,9 @@ node defining the location and characterstics of the cloud.
 
 Location is defined by the following properties:
 
-<layer>      - The cloud layer number to add the cloud to. (default 0)
-<index>      - A unique identifier for the cloud in the layer. If a cloud
-               already exists with this index, the new cloud will not be
-               created, and 0 is returned.
+<index>      - A unique identifier for the cloud. If a cloud already exists
+               with this index, the new cloud will not be created, and 0 is
+               returned.
 <lon-deg>    - Longitude to place the cloud, in degrees (default 0)
 <lat-deg>    - Latitude t place the cloud, in degrees (default 0)
 <alt-ft>     - Altitude to place the cloud, relative to the layer (!) in ft
@@ -67,9 +66,9 @@ A layer cloud is defined by the following properties:
 <max-type-norm>    - maximum type (default 0.5)
 
 <perlin-noise-frequency> - Perlin noise parameter (default 4)
-<perlin-alpha>           - Perlin noise parameter (default 0.7)
-<perlin-beta>            - Perlin noise parameter (default 2.5)
-<perlin-n>               - Perlin noise parameter (default 4)
+<perlin-alpha>           - Perlin noise parameter (default 1.0)
+<perlin-beta>            - Perlin noise parameter (default 2.0)
+<perlin-n>               - Perlin noise parameter (default 6)
 
 For example, the following Nasal snippet will create a cloud immediately above the
 aircraft at an altitude of 1000 ft above /environment/clouds/layer[0]/elevation-ft :
@@ -88,7 +87,6 @@ Moving Individual Clouds
 Clouds may be moved by using the "move-cloud" command. This takes the following
 property arguments.
 
-<layer>      - The cloud layer number containing the cloud to move. (default 0)
 <index>      - The unique identifier of the cloud to move.
 <lon-deg>    - Longitude to place the cloud, in degrees (default 0)
 <lat-deg>    - Latitude t place the cloud, in degrees (default 0)
@@ -103,7 +101,6 @@ Deleting Individual Clouds
 Clouds may be deleted by using the "del-cloud" command. This takes the following
 property arguments.
 
-<layer>      - The cloud layer number containing the cloud to delete. (default 0)
 <index>      - The unique identifier of the cloud to delete.
 
 Global 3D Clouds
