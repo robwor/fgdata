@@ -25,6 +25,7 @@ io.include(include_path~"element.nas");
 io.include(include_path~"group.nas");
 io.include(include_path~"map.nas");
 io.include(include_path~"text.nas");
+io.include(include_path~"richtext.nas");
 io.include(include_path~"path.nas");
 io.include(include_path~"image.nas");
 io.include(include_path~"svgcanvas.nas");
@@ -34,6 +35,7 @@ Group._element_factories = {
   "group": Group.new,
   "map": Map.new,
   "text": Text.new,
+  "richtext": RichText.new,
   "path": Path.new,
   "image": Image.new
 };

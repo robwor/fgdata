@@ -43,8 +43,6 @@ var XMLDialog = {
         # some kind. (eg frame / group / scroll area)
         var rootObject = me.dialog().root;
 
-        debug.dump("DIalog didBuild: calling show with root group:", rootCanvasGroup);
-
         # show the root object inside our Canvas group. We could delay this
         # until we are made visible to make things more efficient/lazy
         rootObject.show(rootCanvasGroup);

@@ -77,10 +77,8 @@ var ErrorNotification =
       root.createChild("text", "error-description")
           .setText(trSys.get("error-popup-heading"))
           .setAlignment("left-top")
-          .setFontSize(14)
-          .setFont("LiberationFonts/LiberationSans-Bold.ttf")
+          .setFont(family: "Liberation Sans", weight: "Bold", size: 14)
           .setColor(1,1,1)
-          .setDrawMode(Text.TEXT)
           .setTranslation(me.SLICE + iconWidth + me.MARGIN, me.SLICE);
 
      me._canvas.addEventListener("mousedown", func me.clicked());

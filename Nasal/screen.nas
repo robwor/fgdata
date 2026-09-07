@@ -200,7 +200,7 @@ var window = Log;
 #
 #     var dpy = screen.display.new(20, 10);    # x/y coordinate
 #     dpy.setcolor(1, 0, 1);                   # magenta (default: white)
-#     dpy.setfont("SANS_12B",12);              # see $FG_ROOT/gui/styles/*.xml
+#     dpy.setfont(FontDescription.new(family: "Liberation Sans", weight: "Bold", size: 12));              # see $FG_ROOT/gui/styles/*.xml
 #
 #     dpy.add("/position/latitude-deg", "/position/longitude-deg");
 #     dpy.add(props.globals.getNode("/orientation").getChildren());
@@ -224,7 +224,7 @@ var window = Log;
 # Methods add(), setfont() and setcolor() can be appended to the new()
 # constructor (-> show big yellow frame rate counter in upper right corner):
 #
-#     screen.display.new(-15, -5, 0).setfont("TIMES_24").setcolor(1, 0.9, 0).add("/sim/frame-rate");
+#     screen.display.new(-15, -5, 0).setfont(FontDescription.new(family: "Liberation Sans", size: 12)).setcolor(1, 0.9, 0).add("/sim/frame-rate");
 #
 var PropertyDisplay = {
 	id: 0,
@@ -302,13 +302,12 @@ var PropertyDisplay = {
 		me._overlay.show();
 	},
 	setcolor: func(r, g, b, a = 1) {
-		me.color = [r, g, b, a];
+		me.fg = [r, g, b, a];
 		me.redraw();
 		return me;
 	},
-	setfont: func(font, size=14) {
+	setfont: func(font) {
 		me.font = font;
-		me.fontsize = size;
 		return me;
 	},
 	# add() opens already, so call open() explicitly only after close()!
@@ -617,10 +616,6 @@ setlistener(b ~ "blue",    func(n) log.write(n.getValue(), 0,   0,   0.8));
 setlistener(b ~ "yellow",  func(n) log.write(n.getValue(), 0.8, 0.8, 0));
 setlistener(b ~ "magenta", func(n) log.write(n.getValue(), 0.7, 0,   0.7));
 setlistener(b ~ "cyan",    func(n) log.write(n.getValue(), 0,   0.6, 0.6));
-
-setlistener("/sim/gui/current-style", func {
-    theme_font = getprop("/sim/gui/selected-style/fonts/message-display/name");
-}, 1);
 
 # --prop:display=sim/frame-rate         ... adds this property to the property display
 # --prop:display=position/              ... adds all properties under /position/  (ends with slash!)

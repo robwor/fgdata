@@ -414,21 +414,21 @@
 			<base>margin</base>
 			<factor type="double">3.0</factor>
 		</text-inset>
-
-		<base-font-size type="int">14</base-font-size>
-		<list-font-size type="int">14</list-font-size>
 		<list-item-height type="int">24</list-item-height>
 	</sizes>
 
 	<fonts>
 		<default>
-			<path>LiberationFonts/LiberationSans-Regular.ttf</path>
+			<family>Liberation Sans</family>
+			<weight>Normal</weight>
+			<style>Normal</style>
+			<size>14</size>
 		</default>
 		<message-display>
-			<path>LiberationFonts/LiberationSans-Bold.ttf</path>
+			<weight>Bold</weight>
 		</message-display>
 		<property-display>
-			<path>LiberationFonts/LiberationSans-Bold.ttf</path>
+			<weight>Bold</weight>
 		</property-display>
 	</fonts>
 </PropertyList>

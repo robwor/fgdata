@@ -310,6 +310,7 @@ var WidgetsFactoryDialog = {
 		}
 		var time = systime() - start;
 		me.benchmark_statistics.setText("Took " ~ time ~ " seconds to add " ~ amount ~ " widgets.");
+		logprint(LOG_ALERT, "Benchmark label took " ~ time);
 	},
 	
 	benchmark_radio_button: func(proc_func=nil, amount=50, cfg= nil) {

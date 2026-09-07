@@ -183,7 +183,9 @@ gui.Widget = {
   },
   visibilityChanged: func(visible)
   {
-    me._view._root.setVisible(visible);
+    if (me._view != nil) {
+      me._view._root.setVisible(visible);
+    }
   },
 
   _setView: func(view)

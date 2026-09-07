@@ -40,7 +40,7 @@ gui.widgets.Frame = {
     me._view.update(me);
     return me;
   },
-  setLayout: func(;)
+  setLayout: func(l)
   {
     me._layout = l;
     l.setParent(me);

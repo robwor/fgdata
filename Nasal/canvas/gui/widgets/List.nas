@@ -163,7 +163,7 @@ gui.widgets.List = {
     },
 
     filter: func(filter = nil, dataItem = "text") {
-        foreach (var item; me.items()) {
+        foreach (var item; me.getItems()) {
             if (filter == nil or find(filter, item.getData(dataItem)) > -1) {
                 item.setVisible(1);
             } else {
@@ -229,7 +229,11 @@ gui.widgets.List = {
     # @description Return a vector containing all items of this list
     # @return vector[canvas.gui.widgets.ListItem] Vector containing all items of this list
     getItems: func() {
-        return me._scrollLayout.items();
+        var items = [];
+        for (var i = 0; i < me._scrollLayout.count(); i += 1) {
+            append(items, me._scrollLayout.itemAt(i));
+        }
+        return items;
     },
 
     # @description Find the index of the given item or item with the given text.

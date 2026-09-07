@@ -55,13 +55,39 @@ gui.Style = {
     }
 
     var fonts = m._node.getChild("fonts");
+    var defaultFont = fonts.getChild("default");
+    if (!defaultFont) {
+      logprint(LOG_DEV_WARN, "GUI style " ~ name ~ " does not provide default font, using hardcoded fallback");
+      m._fonts["default"] = FontDescription.new(
+        family: "Liberation Sans",
+        size: 14
+      );
+    } else {
+        var family = defaultFont.getValue("family");
+        var weight = defaultFont.getValue("weight");
+        var style = defaultFont.getValue("style");
+        var size = defaultFont.getValue("size");
+        if (!family) {
+          logprint(LOG_DEV_WARN, "GUI style " ~ name ~ ": missing default font family, using hardcoded fallback");
+          family = "Liberation Sans";
+        }
+        if (!isnum(size) or size < 1) {
+          logprint(LOG_DEV_WARN, "GUI style " ~ name ~ ": missing / malformed default font size, using hardcoded fallback");
+          size = 14;
+        }
+        m._fonts["default"] = FontDescription.new(family: family, weight: weight, style: style, size: size);
+    }
+
     if (fonts) {
       foreach (var fontNode; fonts.getChildren()) {
-        var pathNode = fontNode.getChild("path");
-        if (pathNode) {
-          var path = pathNode.getValue();
-          m._fonts[fontNode.getName()] = path;
+        var family = fontNode.getValue("family") or m._fonts["default"].family;
+        var weight = fontNode.getValue("weight") or m._fonts["default"].weight;
+        var style = fontNode.getValue("style") or m._fonts["default"].style;
+        var size = fontNode.getValue("size");
+        if (!isnum(size) or size < 1) {
+          size = m._fonts["default"].size;
         }
+        m._fonts[fontNode.getName()] = FontDescription.new(family: family, weight: weight, style: style, size: size);
       }
     }
 
@@ -99,7 +125,8 @@ gui.Style = {
   {
     return me._sizes[name] or def;
   },
-  getFont: func(name, def = "LiberationFonts/LiberationSans-Regular.ttf") {
+  getFont: func(name, def = nil) {
+    def = isa(def, FontDescription) ? def : me._fonts["default"];
     return me._fonts[name] or def;
   }
 };

@@ -244,9 +244,7 @@ var CanvasPlacement = {
 				background: [0.1,0.06,0.4,0.3],
 				error: [1,0.2,0.1],
 			},
-			font_size: 17,
-			font_file: "LiberationFonts/LiberationMono-Bold.ttf",
-			font_aspect_ratio: 1.5,
+			font: canvas.FontDescription.new(family: "Liberation Mono", weight: "Bold", size: 17),
 			font_max_width: nil,
 		},
 		"transparent-blue": {
@@ -261,9 +259,7 @@ var CanvasPlacement = {
 				background: [0.1,0.06,0.4,0.3],
 				error: [1,0.2,0.1],
 			},
-			font_size: 17,
-			font_file: "LiberationFonts/LiberationMono-Bold.ttf",
-			font_aspect_ratio: 1.5,
+			font: canvas.FontDescription.new(family: "Liberation Mono", weight: "Bold", size: 17),
 			font_max_width: nil,
 		},
 		"transparent-red": {
@@ -278,9 +274,7 @@ var CanvasPlacement = {
 				background: [0.8,0.06,0.07,0.4],
 				error: [1,0.2,0.1],
 			},
-			font_size: 17,
-			font_file: "LiberationFonts/LiberationMono-Bold.ttf",
-			font_aspect_ratio: 1.5,
+			font: canvas.FontDescription.new(family: "Liberation Mono", weight: "Bold", size: 17),
 			font_max_width: nil,
 		},
 		"canvas-default": {
@@ -295,9 +289,7 @@ var CanvasPlacement = {
 				background: [0.05,0.03,0.2],
 				error: [1,0.2,0.1],
 			},
-			font_size: 17,
-			font_file: "LiberationFonts/LiberationMono-Bold.ttf",
-			font_aspect_ratio: 1.5,
+			font: canvas.FontDescription.new(family: "Liberation Mono", weight: "Bold", size: 17),
 			font_max_width: nil,
 			#font_max_width: 588,
 		},
@@ -466,25 +458,21 @@ var CanvasPlacement = {
 		me.msg.text = me.msg.createChild("text", "help")
 			.setTranslation(me.padding, me.padding+10)
 			.setAlignment("left-baseline")
-			.setFontSize(me.font_size, me.font_aspect_ratio)
-			.setFont(me.font_file)
+			.setFont(me.font)
 			.setColor(me.colors.text)
-			.setDrawMode(draw_mode)
 			.setMaxWidth(me.window.get("content-size[0]") - me.padding)
 			.setText(me.gettranslation("help"));
 		if (me.colors.text_fill != nil)
-			me.msg.text.setColorFill(me.colors.text_fill);
+			me.msg.text.setBackgroundColor(me.colors.text_fill);
 		me.msg.text.update();
 		#debug.dump(me.msg.text.getTransformedBounds());
 		me.msg.left_col = me.msg.createChild("text", "keys")
 			.setTranslation(me.padding, me.msg.text.getTransformedBounds()[3] + 30)
 			.setAlignment("left-baseline")
-			.setFontSize(me.font_size, me.font_aspect_ratio)
-			.setFont(me.font_file)
-			.setColor(me.colors.text)
-			.setDrawMode(draw_mode);
+			.setFont(me.font)
+			.setColor(me.colors.text);
 		if (me.colors.text_fill != nil)
-			me.msg.left_col.setColorFill(me.colors.text_fill);
+			me.msg.left_col.setBackgroundColor(me.colors.text_fill);
 		me.msg.left_col.update();
 		for (var i=0; i<size(me.keys); i+=2) {
 			if (i) me.msg.left_col.appendText("\n");
@@ -495,12 +483,10 @@ var CanvasPlacement = {
 			.setTranslation(me.msg.left_col.getTransformedBounds()[2] + 20,
 			                me.msg.text.getTransformedBounds()[3] + 30)
 			.setAlignment("left-baseline")
-			.setFontSize(me.font_size, me.font_aspect_ratio)
-			.setFont(me.font_file)
-			.setColor(me.colors.text)
-			.setDrawMode(draw_mode);
+			.setFont(me.font)
+			.setColor(me.colors.text);
 		if (me.colors.text_fill != nil)
-			me.msg.right_col.setColorFill(me.colors.text_fill);
+			me.msg.right_col.setBackgroundColor(me.colors.text_fill);
 		for (var i=0; i<size(me.keys); i+=2) {
 			if (i) me.msg.right_col.appendText("\n");
 			desc = me.keys[i+1];
@@ -511,7 +497,6 @@ var CanvasPlacement = {
 	},
 	create_line: func(reset_text=1) {
 		# c.f. above, in me.create_msg()
-		var draw_mode = canvas.Text.TEXT + (me.colors.text_fill != nil ? canvas.Text.FILLEDBOUNDINGBOX : 0);
 
 		if (reset_text) me.input = "";
 		# If we only use one line, and one exists, things are simple:
@@ -525,14 +510,12 @@ var CanvasPlacement = {
 		me.text = me.text_group
 			.createChild("text", "input"~size(me.lines_of_text))
 			.setAlignment("left-baseline")
-			.setFontSize(me.font_size, me.font_aspect_ratio)
-			.setFont(me.font_file)
+			.setFont(me.font)
 			.setColor(me.colors.text)
-			.setDrawMode(draw_mode)
 			.setText(size(me.lines_of_text) ? ">" : ""); # FIXME: hack, canvas::Text needs a printing character
 			                                             # on the first line in order to recognize the newlines ?
 		if (me.colors.text_fill != nil)
-			me.text.setColorFill(me.colors.text_fill);
+			me.text.setBackgroundColor(me.colors.text_fill);
 		if (me.font_max_width != nil)
 			if (me.font_max_width < 0)
 				me.text.setMaxWidth(me.window.get("content-size[0]") - me.font_max_width);
@@ -697,8 +680,7 @@ var CanvasPlacement = {
 		if (size(err)) {
 			me.add_line(me.gettranslation("bad-result"));
 			me.set_line_color(me.colors.error);
-			if (me.font_file == "LiberationFonts/LiberationMono-Bold.ttf")
-				me.set_line_font("LiberationFonts/LiberationMono-BoldItalic.ttf");
+			me.set_line_font(style: "Italic");
 			return 1;
 		}
 		if (size(res) > me.max_output_chars)

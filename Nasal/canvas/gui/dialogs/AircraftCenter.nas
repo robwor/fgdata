@@ -29,9 +29,8 @@ var AircraftCenter = {
 
     m._scroll_content =
       scroll.getContent()
-            .set("font", "LiberationFonts/LiberationSans-Bold.ttf")
-            .set("character-size", 16)
-            .set("alignment", "left-center");
+            .setFont(family: "Liberation Sans", weight: "Bold")
+            .setAlignment("left-center");
 
     m._list = VBoxLayout.new();
     scroll.setLayout(m._list);
