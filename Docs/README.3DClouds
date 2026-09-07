@@ -103,6 +103,23 @@ property arguments.
 
 <index>      - The unique identifier of the cloud to delete.
 
+Selecting the Detailed+Rough (Non-Repeating) Field
+===================================================
+
+By default, individually-placed and METAR/weather-scenario clouds share a single "repeating"
+voxel field (the detailed field tiled via mirrored wrapping) which covers the whole sky cheaply.
+An alternative "non-repeating" mode instead uses two fields - a fine-voxel detailed field near
+the camera and a much larger, coarser rough field beyond it - intended for scenarios needing a
+large, non-tiling area of individually-placed clouds. Select it with the "set-clouds-repeating"
+command:
+
+<enabled>    - true (default) selects the repeating field; false selects the detailed+rough
+               non-repeating field.
+
+Note that METAR/weather-scenario updates unconditionally re-select the repeating field (they
+need whole-sky coverage), so this command is intended for use with METAR updates disabled
+(/environment/params/metar-updates-environment = 0) and clouds placed via "add-cloud".
+
 Global 3D Clouds
 ================
 

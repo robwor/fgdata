@@ -94,8 +94,10 @@ float GROUND_BOUNCE_MAX_HEIGHT_M = 1244.0;
 vec3 VOXEL_SCALE = vec3(1.0, 1.0, float(voxel_field_width) / float(voxel_field_height));
 vec3 EYE_SCALE = vec3(VOXEL_FIELD_WIDTH_M, VOXEL_FIELD_WIDTH_M, VOXEL_FIELD_HEIGHT_M);
 
-// Boundary where we use the detailed voxel space rather than the rough voxel space in UV coordinates
-float DETAILED_X_Y_BOUNDARY = 0.5 / float(rough_field_factor);
+// Combined ratio between the rough field's physical size and the detailed field's. Both the
+// voxel-count ratio (rough_field_factor) and the per-voxel physical-size ratio
+// (rough_size_factor) contribute; using either alone under-scales the rough field's UV frame.
+float ROUGH_FIELD_SCALE = float(rough_field_factor) * float(rough_size_factor);
 
 float hash12(vec2 p) {
     vec3 p3 = fract(vec3(p.xyx) * 0.1031);
@@ -169,18 +171,29 @@ vec4 getCloud(vec3 cameraEye, vec3 samplePoint, vec3 dir)  {
         return texture(detailed_tex, curvedPoint);
     }
 
-    // If we get to here, we are in a non-repeating cloud field.  This consists of a detailed voxel space and rough voxel space.
+    // Non-repeating field: a detailed voxel space plus a much larger, coarser rough voxel space
+    // beyond it, sharing the same center. samplePoint/curvedPoint are already normalized to the
+    // detailed field's own UV space (see EYE_SCALE above), so "in the detailed field" is simply
+    // "inside its own [0,1] range".
 
-    if ((abs(samplePoint.x - 0.5) < DETAILED_X_Y_BOUNDARY) && (abs(samplePoint.y - 0.5) < DETAILED_X_Y_BOUNDARY)) {
-        // We're in the detailed space.  Scale the xy UV to the detailed voxel space
-        vec3 uv = vec3((samplePoint.x - DETAILED_X_Y_BOUNDARY) * float(rough_field_factor),
-                    (samplePoint.y - DETAILED_X_Y_BOUNDARY) * float(rough_field_factor),
-                    samplePoint.z);
-        float sagitta = curvedPoint.z - samplePoint.z; // just the z offset
-        return texture(detailed_tex, vec3(uv.xy, uv.z + sagitta));
+    if (abs(samplePoint.x - 0.5) < 0.5 && abs(samplePoint.y - 0.5) < 0.5) {
+        // Within the detailed field's own footprint - sample it directly, as the repeating
+        // branch above does (mirroring aside, which doesn't apply to a finite field).
+        return texture(detailed_tex, curvedPoint);
     } else {
-        // We're in the rough space, so just use it as-is
-        return texture(rough_tex, curvedPoint);
+        // Outside the detailed field - reproject into the rough field's own, much larger UV
+        // frame before sampling. Both fields share the same center and Z extent, so this is a
+        // linear rescale around 0.5 on X/Y only.
+        vec3 roughPoint = vec3(0.5 + (curvedPoint.x - 0.5) / ROUGH_FIELD_SCALE,
+                                0.5 + (curvedPoint.y - 0.5) / ROUGH_FIELD_SCALE,
+                                curvedPoint.z);
+        vec4 roughSample = texture(rough_tex, roughPoint);
+
+        // The rough texture's SDF (alpha) is baked as a fraction of its own (much larger) UV
+        // width, but the raymarch's `distance` accumulator is in detailed-field-normalized
+        // units - rescale before returning (sign is unaffected either way).
+        roughSample.a *= ROUGH_FIELD_SCALE;
+        return roughSample;
     }
 }
 

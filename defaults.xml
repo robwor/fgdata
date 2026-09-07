@@ -567,15 +567,14 @@ Started September 2000 by David Megginson, david@megginson.com
         </debug>
         <clouds>
           <!-- The detailed cloud field should be 50km x 50km x 12800m to give a 25km range and approx 40,000 ft of troposphere-->
-          <!-- Note that the height of the voxel field is calculated dynamically to save memory, so this value is a maximum. -->
           <detailed-voxel-field-width type="int">256</detailed-voxel-field-width>
           <detailed-voxel-field-height type="int">64</detailed-voxel-field-height>
           <detailed-voxel-size-m type="int">200</detailed-voxel-size-m>
 
-          <!-- How much larger rough field voxels are compared with detailed -->
+          <!-- How much larger rough field voxels are compared with detailed. -->
           <rough-voxel-size-factor type="int">4</rough-voxel-size-factor>
 
-          <!-- How much larger the rough field is compared with the detailed in voxel units. -->
+          <!-- How much larger the rough field is compared with the detailed in voxel units in the horizontal axes. Vertical unchanged. -->
           <rough-voxel-field-factor type="int">2</rough-voxel-field-factor>
 
           <!-- The optical depth of one full density voxel.  By beer-lambert law, transmittance is exp(- voxel-optical-depth) -->
@@ -590,6 +589,12 @@ Started September 2000 by David Megginson, david@megginson.com
 
           <!-- Change in sun angle required to trigger a rebuild of the shade texture -->
           <shade-update-angle-deg type="float" userarchive="y">15.0</shade-update-angle-deg>
+
+          <!-- Fraction of the way from the detailed field's center to its own edge that the
+               camera may drift (non-repeating fields only) before a full rebuild/recenter
+               is triggered. Lower values recenter more often (more rebuilds); higher values
+               risk the camera exiting the detailed footprint before a rebuild completes. -->
+          <recenter-margin-norm type="float" userarchive="y">0.6</recenter-margin-norm>
         </clouds>
       </hdr>
 
