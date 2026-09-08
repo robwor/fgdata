@@ -12,7 +12,6 @@ gui.widgets.LineEdit = {
 
     m._text = "";
     m._placeholder = "";
-    m._max_length = 32767;
     me._ignoreDrag = 0;
 
     m.context_menu = gui.Menu.new();
@@ -25,11 +24,14 @@ gui.widgets.LineEdit = {
 
     m.setText(cfg.get("text", ""));
     m.setPlaceholder(cfg.get("placeholder", ""));
-    m.setMaxLength(cfg.get("max-length", m._max_length));
 
     return m;
   },
-  setText: func(text) {
+  _showContextMenu: func(e) {
+    me.context_menu.show(e.screenX, e.screenY);
+  },
+  setText: func(text)
+  {
     if (text == nil or text == "") {
       me.clear();
       return me;

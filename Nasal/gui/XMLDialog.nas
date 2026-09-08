@@ -766,6 +766,8 @@ var XMLSlider =
             "max-value": me._configDouble("max", 1),
             "step-size": me._configDouble("step", 0),
             "page-size": me._configDouble("page", 0),
+            "show-ticks": 0,
+            "show-value": 0, # Disabled for now since all the XML dialogs use an extra label to display slider values
             "value":     me.value   # essential to avoid triggering our value-changed callback on init
         });
 

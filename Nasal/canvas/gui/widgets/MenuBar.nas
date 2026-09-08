@@ -21,7 +21,6 @@ gui.widgets.MenuBar = {
 
                 m.setLayoutMinimumSize([48, 24]);
                 m.setLayoutSizeHint([48, 24]);
-                m.setLayoutMaximumSize([48, 24]);
 
                 return m;
         },
@@ -29,7 +28,7 @@ gui.widgets.MenuBar = {
         setCanvasItem: func(item) {
                 me._canvas_item = item;
                 for (var i = 0; i < me._layout.count(); i += 1) {
-                        me._layout.itemAt(i)._setParentMenu(me);
+                        #me._layout.itemAt(i)._setParentMenu(me);
                 }
         },
 
@@ -56,7 +55,7 @@ gui.widgets.MenuBar = {
                 item._setParentMenu(me);
                 item.setMenu(menu);
                 me._layout.addItem(item);
-                me.setSize(math.max(me._layout.minimumSize()[0], 64), math.max(me._layout.minimumSize()[1], 24));
+                me.setSize(me._layout.minimumSize()[0], me._layout.minimumSize()[1]);
                 return me;
         },
 
@@ -145,7 +144,10 @@ gui.widgets.MenuBar = {
                         var arg = arg[0];
                 }
                 var (x, y) = arg;
-                me._size = [x, 24];
+                me._size = [x, y];
+                me.setLayoutMinimumSize(me._size);
+                me.setLayoutSizeHint(me._size);
+                me.setLayoutMaximumSize(me._size);
                 me.setAlignment(0x01 | 0x20);
                 return me.update();
         },

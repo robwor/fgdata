@@ -5,20 +5,6 @@
 
 gui.widgets.Slider = {
   _CLASS: "Slider",
-  ValueStyle: {
-    Fixed: 0,
-    Moving: 1,
-  },
-  ValuePosition: {
-    None: 0,
-    Above: 1,
-    Below: 2,
-  },
-  TicksPosition: {
-    None: 0,
-    Above: 1,
-    Below: 2,
-  },
   new: func(parent, style = nil, cfg = nil)
   {
     style = style or canvas.style;
@@ -31,13 +17,16 @@ gui.widgets.Slider = {
     m._value = cfg.get("value", 50);
     m._stepSize = cfg.get("step-size", 1);
     m._pageSize = cfg.get("page-size", 10);
-    m._tickStep = cfg.get("tick-step", math.ceil((m._maxValue - m._minValue) / 20));
+    m._tickStep = cfg.get("tick-step", m._pageSize);
 
-    m._ticksPosition = cfg.get("ticks-position", m.TicksPosition.None);
-    m._valueDisplayStyle = cfg.get("value-style", m.ValueStyle.Moving);
-    m._valueDisplayPosition = cfg.get("value-position", m.ValuePosition.None);
+    m._showValue = cfg.get("show-value", 1);
+    m._showTicks = cfg.get("show-ticks", 1);
 
     m._setView(style.createWidget(parent, cfg.get("type", "slider"), cfg));
+    m.setValue(m._value);
+    
+    # not sure why we need this here again since we already call _onStateChange in setValue, but the slider doesnt display correctly without this until you click on it.
+    m._onStateChange();
     m._view._updateLayoutSizes(m);
 
     return m;
@@ -49,29 +38,29 @@ gui.widgets.Slider = {
       return me;
     }
     value = math.clamp(val, me._minValue, me._maxValue);
+    if (value == me._value) {
+      return me;
+    }
+    me._value = value;
+    me._trigger("value-changed", {"value": value});
     if (me._view != nil) {
       me._view.setNormValue(me, me._normValue());
     }
-    if (me._value != value) {
-      me._value = value;
-      me._trigger("value-changed", {"value": value});
-    }
+    me._onStateChange();
+
     return me;
   },
 
-  setValuePosition: func(pos) {
-    me._valueDisplayPosition = pos;
+  setShowValue: func(show) {
+    me._showValue = show;
     me._view._updateLayoutSizes(me);
+    return me;
   },
 
-  setValueStyle: func(style) {
-    me._valueDisplayStyle = style;
+  setShowTicks: func(show) {
+    me._showTicks = show;
     me._view._updateLayoutSizes(me);
-  },
-
-  setTicksPosition: func(pos) {
-    me._ticksPosition = pos;
-    me._view._updateLayoutSizes(me);
+    return me;
   },
 
 # protected:
@@ -107,24 +96,24 @@ gui.widgets.Slider = {
     view._root.addEventListener("keydown", func(e) {
       var value = me._value;
       if (contains([
-        keyboard.FunctionKeys.Left, keyboard.FunctionKeys.KP_Left,
-        keyboard.FunctionKeys.Down, keyboard.FunctionKeys.KP_Down,
-        keyboard.PrintableKeys.Minus, keyboard.FunctionKeys.KP_Subtract,
+        FunctionKeys.Left, FunctionKeys.KP_Left,
+        FunctionKeys.Down, FunctionKeys.KP_Down,
+        PrintableKeys.Minus, FunctionKeys.KP_Subtract,
       ], e.keyCode)) {
         value -= me._stepSize;
       } elsif (contains([
-        keyboard.FunctionKeys.Right, keyboard.FunctionKeys.KP_Right,
-        keyboard.FunctionKeys.Up, keyboard.FunctionKeys.KP_Up,
-        keyboard.PrintableKeys.Plus, keyboard.FunctionKeys.KP_Add,
+        FunctionKeys.Right, FunctionKeys.KP_Right,
+        FunctionKeys.Up, FunctionKeys.KP_Up,
+        PrintableKeys.Plus, FunctionKeys.KP_Add,
       ], e.keyCode)) {
         value += me._stepSize;
-      } elsif (contains([keyboard.FunctionKeys.Page_Down, keyboard.FunctionKeys.KP_Page_Down], e.keyCode)) {
+      } elsif (contains([FunctionKeys.Page_Down, FunctionKeys.KP_Page_Down], e.keyCode)) {
         value -= me._pageSize;
-      } elsif (contains([keyboard.FunctionKeys.Page_Up, keyboard.FunctionKeys.KP_Page_Up], e.keyCode)) {
+      } elsif (contains([FunctionKeys.Page_Up, FunctionKeys.KP_Page_Up], e.keyCode)) {
         value += me._pageSize;
-      } elsif (contains([keyboard.FunctionKeys.Home, keyboard.FunctionKeys.KP_Home], e.keyCode)) {
+      } elsif (contains([FunctionKeys.Home, FunctionKeys.KP_Home], e.keyCode)) {
         value = me._minValue;
-      } elsif (contains([keyboard.FunctionKeys.End, keyboard.FunctionKeys.KP_End], e.keyCode)) {
+      } elsif (contains([FunctionKeys.End, FunctionKeys.KP_End], e.keyCode)) {
         value = me._maxValue;
       }
       me.setValue(value);
@@ -137,8 +126,9 @@ gui.widgets.Slider = {
       return;
     }
     var vr =  me._view._root;
-    var viewPosX = vr.canvasToLocal([event.clientX, event.clientY])[0];
-    var width = me._size[0];
+    var padding = me._view._style.getFont("slider").size * me._view._style.getSize("slider", "padding");
+    var viewPosX = vr.canvasToLocal([event.clientX, event.clientY])[0] - padding - me._view._thumbSize[0] / 2;
+    var width = me._size[0] - padding * 2 - me._view._thumbSize[0];
 
     if (viewPosX < 0) {
       me.setValue(me._minValue);

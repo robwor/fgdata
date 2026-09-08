@@ -273,7 +273,7 @@ gui.Menu = {
         addItem: func(item) {
                 item._setParentMenu(me);
                 me._layout.addItem(item);
-                me.setSize(math.max(me._layout.minimumSize()[0], 64), math.max(me._layout.minimumSize()[1], 24));
+                me.setSize(me._layout.minimumSize()[0], me._layout.minimumSize()[1]);
                 return me;
         },
 

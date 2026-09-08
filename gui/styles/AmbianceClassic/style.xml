@@ -351,7 +351,7 @@
 		</dial_knob_bg_focused>
 
 		<dial_knob_bg_hovered>
-			<red   type="float">0.966</red>
+			<red   type="float">0.966</red>var def = type;
 			<green type="float">0.962</green>
 			<blue  type="float">0.988</blue>
 		</dial_knob_bg_hovered>
@@ -415,6 +415,29 @@
 			<factor type="double">3.0</factor>
 		</text-inset>
 		<list-item-height type="int">24</list-item-height>
+
+		<!-- Padding is relative to the font size - thus this is a multiplier, not a size in pixels ! -->
+		<padding-norm>0.4</padding-norm>
+		<icon>14</icon>
+		<combo-box-icon>10</combo-box-icon>
+		<tab-close-button-icon>11</tab-close-button-icon>
+		<text-cursor-width>1</text-cursor-width>
+
+		<slider-ticks-width>1</slider-ticks-width>
+		<slider-thumb-value-margin>8</slider-thumb-value-margin>
+		<slider-fill-ticks-margin>3</slider-fill-ticks-margin>
+		<slider-ticks-length>10</slider-ticks-length>
+		<dial-border-handle-margin>8</dial-border-handle-margin>
+		<dial-value-handle-margin>5</dial-value-handle-margin>
+		<dial-center-handle-margin>2</dial-center-handle-margin>
+		<dial-knob-ticks-margin>2</dial-knob-ticks-margin>
+		<dial-ticks-length>10</dial-ticks-length>
+		<dial-knob-border-width>1</dial-knob-border-width>
+		<dial-nowrap-margin-deg>30</dial-nowrap-margin-deg>
+		<tab-button-selected-indicator-thickness>4</tab-button-selected-indicator-thickness>
+		<tab-close-button-cross-thickness>2</tab-close-button-cross-thickness>
+		<rule-thickness>2</rule-thickness>
+		<rule-label-offset>20</rule-label-offset>
 	</sizes>
 
 	<fonts>

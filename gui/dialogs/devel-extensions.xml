@@ -253,44 +253,14 @@
                 <script>globals.widgets_factory_dialog_instance = canvas.WidgetsFactoryDialog.new();</script>
             </binding>
         </button>
-        <button>
+         <button>
             <row>0</row>
             <col>2</col>
-            <halign>fill</halign>
-            <legend>Canvas property tree browser</legend>
-            <binding>
-                <command>nasal</command>
-                <script>globals.propertyTreeBrowserInstance = canvas.PropertyTreeBrowser.new();</script>
-            </binding>
-        </button>
-        <button>
-            <row>1</row>
-            <col>0</col>
-            <halign>fill</halign>
-            <legend>Canvas font viewer</legend>
-            <binding>
-                <command>nasal</command>
-               <script>globals.fontViewerInstance = canvas.FontViewer.new();</script>
-            </binding>
-        </button>
-        <button>
-            <row>1</row>
-            <col>1</col>
             <halign>fill</halign>
             <legend>Reload Nasal canvas module</legend>
             <binding>
                 <command>nasal-reload</command>
                 <module>canvas</module>
-            </binding>
-        </button>
-        <button>
-            <row>1</row>
-            <col>2</col>
-            <halign>fill</halign>
-            <legend>Pango Text Test</legend>
-            <binding>
-                <command>nasal</command>
-                <script>globals.TestPangoText.new()</script>
             </binding>
         </button>
     </group>

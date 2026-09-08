@@ -267,33 +267,3 @@ var MainWindow = {
 
 setlistener("/sim/startup/xsize", MainWindow._callSizeChangedCallbacks, 1);
 setlistener("/sim/startup/ysize", MainWindow._callSizeChangedCallbacks, 1);
-
-var TestPangoText = {
-    new: func()
-    {
-        me.window = canvas.Window.new([1000, 700], "dialog")
-                        .set("resize", 1)
-						.setTitle("Pango text test");
-
-        var cv = me.window.getCanvas(1);
-        cv.setColorBackground(canvas.style.getColor("bg_color"));
-        me.root = cv.createGroup();
-        me.text = me.root.createChild("richtext", "text")
-                        .setMarkup("<s>dgPQ&amp;</s>")
-                        .setAlignment("left-top")
-                        .setFont(family: "Liberation Sans Bold", size: 140)
-                        .setForegroundColor(1, 1, 0)
-                        .setBackgroundColor(1, 0, 1)
-                        .setLineColor(0, 1, 0)
-                        .setPadding(20)
-                        .show()
-                        .setTranslation(10, 30);
-        debug.dump(me.text.getTightBoundingBox());
-        me.text.addEventListener("click", func {
-            debug.dump(me.text.getTightBoundingBox());
-        });
-
-
-    return me;
-  }
-};

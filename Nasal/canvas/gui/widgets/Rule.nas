@@ -15,16 +15,12 @@ gui.widgets.HorizontalRule = {
     m._focus_policy = m.NoFocus;
     m._setView( style.createWidget(parent, "rule", m._cfg) );
 
-# should ask Style the rule height, not hard-code 1px
-    m.setLayoutMinimumSize([16, 2]);
-    m.setLayoutSizeHint([100, 2]); # expand to fill
-    m.setLayoutMaximumSize([m._MAX_SIZE, 2]);
-
     m.setText(m._cfg.get("text", ""));
     return m;
   },
   setText: func(text)
   {
+    me._text = text;
     me._view.setText(me, text);
     return me;
   }
@@ -41,16 +37,12 @@ gui.widgets.VerticalRule = {
     m._focus_policy = m.NoFocus;
     m._setView( style.createWidget(parent, "rule", m._cfg) );
 
-# should ask Style the rule height, not hard-code 1px
-    m.setLayoutMinimumSize([2, 16]);
-    m.setLayoutSizeHint([2, 100]); # expand to fill
-    m.setLayoutMaximumSize([2, m._MAX_SIZE]);
-
     m.setText(m._cfg.get("text", ""));
     return m;
   },
   setText: func(text)
   {
+    me._text = text;
     me._view.setText(me, text);
     return me;
   }

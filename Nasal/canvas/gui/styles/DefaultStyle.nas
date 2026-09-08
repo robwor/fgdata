@@ -57,7 +57,7 @@ DefaultStyle.widgets.button = {
             .set("slice", "10 12"); #"7")
     me._label = me._root.createChild("richtext")
             .setFont(me._style.getFont("button"))
-            .setAlignment("center-baseline");
+            .setAlignment("center-center");
     if (cfg.get("flat")) {
       me._border.hide();
       me._bg.hide();
@@ -65,17 +65,20 @@ DefaultStyle.widgets.button = {
   },
   setSize: func(model, w, h)
   {
-    me._bg.reset().rect(3, 3, w - 6, h - 6, {"border-radius": 5});
+    me._bg.reset().rect(0, 0, w, h, {"border-radius": 5});
     me._border.setSize(w, h);
   },
   setText: func(model, text)
   {
     me._label.setText(text);
 
-    var min_width = text ? math.max(80, me._label.width() + 16) : 28;
-    model.setLayoutMinimumSize([min_width, 28]);
-    model.setLayoutSizeHint([min_width, 28]);
-    model.setLayoutMaximumSize([1024, 28]);
+    var fontSize = me._style.getFont("button").size;
+    var padding = me._style.getPadding("button");
+    var height =  fontSize + padding * 2;
+    var min_width = text ? me._label.width() + padding * 2: height;
+    model.setLayoutMinimumSize([min_width, height]);
+    model.setLayoutSizeHint([min_width, height]);
+    model.setLayoutMaximumSize([MAX_SIZE, height]);
 
     return me;
   },
@@ -109,10 +112,10 @@ DefaultStyle.widgets.button = {
     if( model._down )
     {
       file ~= "-active";
-      me._label.setTranslation(w / 2 + 1, h / 2 + 6);
+      me._label.setTranslation(w / 2 + 1, h / 2 + 1);
     }
     else
-      me._label.setTranslation(w / 2, h / 2 + 5);
+      me._label.setTranslation(w / 2, h / 2);
 
     if( model._enabled )
     {
@@ -159,11 +162,11 @@ DefaultStyle.widgets["window-button"] = {
 DefaultStyle.widgets.checkbox = {
   new: func(parent, cfg)
   {
-    me._label_position = cfg.get("label-position", "right");
     me._root = parent.createChild("group", "checkbox");
+    var iconSize = me._style.getSize("checkbox", "icon");
     me._icon =
       me._root.createChild("image", "checkbox-icon")
-              .setSize(18, 18);
+              .setSize(iconSize, iconSize);
     me._label =
       me._root.createChild("richtext")
               .setFont(me._style.getFont("checkbox"))
@@ -171,13 +174,11 @@ DefaultStyle.widgets.checkbox = {
   },
   setSize: func(model, w, h)
   {
-    if (me._label_position == "left") {
-      me._label.setTranslation(3, int((h / 2) + 1));
-      me._icon.setTranslation(w - 24, int((h - 18) / 2));
-    } else {
-      me._icon.setTranslation(3, int((h - 18) / 2));
-      me._label.setTranslation(24, int(h / 2) + 1);
-    }
+    var iconSize = me._style.getSize("checkbox", "icon");
+    var fontSize = me._style.getFont("checkbox").size;
+    var padding = me._style.getPadding("checkbox");
+    me._icon.setTranslation(padding, (h - iconSize) / 2);
+    me._label.setTranslation(padding + iconSize + padding, int(h / 2));
 
     return me;
   },
@@ -185,10 +186,14 @@ DefaultStyle.widgets.checkbox = {
   {
     me._label.setText(text);
 
-    var min_width = me._label.width() + 3 + 28;
-    model.setLayoutMinimumSize([min_width, 28]);
-    model.setLayoutSizeHint([min_width, 28]);
-    model.setLayoutMaximumSize([1024, 28]);
+    var iconSize = me._style.getSize("checkbox", "icon");
+    var fontSize = me._style.getFont("checkbox").size;
+    var padding = me._style.getPadding("checkbox");
+    var height = math.max(fontSize, iconSize) + padding * 2;
+    var min_width = text ? padding + iconSize + padding + me._label.width() + padding: height;
+    model.setLayoutMinimumSize([min_width, height]);
+    model.setLayoutSizeHint([min_width, height]);
+    model.setLayoutMaximumSize([MAX_SIZE, height]);
 
     return me;
   },
@@ -259,36 +264,44 @@ DefaultStyle.widgets.switch = {
         },
 };
 
-# A checkbox
+# A radio button
 DefaultStyle.widgets["radio-button"] = {
   new: func(parent, cfg) {
     me._root = parent.createChild("group", "radio-button");
     me._icon = me._root.createChild("group", "radio-button-icon");
+    var iconSize = me._style.getSize("radio-button", "icon");
     me._icon_background = me._icon.createChild("path", "radio-button-icon-border")
-            .circle(8.5, 9, 9);
-    me._icon_selected_indicator = me._icon.createChild("path", "radio-button-icon-selected-indicator")
-            .circle(6, 9, 9)
-            .set("stroke-width", 5);
+            .circle(iconSize / 2);
     me._icon_border = me._icon.createChild("path", "radio-button-icon-border")
-            .circle(8, 9, 9)
+            .circle(iconSize / 2 * 0.9)
             .set("stroke-width", 1);
+    me._icon_selected_indicator = me._icon.createChild("path", "radio-button-icon-selected-indicator")
+            .circle(iconSize / 2 * 0.7)
+            .set("stroke-width", 5);
     me._label = me._root.createChild("richtext")
             .setFont(me._style.getFont("radio-button"))
             .setAlignment("left-center");
   },
   setSize: func(model, w, h) {
-    me._icon.setTranslation(3, int((h - 18) / 2));
-    me._label.setTranslation(24, int(h / 2) + 1);
+    var iconSize = me._style.getSize("radio-button", "icon");
+    var fontSize = me._style.getFont("radio-button").size;
+    var padding = me._style.getPadding("radio-button");
+    me._icon.setTranslation(padding + iconSize / 2, padding + int(h / 2));
+    me._label.setTranslation(padding + iconSize + padding, padding + int(h / 2));
 
     return me;
   },
   setText: func(model, text) {
     me._label.setText(text);
 
-    var min_width = 3 + 18 + 3 + (text ? me._label.width() : 0);
-    model.setLayoutMinimumSize([min_width, 28]);
-    model.setLayoutSizeHint([min_width, 28]);
-    model.setLayoutMaximumSize([MAX_SIZE, 28]);
+    var iconSize = me._style.getSize("radio-button", "icon");
+    var fontSize = me._style.getFont("radio-button").size;
+    var padding = me._style.getPadding("radio-button");
+    var height = math.max(fontSize, iconSize) + padding * 2;
+    var min_width = padding + iconSize + padding + (text ? me._label.width() : 0) + padding;
+    model.setLayoutMinimumSize([min_width, height]);
+    model.setLayoutSizeHint([min_width, height]);
+    model.setLayoutMaximumSize([MAX_SIZE, height]);
 
     return me;
   },
@@ -334,25 +347,28 @@ DefaultStyle.widgets.label = {
             .setVisible(0);
     me._text = me._root.createChild("richtext", "text")
             .setFont(me._style.getFont("label"))
-            .setAlignment("left-baseline")
+            .setAlignment("left-center")
             .setVisible(0);
   },
   setSize: func(model, w, h)
   {
+    var fontSize = me._style.getFont("label").size;
+    var padding = me._style.getPadding("label");
+
     me._bg.reset().rect(0, 0, w, h);
     me._img.set("size[0]", w)
              .set("size[1]", h);
     if (model._text_align == "left") {
-      me._text.setAlignment("left-baseline");
-      me._text.setTranslation(2, 2 + h / 2);
+      me._text.setAlignment("left-center");
+      me._text.setTranslation(padding, h / 2);
     } elsif (model._text_align == "center") {
-      me._text.setAlignment("center-baseline");
-      me._text.setTranslation(2 + w / 2, 2 + h / 2)
+      me._text.setAlignment("center-center");
+      me._text.setTranslation(w / 2, h / 2)
     } elsif (model._text_align == "right") {
-      me._text.setAlignment("right-baseline");
-      me._text.setTranslation(w - 2, 2 + h / 2);
+      me._text.setAlignment("right-center");
+      me._text.setTranslation(w - padding, h / 2);
     }
-    me._text.setMaxWidth(model._cfg.get("wordWrap", 0) ? (w - 4) : -1);
+    me._text.setMaxWidth(model._cfg.get("wordWrap", 0) ? (w - padding * 2) : -1);
     return me;
   },
   setText: func(model, text)
@@ -368,30 +384,29 @@ DefaultStyle.widgets.label = {
 
     var hfw_func = nil;
 
+    var fontSize = me._style.getFont("label").size;
+    var padding = me._style.getPadding("label");
+    var height = fontSize + padding * 2;
     # this implies no clipping of long strings, 
     # which breaks BoxLayout when we overflow.
     # might need to consider an different algorithm in BoxLayout 
     # when min-width is too big
-    var min_width = me._text.width() + 4;
+    var min_width = me._text.width() + padding * 2;
     var width_hint = min_width;
 
     if (model._cfg.get("wordWrap", 0)) {
       var m = me;
       hfw_func = func(w) m.heightForWidth(w);
-      min_width = math.min(32, min_width);
 
       # prefer approximately quadratic text blocks
       if( width_hint > 24 )
         width_hint = int(math.sqrt(width_hint * 24));
-
-        model.setLayoutMaximumSize([MAX_SIZE, width_hint]);
-    } else {
-        model.setLayoutMaximumSize([MAX_SIZE, 28]);
     }
 
     model.setHeightForWidthFunc(hfw_func);
-    model.setLayoutMinimumSize([min_width, 28]);
-    model.setLayoutSizeHint([width_hint, 28]);
+    model.setLayoutMinimumSize([min_width, height]);
+    model.setLayoutSizeHint([width_hint, height]);
+    model.setLayoutMaximumSize([MAX_SIZE, model._cfg.get("wordWrap", 0) ? MAX_SIZE : height]);
 
     return me.update(model);
   },
@@ -407,7 +422,7 @@ DefaultStyle.widgets.label = {
     me._img.set("src", img);
     return me;
   },
-  # @description Set or clear the background color of the label
+  # @description Set or clear the background color == 0 ) of the label
   # @param bg scalar CSS color or 'none'
   setBackground: func(model, bg)
   {
@@ -439,7 +454,12 @@ DefaultStyle.widgets.label = {
       return -1;
     }
 
-    return math.max(14, me._text.heightForWidth(w - 4));
+    var fontSize = me._style.getFont("label").size;
+    var padding = me._style.getPadding("label");
+    if (me._text.lineCount() == 1) {
+      return fontSize + 2 * padding;
+    }
+    return me._text.heightForWidth(w - padding * 2) + padding * 2;
   },
   update: func(model)
   {
@@ -454,25 +474,21 @@ DefaultStyle.widgets.label = {
 DefaultStyle.widgets["line-edit"] = {
   new: func(parent, cfg)
   {
-    me._hpadding = cfg.get("hpadding", 8);
-
     me._root = parent.createChild("group", "line-edit");
     me._border = me._root.createChild("image", "border")
             .set("slice", "10 12"); #"7")
     me._placeholder = me._root.createChild("richtext", "placeholder")
             .setFont(me._style.getFont("line-edit-placeholder", me._style.getFont("line-edit")))
-            .setAlignment("left-baseline")
+            .setAlignment("left-center")
             .set("clip-frame", Element.PARENT);
     me._text = me._root.createChild("richtext", "input")
             .setFont(me._style.getFont("line-edit-text", me._style.getFont("line-edit")))
-            .setAlignment("left-baseline")
+            .setAlignment("left-center")
             .set("clip-frame", Element.PARENT);
 
     me._cursor = me._root.createChild("path", "cursor")
             .set("stroke", "#333")
-            .set("stroke-width", 1)
-            .moveTo(me._hpadding, 5)
-            .vert(10);
+            .set("stroke-width", me._style.getSize("line-edit", "text-cursor-width"));
     me._hscroll = 0;
     me._cursor_blink = 1;
     me._cursor_visible = 0;
@@ -485,16 +501,22 @@ DefaultStyle.widgets["line-edit"] = {
   },
   setSize: func(model, w, h)
   {
+    var fontSize = me._style.getFont("line-edit-text", me._style.getFont("line-edit")).size;
+    var padding = me._style.getPadding("line-edit");
+
     me._border.setSize(w, h);
     me._placeholder.set(
       "clip",
-      "rect(0, " ~ (w - me._hpadding) ~ ", " ~ h ~ ", " ~ me._hpadding ~ ")"
+      "rect(0, " ~ (w - padding) ~ ", " ~ h ~ ", " ~ padding ~ ")"
     );
     me._text.set(
       "clip",
-      "rect(0, " ~ (w - me._hpadding) ~ ", " ~ h ~ ", " ~ me._hpadding ~ ")"
+      "rect(0, " ~ (w - padding) ~ ", " ~ h ~ ", " ~ padding ~ ")"
     );
-    me._cursor.setDouble("coord[2]", h - 10);
+    me._cursor.reset()
+            .moveTo(padding, 0)
+            .vert(fontSize);
+    me._cursor.setDouble("coord[1]", padding);
 
     return me.update(model);
   },
@@ -510,12 +532,17 @@ DefaultStyle.widgets["line-edit"] = {
     model._onStateChange();
   },
   _updateLayoutSizes: func(model) {
-    model.setLayoutMinimumSize([100, 28]);
-    model.setLayoutSizeHint([200, 28]);
-    model.setLayoutMaximumSize([MAX_SIZE, 28]);
+    var fontSize = me._style.getFont("line-edit-text", me._style.getFont("line-edit")).size;
+    var padding = me._style.getPadding("line-edit");
+    var height = fontSize + padding * 2;
+    model.setLayoutMinimumSize([fontSize * 3 + padding * 2, height]);
+    model.setLayoutSizeHint([math.max(me._text.width(), me._placeholder.width()) + padding * 2, height]);
+    model.setLayoutMaximumSize([MAX_SIZE, height]);
   },
   update: func(model)
   {
+    var fontSize = me._style.getFont("line-edit-text", me._style.getFont("line-edit")).size;
+    var padding = me._style.getPadding("line-edit");
     var backdrop = !model._windowFocus();
     var file = me._style._dir_widgets ~ "/";
 
@@ -540,7 +567,7 @@ DefaultStyle.widgets["line-edit"] = {
 
     me._placeholder.setVisible(model._text or me._cursor_visible ? 0 : 1);
 
-    var width = model._size[0] - 2 * me._hpadding;
+    var width = model._size[0] - 2 * padding;
     var cursor_pos = me._text.cursorRect()[0];
     var text_width = me._text.width();
 
@@ -557,13 +584,13 @@ DefaultStyle.widgets["line-edit"] = {
       # does not fit, limit scroll to align with right side
       me._hscroll = width - text_width;
 
-    var text_pos = me._hscroll + me._hpadding;
+    var text_pos = me._hscroll + padding;
 
     me._placeholder
-      .setTranslation(text_pos, model._size[1] / 2 + 5)
+      .setTranslation(text_pos, model._size[1] / 2)
       .update();
     me._text
-      .setTranslation(text_pos, model._size[1] / 2 + 5)
+      .setTranslation(text_pos, model._size[1] / 2)
       .update();
     me._cursor
       .setDouble("coord[0]", text_pos + cursor_pos)
@@ -641,7 +668,6 @@ DefaultStyle.widgets["scroll-area"] = {
 };
 
 DefaultStyle.widgets["tab-widget"] = {
-	tabBarHeight: 36,
 	new: func(parent, cfg) {
 		me._root = parent.createChild("group", "tab-widget");
 		me.bg = me._root.createChild("path", "background")
@@ -652,13 +678,13 @@ DefaultStyle.widgets["tab-widget"] = {
 	
 	update: func(model) {
 		me.bg.set("fill", me._style.getColor("bg_color"));
+		me.content.setTranslation(0, model._tabBar.minimumSize()[1]);
 		me.tabBar.update();
 		me.content.update();
 	},
 	
 	setSize: func(model, w, h) {
 		me.bg.reset().rect(0, w, h, 0);
-		me.content.setTranslation(0, me.tabBarHeight);
 	},
 };
 
@@ -671,25 +697,45 @@ DefaultStyle.widgets["tab-widget-tab-button"] = {
 						.set("stroke", me._style.getColor("tab_widget_tab_button_border"))
 						.set("stroke-width", 1);
 		me._selected_indicator = me._root.createChild("path")
-						.set("stroke-width", 4);
+						.set("stroke-width", me._style.getSize("tab-button-selected-indicator-thickness"));
 		me._label = me._root.createChild("richtext")
 						.setFont(me._style.getFont("tab-widget-tab-button"))
-						.setAlignment("center-baseline");
+						.setAlignment("center-center");
 	},
 	
 	setSize: func(model, w, h) {
-		me._bg.reset().rect(3, 0, w - 6, h);
-		me._selected_indicator.reset().moveTo(3, h - 2).horiz(w - 6);
-		me._label.setTranslation((w - 24 - 8) / 2, h / 2 + 5);
-		model._close_button.move(w - 24 - 8, h / 2 - 12);
+    var closeButtonSize = model._close_button._size;
+    var selectedIndicatorThickness = me._style.getSize("tab-button-selected-indicator-thickness");
+    var fontSize = me._style.getFont("tab-widget-tab-button").size;
+    var padding = me._style.getPadding("tab-widget-tab-button");
+ 		me._bg.reset().rect(0, 0, w, h);
+		me._selected_indicator.reset().moveTo(0, h - selectedIndicatorThickness / 2).horiz(w);
+    if (model._tab_closeable) {
+  		me._label.setTranslation((w - closeButtonSize[0] - padding) / 2, h / 2);
+	  	model._close_button.move(w - closeButtonSize[0] - padding, (h - closeButtonSize[1]) / 2);
+    } else {
+      me._label.setTranslation(w / 2, h / 2);
+    }
 	},
 	
 	setText: func(model, text) {
 		me._label.setText(text);
 
-		var min_width = math.max(80, me._label.width() + 12 + (model._tab_closeable ? 24 + 12 : 0));
-		model.setLayoutMinimumSize([min_width, 28]);
-		model.setLayoutSizeHint([min_width, 28]);
+    var closeButtonSize = model._close_button._size;
+    var selectedIndicatorThickness = me._style.getSize("tab-button-selected-indicator-thickness");
+    var fontSize = me._style.getFont("tab-widget-tab-button").size;
+    var padding = me._style.getPadding("tab-widget-tab-button");
+    var height = padding * 2;
+		var min_width = padding + me._label.width() + padding;
+    if (model._tab_closeable) {
+      height += math.max(closeButtonSize[1], fontSize);
+      min_width += closeButtonSize[0] + padding;
+    } else {
+      height += fontSize;
+    }
+		model.setLayoutMinimumSize([min_width, height]);
+		model.setLayoutSizeHint([min_width, height]);
+    model.setLayoutMaximumSize([min_width, height]);
 
 		return me;
 	},
@@ -719,23 +765,32 @@ DefaultStyle.widgets["tab-widget-tab-button"] = {
 	}
 };
 
-DefaultStyle.widgets["tab-button-close-button"] = {
+DefaultStyle.widgets["tab-close-button"] = {
 	new: func(parent, cfg) {
-		me._root = parent.createChild("group", "tab-button-close-button");
+    var iconSize = me._style.getSize("tab-close-button", "icon") / 2;
+    
+		me._root = parent.createChild("group", "tab-close-button");
 		me._bg = me._root.createChild("path", "bg");
 		me._border = me._root.createChild("image", "button")
 						.set("slice", "10 12"); #"7")
 		me._cross = me._root.createChild("path", "button-icon")
-            .moveTo(-6, -6)
-            .lineTo(6, 6)
-            .moveTo(-6, 6)
-            .lineTo(6, -6);
+            .setStrokeLineWidth(me._style.getSize("tab-close-button-cross-thickness"))
+            .moveTo(iconSize, iconSize)
+            .line(-iconSize, -iconSize)
+            .moveTo(iconSize, iconSize)
+            .line(iconSize, -iconSize)
+            .moveTo(iconSize, iconSize)
+            .line(iconSize, iconSize)
+            .moveTo(iconSize, iconSize)
+            .line(-iconSize, iconSize);
 	},
 	setText: func {},
 	setSize: func(model, w, h) {
-		me._bg.reset().rect(3, 3, w - 6, h - 6, {"border-radius": 5});
+    var iconSize = me._style.getSize("tab-close-button", "icon");
+
+		me._bg.reset().rect(0, 0, w, h, {"border-radius": 5});
 		me._border.setSize(w, h);
-		me._cross.setTranslation(w / 2, h / 2);
+		me._cross.setTranslation((w - iconSize) / 2, (h - iconSize) / 2);
 	},
 	update: func(model) {
 		var backdrop = !model._windowFocus();
@@ -777,6 +832,13 @@ DefaultStyle.widgets["tab-button-close-button"] = {
 			file ~= "-hover";
 		}
 		me._border.set("src", file ~ ".png");
+
+    var iconSize = me._style.getSize("tab-close-button", "icon");
+    var padding = me._style.getPadding("tab-close-button");
+    var size = iconSize + padding * 2;
+    model.setLayoutMinimumSize([size, size]);
+    model.setLayoutSizeHint([size, size]);
+    model.setLayoutMaximumSize([size, size]);
 	}
 };
 
@@ -786,50 +848,47 @@ DefaultStyle.widgets.rule = {
   new: func(parent, cfg)
   {
     me._root = parent.createChild("group", "rule");
-    var bgColor = me._style.getColor("fg_color");
-    var shadowColor = me._style.getColor("fg_color_shadow");
 
-    me._bg = me._root.createChild("path")
-						.set("fill", bgColor)
-						.set("stroke", bgColor)
-						.set("stroke-width", 1);
-    me._shadow = me._root.createChild("path")
-						.set("fill", shadowColor)
-						.set("stroke", shadowColor)
-						.set("stroke-width", 1);
+    me._rule = me._root.createChild("path")
+						.set("stroke-width", me._style.getSize("rule-thickness"));
+    me._label = me._root.createChild("richtext", "label")
+            .setFont(me._style.getFont("rule"))
+            .setAlignment("left-center");
 
-    me._isVertical = cfg.get("isVertical");
+    me._isVertical = cfg.get("isVertical", 0);
+    if (me._isVertical) {
+      me._label.setRotation(90);
+    }
   },
   setSize: func(model, w, h)
   {
-    var firstWidth = w;
-    var firstHeight = h;
-    var hh = h * 0.5;
-    
-    if( me['_text'] != nil )
-    {
-      firstHeight = firstWidth = 20; # TODO make this settable in Style.xml
-      
-      # TODO handle eliding for translations?
-      me._text.setTranslation(firstWidth + 3, hh);
-      var maxW = model._cfg.get("maxTextWidth", -1);
-      if (maxW > 0) {
-         me._text.setMaxWidth(maxW);
-      }
-
-      # assume horizontal for now, with a label
-      var bg2Left = maxW > 0 ? maxW : me._text.width() + 22;
-      var bg2Width = w - bg2Left;
-      me._bg2.reset().rect(bg2Left, hh - 1, bg2Width, 2);
-      me._shadow2.reset().moveTo(bg2Left + 1, hh).horiz(bg2Width - 1);
-    }
+    var fontSize = me._style.getFont("rule").size;
+    var padding = me._style.getPadding("rule");
+    var labelOffset = me._style.getSize("rule-label-offset");
+    var labelWidth = me._label.width();
 
     if (me._isVertical ) {
-      me._bg.reset().rect(0, 0, 2, firstHeight);
-      me._shadow.reset().moveTo(1, 1).vert(firstHeight - 1);
+      if (model._text) {
+        me._label.setTranslation(w / 2, h - padding - labelOffset - padding);
+        me._rule.reset().moveTo(w / 2, h - padding)
+                .vert(-labelOffset)
+                .move(-labelWidth - padding * 2)
+                .vertTo(padding);
+      } else {
+        me._rule.reset().moveTo(w / 2, h - padding)
+                .vertTo(padding);
+      }
     } else {
-      me._bg.reset().rect(0, hh - 1, firstWidth, 2);
-      me._shadow.reset().moveTo(1, hh).horiz(firstWidth - 1);
+      if (model._text) {
+        me._label.setTranslation(padding + labelOffset + padding, h / 2);
+        me._rule.reset().moveTo(padding, h / 2)
+                .horiz(labelOffset)
+                .move(labelWidth + padding * 2, 0)
+                .horizTo(w - padding);
+      } else {
+        me._rule.reset().moveTo(padding, h / 2)
+                .horizTo(w - padding);
+      }
     }
 
     return me;
@@ -837,55 +896,43 @@ DefaultStyle.widgets.rule = {
 
   _updateLayout: func(model)
   {
-    var minLayoutSize = 40;
-    var lineWidth = 4;
+    var fontSize = me._style.getFont("rule").size;
+    var lineThickness = me._style.getSize("rule-thickness");
+    var padding = me._style.getPadding("rule");
+    var labelOffset = me._style.getSize("rule-label-offset") + padding;
+    var labelWidth = me._label.width();
 
-    if( me['_text'] != nil ) {
-      minLayoutSize =  me._text.width() + 40;
-      lineWidth = 28; # text height
+    var width = padding + labelOffset + labelWidth + padding;
+    var height = fontSize + padding * 2;
+    if (!model._text) {
+      height = lineThickness + padding * 2;
     }
 
-    if (me._isVertical ) {
-      model.setLayoutMinimumSize([lineWidth, minLayoutSize]);
-      model.setLayoutSizeHint([lineWidth, minLayoutSize]);
-      model.setLayoutMaximumSize([lineWidth, MAX_SIZE]);
+    if (me._isVertical) {
+      model.setLayoutMinimumSize([height, width]);
+      model.setLayoutSizeHint([height, width]);
+      model.setLayoutMaximumSize([height, MAX_SIZE]);
     } else {
-      model.setLayoutMinimumSize([minLayoutSize, lineWidth]);
-      model.setLayoutSizeHint([minLayoutSize, lineWidth]);
-      model.setLayoutMaximumSize([MAX_SIZE, lineWidth]);
+      model.setLayoutMinimumSize([width, height]);
+      model.setLayoutSizeHint([width, height]);
+      model.setLayoutMaximumSize([MAX_SIZE, height]);
     }
   },
 
   setText: func(model, text)
   {
-    if( text == nil or size(text) == 0 )
-    {
-      # force a resize?
-      me._deleteElement('bg2');
-      me._deleteElement('shadow2');
-      return me._deleteElement('text');
+    if (!text) {
+      me._label.hide();
+    } else {
+      me._label.show();
+      me._label.setText(text);
     }
 
-    if (me._isVertical) {
-      logprint(LOG_DEVALERT, "Text label not supported for vertical rules, yet");
-      return;
+    # TODO handle sliding for translations ?
+    var maxW = model._cfg.get("maxTextWidth", -1);
+    if (maxW > 0) {
+      me._label.setMaxWidth(maxW);
     }
-
-    me._createElement("richtext", "richtext")
-      .setFont(me._style.getFont("rule"))
-      .setText(text);
-
-    var bgColor = me._style.getColor("fg_color");
-    var shadowColor = me._style.getColor("fg_color_shadow");
-
-    me._bg2 = me._root.createChild("path")
-            .set("fill", bgColor)
-            .set("stroke", bgColor)
-            .set("stroke-width", 1);
-    me._shadow2 = me._root.createChild("path")
-            .set("fill", shadowColor)
-            .set("stroke", shadowColor)
-            .set("stroke-width", 1);
 
     me._updateLayout(model);
 
@@ -894,14 +941,10 @@ DefaultStyle.widgets.rule = {
 
   update: func(model)
   {
-    me._updateLayout(model);
-
     # different color if disabled?
-    if( me['_text'] != nil )
-    {
-      var color_name = model._windowFocus() ? "fg_color" : "backdrop_fg_color";
-      me._text.setColor(me._style.getColor(color_name));
-    }
+    var color_name = model._windowFocus() ? "fg_color" : "backdrop_fg_color";
+    me._label.setColor(me._style.getColor(color_name));
+    me._rule.setColor(me._style.getColor(color_name));
   },
 };
 
@@ -945,7 +988,7 @@ DefaultStyle.widgets.slider = {
        .set("slice", "2 6");
 
     me._ticks = me._root.createChild("path")
-            .set("stroke-width", me._style.getSize("slider-ticks-width", 1));
+            .set("stroke-width", me._style.getSize("slider-ticks-width"));
 
     me._fillHeight = me._fill.imageSize()[1];
     me._thumb = me._root.createChild("image", "thumb");
@@ -958,19 +1001,19 @@ DefaultStyle.widgets.slider = {
 
   _updateLayoutSizes: func(model) 
   {
-  	me.update(model);
+    var fontSize = me._style.getFont("slider").size;
+    var padding = me._style.getPadding("slider");
 
     # TODO handle vertical sliders in the future
 
-    var h = me._thumb.imageSize()[1] + 6;
-    if (model._valueDisplayPosition != model.ValuePosition.None) {
+    var h = me._thumbSize[1] + padding * 2;
+    if (model._showValue) {
       h += me._style.getFont("slider").size +
-               me._style.getSize("slider-thumb-value-margin", 8);
+               me._style.getSize("slider-thumb-value-margin");
     }
-    if (model._ticksPosition != model.TicksPosition.None and model._valueDisplayPosition != model._ticksPosition) {
-      h += me._style.getSize("slider-fill-ticks-margin", 3) + me._style.getSize("slider-tick-length", 10);
+    if (model._showTicks) {
+      h += me._style.getSize("slider-fill-ticks-margin") + me._style.getSize("slider-ticks-length");
     } 
-    h = math.max(h, 28);
 
     # value of 80 here is based off PUI slider min width in old layout.cxx
     var minSz = [85, h];
@@ -986,24 +1029,23 @@ DefaultStyle.widgets.slider = {
 
   setNormValue: func(model, normValue)
   {
+    var valueFontSize = me._style.getFont("slider").size;
+    var padding = me._style.getPadding("slider");
     var w = model._size[0];
-    var halfThumbWidth =  me._thumbSize[0] * 0.5;
-    var availWidthPos = w - me._thumbSize[0];
-    var thumbX = math.round(availWidthPos * normValue);
+    var halfThumbWidth = me._thumbSize[0] * 0.5;
+    var availWidthPos = w - me._thumbSize[0] - padding * 2;
+    var thumbX = padding + math.round(availWidthPos * normValue);
 
     var valueX = 0;
-    if (model._valueDisplayStyle == model.ValueStyle.Moving) {
-      var startPos = me._value.width() / 2;
+    if (model._showValue) {
+      var startPos = padding + me._value.width() / 2;
       var thumbPos = thumbX + me._thumbSize[0] * 0.5;
-      var endPos = w - (me._value.width() / 2);
+      var endPos = w - startPos;
       valueX = math.clamp(thumbPos, startPos, endPos);
-    } elsif (model._valueDisplayStyle == model.ValueStyle.Fixed) {
-      valueX = w / 2;
     }
     me._value.setTranslation(valueX, me._value.getTranslation()[1]);
     me._thumb.setTranslation(thumbX, me._thumb.getTranslation()[1]);
     me._fill.setSize(thumbX, me._fillHeight);
-    me._fill.setTranslation(halfThumbWidth, me._fill.getTranslation()[1]);
     me._value.setText(model._value);
   },
 
@@ -1047,73 +1089,57 @@ DefaultStyle.widgets.slider = {
     
     var color_name = model._windowFocus() ? "fg_color" : "backdrop_fg_color";
     me._value.setColor(me._style.getColor(color_name));
-    if (model._valueDisplayPosition != model.ValuePosition.None) {
+    if (model._showValue) {
       me._value.show();
     } else {
       me._value.hide();
     }
     
     me._ticks.set("stroke", me._style.getColor("slider_ticks"));
-    if (model._ticksPosition != model.TicksPosition.None) {
+    if (model._showTicks) {
       me._ticks.show();
     } else {
       me._ticks.hide();
     }
 
-  # update the position as well, since other stuff
-  # may have changed
+    # update the position as well, since other stuff
+    # may have changed
     me.setNormValue(model, model._normValue());
   },
 
   setSize: func(model, w, h)
   {
     var valueFontSize = me._style.getFont("slider").size;
-    var thumbValueMargin = me._style.getSize("slider-thumb-value-margin", 8);
-    var fillTicksMargin = me._style.getSize("slider-fill-ticks-margin", 3);
-    var ticksOffset = fillTicksMargin + me._style.getSize("slider-tick-length", 10);
+    var padding = me._style.getPadding("slider");
+    var thumbValueMargin = me._style.getSize("slider-thumb-value-margin");
+    var fillTicksMargin = me._style.getSize("slider-fill-ticks-margin");
+    var ticksOffset = fillTicksMargin + me._style.getSize("slider-ticks-length");
 
-    var thumbY = (h - me._thumbSize[1]) * 0.5;
-    if (model._valueDisplayPosition != model.ValuePosition.None) {
-      thumbY -= (valueFontSize + thumbValueMargin) * 0.5;
-    }
-    if (model._ticksPosition != model.TicksPosition.None and model._ticksPosition != model._valueDisplayPosition) {
-      thumbY -= ticksOffset * 0.5;
-    }
-
+    var thumbY = padding;
     var valueY = thumbY;
-    if (model._valueDisplayPosition == model.ValuePosition.Above) {
+    if (model._showValue) {
       thumbY += valueFontSize + thumbValueMargin;
-    } elsif (model._valueDisplayPosition == model.ValuePosition.Below) {
-      valueY += me._thumbSize[1] + thumbValueMargin;
     }
 
     var fillY = thumbY + (me._thumbSize[1] - me._fillHeight) * 0.5;
 
     var ticksY = fillY;
-    if (model._ticksPosition == model.TicksPosition.Below) {
+    if (model._showTicks) {
       ticksY += me._fillHeight + fillTicksMargin;
-    } elsif (model._ticksPosition == model.TicksPosition.Above) {
-      if (model._valueDisplayPosition == model.ValuePosition.Below) {
-        thumbY += ticksOffset;
-        fillY += ticksOffset;
-        valueY += ticksOffset;
-      } else {
-        ticksY -= ticksOffset;
-      }
     }
 
-    me._bg.setTranslation(me._thumbSize[0] / 2, fillY);
-    me._fill.setTranslation(me._fill.getTranslation()[0], fillY);
-    me._ticks.setTranslation(me._thumbSize[0] / 2, ticksY);
+    me._bg.setTranslation(padding + me._thumbSize[0] / 2, fillY);
+    me._fill.setTranslation(padding + me._thumbSize[0] / 2, fillY);
+    me._ticks.setTranslation(padding + me._thumbSize[0] / 2, ticksY);
     me._thumb.setTranslation(me._thumb.getTranslation()[0], thumbY);
     me._value.setTranslation(me._value.getTranslation()[0], valueY);
-    me._bg.setSize(w - me._thumbSize[0], me._fillHeight);
+    me._bg.setSize(w - me._thumbSize[0] - padding * 2, me._fillHeight);
     me.setNormValue(model, model._normValue());
     me._drawTicks(model);
   },
 
   _drawTicks: func(model) {
-    if (model._ticksPosition == model.TicksPosition.None) {
+    if (!model._showTicks) {
       return;
     }
     me._ticks.reset();
@@ -1130,7 +1156,7 @@ DefaultStyle.widgets.slider = {
     }
     for (var i = 1; i <= numTicks; i += 1) {
       me._ticks.moveTo(i * pixelsPerUnit * model._tickStep, 0)
-                       .vert(me._style.getSize("slider-tick-length", 8));
+                       .vert(me._style.getSize("slider-ticks-length"));
     }
   },
 };
@@ -1155,32 +1181,32 @@ DefaultStyle.widgets.dial = {
     var borderHandleMargin = math.clamp(
       math.min(model._size[0], model._size[1]) * 0.0625,
       2,
-      me._style.getSize("dial-border-handle-margin", 8),
+      me._style.getSize("dial-border-handle-margin"),
     );
     var valueSize = [0, 0];
-    var valueHandleMargin = me._style.getSize("dial-value-handle-margin", 5);
+    var valueHandleMargin = me._style.getSize("dial-value-handle-margin");
     if (model._showValue) {
       valueSize = [
         me._maxValueWidth + valueHandleMargin * 2,
         me._style.getFont("dial").size + valueHandleMargin * 2
       ];
     } else {
-      valueSize = me._style.getSize("dial-center-handle-margin", 2) * 2;
+      valueSize = me._style.getSize("dial-center-handle-margin") * 2;
       valueSize = [valueSize, valueSize];
     }
     var minW = borderHandleMargin * 2 + valueSize[0] + handleSize * 2;
     var minH = borderHandleMargin * 2 + valueSize[1] + handleSize * 2;
-    var length = math.max(minW, minH, 28);
+    var length = math.max(minW, minH);
     if (model._showTicks) {
-      length += me._style.getSize("dial-knob-ticks-margin", 2) + me._style.getSize("dial-ticks-length", 10);
+      length += me._style.getSize("dial-knob-ticks-margin") + me._style.getSize("dial-ticks-length");
     }
     model.setLayoutMinimumSize([length, length]);
   },
 
   setSize: func(model, length) {
-    var knobTicksMargin = me._style.getSize("dial-knob-ticks-margin", 2);
-    var ticksLength = me._style.getSize("dial-ticks-length", 10);
-    var knobRadius = (length - me._style.getSize("dial-knob-border-width", 1)) / 2;
+    var knobTicksMargin = me._style.getSize("dial-knob-ticks-margin");
+    var ticksLength = me._style.getSize("dial-ticks-length");
+    var knobRadius = (length - me._style.getSize("dial-knob-border-width")) / 2;
     var halfLength = length / 2;
     if (model._showTicks) {
       knobRadius -= knobTicksMargin + ticksLength;
@@ -1193,7 +1219,7 @@ DefaultStyle.widgets.dial = {
     );
     var handleOffset = [
       halfLength - me._handle.imageSize()[0] / 2,
-      math.clamp(knobRadius * 0.125, 2, me._style.getSize("dial-border-handle-margin", 8))
+      math.clamp(knobRadius * 0.125, 2, me._style.getSize("dial-border-handle-margin"))
     ];
     if (model._showTicks) {
       handleOffset[1] += knobTicksMargin + ticksLength;
@@ -1204,7 +1230,7 @@ DefaultStyle.widgets.dial = {
       halfLength - handleOffset[1]
     );
     var degreesRange = 360;
-    var nowrapMargin = me._style.getSize("dial-nowrap-margin-deg", 30); 
+    var nowrapMargin = me._style.getSize("dial-nowrap-margin-deg"); 
     var offset = 0;
     if (!model._wraps) {
       degreesRange -= nowrapMargin;
@@ -1217,12 +1243,12 @@ DefaultStyle.widgets.dial = {
   _drawTicks: func(model) {
     var length = math.min(model._size[0], model._size[1]);
     var halfLength = length / 2;
-    var knobTicksMargin = me._style.getSize("dial-knob-ticks-margin", 2);
-    var ticksLength = me._style.getSize("dial-ticks-length", 10);
-    var knobRadius = (length - me._style.getSize("dial-knob-border-width", 1)) / 2 - knobTicksMargin - ticksLength;
+    var knobTicksMargin = me._style.getSize("dial-knob-ticks-margin");
+    var ticksLength = me._style.getSize("dial-ticks-length");
+    var knobRadius = (length - me._style.getSize("dial-knob-border-width")) / 2 - knobTicksMargin - ticksLength;
     
     var degreesRange = 360;
-    var nowrapMargin = me._style.getSize("dial-nowrap-margin-deg", 30);
+    var nowrapMargin = me._style.getSize("dial-nowrap-margin-deg");
     var offset = 0;
     if (!model._wraps) {
       degreesRange -= nowrapMargin;
@@ -1268,7 +1294,7 @@ DefaultStyle.widgets.dial = {
 
   setValue: func(model, value) {
     var degreesRange = 360;
-    var nowrapMargin = me._style.getSize("dial-nowrap-margin-deg", 30); 
+    var nowrapMargin = me._style.getSize("dial-nowrap-margin-deg"); 
     var offset = 0;
     if (!model._wraps) {
       degreesRange -= nowrapMargin;
@@ -1338,48 +1364,61 @@ DefaultStyle.widgets["menu-item"] = {
 		me._root = parent.createChild("group", "menu-item");
 		me._bg = me._root.createChild("path");
 		
-		me._icon = me._root.createChild("image")
-						.set("slice", "18 18");
+		me._icon = me._root.createChild("image");
 		
-		me._label = me._root.createChild("richtext")
-						.setFont(me._style.getFont("menu-item-label"))
-						.setAlignment("left-baseline");
+    me._label = me._root.createChild("richtext")
+						.setFont(me._style.getFont("menu-item"))
+						.setAlignment("left-center");
 		
 		me._shortcut = me._root.createChild("richtext")
 						.setFont(me._style.getFont("menu-item-shortcut"))
-						.setAlignment("right-baseline");
+						.setAlignment("right-center");
 		
+    var iconSize = me._style.getSize("menu-item-submenu", "icon");
 		me._submenu_indicator = me._root.createChild("path")
-						.vert(12).line(6, -7).close();
+						.moveTo(iconSize * 0.25, 0)
+            .line(iconSize * 0.75, iconSize * 0.5)
+            .line(iconSize * 0.25, iconSize);
 	},
 	
 	setSize: func(model, w, h) {
 		me._bg.reset().rect(0, 0, w, h);
-		var offset = 0;
+    # allow different font for the shortcut (e.g. bold) but inherit from the menu-item font if defined instead of the global default font directly
+    var fontSize = math.max(me._style.getFont("menu-item").size, me._style.getFont("menu-item-shortcut", me._style.getFont("menu-item")).size);
+    var padding = me._style.getPadding("menu-item");
+    var iconSize = me._style.getSize("menu-item", "icon");
+    var submenuIconSize = me._style.getSize("menu-item-submenu", "icon");
+		var offset = padding;
 		if (!model._is_menubar_item) {
-			offset += 5 + 18;
+			offset += iconSize + padding;
 		}
-		me._icon.setTranslation(5, int((h - 12) / 2));
-		me._label.setTranslation(offset + 5, int(h / 2) + 4);
-		me._shortcut.setTranslation(w - 5, int(h / 2) + 4);
-		me._submenu_indicator.setTranslation(w - 12, int((h - 12) / 2));
+		me._icon.setTranslation(padding, int((h - iconSize) / 2));
+		me._label.setTranslation(offset, int(h / 2));
+		me._shortcut.setTranslation(w - padding - submenuIconSize - padding, int(h / 2));
+		me._submenu_indicator.setTranslation(w - padding, int((h - 12) / 2));
 		return me;
 	},
 	
 	_updateLayoutSizes: func(model) {
-		var min_width = 5 + me._label.width() + 5;
+    # allow different font for the shortcut (e.g. bold) but inherit from the menu-item font if defined instead of the global default font directly
+    var fontSize = math.max(me._style.getFont("menu-item").size, me._style.getFont("menu-item-shortcut", me._style.getFont("menu-item")).size);
+    var padding = me._style.getPadding("menu-item");
+    var iconSize = me._style.getSize("menu-item", "icon");
+    var submenuIconSize = me._style.getSize("menu-item-submenu", "icon");
+    var height = math.max(fontSize, iconSize, submenuIconSize) + padding * 2;
+
+		var min_width = padding + me._label.width() + padding;
 		if (!model._is_menubar_item) {
 			# add icon space
-			min_width += 5 + 18;
+			min_width += iconSize + padding;
 			# add shortcut space
-			min_width += me._shortcut.width() + 10;
-			if (model._menu != nil) {
-				# add submenu indicator space
-				min_width += 12;
-			}
+			min_width += me._shortcut.width() + padding;
+      # add submenu indicator space
+      min_width += submenuIconSize + padding;
 		}
-		model.setLayoutMinimumSize([min_width, 28]);
-		model.setLayoutSizeHint([min_width, 28]);
+		model.setLayoutMinimumSize([min_width, height]);
+		model.setLayoutSizeHint([min_width, height]);
+    model.setLayoutMaximumSize([MAX_SIZE, height]);
 		
 		return me;
 	},
@@ -1389,10 +1428,6 @@ DefaultStyle.widgets["menu-item"] = {
 		return me._updateLayoutSizes(model);
 	},
 
-  getTextWidth: func() {
-    return me._label.width();
-  },
-	
 	setShortcut: func(model, shortcut) {
 		if (shortcut != nil) {
 			me._shortcut.setText(shortcut);
@@ -1421,7 +1456,7 @@ DefaultStyle.widgets["menu-item"] = {
 		}
 		me._label.setColor(me._style.getColor(text_color_name));
 		me._shortcut.setColor(me._style.getColor(text_color_name));
-		me._submenu_indicator.set("fill", me._style.getColor("menu_item_submenu_indicator" ~ (model._hovered ? "_hovered" : "")));
+		me._submenu_indicator.setStroke(me._style.getColor("menu_item_submenu_indicator" ~ (model._hovered ? "_hovered" : "")));
 		if (model._menu != nil) {
 			if (!model._is_menubar_item) {
 				me._submenu_indicator.show();
@@ -1444,7 +1479,7 @@ DefaultStyle.widgets["menu-bar"] = {
 	},
 	
 	setSize: func(model, w, h) {
-		me._bg.reset().rect(0, 0, w, 28);
+		me._bg.reset().rect(0, 0, w, h);
 		me._items.setTranslation(0, 0);
 		return me;
 	},
@@ -1461,17 +1496,13 @@ DefaultStyle.widgets["combo-box"] = {
   new: func(parent, cfg)
   {
     me._root = parent.createChild("group", "combo-box");
-    me._bg =
-      me._root.createChild("path");
-    me._border =
-      me._root.createChild("image", "border")
+    me._bg = me._root.createChild("path");
+    me._border = me._root.createChild("image", "border")
               .set("slice", "10 6"); #"7")
-    me._buttonBorder =
-      me._root.createChild("image", "border-button")
+    me._buttonBorder = me._root.createChild("image", "border-button")
               .set("slice", "10 6"); #"7")
     me._arrowIcon = me._root.createChild("image", "arrow");
-    me._label =
-      me._root.createChild("richtext")
+    me._label = me._root.createChild("richtext")
               .setFont(me._style.getFont("combo-box"))
               .setAlignment("left-center");
 
@@ -1480,32 +1511,48 @@ DefaultStyle.widgets["combo-box"] = {
   setSize: func(model, w, h)
   {
     var halfWidth = int(w * 0.5);
-    var m = me._style.getSize("margin");
-    var inset = me._style.getSize("text-inset");
+    var fontSize = me._style.getFont("combo-box").size;
+    var padding = me._style.getPadding("combo-box");
+    var iconSize = me._style.getSize("combo-box", "icon");
 
     me._bg.reset()
-          .rect(m, m, w - (m * 2), h - (m * 2), {"border-radius": me._style.getSize("frame-radius")});
+            .rect(0, 0, w, h, {"border-radius": me._style.getSize("frame-radius")});
 
     # we split the two pieces
     me._border.setSize(halfWidth, h);
     me._buttonBorder.setTranslation(halfWidth, 0);
     me._buttonBorder.setSize(w - halfWidth, h);
 
-    var arrowSize = me._arrowIcon.imageSize();
-    me._arrowIcon.setTranslation(w - (arrowSize[0] + inset), (h - arrowSize[1]) * 0.5);
+    me._arrowIcon.setSize(iconSize, iconSize);
+    me._arrowIcon.setTranslation(w - (iconSize + padding), (h - iconSize) * 0.5);
 
-    me._label.setTranslation(inset, h * 0.5);
+    me._label.setTranslation(padding, h * 0.5);
   },
   setText: func(model, text)
   {
     me._label.setText(text);
+
+    var fontSize = me._style.getFont("combo-box").size;
+    var padding = me._style.getPadding("combo-box");
+    var iconSize = me._style.getSize("combo-box", "icon");
+    var textWidth = me._label.width();
+    if (me._maxItemWidth == nil) {
+      me._maxItemWidth = me._getMaxWidthItem(model);
+    }
+    var width = math.max(
+      me._maxItemWidth,
+      padding + textWidth + padding + iconSize + padding
+    );
+    var height = math.max(fontSize, iconSize) + padding * 2;
+    model.setLayoutMinimumSize([width, height]);
+    model.setLayoutSizeHint([width, height]);
+    model.setLayoutMaximumSize([MAX_SIZE, height]);
 
     return me;
   },
   update: func(model)
   {
     var backdrop = !model._windowFocus();
-    var (w, h) = model._size;
     var file = me._style._dir_widgets ~ "/";
 
     # TODO unify color names with image names
@@ -1551,23 +1598,13 @@ DefaultStyle.widgets["combo-box"] = {
     me._border.set("src", file ~ suffix ~ ".png");
     me._buttonBorder.set("src", buttonFile ~ suffix ~ ".png");
     me._arrowIcon.set("src", arrowIconFile ~ ".png");
-
-    if (me._maxItemWidth == nil) {
-      me._maxItemWidth = me._getMaxWidthItem(model);
-
-      model.setLayoutMinimumSize([me._maxItemWidth, 28]);
-      model.setLayoutSizeHint([me._maxItemWidth, 28]);
-    }    
   },
 
   # Calculate how many pixels the longest text in the list has.
   _getMaxWidthItem: func(model) {
-    var inset = me._style.getSize("text-inset");
-    var arrowIconWidth = me._arrowIcon.imageSize()[0];
-
-    var maxItemWidth = 80;
+    var maxItemWidth = 0;
     foreach (var menuItem; model._items) {
-      var itemWidth = inset + menuItem.view().getTextWidth() + inset + arrowIconWidth + inset;
+      var itemWidth = menuItem.minimumSize()[0];
       if (itemWidth > maxItemWidth) {
         maxItemWidth = itemWidth;
       }
@@ -1586,25 +1623,28 @@ DefaultStyle.widgets["list-item"] = {
 	new: func(parent, cfg) {
 		me._root = parent.createChild("group", "list-item");
 		me._bg = me._root.createChild("path");
-		me._itemHeight = me._style.getSize("list-item-height");
 
 		me._label = me._root.createChild("richtext")
 						.setFont(me._style.getFont("list-item"))
-						.setAlignment("left-baseline");
+						.setAlignment("left-center");
 	},
 	
 	setSize: func(model, w, h) {
-		me._bg.reset().rect(0, 0, w, me._itemHeight);
-		var m = me._style.getSize("margin");
-		me._label.setTranslation(m, int(h / 2) + m);
+    var fontSize = me._style.getFont("list-item").size;
+    var padding = me._style.getPadding("list-item");
+		me._bg.reset().rect(0, 0, w, h);
+		me._label.setTranslation(padding, h / 2);
 		return me;
 	},
 	
 	_updateLayoutSizes: func(model) {
-		var m = me._style.getSize("margin");
-		var min_width = m + me._label.width() + m;
-		model.setLayoutMinimumSize([min_width, me._itemHeight]);
-		model.setLayoutSizeHint([min_width, me._itemHeight]);
+    var fontSize = me._style.getFont("list-item").size;
+    var padding = me._style.getPadding("list-item");
+		var min_width = padding + me._label.width() + padding;
+    var height = fontSize + padding * 2;
+		model.setLayoutMinimumSize([min_width, height]);
+		model.setLayoutSizeHint([min_width, height]);
+    model.setLayoutMaximumSize([MAX_SIZE, height]);
 		
 		return me;
 	},
@@ -1652,26 +1692,26 @@ DefaultStyle.widgets["text-box"] = {
     me._bg = me._root.createChild("path", "bg")
             .setVisible(0);
     me._text = me._root.createChild("richtext", "text")
-            .setFont(me._style.getFont("text-box"))
-            .setAlignment("left-baseline")
-            .setVisible(0);
+            .setFont(me._style.getFont("text-box"));
   },
   setSize: func(model, w, h)
   {
+    var fontSize = me._style.getFont("text-box").size;
+    var padding = me._style.getPadding("text-box");
     me._bg.reset().rect(0, 0, w, h);
     if (model._text_align == "left") {
-      me._text.setAlignment("left-baseline");
-      me._text.setTranslation(2, 2 + h / 2);
+      me._text.setAlignment("left-top");
+      me._text.setTranslation(padding, padding);
     } elsif (model._text_align == "center") {
-      me._text.setAlignment("center-baseline");
-      me._text.setTranslation(2 + w / 2, 2 + h / 2)
+      me._text.setAlignment("center-top");
+      me._text.setTranslation(w / 2, padding)
     } elsif (model._text_align == "right") {
-      me._text.setAlignment("right-baseline");
-      me._text.setTranslation(w - 2, 2 + h / 2);
+      me._text.setAlignment("right-top");
+      me._text.setTranslation(w - padding, padding);
     }
 
     # always word-wrap
-    me._text.setMaxWidth(w - 4);
+    me._text.setMaxWidth(w - padding * 2);
     return me;
   },
   setText: func(model, text)
@@ -1689,13 +1729,17 @@ DefaultStyle.widgets["text-box"] = {
     var hfw_func = func(w) m.heightForWidth(w);
     var min_width = 32;
 
+    var fontSize = me._style.getFont("text-box").size;
+    var padding = me._style.getPadding("text-box");
+    var height = fontSize + padding * 2;
+
     # prefer approximately quadratic text blocks
-    var width_hint = me._text.width() + 4;
+    var width_hint = me._text.width() + padding * 2;
     width_hint = int(math.sqrt(width_hint * 24));
 
     model.setHeightForWidthFunc(hfw_func);
-    model.setLayoutMinimumSize([min_width, 28]);
-    model.setLayoutSizeHint([width_hint, 28]);
+    model.setLayoutMinimumSize([min_width, height]);
+    model.setLayoutSizeHint([width_hint, height]);
 
     return me.update(model);
   },
@@ -1731,7 +1775,9 @@ DefaultStyle.widgets["text-box"] = {
       return -1;
     }
 
-    return math.max(14, me._text.heightForWidth(w - 4));
+    var fontSize = me._style.getFont("text-box").size;
+    var padding = me._style.getPadding("text-box");
+    return me._text.heightForWidth(w - padding * 2);
   },
   update: func(model)
   {

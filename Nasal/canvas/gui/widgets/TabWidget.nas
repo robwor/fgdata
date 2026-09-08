@@ -57,12 +57,13 @@ gui.widgets.TabWidgetTabButton = {
 		m._tab_closeable = cfg.get("tab-closeable");
 
 		m._setView(style.createWidget(parent, "tab-widget-tab-button", cfg));
-		m._close_button = gui.widgets.Button.new(m._view._root, style, {"type": "tab-button-close-button"})
+		m._close_button = gui.widgets.Button.new(m._view._root, style, {"type": "tab-close-button"})
 						.setSize(24, 24)
 						.listen("clicked", func(e) {
 							m._trigger("close-button-clicked");
 						});
 		m._close_button._onStateChange();
+		m.setAlignment(canvas.AlignLeft);
 		return m;
 	},
 	setText: func(text) {
@@ -116,6 +117,7 @@ gui.widgets.TabWidget = {
 		m._layout.setCanvas(m._view._root.getCanvas());
 		m._layout.setParent(m);
 		m._tabBar = HBoxLayout.new();
+		m._tabBar.addSpacing(canvas.MAX_SIZE);
 		m._layout.addItem(m._tabBar);
 		m._content = VBoxLayout.new();
 		m._layout.addItem(m._content);
@@ -169,12 +171,13 @@ gui.widgets.TabWidget = {
 									}
 								});
 
-		me._tabBar.addItem(me._tabButtons[id]);
+		me._tabBar.insertItem(size(me._tabs), me._tabButtons[id]);
 		me._tabs[id] = widget;
 		me._content.addItem(widget);
 		# hack to force a doLayout for each tab
+		var oldTabId = me._currentTabId or keys(me._tabs)[0];
 		me.setCurrentTab(id);
-		me.setCurrentTab(keys(me._tabs)[0]);
+		me.setCurrentTab(oldTabId);
 
 		me.setLayoutMinimumSize(me._layout.minimumSize());
 		me.setLayoutSizeHint(me._layout.sizeHint());
@@ -192,7 +195,7 @@ gui.widgets.TabWidget = {
 		delete(me._tabs, id);
 		me._tabBar.removeItem(me._tabButtons[id]);
 		delete(me._tabButtons, id);
-		if (size(keys(me._tabs)) > 0) {
+		if (id == me._currentTabId and size(keys(me._tabs)) > 0) {
 			me.setCurrentTab(keys(me._tabs)[-1]);
 		}
 
@@ -253,10 +256,10 @@ gui.widgets.TabWidget = {
 			me._layout.setParent(me);
 		}
 		me._layout.setGeometry([0, 0, me._size[0], me._size[1]]);
-		me._tabBar.setGeometry([0, 0, me._size[0], me._view.tabBarHeight]);
-		me._content.setGeometry([0, 0, me._size[0], me._size[1] - me._view.tabBarHeight]);
+		me._tabBar.setGeometry([0, 0, me._size[0], me._tabBar.minimumSize()[1]]);
+		me._content.setGeometry([0, 0, me._size[0], me._size[1] - me._tabBar.minimumSize()[1]]);
 		if (me._currentTab != nil) {
-			me._currentTab.setGeometry([0, 0, me._size[0], me._size[1] - me._view.tabBarHeight]);
+			me._currentTab.setGeometry([0, 0, me._size[0], me._size[1] - me._tabBar.minimumSize()[1]]);
 		}
 		me.setLayoutSizeHint(me._size);
 		me._view.setSize(me, me._size[0], me._size[1]);

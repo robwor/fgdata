@@ -283,7 +283,7 @@ gui.widgets.PropertyComboBox = {
 			if (n.getValue() != me._items[m._currentIndex].menuValue) {
 				me.setSelectedByValue(n.getValue());
 			}
-		}, 0, 0);
+		}, 1, 0);
 	},
 };
 
@@ -313,7 +313,7 @@ gui.widgets.PropertyLabel = {
 				value = me._default;
 			}
 			me.setText(sprintf(me._format, value));
-		}, 0, 0);
+		}, 1, 0);
 	},
 };
 
@@ -342,7 +342,7 @@ gui.widgets.PropertyLineEdit = {
 				return;
 			}
 			me.setText(n.getValue());
-		}, 0, 0);
+		}, 1, 0);
 	},
 };
 
@@ -370,7 +370,7 @@ gui.widgets.PropertyCheckBox = {
 				return;
 			}
 			me.setChecked(n.getBoolValue());
-		}, 0, 0);
+		}, 1, 0);
 	},
 };
 
@@ -398,7 +398,7 @@ gui.widgets.PropertySlider = {
 				return;
 			}
 			me.setValue(n.getValue());
-		}, 0, 0);
+		}, 1, 0);
 	},
 };
 
@@ -426,6 +426,6 @@ gui.widgets.PropertyDial = {
 				return;
 			}
 			me.setValue(n.getValue());
-		}, 0, 0);
+		}, 1, 0);
 	},
 };

@@ -32,9 +32,6 @@ var WidgetsFactoryDialog = {
 			m.benchmark_widget(widget: canvas.gui.widgets.Slider, proc_func: func(w, i) {
 				w.setValue(i);
 			}, cfg: {
-				"value-position": canvas.gui.widgets.Slider.ValuePosition.Below,
-				"value-style": canvas.gui.widgets.Slider.ValueStyle.Moving,
-				"ticks-position": gui.widgets.Slider.TicksPosition.Below,
 			});
 		});
 		m.widgetsMenu.createItem(text: "Benchmark radio button", cb: func {
@@ -80,7 +77,7 @@ var WidgetsFactoryDialog = {
 		m.radio1 = gui.widgets.RadioButton.new(m.tabsContent)
 						.setText("Radio button 1");
 		m.radio1.listen("group-checked-radio-changed", func(e) {
-			var checkedRadio = m.radio1.getRadioButtonsGroup().getCheckedRadio();
+			var checkedRadio = m.radio1.getRadioButtonsGroup().getCheckedRadioButton();
 			m.radio_label.setText("Selected radio button: " ~ (checkedRadio != nil ? checkedRadio._text : "none"));
 		});
 		
@@ -215,9 +212,6 @@ var WidgetsFactoryDialog = {
 				"max-value" : 100,
 				"page-size" : 20,
 				"tick-step" : 10,
-				"value-style": gui.widgets.Slider.ValueStyle.Moving,
-				"value-position": gui.widgets.Slider.ValuePosition.Above,
-				"ticks-position": gui.widgets.Slider.TicksPosition.Above,
 		})
 			.setValue(42);
 		m.numericControlsTab.addItem(m.slider);
@@ -310,7 +304,6 @@ var WidgetsFactoryDialog = {
 		}
 		var time = systime() - start;
 		me.benchmark_statistics.setText("Took " ~ time ~ " seconds to add " ~ amount ~ " widgets.");
-		logprint(LOG_ALERT, "Benchmark label took " ~ time);
 	},
 	
 	benchmark_radio_button: func(proc_func=nil, amount=50, cfg= nil) {
