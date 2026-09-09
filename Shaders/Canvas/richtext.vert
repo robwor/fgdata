@@ -9,7 +9,7 @@ out VS_OUT {
     vec2 texcoord;
     vec4 vertex_color;
     flat int renderPart;
-    flat bool selected;
+    flat int selected;
 } vs_out;
 
 uniform mat4 osg_ModelViewProjectionMatrix;
@@ -20,5 +20,5 @@ void main()
     vs_out.texcoord = multitexcoord0.st;
     vs_out.vertex_color = vertex_color;
     vs_out.renderPart = int(normal.r);
-    vs_out.selected = normal.g > 0 ? true : false;
+    vs_out.selected = normal.g > 0 ? 1 : 0;
 }

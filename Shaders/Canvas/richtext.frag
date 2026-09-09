@@ -6,7 +6,7 @@ in VS_OUT {
 	vec2 texcoord;
 	vec4 vertex_color;
 	flat int renderPart;
-	flat bool selected;
+	flat int selected;
 } fs_in;
 
 const int RENDER_PART_FOREGROUND = 0;
@@ -26,10 +26,11 @@ bool colorIsLight(vec3 c) {
 }
 
 void main() {
+	bool selected = fs_in.selected > 0;
 	if (fs_in.renderPart == RENDER_PART_FOREGROUND) {
 		float alpha = texture(glyphTexture, fs_in.texcoord).r;
 		fragColor.a = fs_in.vertex_color.a * alpha;
-		if (fs_in.selected) {
+		if (selected) {
 			if (colorIsLight(selectionColor.rgb)) {
 				fragColor.rgb = vec3(0, 0, 0) * fragColor.a;
 			} else {
@@ -39,7 +40,7 @@ void main() {
 			fragColor.rgb = fs_in.vertex_color.rgb * fragColor.a;
 		}
 	} else if (fs_in.renderPart == RENDER_PART_BACKGROUND) {
-		if (fs_in.selected) {
+		if (selected) {
 			fragColor.rgb = selectionColor.rgb;
 			fragColor.a = 1;
 		} else {
@@ -47,7 +48,7 @@ void main() {
 		}
 	} else {
 		fragColor = fs_in.vertex_color;
-		if (fs_in.selected) {
+		if (selected) {
 			if (colorIsLight(selectionColor.rgb)) {
 				fragColor.rgb = vec3(0, 0, 0);
 			} else {
