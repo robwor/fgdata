@@ -16,7 +16,18 @@
 		<!-- for a complete description of options, see
 	     http://cesanta.com/docs.shtml?Options.md -->
 
-		<!-- gets overwritten by - -httpd=nnnn -->
+		<!-- the httpd is on by default; set to false (or pass disable-httpd)
+		     to turn it off entirely -->
+		<enabled type="bool">true</enabled>
+
+		<!-- default is loopback-only, so it's not reachable from other
+		     machines and doesn't trigger a Windows Firewall prompt. Set to
+		     0.0.0.0 to allow connections from other machines on the network. -->
+		<listening-address>127.0.0.1</listening-address>
+
+		<!-- empty/0 means: pick a random free port (read back from
+		     /sim/http/options/actual-listening-port once bound).
+		     gets overwritten by - -httpd=[address:]nnnn -->
 		<!-- listening-port>8080</listening-port -->
 
 		<!-- set your access log file here, defaults to SG_LOG(SG_NETWORK,SG_INFO) -->

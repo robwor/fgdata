@@ -190,7 +190,9 @@
 
     <!-- Network options -->
     <network-options>Network Options</network-options>
-    <httpd-desc>Enable http server on the specified address. Specify the port or address:port to bind to.</httpd-desc>
+    <httpd-desc>Enable the http server, optionally on a specific address and/or port (default: loopback-only, random port). Specify the port, or address:port to also override the bind address.</httpd-desc>
+    <enable-httpd-desc>Enable the built-in http server (on by default)</enable-httpd-desc>
+    <disable-httpd-desc>Disable the built-in http server</disable-httpd-desc>
     <proxy-desc>Specify which proxy server (and port) to use. The username and password are optional and should be MD5 encoded already. This option is only useful when used in conjunction with the real-weather-fetch option.</proxy-desc>
     <telnet-desc>Enable telnet server on the specified port</telnet-desc>
     <jpg-httpd-desc>Enable screen shot http server on the specified port (replaced by --httpd)</jpg-httpd-desc>

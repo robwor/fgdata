@@ -1034,8 +1034,18 @@
 
    <option>
     <name>httpd</name>
-    <arg>port</arg>
+    <arg>[address:]port</arg>
     <description>httpd-desc</description>
+   </option>
+
+   <option>
+    <name>enable-httpd</name>
+    <description>enable-httpd-desc</description>
+   </option>
+
+   <option>
+    <name>disable-httpd</name>
+    <description>disable-httpd-desc</description>
    </option>
 
    <option>
