@@ -37,7 +37,7 @@ gui.widgets.LineEdit = {
       return me;
     }
 
-    me._text = utf8.substr(text, 0, me._max_length);
+    me._text = text;
     me._clearSelection();
 
     me._view.setText(me, me._text);
@@ -69,19 +69,6 @@ gui.widgets.LineEdit = {
     if (me._view != nil) {
       return me._view._text.selectedText();
     }
-  },
-  setMaxLength: func(len) {
-    me._max_length = len;
-
-    if (utf8.size(me._text) <= len) {
-      return me;
-    }
-
-    me._text = utf8.substr(me._text, 0, me._max_length);
-    me._view.setText(me, me._text);
-    me._trigger("text-changed", {"text": me._text});
-    me._moveCursorToByteIndex(size(me._text));
-    return me;
   },
   getSelection: func {
     var selection = me._view._text.selection();
