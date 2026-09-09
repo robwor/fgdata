@@ -177,6 +177,9 @@ var RichText = {
     setText: func(text) {
         return me.set("text", typeof(text) == "scalar" ? text : "");
     },
+    appendText: func(text) {
+        return me.set("text", me.text() ~ (typeof(text) == "scalar" ? text : ""));
+    },
 
     getText: func() {
         return me.text();

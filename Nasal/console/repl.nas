@@ -383,7 +383,7 @@ var CanvasPlacement = {
 	remove_char: func(reset_view=0) {
 		me.reset_input_from_history();
 		me.input = substr(me.input, 0, size(me.input) - 1);
-		var t = me.text.get("text");
+		var t = me.text.text();
 		if (size(t) <= me.text.stop) return nil;
 		me.text.setText(substr(t, 0, size(t)-1));
 		if (reset_view) me.reset_view();
@@ -393,14 +393,14 @@ var CanvasPlacement = {
 		me.reset_input_from_history();
 		var ret = me.input;
 		me.input = "";
-		var t = me.text.get("text");
+		var t = me.text.text();
 		me.text.setText(substr(t, 0, me.text.stop));
 		if (reset_view) me.reset_view();
 		return ret;
 	},
 	replace_line: func(replacement, replace_input=1, reset_view=0) {
 		if (replace_input) me.input = replacement;
-		var t = me.text.get("text");
+		var t = me.text.text();
 		me.text.setText(substr(t, 0, me.text.stop)~replacement);
 		if (reset_view) me.reset_view();
 		return nil;
@@ -412,11 +412,11 @@ var CanvasPlacement = {
 	},
 	new_prompt: func() {
 		me.add_line(">>> ");
-		me.text.stop = size(me.text.get("text"));
+		me.text.stop = size(me.text.text());
 	},
 	continue_line: func(reset_text=1) {
 		me.add_line("... ", reset_text);
-		me.text.stop = size(me.text.get("text"));
+		me.text.stop = size(me.text.text());
 	},
 	reset_input_from_history: func(reset_view=0) {
 		if (me.curr < size(me.history)) {
@@ -451,11 +451,8 @@ var CanvasPlacement = {
 		me.reset_view();
 	},
 	create_msg: func() {
-		# Text drawing mode: text and maybe a bounding box
-		var draw_mode = canvas.Text.TEXT + (me.colors.text_fill != nil ? canvas.Text.FILLEDBOUNDINGBOX : 0);
-
 		me.msg = me.group.createChild("group", "startup-message");
-		me.msg.text = me.msg.createChild("text", "help")
+		me.msg.text = me.msg.createChild("richtext", "help")
 			.setTranslation(me.padding, me.padding+10)
 			.setAlignment("left-baseline")
 			.setFont(me.font)
@@ -465,21 +462,19 @@ var CanvasPlacement = {
 		if (me.colors.text_fill != nil)
 			me.msg.text.setBackgroundColor(me.colors.text_fill);
 		me.msg.text.update();
-		#debug.dump(me.msg.text.getTransformedBounds());
-		me.msg.left_col = me.msg.createChild("text", "keys")
+		me.msg.left_col = me.msg.createChild("richtext", "keys")
 			.setTranslation(me.padding, me.msg.text.getTransformedBounds()[3] + 30)
 			.setAlignment("left-baseline")
 			.setFont(me.font)
 			.setColor(me.colors.text);
 		if (me.colors.text_fill != nil)
 			me.msg.left_col.setBackgroundColor(me.colors.text_fill);
-		me.msg.left_col.update();
 		for (var i=0; i<size(me.keys); i+=2) {
 			if (i) me.msg.left_col.appendText("\n");
 			me.msg.left_col.appendText("- "~me.keys[i]);
 		}
-		#debug.dump(me.msg.left_col.getTransformedBounds());
-		me.msg.right_col = me.msg.createChild("text", "keys")
+		me.msg.left_col.update();
+		me.msg.right_col = me.msg.createChild("richtext", "keys")
 			.setTranslation(me.msg.left_col.getTransformedBounds()[2] + 20,
 			                me.msg.text.getTransformedBounds()[3] + 30)
 			.setAlignment("left-baseline")
@@ -508,7 +503,7 @@ var CanvasPlacement = {
 		if (me.text != nil)
 			append(me.lines_of_text, me.text);
 		me.text = me.text_group
-			.createChild("text", "input"~size(me.lines_of_text))
+			.createChild("richtext", "input"~size(me.lines_of_text))
 			.setAlignment("left-baseline")
 			.setFont(me.font)
 			.setColor(me.colors.text)
@@ -543,7 +538,7 @@ var CanvasPlacement = {
 		if (me.state == "startup") {
 			me.msg.del(); me.msg = nil;
 			me.new_prompt(); # initialize a new line
-			me.text.stop = size(me.text.get("text"));
+			me.text.stop = size(me.text.text());
 			me.state = "accepting input";
 
 		} elsif (!contains({"s":,"c":,"":}, modifier_str)) {
