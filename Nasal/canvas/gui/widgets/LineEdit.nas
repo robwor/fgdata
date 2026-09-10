@@ -8,11 +8,11 @@ gui.widgets.LineEdit = {
     m._focus_policy = m.StrongFocus;
     m._setView(style.createWidget(parent, "line-edit", cfg));
 
-    m._view._updateLayoutSizes(m);
 
     m._text = "";
     m._placeholder = "";
-    me._ignoreDrag = 0;
+    m._multiLine = 0;
+    m._ignoreDrag = 0;
 
     m.context_menu = gui.Menu.new();
     m.context_menu.createItem(text: "Copy", cb: func() { m.copy(); }, shortcut: "<Ctrl>+C");
@@ -24,12 +24,26 @@ gui.widgets.LineEdit = {
 
     m.setText(cfg.get("text", ""));
     m.setPlaceholder(cfg.get("placeholder", ""));
+    m.setMultiLine(cfg.get("multiline", 0));
 
     return m;
   },
   _showContextMenu: func(e) {
     me.context_menu.show(e.screenX, e.screenY);
   },
+
+  setMultiLine: func(multiLine) {
+    if (multiLine == me._multiLine) {
+      return;
+    }
+    me._multiLine = multiLine;
+
+    if (me._view != nil) {
+      me._view._updateLayoutSizes(me);
+    }
+    me._onStateChange();
+  },
+
   setText: func(text)
   {
     if (text == nil or text == "") {
@@ -48,6 +62,9 @@ gui.widgets.LineEdit = {
     return me;
   },
   setPlaceholder: func(placeholder) {
+    if (placeholder == me._placeholder) {
+      return;
+    }
     me._placeholder = placeholder;
     me._view.setPlaceholder(me, me._placeholder);
 
@@ -207,7 +224,12 @@ gui.widgets.LineEdit = {
         return;
 
       if (e.key == "Enter") {
-        me._trigger("editingFinished", {text: me.text()}); # TODO validator/etc.
+        if (me._multiLine) {
+          me.setText(me._text ~ "\n");
+          me._moveCursorToByteIndex(size(me._text));
+        } else {
+          me._trigger("editingFinished", {text: me.text()}); # TODO validator/etc.
+        }
       } elsif (e.key == "Backspace") {
         me._backspace();
       } elsif (e.key == "Delete") {
@@ -296,7 +318,7 @@ gui.widgets.LineEdit = {
       }
     });
     el.addEventListener("dblclick", func(e) {
-      me._selectAll();
+      me.selectAll();
     });
     el.addEventListener("mousedown", func(e) {
       me._moveCursorToPosition(e.localX - view._text.getTranslation()[0], e.localY - view._text.getTranslation()[1]);
@@ -327,5 +349,19 @@ gui.widgets.LineEdit = {
     if (me._view != nil) {
       me._view._cursor_blink_timer.stop();
     }
+  }
+};
+
+gui.widgets.TextEdit = {
+  _CLASS: "TextEdit",
+
+  new: func(parent, style = nil, cfg = nil) {
+    style = style or canvas.style;
+    cfg = Config.new(cfg);
+    cfg.set("multiline", 1);
+    var m = gui.widgets.LineEdit.new(parent, style, cfg);
+    m.parents = [gui.widgets.TextEdit] ~ m.parents;
+
+    return m;
   }
 };

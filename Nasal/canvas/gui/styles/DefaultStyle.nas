@@ -503,20 +503,21 @@ DefaultStyle.widgets["line-edit"] = {
   {
     var fontSize = me._style.getFont("line-edit-text", me._style.getFont("line-edit")).size;
     var padding = me._style.getPadding("line-edit");
+    me._placeholder.setPadding(padding);
+    me._text.setPadding(padding);
 
     me._border.setSize(w, h);
     me._placeholder.set(
       "clip",
-      "rect(0, " ~ (w - padding) ~ ", " ~ h ~ ", " ~ padding ~ ")"
+      "rect(0, " ~ w ~ ", " ~ h ~ ", 0)"
     );
     me._text.set(
       "clip",
-      "rect(0, " ~ (w - padding) ~ ", " ~ h ~ ", " ~ padding ~ ")"
+      "rect(0, " ~ w ~ ", " ~ h ~ ", 0)"
     );
     me._cursor.reset()
-            .moveTo(padding, 0)
+            .moveTo(0, 0)
             .vert(fontSize);
-    me._cursor.setDouble("coord[1]", padding);
 
     return me.update(model);
   },
@@ -532,12 +533,21 @@ DefaultStyle.widgets["line-edit"] = {
     model._onStateChange();
   },
   _updateLayoutSizes: func(model) {
+    var textWidth = math.max(me._text.width(), me._placeholder.width());
+    var textHeight = math.max(me._text.height(), me._placeholder.height());
     var fontSize = me._style.getFont("line-edit-text", me._style.getFont("line-edit")).size;
     var padding = me._style.getPadding("line-edit");
-    var height = fontSize + padding * 2;
-    model.setLayoutMinimumSize([fontSize * 3 + padding * 2, height]);
-    model.setLayoutSizeHint([math.max(me._text.width(), me._placeholder.width()) + padding * 2, height]);
-    model.setLayoutMaximumSize([MAX_SIZE, height]);
+    if (model._multiLine) {
+      model.setLayoutMinimumSize([textWidth, textHeight]);
+      model.setLayoutSizeHint([MAX_SIZE, MAX_SIZE]);
+      model.setLayoutMaximumSize([MAX_SIZE, MAX_SIZE]);
+    } else {
+      var minWidth = fontSize * 3;
+      var height = fontSize + padding * 2;
+      model.setLayoutMinimumSize([fontSize * 3, height]);
+      model.setLayoutSizeHint([math.max(textWidth, fontSize * 3), height]);
+      model.setLayoutMaximumSize([MAX_SIZE, height]);
+    }
   },
   update: func(model)
   {
@@ -567,34 +577,53 @@ DefaultStyle.widgets["line-edit"] = {
 
     me._placeholder.setVisible(model._text or me._cursor_visible ? 0 : 1);
 
-    var width = model._size[0] - 2 * padding;
-    var cursor_pos = me._text.cursorRect()[0];
-    var text_width = me._text.width();
+    if (model._multiLine) {
+      me._placeholder
+        .setAlignment("left-top")
+        .setTranslation(0, 0)
+        .update();
+      me._text
+        .setAlignment("left-top")
+        .setTranslation(0, 0)
+        .update();
 
-    if( text_width <= width )
-      # fit -> align left (TODO handle different alignment)
-      me._hscroll = 0;
-    else if( me._hscroll + cursor_pos > width )
-      # does not fit, cursor to the right
-      me._hscroll = width - cursor_pos;
-    else if( me._hscroll + cursor_pos < 0 )
-      # does not fit, cursor to the left
-      me._hscroll = -cursor_pos;
-    else if( me._hscroll + text_width < width )
-      # does not fit, limit scroll to align with right side
-      me._hscroll = width - text_width;
+      var cursor_pos = me._text.cursorRect();
+      me._cursor.setDouble("coord[0]", cursor_pos[0]);
+      me._cursor.setDouble("coord[1]", cursor_pos[1]);
+      me._cursor.update();
+    } else {
+      var width = model._size[0] - 2 * padding;
+      var cursor_pos = me._text.cursorRect();
+      var text_width = me._text.width();
 
-    var text_pos = me._hscroll + padding;
+      if( text_width <= width )
+        # fit -> align left (TODO handle different alignment)
+        me._hscroll = 0;
+      else if( me._hscroll + cursor_pos[0] > width )
+        # does not fit, cursor to the right
+        me._hscroll = width - cursor_pos[0];
+      else if( me._hscroll + cursor_pos[0] < 0 )
+        # does not fit, cursor to the left
+        me._hscroll = -cursor_pos[0];
+      else if( me._hscroll + text_width < width )
+        # does not fit, limit scroll to align with right side
+        me._hscroll = width - text_width;
 
-    me._placeholder
-      .setTranslation(text_pos, model._size[1] / 2)
-      .update();
-    me._text
-      .setTranslation(text_pos, model._size[1] / 2)
-      .update();
-    me._cursor
-      .setDouble("coord[0]", text_pos + cursor_pos)
-      .update();
+      var text_pos = me._hscroll;
+
+      me._placeholder
+        .setAlignment("left-center")
+        .setTranslation(text_pos, model._size[1] / 2)
+        .update();
+      me._text
+        .setAlignment("left-center")
+        .setTranslation(text_pos, model._size[1] / 2)
+        .update();
+      me._cursor
+        .setDouble("coord[0]", text_pos + cursor_pos[0])
+        .setDouble("coord[1]", (model._size[1] - fontSize) / 2)
+        .update();
+    }
   }
 };
 
