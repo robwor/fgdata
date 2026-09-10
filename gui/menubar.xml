@@ -782,8 +782,8 @@
 		<item>
 			<name>nasal-console</name>
 			<binding>
-				<command>dialog-show</command>
-				<dialog-name>nasal-console</dialog-name>
+				<command>nasal</command>
+				<script>canvas.NasalConsole.new().show();</script>
 			</binding>
 		</item>
 
