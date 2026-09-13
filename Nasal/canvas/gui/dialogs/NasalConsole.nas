@@ -18,6 +18,12 @@ var NasalConsole = {
 		m.buttonsLayout = HBoxLayout.new();
 		m.layout.addItem(m.buttonsLayout);
 
+		m.copyButton = canvas.gui.widgets.Button.new(parent: m.root, cfg: {"text": "Copy"})
+			.listen("clicked", func(e) {
+				clipboard.setText(m.textedit.text());
+			});
+		m.buttonsLayout.addItem(m.copyButton);
+
 		m.pasteButton = canvas.gui.widgets.Button.new(parent: m.root, cfg: {"text": "Paste"})
 			.listen("clicked", func(e) {
 				m.textedit.setText(clipboard.getText(clipboard.CLIPBOARD));

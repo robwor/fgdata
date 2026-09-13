@@ -63,6 +63,7 @@ loadWidget("WindowButton");
 loadDialog("FontViewer");
 loadDialog("InputDialog");
 loadDialog("MessageBox");
+loadDialog("NasalConsole");
 loadDialog("WidgetsFactoryDialog");
 loadDialog("PropertyTreeBrowser");
 
