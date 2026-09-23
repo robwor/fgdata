@@ -10,15 +10,25 @@ gui.widgets.Label = {
     cfg = Config.new(cfg);
     var m = gui.Widget.new(gui.widgets.Label, cfg);
     m._color = nil;
+    m._wrapMode = "none";
     m._focus_policy = m.NoFocus;
-    m._setView( style.createWidget(parent, "label", m._cfg) );
+    m._setView(style.createWidget(parent, "label", m._cfg));
 
     m.setText(m._cfg.get("text", ""));
+    var markup = m._cfg.get("markup", "");
+    if (markup) {
+      m.setMarkup(markup);
+    }
     m.setTextAlign(m._cfg.get("text-align", "left"));
     m.setFormat(m._cfg.get("format"));
     m.setValue(m._cfg.get("value"));
     m.setColor(m._cfg.get("color"));
     m.setFont(m._cfg.get("font"));
+    m.setWrapMode(m._cfg.get("wrap-mode", "none"));
+    if (m._cfg.get("wordWrap", 0)) {
+      debug.warn("Deprecated usage of wordWrap configuration keyword for canvas.gui.widgets.Label - please use \"wrap-mode\": \"word\" instead");
+      m.setWrapMode("word");
+    }
 
     return m;
   },
@@ -35,12 +45,20 @@ gui.widgets.Label = {
     me._value = value;
     me.setText(sprintf(me._format, value));
   },
-  # @description Set font for this label
-  # @param path Optional[str] Path to font file relative to $FGDATA/Fonts, or nil to use the style's default font
-  setFont: func(path = nil) {
-    me._font = path;
+  # @brief Set font for this label
+  # @param desc Optional[canvas.FontDescription] A canvas.FontDescription, or nil to use the style's default font
+  setFont: func(desc = nil) {
+    me._font = desc;
     if (me._view != nil) {
-      me._view.setFont(me, path);
+      me._view.setFont(me, desc);
+    }
+  },
+  # @brief Set text wrapping mode
+  # @param mode String One of none, word, char, word-char.
+  setWrapMode: func(mode) {
+    me._wrapMode = mode;
+    if (me._view != nil) {
+      me._view.setWrapMode(me, mode);
     }
   },
   setColor: func(color) {
@@ -64,6 +82,13 @@ gui.widgets.Label = {
     me._text = text;
     if (me._view != nil) {
       me._view.setText(me, text);
+    }
+    return me;
+  },
+  setMarkup: func(markup) {
+    me._markup = markup;
+    if (me._view != nil) {
+      me._view.setMarkup(me, markup);
     }
     return me;
   },

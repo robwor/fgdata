@@ -93,7 +93,7 @@ var Window = {
   },
   setTitle: func(title)
   {
-    return me.set("title", title);
+    return me.set("title", string.replace(title, "\n", " "));
   },
   # Create the canvas to be used for this Window
   #

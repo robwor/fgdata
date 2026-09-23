@@ -207,6 +207,13 @@ var RichText = {
         return me.set("alignment", align);
     },
 
+    # @brief Set wrap mode
+    # @param wrapMode String One of none, word, char or word-char
+    
+    setWrapMode: func(wrapMode) {
+        return me.set("wrap-mode", wrapMode);
+    },
+
     # Set font family, weight, style and size
 	# Any unset arguments will be reused from the currently applied font, or if no font is applied yet, a default font of 
 	# Liberation Sans Normal Normal 14px will be used.

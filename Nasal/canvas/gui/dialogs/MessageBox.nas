@@ -69,8 +69,8 @@ var MessageBox = {
       );
     }
 
-    var label_text = gui.widgets.Label.new(root, style, {wordWrap: 1})
-                                      .setText(me._text);
+    var label_text = gui.widgets.Label.new(root, style, {"wrap-mode": "word"})
+                                      .setMarkup(me._text);
     text_box.addItem(label_text, 1);
 
     vbox.addStretch(1);

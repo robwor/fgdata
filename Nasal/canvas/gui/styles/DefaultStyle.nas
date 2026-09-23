@@ -346,6 +346,7 @@ DefaultStyle.widgets.label = {
             .set("preserveAspectRatio", "xMidYMid slice")
             .setVisible(0);
     me._text = me._root.createChild("richtext", "text")
+            .setPadding(me._style.getPadding("label"))
             .setFont(me._style.getFont("label"))
             .setAlignment("left-center")
             .setVisible(0);
@@ -358,57 +359,82 @@ DefaultStyle.widgets.label = {
     me._bg.reset().rect(0, 0, w, h);
     me._img.set("size[0]", w)
              .set("size[1]", h);
+    var y = padding + (h + fontSize - me._text.height()) / 2;
     if (model._text_align == "left") {
       me._text.setAlignment("left-center");
-      me._text.setTranslation(padding, h / 2);
+      me._text.setTranslation(0, y);
     } elsif (model._text_align == "center") {
       me._text.setAlignment("center-center");
-      me._text.setTranslation(w / 2, h / 2)
+      me._text.setTranslation(w / 2, y)
     } elsif (model._text_align == "right") {
       me._text.setAlignment("right-center");
-      me._text.setTranslation(w - padding, h / 2);
+      me._text.setTranslation(w, y);
     }
-    me._text.setMaxWidth(model._cfg.get("wordWrap", 0) ? (w - padding * 2) : -1);
+    if (model._wrapMode != "none") {
+      me._text.setMaxWidth(w);
+    }
     return me;
   },
-  setText: func(model, text)
-  {
-    if (!isstr(text) or size(text) == 0) {
-      model.setHeightForWidthFunc(nil);
-      me._text.setVisible(0);
-      return me;
+  setWrapMode: func(model, mode) {
+    me._text.setWrapMode(mode);
+    if (mode == "none") {
+      me._text.setMaxWidth(-1);
     }
-
-    me._text.setText(text);
-    me._text.setVisible(1);
-
-    var hfw_func = nil;
-
+    return me._updateLayoutSizes(model);
+  },
+  _updateLayoutSizes: func(model) {
     var fontSize = me._style.getFont("label").size;
     var padding = me._style.getPadding("label");
     var height = fontSize + padding * 2;
+    var hfw_func = nil;
+
     # this implies no clipping of long strings, 
     # which breaks BoxLayout when we overflow.
-    # might need to consider an different algorithm in BoxLayout 
+    # might need to consider a different algorithm in BoxLayout 
     # when min-width is too big
-    var min_width = me._text.width() + padding * 2;
-    var width_hint = min_width;
+    var minWidth = math.max(me._text.minimumWidth(), height);
+    var minHeight = math.max(me._text.minimumHeight(), height);
+    var widthHint = minWidth;
 
-    if (model._cfg.get("wordWrap", 0)) {
+    if (model._wrapMode != "none") {
       var m = me;
       hfw_func = func(w) m.heightForWidth(w);
 
       # prefer approximately quadratic text blocks
-      if( width_hint > 24 )
-        width_hint = int(math.sqrt(width_hint * 24));
+      if (widthHint > 24) {
+        widthHint = int((widthHint + me._text.width()) / 2);
+      }
     }
 
     model.setHeightForWidthFunc(hfw_func);
-    model.setLayoutMinimumSize([min_width, height]);
-    model.setLayoutSizeHint([width_hint, height]);
-    model.setLayoutMaximumSize([MAX_SIZE, model._cfg.get("wordWrap", 0) ? MAX_SIZE : height]);
-
+    model.setLayoutMinimumSize([minWidth, minHeight]);
+    model.setLayoutSizeHint([widthHint, minHeight]);
+    model.setLayoutMaximumSize([MAX_SIZE, model._wrapMode != "none" ? MAX_SIZE : minHeight]);
     return me.update(model);
+  },
+  setText: func(model, text)
+  {
+    if (!isstr(text) or size(text) == 0) {
+      me._text.setVisible(0);
+    } else {
+      me._text.setText(text);
+      me._text.setVisible(1);
+      me._text.update();
+    }
+
+    return me._updateLayoutSizes(model);
+  },
+  setMarkup: func(model, markup)
+  {
+    if (!isstr(markup) or size(markup) == 0) {
+      me._text.setVisible(0);
+    } else {
+      me._text.setMarkup(markup);
+      me._text.setVisible(1);
+      me._text.update();
+    }
+
+    return me._updateLayoutSizes(model);
   },
   setImage: func(model, img)
   {
@@ -439,7 +465,7 @@ DefaultStyle.widgets.label = {
     if (isa(desc, FontDescription)) {
       me._text.setFont(desc);
     } else {
-      me._text.setFont(me._style.getFont("default"));
+      me._text.setFont(me._style.getFont("label"));
     }
   },
   setColor: func(model, color) {
@@ -454,12 +480,7 @@ DefaultStyle.widgets.label = {
       return -1;
     }
 
-    var fontSize = me._style.getFont("label").size;
-    var padding = me._style.getPadding("label");
-    if (me._text.lineCount() == 1) {
-      return fontSize + 2 * padding;
-    }
-    return me._text.heightForWidth(w - padding * 2) + padding * 2;
+    return me._text.heightForWidth(w);
   },
   update: func(model)
   {
@@ -533,8 +554,8 @@ DefaultStyle.widgets["line-edit"] = {
     model._onStateChange();
   },
   _updateLayoutSizes: func(model) {
-    var textWidth = math.max(me._text.width(), me._placeholder.width());
-    var textHeight = math.max(me._text.height(), me._placeholder.height());
+    var textWidth = math.max(me._text.minimumWidth(), me._placeholder.width());
+    var textHeight = math.max(me._text.minimumHeight(), me._placeholder.height());
     var fontSize = me._style.getFont("line-edit-text", me._style.getFont("line-edit")).size;
     var padding = me._style.getPadding("line-edit");
     if (model._multiLine) {
@@ -594,7 +615,7 @@ DefaultStyle.widgets["line-edit"] = {
     } else {
       var width = model._size[0] - 2 * padding;
       var cursor_pos = me._text.cursorRect();
-      var text_width = me._text.width();
+      var text_width = me._text.minimumWidth();
 
       if( text_width <= width )
         # fit -> align left (TODO handle different alignment)
@@ -1763,7 +1784,7 @@ DefaultStyle.widgets["text-box"] = {
     var height = fontSize + padding * 2;
 
     # prefer approximately quadratic text blocks
-    var width_hint = me._text.width() + padding * 2;
+    var width_hint = me._text.minimumWidth() + padding * 2;
     width_hint = int(math.sqrt(width_hint * 24));
 
     model.setHeightForWidthFunc(hfw_func);
