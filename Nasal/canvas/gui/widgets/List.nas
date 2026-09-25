@@ -288,7 +288,7 @@ gui.widgets.List = {
         if (isscalar(text_or_index_or_item)) {
             me.takeItem(text_or_index_or_item);
         } else {
-            me._scrollLayout.removeItem(item);
+            me._scrollLayout.removeItem(text_or_index_or_item);
         }
         return me;
     },

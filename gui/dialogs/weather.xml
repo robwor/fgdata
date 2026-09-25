@@ -622,7 +622,7 @@
                 </group>
             </group>
 
-            <textbox>
+            <input>
                 <name>metar-string-input</name>
                 <halign>fill</halign>
                 <valign>fill</valign>
@@ -650,7 +650,7 @@
                     <command>dialog-apply</command>
                     <object-name>metar-string-input</object-name>
                 </binding>
-            </textbox>
+            </input>
 
             <group>
                 <layout>hbox</layout>

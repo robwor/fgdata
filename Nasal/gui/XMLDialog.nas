@@ -984,7 +984,7 @@ var XMLList = {
         me._view = cwidgets.List.new(viewParent);
 
         foreach (var valueNode; me.config.getChildren("value")) {
-            me._view.createItem(valueNode);
+            me._view.createItem(valueNode.getValue());
         }
 
         me._layout = me._view;
@@ -1003,7 +1003,9 @@ var XMLList = {
     },
 
     update: func() {
-       me._view.filter(me._localValue);
+       if (me._localValue != nil) {
+           me._view.filter(me._localValue);
+       }
     },
 };
 
