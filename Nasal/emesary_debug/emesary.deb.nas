@@ -4,7 +4,7 @@
 # services by normal function calls - this is merely considered normal use
 # of the code, and does *not* fall under the heading of "derived work."
 #-------------------------------------------------------------------------------
-# emesary.deb.nas - emesary debug helpers
+# emesary.deb.nas - emesary debug helpers (module emesary_debug, disabled by default)
 # author:   Henning Stahlke
 # created:  06/2020
 #-------------------------------------------------------------------------------

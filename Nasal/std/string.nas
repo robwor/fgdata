@@ -9,7 +9,7 @@
 #
 # Copyright (C) 2012-2013 by Thomas Geymayer
 
-#load only once (via /Nasal/std.nas) not via C++ module loader
+#load only once (std/ files are listed in loadpriority.xml)
 if (ishash(globals["std"]) and ishash(std["String"]))
     return;
 

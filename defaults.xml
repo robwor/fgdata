@@ -17,7 +17,6 @@ Started September 2000 by David Megginson, david@megginson.com
     <!-- Limit the time we need to spend in simulation loops to 1 second -->
     <max-simtime-per-frame type="double">1.0</max-simtime-per-frame>
     <session type="int" userarchive="y">0</session>
-    <nasal-load-priority include="Nasal/loadpriority.xml" />
     <paths>
       <screenshot-dir type="string" userarchive="y"/>
       <!-- defaults to current working dir -->
@@ -583,7 +582,7 @@ Started September 2000 by David Megginson, david@megginson.com
           <!-- Cloud buffer scale, as a factor of the screen size.-->
           <render-scale type="float" userarchive="y">0.5</render-scale>
 
-          <!-- Maximum voxel distance for signed distance field calculations. Lower values will 
+          <!-- Maximum voxel distance for signed distance field calculations. Lower values will
                speed up cloud field generation, at the cost of more shader ray calculations -->
           <sdf-max-distance-voxels type="float" userarchive="y">64.0</sdf-max-distance-voxels>
 
@@ -1623,6 +1622,86 @@ Started September 2000 by David Megginson, david@megginson.com
     </log>
   </logging>
   <nasal>
+    <!--
+      Nasal modules. Every .nas file in FG_ROOT/Nasal (and each of its
+      subdirectories) is a module, named for the file or directory, and is
+      registered under /nasal. A module implemented by a directory must be
+      listed here, with <enabled>, otherwise it is disabled by default.
+
+      The ORDER OF THE ENTRIES BELOW IS THE LOAD ORDER. First, all modules
+      with <core> set are loaded, in order; then all other modules, in order.
+      Modules not listed here (i.e. top-level .nas files) follow the listed
+      ones, in alphabetical order. Modules from aircraft and add-ons are added
+      after that.
+
+      Dependencies of the core modules:
+        props.nas <- (everything)
+        string.nas <- io.nas <- std, debug
+        modules.nas <- addons.nas
+        string, io <- gui
+        gui <- multiplayer <- view <- dynamic_view
+        geo <- view
+        canvas <- the canvas-dependent files in gui/
+
+      Note that the files of a module are all loaded together, so a module
+      which has a <core> flag should only contain files which can be loaded at
+      that point.
+    -->
+    <props>
+      <core type="bool">true</core>
+    </props>
+    <globals>
+      <core type="bool">true</core>
+    </globals>
+    <math>
+      <core type="bool">true</core>
+    </math>
+    <string>
+      <core type="bool">true</core>
+    </string>
+    <io>
+      <core type="bool">true</core>
+    </io>
+    <std>
+      <core type="bool">true</core>
+      <enabled type="bool">true</enabled>
+    </std>
+    <debug>
+      <core type="bool">true</core>
+    </debug>
+    <modules>
+      <core type="bool">true</core>
+      <enabled type="bool">true</enabled>
+      <!-- only load the file(s) listed here, not everything in the directory:
+           the other files are optional modules, loaded on demand by modules.nas -->
+      <explicit-files type="bool">true</explicit-files>
+      <file>modules/modules.nas</file>
+    </modules>
+    <mp_broadcast>
+      <core type="bool">true</core>
+    </mp_broadcast>
+    <geo>
+      <core type="bool">true</core>
+    </geo>
+    <canvas>
+      <core type="bool">true</core>
+      <enabled type="bool">true</enabled>
+    </canvas>
+    <gui>
+      <core type="bool">true</core>
+      <enabled type="bool">true</enabled>
+    </gui>
+     <multiplayer>
+      <core type="bool">true</core>
+    </multiplayer>
+    <view>
+      <core type="bool">true</core>
+    </view>
+    <markerpins>
+      <core type="bool">true</core>
+    </markerpins>
+    <events/>
+    <controls/>
     <tutorial>
       <enabled type="bool">false</enabled>
     </tutorial>
@@ -1641,33 +1720,21 @@ Started September 2000 by David Megginson, david@megginson.com
     <FailureMgr>
       <enabled type="bool">true</enabled>
     </FailureMgr>
-    <canvas>
-      <enabled type="bool">true</enabled>
-    </canvas>
     <console>
       <enabled type="bool">true</enabled>
     </console>
-    <debug>
+    <emesary_debug>
       <enabled type="bool">false</enabled>
-    </debug>
+    </emesary_debug>
     <input_helpers>
       <enabled type="bool">true</enabled>
     </input_helpers>
-    <modules>
-      <enabled type="bool">true</enabled>
-    </modules>
-    <std>
-      <enabled type="bool">true</enabled>
-    </std>
     <towing>
       <enabled type="bool">true</enabled>
     </towing>
     <Autopush>
       <enabled type="bool">false</enabled>
     </Autopush>
-    <gui>
-      <enabled type="bool">true</enabled>
-    </gui>
   </nasal>
   <scenery>
     <share-events type="bool" userarchive="y">false</share-events>

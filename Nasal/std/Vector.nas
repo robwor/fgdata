@@ -17,7 +17,7 @@
 # services by normal function calls - this is merely considered normal use
 # of the code, and does *not* fall under the heading of "derived work."
 
-#load only once (via /Nasal/std.nas) not via C++ module loader
+#load only once (std/ files are listed in loadpriority.xml)
 if (ishash(globals["std"]) and ishash(std["Vector"]))
     return;
 

@@ -69,7 +69,10 @@ create-test-data:
     - mkdir -p $TEST_DATA_DIR/ATC/
     - cp ATC/*.xml $TEST_DATA_DIR/ATC/
 
-    - cp -r Environment Nasal Timezone Navaids Airports Input gui Translations $TEST_DATA_DIR
+    # Huds and VR are needed since defaults.xml includes files from them (see
+    # also the *.xml and sub-directory copies above); the test-suite loads the
+    # real defaults.xml to define the Nasal modules and their load order.
+    - cp -r Environment Nasal Timezone Navaids Airports Input gui Translations Huds VR $TEST_DATA_DIR
 
   artifacts:
     paths:
@@ -129,15 +132,15 @@ validate-XML-translations:
 #     - mkdir -p $AI_DIR/Aircraft
 #     - cp AI/Aircraft/*.xml $AI_DIR/Aircraft/
 #     - cp AI/*.xml $AI_DIR
-    
+
 #     # skip traffic, it's huge
 #     #- cp -r AI/Traffic $AI_DIR
 
 #     # do we need the yellow glider?
 
 #   # all the straightforward dirs
-#     - cp -r Environment Nasal Timezone Navaids Airports Input ATC 
-#         Fonts Phi Protocol Shaders gui Translations 
+#     - cp -r Environment Nasal Timezone Navaids Airports Input ATC
+#         Fonts Phi Protocol Shaders gui Translations
 #         Video Astro Compositor Effects Geodata Huds Lighting MP
 #         Materials
 #         $BUNDLED_DATA_DIR
@@ -145,7 +148,7 @@ validate-XML-translations:
 #   # anything in Aircraft?
 
 #   # ToDo: if we have a base version, then find all files which are changed
-#   # since that tag in Git, 
+#   # since that tag in Git,
 #   # this is going to use 'git diff --name-only --diff-filter=AMR' and
 #   # then copying all the resulting files over to $BUNDLED_DATA_DIR
 

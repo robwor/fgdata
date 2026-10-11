@@ -2,6 +2,10 @@
 # Copyright 2025 - 2025 Frederic Türpe
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+# these files need the canvas module, which may be disabled (e.g. in the test suite)
+if (!ishash(globals["canvas"]) or !ishash(canvas["gui"]))
+    return;
+
 var WindowManager = {
 	# TODO: Hardcoded layout for now, will be made user-configurable later
 	# @description Get layout information for window's buttons.
@@ -11,7 +15,7 @@ var WindowManager = {
 	getWindowButtonsLayoutInfo: func() {
 		return [["close"], ["close"]]
 	},
-	
+
 	# @description Get a callback that performs the required action
 	#	on a window for the given window button name.
 	# @param name String Name of the window button to return a callback for.
