@@ -2,6 +2,10 @@
 # SPDX-FileCopyrightText: 2022 James Turner <james@flightgear.org>
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+# this file needs the canvas module, which may be disabled (e.g. in the test suite)
+if (!ishash(globals["canvas"]) or !ishash(canvas["gui"]))
+    return;
+
 # alias this module to keep things somewhat readable
 var cwidgets = canvas.gui.widgets;
 
@@ -21,6 +25,8 @@ var XMLDialog = {
         } else {
             logprint(LOG_INFO, "Dialog explicit size is:", d.width, "x", d.height);
         }
+
+        me._radioGroups = {};
 
         me._window = canvas.Window.new(sz, "dialog", d.name);
         me._window.setTitle(d.title);
@@ -120,7 +126,6 @@ var XMLDialog = {
 # styles or frameless / non-draggable)
 var _createDialogPeer = func(type)
 {
-    logprint(LOG_INFO, "Creating dialog of type:" ~ type);
     var z = gui.xml.Dialog.new({
         parents: [XMLDialog]
     });
@@ -329,7 +334,8 @@ var XMLObjectBase =
 
     _activateBindings: func
     {
-        me.activateBindings();
+        var params = props.Node.new({"value":me._localValue});
+        me.activateBindingsWithArgs(params);
     },
 
     _roleWeights: {
@@ -395,11 +401,22 @@ var XMLObjectBase =
 
     visibleChanged: func()
     {
-        if (me.visible) {
+        var vis = me.visible;
+        if (vis) {
+            # sync the model -> view state, if we're about to show
             me.update();
         }
 
-        me._view.setVisible(me.visible);
+        if (me._layout) {
+            me._layout.setVisible(vis);
+        }
+
+        me._view.setVisible(vis);
+    },
+
+    enabledChanged: func
+    {
+        me._view.setEnabled(me.enabled);
     },
 
     view: func { return me._view; },
@@ -486,6 +503,10 @@ var XMLButton =
         }
 
         return baseWeight;
+    },
+
+    labelChanged: func() {
+        me._view.setText(me.label);
     }
 };
 
@@ -574,7 +595,7 @@ var XMLCheckbox =
     show: func(viewParent)
     {
         me._view = cwidgets.CheckBox.new(viewParent, canvas.style, {
-            "text": me._configTrValue("label"),
+            "text": me.label,
             "checked": me.value     # avoid toggled event on setting value
         });
 
@@ -599,16 +620,37 @@ var XMLCheckbox =
         }
 
         me._view.setChecked(me._localValue);
+    },
+
+    labelChanged: func() {
+        me._view.setText(me.label);
     }
 };
 
 
 var XMLRadioButton =
 {
+    init: func(props)
+    {
+        if (me.dialog.uiVersion >= 2) {
+            if (!has_member(me.dialog._peer._radioGroups, me.radioGroup)) {
+                me.dialog._peer._radioGroups[me.radioGroup] = cwidgets.RadioButtonsGroup.new();
+            }
+        } else {
+            me._groupId = nil;
+        }
+    },
+
     show: func(viewParent)
     {
+        var rbg = nil;
+        if (me.radioGroup != nil) {
+            rbg = me.dialog._peer._radioGroups[me.radioGroup];
+        }
+
         me._view = cwidgets.RadioButton.new(viewParent, canvas.style,
-                                            {"text": me._configTrValue("label")});
+                                            {"text": me.label,
+                                             "radio-buttons-group": rbg});
         # copy initial visiblity
         me._view.visible = me.visible;
 
@@ -631,6 +673,10 @@ var XMLRadioButton =
         }
 
         me._view.setChecked(me._localValue);
+    },
+
+    labelChanged: func() {
+        me._view.setText(me.label);
     }
 };
 
@@ -639,11 +685,20 @@ var XMLLabel =
     show: func(viewParent)
     {
         me._view = cwidgets.Label.new(viewParent, canvas.style, {});
+        if (me.dialog.uiVersion >= 2) {
+            var wrapMode = me._configValue("wrap", nil);
+            if (wrapMode == "word") {
+                me._view.setWrapMode("word");
+            } else if (wrapMode == "none" or wrapMode == nil) {
+                me._view.setWrapMode("none");
+            } else {
+                logprint(LOG_DEV_ALERT, "XMLLabel unsupported wrap mode:", wrapMode);
+            }
+        }
 
         # copy initial visiblity
         me._view.visible = me.visible;
 
-        me._label = me._configTrValue("label");
         me._format = nil;       # will be set in update()
         me._layout = me._view;
         me._applyLayoutConfig(true);
@@ -657,17 +712,17 @@ var XMLLabel =
             return;
         }
 
-        var v = me._localValue;
-        if (v == nil) {
-            v = me._label;
-        }
-
+        var v = me._localValue ?? me.label;
         me._format = me._configOptionalTrValue("format", v);
         if (me._format) {
             me._view.setText(sprintf(me._format, v));
         } else {
             me._view.setText(v);
         }
+    },
+
+    labelChanged: func {
+        me.update();
     }
 };
 
@@ -842,9 +897,20 @@ var XMLTextEdit =
         me._applyLayoutConfig();
         me.valueChanged();
 
+        # <apply-on-enter>true</apply-on-enter> lets a text field re-run its
+        # own bindings when the user presses Enter/Return
+        me._applyOnEnter = me._configBool("apply-on-enter", 0);
+
         me._view.listen("text-changed", func(e) {
             me._changeLocalValue(e.detail.text);
             me._activateBindings();
+        });
+
+        me._view.listen("editing-finished", func(e) {
+            if (me._applyOnEnter) {
+                me._changeLocalValue(e.detail.text);
+                me._activateBindings();
+            }
         });
 
         return me._view;
@@ -889,8 +955,9 @@ var XMLHRule =
     update: func()
     {
         # allow label to be updated live
-        if (me._localValue) {
-            me._view.setText(_localValue);
+        var l = me._localValue ?? me.label;
+        if (l) {
+            me._view.setText(l);
         }
     }
 };
@@ -914,7 +981,7 @@ var XMLVRule =
     valueChanged: func()
     {
         # allow label to be updated live
-        var l = me.value;
+        var l = me._localValue ?? me.label;
         if (l) {
             me._view.setText(l);
         }
@@ -936,18 +1003,14 @@ var XMLComboBox =
         # labels and values.
         var propertiesNode = me.config.getChild("properties");
 
+        # TODO: implement
+        # https://gitlab.com/flightgear/flightgear/-/work_items/3541
+        # to get rid of this mess
         if (propertiesNode != nil) {
-            var n = props.globals.getNode(propertiesNode.getValue());
-            if (n == nil) {
-                logprint(LOG_WARN, "XMLComboBox: <properties> value '" ~
-                         propertiesNode.getValue() ~ "' should be a path to "
-                         "an existing node");
-                return;
-            }
-
-            foreach (var valueNode; n.getChildren("value")) {
-                me._view.createItem(valueNode.getValue(), valueNode.getValue());
-            }
+            me._propertiesNode = props.globals.getNode(propertiesNode.getValue(), true);
+            # listen for child changes, and update the menu items correspondingly
+            var listenType = 2;
+            me._propsListenerId = setlistener(me._propertiesNode, func { me.rebuildItems(); }, true, listenType);
         } else if (me.dialog.uiVersion < 2) {
             foreach (var valueNode; me.config.getChildren("value")) {
                 me._view.createItem(valueNode.getValue(), valueNode.getValue());
@@ -975,6 +1038,26 @@ var XMLComboBox =
     {
         if (me._view and !me._view.hasActiveFocus()) {
             me._view.setSelectedByValue(me._localValue);
+        }
+    },
+
+    rebuildItems: func()
+    {
+        me._view.clear();
+        foreach (var valueNode; me._propertiesNode.getChildren("value")) {
+            var v = valueNode.getValue();
+            if (v == nil) {
+                continue;
+            }
+
+            me._view.createItem(v, v);
+        }
+    },
+
+    del: func()
+    {
+        if (me._propertiesNode) {
+            removelistener(me._propsListenerId);
         }
     }
 };
@@ -1018,7 +1101,6 @@ var XMLText =
         # copy initial visiblity
         me._view.visible = me.visible;
 
-        me._label = me._configTrValue("label");
         me._format = me._configValue("format");
         me._layout = me._view;
         me._applyLayoutConfig(true);
@@ -1039,13 +1121,17 @@ var XMLText =
 
         var v = me.value;
         if (v == nil) {
-            v = me._label;
+            v = me.label;
         }
         if (me._format) {
             me._view.setText(sprintf(me._format, v));
         } else {
             me._view.setText(v);
         }
+    },
+
+    labelChanged: func() {
+        me.update();
     }
 };
 
@@ -1142,7 +1228,7 @@ var XMLTabs =
 
         me._layout = me._view;
         me._applyLayoutConfig(true);
-        valueChanged();
+        me.valueChanged();
 
         me._view.listen("selected-item-changed", func(e) {
             me.property.setValue(e.detail.value);
@@ -1198,11 +1284,16 @@ var XMLCanvas = {
 };
 
 # XMLAirportList: a virtual list backed by gui.widgets.ListView + AirportListModel.
-# The bound property drives the search filter; selecting a row writes the ICAO
-# code back to the same property (or a separate target property, if needed).
+# The bound property is the selected ICAO
+
 var XMLAirportList = {
     init: func(objectProps) {
         me._model = nil;
+        me._nearbyRangeNode = nil;
+        me._heliportsNode = nil;
+
+        me._searchTimeout = maketimer(0.1, func() { me._onSearchTimeout(); } );
+        me._searchTimeout.singleShot = true;
     },
 
     show: func(viewParent) {
@@ -1215,7 +1306,7 @@ var XMLAirportList = {
 
         me._layout = me._view;
         me._applyLayoutConfig();
-        me.valueChanged();
+        me.update();
 
         # When the user clicks a row, write the selected airport ICAO to the
         # bound property and activate any configured bindings.
@@ -1227,21 +1318,63 @@ var XMLAirportList = {
             }
         });
 
+        var searchProp = me._configValue("search-property");
+        if (searchProp) {
+            me._searchPropNode = props.globals.getNode(searchProp, true);
+            me._searchListenerId = setlistener(me._searchPropNode, func() {
+                me._searchTimeout.restart(0.1);
+            });
+        }
+
         return me._view;
     },
 
-    # The bound property value is used as the model's search term so that a
-    # paired text-input widget can drive filtering live.
-    valueChanged: func() {
-        if (me._model != nil) {
-            logprint(LOG_INFO, "Setting airport search term to:" ~ me.value);
-            me._model.search = me.value;
+    _onSearchTimeout: func()
+    {
+        me.search(me._searchPropNode.getValue());
+    },
+
+    del: func()
+    {
+        if (me._searchPropNode) {
+            removelistener(me._searchListenerId);
         }
     },
 
+    valueChanged: func() {
+        # setting our output property doesn't actually do anything
+        # FIXME : select the airport in the ListView, if it's there
+        # (which in recent / nearby mode, it should be!)
+    },
+
     update: func() {
+        if (me._model == nil) {
+            return;
+        }
+
         me.valueChanged();
     },
+
+    search: func(search) {
+        me._model.search = search;
+    },
+
+    showNearby: func(range) {
+        me._model.nearbyRangeNm = range;
+    },
+
+    showRecents: func {
+        # searching on empty string shows recents
+        me._model.search = '';
+    },
+
+    setHeliportsMode: func(b) {
+        me._model.heliports = b;
+    },
+
+    addRecent: func(icao) {
+        me._model.addRecent(icao);
+    }
 };
 
 var _createCompatObjectLookupHash = {

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resource>
+  <meta>
+    <file-type>FlightGear default translation file</file-type>
+    <format-version>1</format-version>
+    <description>Automatically extracted strings with context 'dialog-airports'</description>
+    <language-description>Engineering English</language-description>
+  </meta>
+  <strings>
+    <aircraft-position comment="Section for controling the aircraft start location at the selected airport">Aircraft Position</aircraft-position>
+    <airport-search comment="Airport name/ICAO search box">Airport:</airport-search>
+    <airports-show-helipads comment="Toggle showing helipads or airports/seaports">Helipads</airports-show-helipads>
+    <select-airport-dialog>Select Airport</select-airport-dialog>
+  </strings>
+</resource>

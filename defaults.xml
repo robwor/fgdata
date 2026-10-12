@@ -1018,6 +1018,8 @@ Started September 2000 by David Megginson, david@megginson.com
 
         <zoom userarchive="n" type="int">6</zoom> <!-- but not zoom, that could be confusing -->
       </map>
+      <recent-airports preserve="y">
+      </recent-airports>
     </gui>
     <mouse>
       <hide-cursor type="bool" userarchive="y">true</hide-cursor>

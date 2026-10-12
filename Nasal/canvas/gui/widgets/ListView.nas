@@ -52,12 +52,16 @@ gui.widgets.ListView = {
         if (size(arg) == 1) var arg = arg[0];
         var (w,h) = arg;
 
-        logprint(LOG_INFO, "List view size:" ~ w ~ "," ~ h );
         me._size = [w, h];
         me._view.setSize(me, w, h);
         me._scroll.setSize(w,h);
         if (me._itemView != nil) {
             me._itemView.viewHeight = h;
+        }
+
+        # resize all the delegates
+        foreach (var d; me._activeDelegates) {
+            d._refreshVisual();
         }
 
         return me;
@@ -69,11 +73,10 @@ gui.widgets.ListView = {
         var dh = me._delegateHeight;
         var grp = me._contentGroup.createChild("group", "lv-row");
         var bg  = grp.createChild("path", "lv-row-bg");
-        var txt = grp.createChild("text", "lv-row-text")
-                     .set("font", "LiberationFonts/LiberationSans-Regular.ttf")
-                     .set("character-size", 14)
-                     .set("alignment", "left-center")
-                     .set("clip-frame", canvas.Element.PARENT);
+        var txt = grp.createChild("richtext", "lv-row-text")
+            .setFont(me._style.getFont("list-view-delegate"))
+            .setAlignment("left-center")
+            .setForegroundColor(me._style.getColor("fg_color"));
 
         var delegate = {
             parents: [],
@@ -89,7 +92,6 @@ gui.widgets.ListView = {
                 me._group.setTranslation(0, modelData.yPosition);
                 me._group.show();
                 me._updateContent();
-                logprint(LOG_INFO, "ListView delegate bound:" ~ modelData.label ~ " to index " ~ index);
             },
 
             # Called by C++ when this delegate is recycled.
@@ -139,7 +141,6 @@ gui.widgets.ListView = {
             }
         });
 
-        logprint(LOG_INFO, "ListView created delegate");
         append(w._activeDelegates, delegate);
         return delegate;
     },

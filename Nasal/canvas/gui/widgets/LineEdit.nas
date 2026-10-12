@@ -8,27 +8,31 @@ gui.widgets.LineEdit = {
     m._focus_policy = m.StrongFocus;
     m._setView(style.createWidget(parent, "line-edit", cfg));
 
-
     m._text = "";
     m._placeholder = "";
     m._multiLine = 0;
     m._ignoreDrag = 0;
 
-    m.context_menu = gui.Menu.new();
-    m.context_menu.createItem(text: "Copy", cb: func() { m.copy(); }, shortcut: "<Ctrl>+C");
-    m.context_menu.createItem(text: "Cut", cb: func() { m.cut(); }, shortcut: "<Ctrl>+X");
-    m.context_menu.createItem(text: "Paste", cb: func() { m.paste(); }, shortcut: "<Ctrl>+V");
-    m.context_menu.createItem(text: "Clear", cb: func() { m.clear(); }, shortcut: "<Ctrl>+D");
-    m.context_menu.createItem(text: "Select all", cb: func() { m.selectAll(); }, shortcut: "<Ctrl>+A");
-    m.context_menu.setCanvasItem(m);
-
+    m.context_menu = nil;
     m.setText(cfg.get("text", ""));
     m.setPlaceholder(cfg.get("placeholder", ""));
     m.setMultiLine(cfg.get("multiline", 0));
 
     return m;
   },
+
   _showContextMenu: func(e) {
+    if (me.context_menu == nil) {
+      me.context_menu = gui.Menu.new();
+      var self = me;
+      me.context_menu.createItem(text: "Copy", cb: func() { self.copy(); }, shortcut: "<Ctrl>+C");
+      me.context_menu.createItem(text: "Cut", cb: func() { self.cut(); }, shortcut: "<Ctrl>+X");
+      me.context_menu.createItem(text: "Paste", cb: func() { self.paste(); }, shortcut: "<Ctrl>+V");
+      me.context_menu.createItem(text: "Clear", cb: func() { self.clear(); }, shortcut: "<Ctrl>+D");
+      me.context_menu.createItem(text: "Select all", cb: func() { self.selectAll(); }, shortcut: "<Ctrl>+A");
+      me.context_menu.setCanvasItem(me);
+    }
+
     me.context_menu.show(e.screenX, e.screenY);
   },
 
@@ -105,9 +109,7 @@ gui.widgets.LineEdit = {
   selectAll: func() {
     me._setSelection(0, size(me._text));
   },
-  _showContextMenu: func(e) {
-    me.context_menu.show(e.screenX, e.screenY);
-  },
+
   # Remove selected text
   _moveCursorToByteIndex: func(pos) {
     me._view._text.moveCursorToByteIndex(pos);
@@ -123,7 +125,7 @@ gui.widgets.LineEdit = {
     me._view._cursor_blink = 1;
     me._view._cursor_blink_timer.stop();
     me._view._cursor_blink_timer.start();
-    
+
     me._onStateChange();
     return me;
   },
@@ -228,7 +230,7 @@ gui.widgets.LineEdit = {
           me.setText(me._text ~ "\n");
           me._moveCursorToByteIndex(size(me._text));
         } else {
-          me._trigger("editingFinished", {text: me.text()}); # TODO validator/etc.
+          me._trigger("editing-finished", {text: me.text()}); # TODO validator/etc.
         }
       } elsif (e.key == "Backspace") {
         me._backspace();
@@ -345,7 +347,10 @@ gui.widgets.LineEdit = {
     });
   },
   del: func() {
-    me.context_menu.del();
+    if (me.context_menu != nil) {
+      me.context_menu.del();
+    }
+
     if (me._view != nil) {
       me._view._cursor_blink_timer.stop();
     }

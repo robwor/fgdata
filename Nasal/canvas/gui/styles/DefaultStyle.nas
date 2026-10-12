@@ -388,9 +388,9 @@ DefaultStyle.widgets.label = {
     var height = fontSize + padding * 2;
     var hfw_func = nil;
 
-    # this implies no clipping of long strings, 
+    # this implies no clipping of long strings,
     # which breaks BoxLayout when we overflow.
-    # might need to consider a different algorithm in BoxLayout 
+    # might need to consider a different algorithm in BoxLayout
     # when min-width is too big
     var minWidth = math.max(me._text.minimumWidth(), height);
     var minHeight = math.max(me._text.minimumHeight(), height);
@@ -725,14 +725,14 @@ DefaultStyle.widgets["tab-widget"] = {
 		me.tabBar = me._root.createChild("group", "tab-widget-tabbar");
 		me.content = me._root.createChild("group", "tab-widget-content");
 	},
-	
+
 	update: func(model) {
 		me.bg.set("fill", me._style.getColor("bg_color"));
 		me.content.setTranslation(0, model._tabBar.minimumSize()[1]);
 		me.tabBar.update();
 		me.content.update();
 	},
-	
+
 	setSize: func(model, w, h) {
 		me.bg.reset().rect(0, w, h, 0);
 	},
@@ -752,7 +752,7 @@ DefaultStyle.widgets["tab-widget-tab-button"] = {
 						.setFont(me._style.getFont("tab-widget-tab-button"))
 						.setAlignment("center-center");
 	},
-	
+
 	setSize: func(model, w, h) {
     var closeButtonSize = model._close_button._size;
     var selectedIndicatorThickness = me._style.getSize("tab-button-selected-indicator-thickness");
@@ -767,7 +767,7 @@ DefaultStyle.widgets["tab-widget-tab-button"] = {
       me._label.setTranslation(w / 2, h / 2);
     }
 	},
-	
+
 	setText: func(model, text) {
 		me._label.setText(text);
 
@@ -789,11 +789,11 @@ DefaultStyle.widgets["tab-widget-tab-button"] = {
 
 		return me;
 	},
-	
+
 	update: func(model) {
 		var backdrop = !model._windowFocus();
 		var (w, h) = model._size;
-		
+
 		var bg_color_name = "tab_widget_tab_button_bg_focused";
 		if (backdrop) {
 			bg_color_name = "tab_widget_tab_button_bg_unfocused";
@@ -803,7 +803,7 @@ DefaultStyle.widgets["tab-widget-tab-button"] = {
 			bg_color_name = "tab_widget_tab_button_bg_hovered";
 		}
 		me._bg.set("fill", me._style.getColor(bg_color_name));
-		
+
 		me._selected_indicator.setVisible(model._selected or model._hover);
 		var selected_indicator_color_name = "tab_widget_tab_button_selected_indicator_selected";
 		if (!model._selected and model._hover) {
@@ -818,7 +818,7 @@ DefaultStyle.widgets["tab-widget-tab-button"] = {
 DefaultStyle.widgets["tab-close-button"] = {
 	new: func(parent, cfg) {
     var iconSize = me._style.getSize("tab-close-button", "icon") / 2;
-    
+
 		me._root = parent.createChild("group", "tab-close-button");
 		me._bg = me._root.createChild("path", "bg");
 		me._border = me._root.createChild("image", "button")
@@ -901,25 +901,34 @@ DefaultStyle.widgets.rule = {
 
     me._rule = me._root.createChild("path")
 						.set("stroke-width", me._style.getSize("rule-thickness"));
-    me._label = me._root.createChild("richtext", "label")
+    me._label = nil; # lazily created
+  },
+
+  _labelText: func(model)
+  {
+    if (me._label == nil) {
+      me._label = me._root.createChild("richtext", "label")
             .setFont(me._style.getFont("rule"))
             .setAlignment("left-center");
 
-    me._isVertical = cfg.get("isVertical", 0);
-    if (me._isVertical) {
-      me._label.setRotation(90);
+      if (model._isVertical) {
+        me._label.setRotation(90);
+      }
     }
+
+    return me._label;
   },
+
   setSize: func(model, w, h)
   {
     var fontSize = me._style.getFont("rule").size;
     var padding = me._style.getPadding("rule");
     var labelOffset = me._style.getSize("rule-label-offset");
-    var labelWidth = me._label.width();
+    var labelWidth = me._label ? me._label.width() : 0.0;
 
-    if (me._isVertical ) {
+    if (model._isVertical ) {
       if (model._text) {
-        me._label.setTranslation(w / 2, h - padding - labelOffset - padding);
+        me._labelText(model).setTranslation(w / 2, h - padding - labelOffset - padding);
         me._rule.reset().moveTo(w / 2, h - padding)
                 .vert(-labelOffset)
                 .move(-labelWidth - padding * 2)
@@ -930,7 +939,7 @@ DefaultStyle.widgets.rule = {
       }
     } else {
       if (model._text) {
-        me._label.setTranslation(padding + labelOffset + padding, h / 2);
+        me._labelText(model).setTranslation(padding + labelOffset + padding, h / 2);
         me._rule.reset().moveTo(padding, h / 2)
                 .horiz(labelOffset)
                 .move(labelWidth + padding * 2, 0)
@@ -950,7 +959,7 @@ DefaultStyle.widgets.rule = {
     var lineThickness = me._style.getSize("rule-thickness");
     var padding = me._style.getPadding("rule");
     var labelOffset = me._style.getSize("rule-label-offset") + padding;
-    var labelWidth = me._label.width();
+    var labelWidth = me._label ? me._label.width() : 0.0;
 
     var width = padding + labelOffset + labelWidth + padding;
     var height = fontSize + padding * 2;
@@ -958,7 +967,7 @@ DefaultStyle.widgets.rule = {
       height = lineThickness + padding * 2;
     }
 
-    if (me._isVertical) {
+    if (model._isVertical) {
       model.setLayoutMinimumSize([height, width]);
       model.setLayoutSizeHint([height, width]);
       model.setLayoutMaximumSize([height, MAX_SIZE]);
@@ -967,25 +976,30 @@ DefaultStyle.widgets.rule = {
       model.setLayoutSizeHint([width, height]);
       model.setLayoutMaximumSize([MAX_SIZE, height]);
     }
+
+    # re-run sizing logic
+  #  var geom = model.geometry();
+  #  me.setSize(model, geom[2], geom[3]);
   },
 
   setText: func(model, text)
   {
     if (!text) {
-      me._label.hide();
+      if (me._label) {
+        me._label.hide();
+      }
     } else {
-      me._label.show();
-      me._label.setText(text);
-    }
+      var l = me._labelText(model); # will create if needed
+      l.show();
+      l.setText(text);
 
-    # TODO handle sliding for translations ?
-    var maxW = model._cfg.get("maxTextWidth", -1);
-    if (maxW > 0) {
-      me._label.setMaxWidth(maxW);
+      var maxW = model._maxTextWidth;
+      if (maxW > 0) {
+        l.setMaxWidth(maxW);
+      }
     }
 
     me._updateLayout(model);
-
     return me.update(model);
   },
 
@@ -993,7 +1007,9 @@ DefaultStyle.widgets.rule = {
   {
     # different color if disabled?
     var color_name = model._windowFocus() ? "fg_color" : "backdrop_fg_color";
-    me._label.setColor(me._style.getColor(color_name));
+    if (me._label) {
+      me._label.setColor(me._style.getColor(color_name));
+    }
     me._rule.setColor(me._style.getColor(color_name));
   },
 };
@@ -1020,7 +1036,7 @@ DefaultStyle.widgets.frame = {
  #     file ~= "-disabled";
 
     me._bg.set("src", file ~ ".png");
-    
+
     me._bg.setSize(model._size[0], model._size[1]);
   },
 };
@@ -1049,7 +1065,7 @@ DefaultStyle.widgets.slider = {
             .setAlignment("center-top");
   },
 
-  _updateLayoutSizes: func(model) 
+  _updateLayoutSizes: func(model)
   {
     var fontSize = me._style.getFont("slider").size;
     var padding = me._style.getPadding("slider");
@@ -1063,13 +1079,13 @@ DefaultStyle.widgets.slider = {
     }
     if (model._showTicks) {
       h += me._style.getSize("slider-fill-ticks-margin") + me._style.getSize("slider-ticks-length");
-    } 
+    }
 
     # value of 80 here is based off PUI slider min width in old layout.cxx
     var minSz = [85, h];
     model.setLayoutMinimumSize(minSz);
 
-    # calculate preferred size 
+    # calculate preferred size
     # disabled becuase using the numerical range for the preferred size works super badly,
     # we have sliders with ranges of eg [-450, 7000]
 
@@ -1109,14 +1125,14 @@ DefaultStyle.widgets.slider = {
       file ~= "-disabled";
 
     me._bg.set("src", file ~ ".png");
-    
+
   # fill state
     var file = me._style._dir_widgets ~ "/";
     file ~= "scale-" ~ direction ~ "-fill";
     if( !model._enabled ) {
       file ~= "-disabled";
     } else {
- 
+
     }
 
     me._fill.set("src", file ~ ".png");
@@ -1124,7 +1140,7 @@ DefaultStyle.widgets.slider = {
 
   # set thumb state
     file = me._style._dir_widgets ~ "/";
-    file ~= "slider-" ~ direction;  
+    file ~= "slider-" ~ direction;
     if( !model._enabled ) {
       file ~= "-disabled";
     } else {
@@ -1136,7 +1152,7 @@ DefaultStyle.widgets.slider = {
 
     me._thumb.set("src", file ~ ".png");
     me._thumbSize = me._thumb.imageSize();
-    
+
     var color_name = model._windowFocus() ? "fg_color" : "backdrop_fg_color";
     me._value.setColor(me._style.getColor(color_name));
     if (model._showValue) {
@@ -1144,7 +1160,7 @@ DefaultStyle.widgets.slider = {
     } else {
       me._value.hide();
     }
-    
+
     me._ticks.set("stroke", me._style.getColor("slider_ticks"));
     if (model._showTicks) {
       me._ticks.show();
@@ -1280,13 +1296,13 @@ DefaultStyle.widgets.dial = {
       halfLength - handleOffset[1]
     );
     var degreesRange = 360;
-    var nowrapMargin = me._style.getSize("dial-nowrap-margin-deg"); 
+    var nowrapMargin = me._style.getSize("dial-nowrap-margin-deg");
     var offset = 0;
     if (!model._wraps) {
       degreesRange -= nowrapMargin;
       offset = nowrapMargin / 2;
     }
-    me._handle.setRotation((model._normValue() * degreesRange + offset) * D2R); 
+    me._handle.setRotation((model._normValue() * degreesRange + offset) * D2R);
     me._drawTicks(model);
   },
 
@@ -1296,7 +1312,7 @@ DefaultStyle.widgets.dial = {
     var knobTicksMargin = me._style.getSize("dial-knob-ticks-margin");
     var ticksLength = me._style.getSize("dial-ticks-length");
     var knobRadius = (length - me._style.getSize("dial-knob-border-width")) / 2 - knobTicksMargin - ticksLength;
-    
+
     var degreesRange = 360;
     var nowrapMargin = me._style.getSize("dial-nowrap-margin-deg");
     var offset = 0;
@@ -1344,7 +1360,7 @@ DefaultStyle.widgets.dial = {
 
   setValue: func(model, value) {
     var degreesRange = 360;
-    var nowrapMargin = me._style.getSize("dial-nowrap-margin-deg"); 
+    var nowrapMargin = me._style.getSize("dial-nowrap-margin-deg");
     var offset = 0;
     if (!model._wraps) {
       degreesRange -= nowrapMargin;
@@ -1374,7 +1390,7 @@ DefaultStyle.widgets.dial = {
       color_name ~= "_hovered";
     }
     me._knob.set("fill", me._style.getColor(color_name));
-    
+
     color_name = "dial_knob_border";
     if (!model._enabled) {
       color_name ~= "_disabled";
@@ -1385,7 +1401,7 @@ DefaultStyle.widgets.dial = {
       color_name ~= "_hovered";
     }
     me._knob.set("stroke", me._style.getColor(color_name));
-    
+
     var file = me._style._dir_widgets ~ "/dial-handle";
     if (!model._enabled) {
       file ~= "-disabled";
@@ -1413,24 +1429,24 @@ DefaultStyle.widgets["menu-item"] = {
 	new: func(parent, cfg) {
 		me._root = parent.createChild("group", "menu-item");
 		me._bg = me._root.createChild("path");
-		
+
 		me._icon = me._root.createChild("image");
-		
+
     me._label = me._root.createChild("richtext")
 						.setFont(me._style.getFont("menu-item"))
 						.setAlignment("left-center");
-		
+
 		me._shortcut = me._root.createChild("richtext")
 						.setFont(me._style.getFont("menu-item-shortcut"))
 						.setAlignment("right-center");
-		
+
     var iconSize = me._style.getSize("menu-item-submenu", "icon");
 		me._submenu_indicator = me._root.createChild("path")
 						.moveTo(iconSize * 0.25, 0)
             .line(iconSize * 0.75, iconSize * 0.5)
             .line(iconSize * 0.25, iconSize);
 	},
-	
+
 	setSize: func(model, w, h) {
 		me._bg.reset().rect(0, 0, w, h);
     # allow different font for the shortcut (e.g. bold) but inherit from the menu-item font if defined instead of the global default font directly
@@ -1448,7 +1464,7 @@ DefaultStyle.widgets["menu-item"] = {
 		me._submenu_indicator.setTranslation(w - padding, int((h - 12) / 2));
 		return me;
 	},
-	
+
 	_updateLayoutSizes: func(model) {
     # allow different font for the shortcut (e.g. bold) but inherit from the menu-item font if defined instead of the global default font directly
     var fontSize = math.max(me._style.getFont("menu-item").size, me._style.getFont("menu-item-shortcut", me._style.getFont("menu-item")).size);
@@ -1469,10 +1485,10 @@ DefaultStyle.widgets["menu-item"] = {
 		model.setLayoutMinimumSize([min_width, height]);
 		model.setLayoutSizeHint([min_width, height]);
     model.setLayoutMaximumSize([MAX_SIZE, height]);
-		
+
 		return me;
 	},
-	
+
 	setText: func(model, text) {
 		me._label.setText(text);
 		return me._updateLayoutSizes(model);
@@ -1484,7 +1500,7 @@ DefaultStyle.widgets["menu-item"] = {
 		}
 		return me._updateLayoutSizes(model);
 	},
-	
+
 	setIcon: func(model, icon) {
 		if (!icon) {
 			me._icon.hide();
@@ -1495,7 +1511,7 @@ DefaultStyle.widgets["menu-item"] = {
 		}
 		return me;
 	},
-	
+
 	update: func(model) {
 		me._bg.set("fill", me._style.getColor("menu_item_bg" ~ (model._hovered ? "_hovered" : "")));
 		var text_color_name = "menu_item_fg";
@@ -1516,7 +1532,7 @@ DefaultStyle.widgets["menu-item"] = {
 			me._submenu_indicator.hide();
 			me._shortcut.show();
 		}
-		
+
 		return me;
 	}
 };
@@ -1527,16 +1543,16 @@ DefaultStyle.widgets["menu-bar"] = {
 		me._bg = me._root.createChild("path");
 		me._items = me._root.createChild("group", "menu-bar-items");
 	},
-	
+
 	setSize: func(model, w, h) {
 		me._bg.reset().rect(0, 0, w, h);
 		me._items.setTranslation(0, 0);
 		return me;
 	},
-	
+
 	update: func(model) {
 		me._bg.set("fill", me._style.getColor("bg_color"));
-		
+
 		return me;
 	}
 };
@@ -1654,10 +1670,7 @@ DefaultStyle.widgets["combo-box"] = {
   _getMaxWidthItem: func(model) {
     var maxItemWidth = 0;
     foreach (var menuItem; model._items) {
-      var itemWidth = menuItem.minimumSize()[0];
-      if (itemWidth > maxItemWidth) {
-        maxItemWidth = itemWidth;
-      }
+      maxItemWidth = math.max(maxItemWidth,menuItem.minimumSize()[0]);
     }
 
     return maxItemWidth;
@@ -1678,7 +1691,7 @@ DefaultStyle.widgets["list-item"] = {
 						.setFont(me._style.getFont("list-item"))
 						.setAlignment("left-center");
 	},
-	
+
 	setSize: func(model, w, h) {
     var fontSize = me._style.getFont("list-item").size;
     var padding = me._style.getPadding("list-item");
@@ -1686,7 +1699,7 @@ DefaultStyle.widgets["list-item"] = {
 		me._label.setTranslation(padding, h / 2);
 		return me;
 	},
-	
+
 	_updateLayoutSizes: func(model) {
     var fontSize = me._style.getFont("list-item").size;
     var padding = me._style.getPadding("list-item");
@@ -1695,15 +1708,15 @@ DefaultStyle.widgets["list-item"] = {
 		model.setLayoutMinimumSize([min_width, height]);
 		model.setLayoutSizeHint([min_width, height]);
     model.setLayoutMaximumSize([MAX_SIZE, height]);
-		
+
 		return me;
 	},
-	
+
 	setText: func(model, text) {
 		me._label.setText(text);
 		return me._updateLayoutSizes(model);
 	},
-	
+
 	update: func(model) {
 		me._bg.set("fill", me._style.getColor("list_item_bg" ~ (model._selected ? "_selected" : "")));
 		var text_color_name = "list_item_fg";
@@ -1711,7 +1724,7 @@ DefaultStyle.widgets["list-item"] = {
 			text_color_name ~= "_selected";
 		}
 		me._label.setColor(me._style.getColor(text_color_name));
-		
+
 		return me;
 	}
 };
@@ -1721,15 +1734,15 @@ DefaultStyle.widgets.list = {
 		me._root = parent.createChild("group", "list");
 		me._bg = me._root.createChild("path");
 	},
-	
+
 	setSize: func(model, w, h) {
 		me._bg.reset().rect(0, 0, w, h);
 		return me;
 	},
-	
+
 	update: func(model) {
 		me._bg.set("fill", me._style.getColor("bg_color"));
-		
+
 		return me;
 	},
 };

@@ -170,7 +170,7 @@ gui.Widget = {
     if( me._focused and me.getCanvas() )
       me.getCanvas()._focused_widget = nil;
   },
-  view: func 
+  view: func
   {
     return me._view;
   },
@@ -183,7 +183,7 @@ gui.Widget = {
   },
   visibilityChanged: func(visible)
   {
-    if (me._view != nil) {
+    if (me._view) {
       me._view._root.setVisible(visible);
     }
   },

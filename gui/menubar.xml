@@ -489,7 +489,7 @@
 				<command>dialog-show</command>
 				<dialog-name>instruments</dialog-name>
 			</binding>
-		</item>	
+		</item>
 		<item>
 			<name>light-switches</name>
 			<binding>
@@ -707,17 +707,21 @@
 
 		<item>
 			<name>reload-gui</name>
+			<!-- this causes the menus to reload, so defer it, or we might crash -->
 			<binding>
-                <command>nasal-reload</command>
-                <module>canvas</module>
-            </binding>
-			<binding>
-                <command>nasal-reload</command>
-                <module>gui</module>
-            </binding>
-			<binding>
-				<command>reinit</command>
-				<subsystem>gui</subsystem>
+				<deferred type="bool">true</deferred>
+					<binding>
+					<command>nasal-reload</command>
+					<module>canvas</module>
+				</binding>
+				<binding>
+					<command>nasal-reload</command>
+					<module>gui</module>
+				</binding>
+				<binding>
+					<command>reinit</command>
+					<subsystem>gui</subsystem>
+				</binding>
 			</binding>
 		</item>
 

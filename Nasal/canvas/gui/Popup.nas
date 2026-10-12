@@ -12,7 +12,6 @@ gui.Popup = {
       		logprint(LOG_WARN, "Creating gui.Popup without ID");
     	}
 
-
 		var ghost = _newWindowGhost(id);
 		var m = {
 			parents: [gui.Popup, PropertyElement, ghost],

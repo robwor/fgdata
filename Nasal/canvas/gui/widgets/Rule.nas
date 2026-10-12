@@ -13,8 +13,9 @@ gui.widgets.HorizontalRule = {
     cfg = Config.new(cfg);
     var m = gui.Widget.new(gui.widgets.HorizontalRule, cfg);
     m._focus_policy = m.NoFocus;
+    m._isVertical = false;
+    m._maxTextWidth = m._cfg.get("max-text-width", -1);
     m._setView( style.createWidget(parent, "rule", m._cfg) );
-
     m.setText(m._cfg.get("text", ""));
     return m;
   },
@@ -32,9 +33,10 @@ gui.widgets.VerticalRule = {
   new: func(parent, style = nil, cfg = nil)
   {
     style = style or canvas.style;
-    cfg = Config.new(cfg);
     var m = gui.Widget.new(gui.widgets.VerticalRule, cfg);
+    m._isVertical = true;
     m._focus_policy = m.NoFocus;
+    m._maxTextWidth = m._cfg.get("max-text-width", -1);
     m._setView( style.createWidget(parent, "rule", m._cfg) );
 
     m.setText(m._cfg.get("text", ""));

@@ -11,7 +11,7 @@ gui.widgets.ComboBox = {
     var m = gui.Widget.new(gui.widgets.ComboBox, cfg);
     m._focus_policy = m.StrongFocus;
 #    m._flat = cfg.get("flat", 0);
-    m._menu = gui.Menu.new();
+    m._menu = nil;
     m._setView(style.createWidget(parent, cfg.get("type", "combo-box"), cfg));
     m._items = [];
     m._currentIndex = nil;
@@ -69,6 +69,9 @@ gui.widgets.ComboBox = {
 
   menu: func()
   {
+    if (!me._menu) {
+      me._menu = gui.Menu.new("combo-box-menu");
+    }
     return me._menu;
   },
 
@@ -86,6 +89,13 @@ gui.widgets.ComboBox = {
     append(me._items, item);
     me._view._resetMaxItemWidth();
     return item;
+  },
+
+  clear: func()
+  {
+    if (me._menu) {
+      me._menu.clear();
+    }
   },
 
 # helper to set the current item by passing in
@@ -202,8 +212,11 @@ gui.widgets.ComboBox = {
     me.menu().setSize(math.max(me._size[0], me.menu().getSize()[0]), me.menu().getSize()[1]);
   },
 
-  _hideMenu: func {
-    me._menu.hide();
-    me.setDown(0);
+  _hideMenu: func
+  {
+    if (me._menu) {
+      me._menu.hide();
+      me.setDown(0);
+    }
   }
 };

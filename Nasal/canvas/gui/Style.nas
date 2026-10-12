@@ -136,5 +136,9 @@ gui.Style = {
   getFont: func(name, def = nil) {
     def = isa(def, FontDescription) ? def : me._fonts["default"];
     return me._fonts[name] or def;
+  },
+  measureText: func(text) {
+    # FIXME : implement me
+    return 100;
   }
 };

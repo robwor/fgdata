@@ -1,6 +1,10 @@
 # SPDX-FileCopyrightText: (C) 2023 TheFGFSEagle <thefgfseagle@gmail.com>
 # SPDX-License-Identifier: GPL-2.0-or-later
 
+# these files need the canvas module, which may be disabled (e.g. in the test suite)
+if (!ishash(globals["canvas"]) or !ishash(canvas["gui"]))
+    return;
+
 var menubar = nil;
 
 var _addItem = func(parent, itemGhost) {
