@@ -1630,13 +1630,23 @@ Started September 2000 by David Megginson, david@megginson.com
       registered under /nasal. A module implemented by a directory must be
       listed here, with <enabled>, otherwise it is disabled by default.
 
-      The ORDER OF THE ENTRIES BELOW IS THE LOAD ORDER. First, all modules
-      with <core> set are loaded, in order; then all other modules, in order.
-      Modules not listed here (i.e. top-level .nas files) follow the listed
-      ones, in alphabetical order. Modules from aircraft and add-ons are added
-      after that.
+      The entries for top-level .nas files are named builtin-<module>. Aircraft
+      and add-ons add their own <nasal> entries, and can use the name of a
+      built-in module to extend it with extra files: because these nodes are
+      separate (not merged with the built-in one), they keep the order of the
+      aircraft's -set.xml, and are loaded after all the built-in modules.
 
-      Dependencies of the core modules:
+      The ORDER OF THE ENTRIES BELOW IS THE LOAD ORDER, each module being
+      loaded completely before the next. A <file> entry names a file in
+      FG_ROOT/Nasal (a name ending in / means every file in that directory),
+      and the module then loads exactly those. Without one, the module loads
+      the files found in its directory (or the top-level file of the same
+      name). Files which aircraft or add-ons add to a module are loaded after
+      those, at the position of the module. Modules not listed here follow
+      the listed ones, in alphabetical order. Modules from aircraft and add-ons
+      are added after that.
+
+      Dependencies of the early modules:
         props.nas <- (everything)
         string.nas <- io.nas <- std, debug
         modules.nas <- addons.nas
@@ -1645,65 +1655,99 @@ Started September 2000 by David Megginson, david@megginson.com
         geo <- view
         canvas <- the canvas-dependent files in gui/
 
-      Note that the files of a module are all loaded together, so a module
-      which has a <core> flag should only contain files which can be loaded at
-      that point.
     -->
-    <props>
-      <core type="bool">true</core>
-    </props>
-    <globals>
-      <core type="bool">true</core>
-    </globals>
-    <math>
-      <core type="bool">true</core>
-    </math>
-    <string>
-      <core type="bool">true</core>
-    </string>
-    <io>
-      <core type="bool">true</core>
-    </io>
+    <builtin-props>
+      <file>props.nas</file>
+    </builtin-props>
+    <builtin-globals>
+      <file>globals.nas</file>
+    </builtin-globals>
+    <builtin-math>
+      <file>math.nas</file>
+    </builtin-math>
+    <builtin-string>
+      <file>string.nas</file>
+    </builtin-string>
+    <builtin-io>
+      <file>io.nas</file>
+    </builtin-io>
     <std>
-      <core type="bool">true</core>
+      <file>std/</file>
       <enabled type="bool">true</enabled>
     </std>
-    <debug>
-      <core type="bool">true</core>
-    </debug>
+    <builtin-debug>
+      <file>debug.nas</file>
+    </builtin-debug>
     <modules>
-      <core type="bool">true</core>
       <enabled type="bool">true</enabled>
-      <!-- only load the file(s) listed here, not everything in the directory:
-           the other files are optional modules, loaded on demand by modules.nas -->
-      <explicit-files type="bool">true</explicit-files>
+      <!-- only this file is loaded, not the others in the directory: they are
+           optional modules, loaded on demand by modules.nas -->
       <file>modules/modules.nas</file>
     </modules>
-    <mp_broadcast>
-      <core type="bool">true</core>
-    </mp_broadcast>
-    <geo>
-      <core type="bool">true</core>
-    </geo>
+    <builtin-mp_broadcast>
+      <file>mp_broadcast.nas</file>
+    </builtin-mp_broadcast>
+    <builtin-geo>
+      <file>geo.nas</file>
+    </builtin-geo>
     <canvas>
-      <core type="bool">true</core>
+      <file>canvas/</file>
       <enabled type="bool">true</enabled>
     </canvas>
     <gui>
-      <core type="bool">true</core>
+      <file>gui/</file>
       <enabled type="bool">true</enabled>
     </gui>
-     <multiplayer>
-      <core type="bool">true</core>
-    </multiplayer>
-    <view>
-      <core type="bool">true</core>
-    </view>
-    <markerpins>
-      <core type="bool">true</core>
-    </markerpins>
-    <events/>
-    <controls/>
+    <builtin-multiplayer>
+      <file>multiplayer.nas</file>
+    </builtin-multiplayer>
+    <builtin-view>
+      <file>view.nas</file>
+    </builtin-view>
+    <builtin-markerpins>
+      <file>markerpins.nas</file>
+    </builtin-markerpins>
+    <builtin-events/>
+    <builtin-controls/>
+    <!-- remaining top-level modules: listed so the nodes exist (in this order)
+         before any aircraft or add-on modules are appended to /nasal -->
+    <builtin-addons/>
+    <builtin-aircraft/>
+    <builtin-annunciators/>
+    <builtin-aurora/>
+    <builtin-bits/>
+    <builtin-checklist/>
+    <builtin-contrail/>
+    <builtin-dynamic_view/>
+    <builtin-earthview/>
+    <builtin-emesary/>
+    <builtin-emesary_mp_bridge/>
+    <builtin-emexec/>
+    <builtin-environment/>
+    <builtin-frame_utils/>
+    <builtin-fuel/>
+    <builtin-glide_slope_tunnel/>
+    <builtin-hdr/>
+    <builtin-joystick/>
+    <builtin-lag_adjust/>
+    <builtin-local_weather_auto_init/>
+    <builtin-material/>
+    <builtin-multikey/>
+    <builtin-notifications/>
+    <builtin-orbital_target/>
+    <builtin-prop_key_handler/>
+    <builtin-redout/>
+    <builtin-route_manager/>
+    <builtin-scenery/>
+    <builtin-screen/>
+    <builtin-screenshot/>
+    <builtin-seaport/>
+    <builtin-tanker/>
+    <builtin-track_target/>
+    <builtin-video/>
+    <builtin-volcano/>
+    <builtin-weather_scenario/>
+    <builtin-windsock/>
     <tutorial>
       <enabled type="bool">false</enabled>
     </tutorial>
