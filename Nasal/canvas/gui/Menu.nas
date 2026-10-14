@@ -273,8 +273,25 @@ gui.Menu = {
         addItem: func(item) {
                 item._setParentMenu(me);
                 me._layout.addItem(item);
-                me.setSize(me._layout.minimumSize()[0], me._layout.minimumSize()[1]);
+                me._updateSize();
                 return me;
+        },
+
+        # @description Insert the given menu item at the given position in the menu
+        # @param index: int required Position (0 is the first item) to insert the item at
+        # @param item: canvas.gui.Widget required The item to insert
+        # @return canvas.gui.Menu Return me to enable method chaining
+        insertItem: func(index, item) {
+                item._setParentMenu(me);
+                me._layout.insertItem(index, item);
+                me._updateSize();
+                return me;
+        },
+
+        # resize the popup to fit the items currently in the layout
+        _updateSize: func {
+                var s = me._layout.minimumSize();
+                me.setSize(s[0], s[1]);
         },
 
         # @description Create, insert and return a `canvas.gui.MenuItem` with given text and an optional callback, icon and enabled state.
@@ -417,10 +434,10 @@ gui.Menu = {
                         ) {
                                 me._parent_item._hovered = 0;
                                 me._parent_item.update();
-                                call(me.parents[1].hide, [], me);
+                                call(gui.Popup.hide, [], me);
                         }
                 } else {
-                        call(me.parents[1].hide, [], me);
+                        call(gui.Popup.hide, [], me);
                 }
         },
 
@@ -433,10 +450,190 @@ gui.Menu = {
 
         # @description Update the menu and its items
         update: func() {
-                me.parents[1].update();
+                # not me.parents[1]: that is the Menu class itself when subclassed
+                if (gui.Popup["update"] != nil) {
+                        call(gui.Popup.update, [], me);
+                }
                 for (var i = 0; i < me._layout.count(); i += 1) {
                         me._layout.itemAt(i).update();
                 }
                 return me;
+        },
+};
+
+# A menu which can generate some of its items from an ItemModel (for example a
+# gui.PropertyItemModel). Items can be added before or after the model using
+# the normal gui.Menu API (createItem, addItem, ...); this allows fixed header
+# items, separators or trailing 'Other...' entries around the model's items.
+#
+# The model's items are placed after whatever items are present when setModel
+# is called. Items which are added later come after the model's items. Do not
+# remove or reorder the fixed items which precede the model's items.
+#
+# Usage:
+#   var m = canvas.gui.MenuFromModel.new("my-menu");
+#   m.createItem("Best choice", func { ... });
+#   m.setModel(model, func(row, value, label) { ... });
+
+gui.MenuFromModel = {
+        _CLASS: "gui.MenuFromModel",
+
+        new: func(id = nil) {
+                var m = gui.Menu.new(id);
+                m.parents = [gui.MenuFromModel] ~ m.parents;
+                m._model = nil;
+                m._modelBase = 0;       # layout index of the first model item
+                m._modelItems = [];     # the menu item for each model row
+                m._modelListener = nil;
+                m._modelCb = nil;
+                m._modelCbMe = nil;
+                return m;
+        },
+
+        # @description Attach a model, whose rows become menu items placed after the items already in the menu
+        # @param model: ghost An ItemModel; nil detaches (and removes) any existing model items
+        # @param cb: callable optional Called when a model item is clicked, as cb(row, value, label)
+        # @param cb_me: Union[hash, ghost] optional Object to use for any me references in the callback function
+        # @return canvas.gui.MenuFromModel Return me to enable method chaining
+        setModel: func(model, cb = nil, cb_me = nil) {
+                me._detachModel();
+                if (model == nil) {
+                        return me;
+                }
+
+                me._model = model;
+                me._modelCb = cb;
+                me._modelCbMe = cb_me ?? {};
+                me._modelBase = me._layout.count();
+
+                var self = me;
+                me._modelListener = model.addChangeListener(func(type, row, count) {
+                        self._onModelChanged(type, row, count);
+                });
+
+                me._insertModelRows(0, model.count);
+                return me;
+        },
+
+        model: func {
+                return me._model;
+        },
+
+        # @description The menu items generated from the model, in row order
+        modelItems: func {
+                return me._modelItems;
+        },
+
+        # @description Convert a model row to the index of its item in the menu
+        indexForModelRow: func(row) {
+                return me._modelBase + row;
+        },
+
+        # @description Convert a menu item index to a model row, or nil if the index is not a model item
+        modelRowForIndex: func(index) {
+                var row = index - me._modelBase;
+                if (me._model == nil or row < 0 or row >= size(me._modelItems)) {
+                        return nil;
+                }
+                return row;
+        },
+
+        clear: func {
+                me._detachModel();
+                return call(gui.Menu.clear, [], me);
+        },
+
+        del: func {
+                me._detachModel();
+                call(gui.Menu.del, [], me);
+        },
+
+        _detachModel: func {
+                if (me._model == nil) {
+                        return;
+                }
+
+                me._model.removeChangeListener(me._modelListener);
+                me._removeModelRows(0, size(me._modelItems));
+                me._model = nil;
+                me._modelListener = nil;
+                me._modelCb = nil;
+                me._modelCbMe = nil;
+        },
+
+        _onModelChanged: func(type, row, count) {
+                if (type == globals.gui.MODEL_CHANGE_RESET) {
+                        me._removeModelRows(0, size(me._modelItems));
+                        me._insertModelRows(0, me._model.count);
+                } elsif (type == globals.gui.MODEL_CHANGE_ROWS_ADDED) {
+                        me._insertModelRows(row, count);
+                } elsif (type == globals.gui.MODEL_CHANGE_ROWS_REMOVED) {
+                        me._removeModelRows(row, count);
+                } elsif (type == globals.gui.MODEL_CHANGE_MODIFIED) {
+                        for (var r = row; r < row + count and r < size(me._modelItems); r += 1) {
+                                me._modelItems[r].setText(me._model.labelAt(r));
+                        }
+                }
+        },
+
+        _createModelItem: func(row) {
+                var self = me;
+                var item = nil;
+                item = gui.MenuItem.new(me._root, me.style, {
+                        text: me._model.labelAt(row),
+                        cb: func { self._onModelItemClicked(item); },
+                        cb_me: {}
+                });
+                return item;
+        },
+
+        _insertModelRows: func(row, count) {
+                for (var r = row; r < row + count; r += 1) {
+                        var item = me._createModelItem(r);
+                        item._setParentMenu(me);
+                        me._layout.insertItem(me._modelBase + r, item);
+                        if (r >= size(me._modelItems)) {
+                                append(me._modelItems, item);
+                        } else {
+                                me._modelItems = subvec(me._modelItems, 0, r) ~ [item] ~ subvec(me._modelItems, r);
+                        }
+                }
+                me._updateSize();
+        },
+
+        # taking an item from the layout also destroys its view
+        _removeModelRows: func(row, count) {
+                for (var i = 0; i < count; i += 1) {
+                        me._layout.takeAt(me._modelBase + row);
+                }
+                me._modelItems = subvec(me._modelItems, 0, row) ~ subvec(me._modelItems, row + count);
+                if (count > 0 and size(me._modelItems) + me._modelBase > 0) {
+                        me._updateSize();
+                }
+        },
+
+        _onModelItemClicked: func(item) {
+                if (me._model == nil or me._modelCb == nil) {
+                        return;
+                }
+
+                # rows can move as the model changes, so look the row up now
+                var row = nil;
+                forindex (var i; me._modelItems) {
+                        if (me._modelItems[i] == item) {
+                                row = i;
+                                break;
+                        }
+                }
+                if (row == nil) {
+                        return;
+                }
+
+                var args = [row, me._model.valueAt(row), me._model.labelAt(row)];
+                call(me._modelCb, args, me._modelCbMe, var errors = []);
+                if (size(errors)) {
+                        logprint(LOG_ALERT, "Error(s) executing callback for model menu item '" ~ args[2] ~ "':");
+                        debug.printerror(errors);
+                }
         },
 };

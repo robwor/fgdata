@@ -998,29 +998,28 @@ var XMLComboBox =
         # copy initial visiblity
         me._view.visible = me.visible;
 
-        # When present, <properties> names a property whose 'value' children
-        # define the possible values. This way doesn't distinguish between
-        # labels and values.
+        # The items come from an ItemModel over the property tree, either the
+        # children of the <properties> node if present, or those of the <combo>
+        # itself. The child syntax depends on the ui-version:
+        #  - ui-version < 2: 'value' children, label and value are the same.
+        #  - ui-version >= 2: 'item' children, each with a 'label' (optionally
+        #    translatable) and a 'value'.
+        # Children of <properties> can change while the dialog is open.
         var propertiesNode = me.config.getChild("properties");
-
-        # TODO: implement
-        # https://gitlab.com/flightgear/flightgear/-/work_items/3541
-        # to get rid of this mess
+        var root = me.config;
         if (propertiesNode != nil) {
-            me._propertiesNode = props.globals.getNode(propertiesNode.getValue(), true);
-            # listen for child changes, and update the menu items correspondingly
-            var listenType = 2;
-            me._propsListenerId = setlistener(me._propertiesNode, func { me.rebuildItems(); }, true, listenType);
-        } else if (me.dialog.uiVersion < 2) {
-            foreach (var valueNode; me.config.getChildren("value")) {
-                me._view.createItem(valueNode.getValue(), valueNode.getValue());
-            }
-        } else {
-            foreach (var itemNode; me.config.getChildren("item")) {
-                me._view.createItem(me._configTrValue("label", itemNode),
-                                    itemNode.getChild("value").getValue());
-            }
+            root = props.globals.getNode(propertiesNode.getValue(), true);
         }
+
+        if (me.dialog.uiVersion < 2) {
+            me._model = gui.PropertyItemModel.new(root, "value", ".", ".");
+        } else {
+            me._model = gui.PropertyItemModel.new(root, "item", "label", "value");
+            me._model.translationResource = "dialog-" ~ me.dialog.name;
+            me._model.translationDomain = me.dialog.translationDomain;
+            me._model.autoTranslate = 1;
+        }
+        me._view.setModel(me._model);
 
         me._layout = me._view;
         me._applyLayoutConfig();
@@ -1041,24 +1040,13 @@ var XMLComboBox =
         }
     },
 
-    rebuildItems: func()
-    {
-        me._view.clear();
-        foreach (var valueNode; me._propertiesNode.getChildren("value")) {
-            var v = valueNode.getValue();
-            if (v == nil) {
-                continue;
-            }
-
-            me._view.createItem(v, v);
-        }
-    },
-
     del: func()
     {
-        if (me._propertiesNode) {
-            removelistener(me._propsListenerId);
+        # the model refers to the view via its change listeners, so detach
+        if (me._view != nil) {
+            me._view.setModel(nil);
         }
+        me._model = nil;
     }
 };
 

@@ -1669,7 +1669,7 @@ DefaultStyle.widgets["combo-box"] = {
   # Calculate how many pixels the longest text in the list has.
   _getMaxWidthItem: func(model) {
     var maxItemWidth = 0;
-    foreach (var menuItem; model._items) {
+    foreach (var menuItem; model._allMenuItems()) {
       maxItemWidth = math.max(maxItemWidth,menuItem.minimumSize()[0]);
     }
 

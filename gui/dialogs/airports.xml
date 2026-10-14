@@ -76,14 +76,16 @@
           var runways = info.runways;
           var infoAboutRunways = [];   # list of strings for display
 
-          avail_runways.removeChildren("value");
+          avail_runways.removeChildren("item");
           var runway_keys = sort(keys(runways), string.icmp);
           var i = 0;
 
           foreach(var rwy; runway_keys) {
               var r = runways[rwy];
               longest_runway = math.max(longest_runway, r.length * 3.28);
-              avail_runways.getNode("value[" ~ i ~ "]", 1).setValue(rwy);
+              var item = avail_runways.getNode("item[" ~ i ~ "]", 1);
+              item.getNode("label", 1).setValue(rwy);
+              item.getNode("value", 1).setValue(rwy);
               var rwyInfo = sprintf("%5s | %5dm / %6d' | %03d deg", rwy, r.length, r.length * 3.28,
                                     math.round(r.magnetic_heading));
 
