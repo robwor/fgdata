@@ -288,7 +288,7 @@
           <binding>
             <command>nasal</command>
             <script><![CDATA[
-                var b = cmdarg().getValue("value");
+                var b = cmdarg().getValue("widget-value");
                 dialog.findWidget("airport-list").setHeliportsMode(b);
             ]]></script>
           </binding>

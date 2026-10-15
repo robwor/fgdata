@@ -334,8 +334,8 @@ var XMLObjectBase =
 
     _activateBindings: func
     {
-        var params = props.Node.new({"value":me._localValue});
-        me.activateBindingsWithArgs(params);
+        var args = {"widget-value": me._localValue};
+        me.activateBindingsWithArgs(props.Node.new(args));
     },
 
     _roleWeights: {
@@ -643,14 +643,15 @@ var XMLRadioButton =
 
     show: func(viewParent)
     {
-        var rbg = nil;
-        if (me.radioGroup != nil) {
-            rbg = me.dialog._peer._radioGroups[me.radioGroup];
+        var cfg = {"text":me.label};
+        if (me.dialog.uiVersion >= 2) {
+            if (me.radioGroup != nil) {
+                cfg["radio-buttons-group"] = me.dialog._peer._radioGroups[me.radioGroup];
+            }
         }
 
-        me._view = cwidgets.RadioButton.new(viewParent, canvas.style,
-                                            {"text": me.label,
-                                             "radio-buttons-group": rbg});
+        me._view = cwidgets.RadioButton.new(viewParent, canvas.style, cfg);
+
         # copy initial visiblity
         me._view.visible = me.visible;
 

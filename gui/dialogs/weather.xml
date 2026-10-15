@@ -455,7 +455,7 @@
                     <col>0</col>
                     <label>Detailed Weather</label>
                     <halign>left</halign>
-                    <name>simple-weather</name>
+                    <name>detailed-weather</name>
                     <property>sim/gui/dialogs/metar/mode/local-weather</property>
                     <live>true</live>
                     <binding>
