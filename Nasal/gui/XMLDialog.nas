@@ -17,13 +17,13 @@ var XMLDialog = {
     {
         var d = me.dialog();
         var sz = [d.width, d.height];
-        me._sizeToContents = 0;
+        me._sizeToContents = false;
 
         if ((d.width <= 0) or (d.height <= 0)) {
             logprint(LOG_INFO, "Dialog will resize to fit contents");
-            me._sizeToContents = 1;
+            me._sizeToContents = true;
         } else {
-            logprint(LOG_INFO, "Dialog explicit size is:", d.width, "x", d.height);
+            logprint(LOG_INFO, "Dialog explicit size is:", d.width, " x ", d.height);
         }
 
         me._radioGroups = {};
@@ -57,13 +57,13 @@ var XMLDialog = {
             var rootLayout = rootObject.layoutItem();
             if (rootLayout) {
                 var szh = rootLayout.sizeHint();
-                logprint(LOG_INFO, "Setting window size to hint:", szh[0], szh[1]);
+                logprint(LOG_INFO, "Setting window size to hint: w=", szh[0], ", h=",  szh[1]);
                 me._window.setSize(szh);
+                me._sizeToContents = false;
             } else {
                 logprint(LOG_INFO, "Size to contents but no root layout exists.");
             }
         }
-
 
         ourCanvas.setLayout(rootObject.layoutItem());
     },
@@ -90,28 +90,42 @@ var XMLDialog = {
     onGeometryChanged: func()
     {
         var d = me.dialog();
-        var rootLayout = d.root.layoutItem();
-
-        logprint(LOG_INFO, "Dialog geometry is now:" ~ d.x ~ ", " ~ d.y ~ " w:" ~ d.width ~ ", h:" ~ d.height);
         me._window.setPosition(d.x, d.y);
 
+        # early return if we're still waiting to size to contents (we can be
+        # run before didBuild above)
+        if (me._sizeToContents) {
+            return;
+        }
+
+        var rootLayout = d.root.layoutItem();
         var width = d.width;
         var height = d.height;
-        if (width <= 0) {
+
+        if (width <= 0 and rootLayout) {
             width = rootLayout.sizeHint()[0];
         }
 
-        if (height <= 0) {
+        if (height <= 0 and rootLayout) {
             height = rootLayout.sizeHint()[1];
         }
 
-        logprint(LOG_INFO, "Setting window size to:", width, ",", height);
         me._window.setSize(width, height);
     },
 
     onClose: func
     {
-        logprint(LOG_INFO, me.dialog().name ~ " Dialog is closing");
+        # record the window's current (possibly user-modified) position and
+        # size, so it can be restored if the dialog is shown again. Must
+        # happen before the window is deleted, below.
+        if (me._window != nil) {
+            var pos = me._window.getPosition();
+            var sz = me._window.getSize();
+            if ((pos[0] != nil) and (pos[1] != nil) and (sz[0] != nil) and (sz[1] != nil)) {
+                me.dialog().setGeometry(pos[0], pos[1], sz[0], sz[1]);
+            }
+        }
+
         # call the base canvas.Window delete method, not
         # our wrapper above.
         call(canvas.Window.del, [], me._window);
