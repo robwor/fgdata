@@ -1,14 +1,10 @@
-#version 410 core
+#version 330 core
 
-in vec2 pos;
-in vec2 textureUV;
+layout(location = 0) in vec2 pos;
+layout(location = 1) in vec2 textureUV;
 
 out vec2 texImageCoord;
 out vec2 paintCoord;
-
-// UNUSED
-// uniform mat4 sh_Model;
-// uniform mat4 sh_Ortho;
 
 uniform mat4 sh_Mvp;
 uniform mat3 paintInverted;

@@ -1,6 +1,24 @@
-The shaders in this directory are taken from the source code of ShaderVG,
-located in simgear/canvas/ShaderVG/src/shaders.c, to make it easier to
-update them.
+The shaders in this directory are loaded at runtime by SimGear's ShaderVG
+(simgear/canvas/ShaderVG/src/shaders.c) through sgShaderVGShaderOpen(), which
+looks them up as Shaders/ShaderVG/<name>. They live here as separate files to
+make them easy to update.
 
 These shaders are loaded manually using raw OpenGL calls. OpenSceneGraph and
 Effects are not involved at all.
+
+Files:
+  pipeline.vert / pipeline.frag   the only shader program ShaderVG uses.
+
+color_ramp.vert / color_ramp.frag were removed: that program was compiled and
+linked but never drawn with. Gradient ramps are generated on the CPU
+(shUpdateColorRampTexture) and uploaded as a 1024x1 texture.
+Keep SimGear and FGData in step: a SimGear that still asks for color_ramp.*
+will report "Could not find ShaderVG shader" at startup.
+
+Notes on pipeline.*:
+ - GLSL 330 core. Attribute locations are explicit: pos = 0, textureUV = 1.
+   layout() overrides glBindAttribLocation(); shaders.c uses
+   glGetAttribLocation(), so the two agree.
+ - rampSampler and patternSampler both use texture unit 1 (host-assigned).
+ - Output is not clamped or premultiplied; the host's blend state defines the
+   OpenVG semantics.
